@@ -1,0 +1,17 @@
+template(name="problem")
+  .ui.text.container.segment
+    h2.header($b="text : title")
+    h3.header($b="text : description")
+    p($b="html : problemHtml")
+    h3.header Antwort:
+    .ui.fluid.input
+      input($b="value : answer, enter : checkAnswer" placeholder="Deine Antwor (ggf. als Bruch oder Term)" type="text")
+    if answerCorrect
+      h3.header Richtig
+    else if answered
+      h3.red.header Leider Falsch
+    if answered
+      h3.header Lösung:
+      p($b="html : solutionHtml")
+    .ui.hidden.divider
+    button.ui.button($b="click : newProblem") neue Aufgabe

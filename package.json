@@ -1,0 +1,19 @@
+{
+  "name": "mathecoach",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "algebra.js": "^0.2.5",
+    "katex": "^0.6.0",
+    "lodash": "^4.14.1",
+    "mathjs": "^3.3.0",
+    "meteor-node-stubs": "~0.2.0"
+  },
+  "version": "1.0.0",
+  "description": "Web App for practicing basic math skills",
+  "main": "index.js",
+  "author": "Jan Pilgenröder",
+  "license": "MIT"
+}

@@ -1,0 +1,12 @@
+template(name="layout")
+  .site
+    +navbar
+    .sitecontent
+      +Template.dynamic(template=main)
+    .sitefooter
+      +footer
+
+template(name="footer")
+  .ui.center.aligned.container
+    .ui.divider
+    p &copy; 2016 - Jan Pilgenröder
