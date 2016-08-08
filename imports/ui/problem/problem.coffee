@@ -1,33 +1,28 @@
 require "./problem.jade"
-{ getProblem, checkAnswer } =
-  require "/imports/modules/mathproblems/getproblem.coffee"
+
 _ = require "lodash"
 
+{ Problem } = require "/imports/modules/mathproblems2/mathproblems.coffee"
+{ renderAM } = require "/imports/modules/mathproblems2/renderAM.coffee"
+
+
 Template.problem.viewmodel
-  title : "Aufgabe A1"
-  description : "Löse folgende Aufgabe:"
-  problemAM: ""
-  solutionAM : ""
-  problemHtml : ""
-  solutionHtml : ""
+  problemKey : "examples"
+  problem : {}
+  title : -> @problem()?.title
+  description : -> @problem()?.description ? ""
+  hint : -> @problem()?.hint ? ""
+  problemHtml : -> renderAM @problem()?.problem ? ""
+  solutionHtml : -> renderAM(@problem()?.solution ? "")
   answer : ""
   answered : false
   answerCorrect : false
   checkAnswer : ->
     @answered true
-    @answerCorrect checkAnswer
-      answer : @answer()
-      solution : @solutionAM()
+    @answerCorrect @problem().checkAnswer(@answer())
   newProblem : ->
-    module = _.sample ["modul1", "modul2"]
-    problem = getProblem(module)
-    @title problem.title
-    @description problem.description
-    @problemAM  problem.problemAM
-    @solutionAM  problem.solutionAM
-    @problemHtml problem.problemHtml
-    @solutionHtml problem.solutionHtml
     @answer.reset()
     @answered.reset()
     @answerCorrect.reset()
+    @problem new Problem(@problemKey())
   onCreated : -> @newProblem()

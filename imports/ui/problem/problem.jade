@@ -1,17 +1,23 @@
 template(name="problem")
-  .ui.text.container.segment
+  .ui.text.container
     h2.header($b="text : title")
-    h3.header($b="text : description")
-    p($b="html : problemHtml")
-    h3.header Antwort:
-    .ui.fluid.input
-      input($b="value : answer, enter : checkAnswer" placeholder="Deine Antwor (ggf. als Bruch oder Term)" type="text")
-    if answerCorrect
-      h3.header Richtig
-    else if answered
-      h3.red.header Leider Falsch
+    .ui.segment
+      h3.header($b="text : description")
+      p($b="html : problemHtml")
+      p($b="text : hint")
+    .ui.segment
+      h3.header Antwort:
+      .ui.fluid.input
+        input($b="value : answer, enter : checkAnswer" placeholder="Deine Antwor (als Bruch oder Term)" type="text")
     if answered
-      h3.header Lösung:
-      p($b="html : solutionHtml")
-    .ui.hidden.divider
+      if answerCorrect
+        .ui.green.inverted.segment
+          h1.header Richtig!
+      else
+        .ui.red.inverted.segment
+          h2.header Dein Ergebnis ist leider falsch.
+      .ui.segment
+        h3.header Lösung:
+        p($b="html : solutionHtml")
+        
     button.ui.button($b="click : newProblem") neue Aufgabe
