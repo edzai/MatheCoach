@@ -3,7 +3,7 @@ template(name="problem")
     h2.header($b="text : title")
     .ui.segment
       h3.header($b="text : description")
-      p($b="html : problemHtml")
+      p.tex($b="html : problemHtml")
       p($b="text : hint")
     .ui.segment
       h3.header Antwort:
@@ -11,13 +11,14 @@ template(name="problem")
         input($b="value : answer, enter : checkAnswer" placeholder="Deine Antwor (als Bruch oder Term)" type="text")
     if answered
       if answerCorrect
-        .ui.green.inverted.segment
+        .ui.green.inverted.center.aligned.segment
           h1.header Richtig!
       else
-        .ui.red.inverted.segment
+        .ui.red.inverted.center.aligned.segment
           h2.header Dein Ergebnis ist leider falsch.
       .ui.segment
         h3.header Lösung:
-        p($b="html : solutionHtml")
+        p.tex($b="html : solutionHtml")
         
-    button.ui.button($b="click : newProblem") neue Aufgabe
+    button.ui.right.floated.icon.button($b="click : newProblem") nächste Aufgabe
+      i.arrow.right.icon

@@ -7,6 +7,7 @@ _ = require "lodash"
 
 
 Template.problem.viewmodel
+  testAM : "1+sqrt(2a)"
   problemKey : "examples"
   problem : {}
   title : -> @problem()?.title

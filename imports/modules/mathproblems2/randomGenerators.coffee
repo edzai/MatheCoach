@@ -6,10 +6,12 @@ isPrime = (n) ->
     if n % i is 0 then result = false
   result
 
+alphabet = "abcdefghijklmnopqrstuvwxyz".split ""
+
 class Rnd
   constructor : () ->
 
-  int : (max = 20) -> _.random max
+  int : (max = 20) -> _.random max #returns just a single value
   intPlus : (max = 20) -> _.random 1, max
   int2Plus : (max = 20) -> _.random 2, max
 
@@ -17,12 +19,12 @@ class Rnd
   intsPlus : (max = 20) -> (@intPlus max for i in [1..10])
   ints2Plus : (max = 20) -> (@int2Plus max for i in [1..10])
 
-  uniqueInts : (max = 20) -> (_.shuffle [0..max])[0..9]
-  uniqueIntsPlus : (max = 20) -> (_.shuffle [1..max])[0..9]
-  uniqueInts2Plus : (max = 20) -> (_.shuffle [2..max])[0..9]
+  uniqueInts : (max = 20) -> _.sampleSize [0..max], 10
+  uniqueIntsPlus : (max = 20) -> _.sampleSize [1..max], 10
+  uniqueInts2Plus : (max = 20) -> _.sampleSize [2..max], 10
 
   primes : (max = 19) -> (i for i in [2..max] when isPrime i)
-  prime : (max = 19) -> _.sample @primes(max)
+  prime : (max = 19) -> _.sample @primes(max) #returns just a single value
   uniquePrimes : (max = 19) -> _.shuffle @primes(max)
 
   #produces numbers up to max^2
@@ -46,4 +48,9 @@ class Rnd
   opStrich : -> _.sample ["+", "-"]
   opPunkt : -> _.sample ["*", "/"]
 
+  #random variable names (a.k.a. letters)
+  letter : -> _.sample alphabet
+  letters : -> (letter for i in [1..10])
+  uniqueLetters : -> _.sampleSize alphabet, 10
+  
 exports.Rnd = Rnd

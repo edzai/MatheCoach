@@ -10,6 +10,8 @@ math = require "mathjs"
 
 { problemDefinitions } = require "./problemDefinitions.coffee"
 
+
+
 class Problem
   constructor : (@moduleKey) ->
     @title = problemDefinitions[@moduleKey].title
@@ -21,7 +23,9 @@ class Problem
     solution = @solution
     if "=" in solution.split ""
       solution = solution.split("=")[1]
-    nerdamer("#{answer} - #{solution}").text() is "0"
+    if "=" in answer.split ""
+      answer = answer.split("=")[1]
+    nerdamer("(#{answer}) - (#{solution})").text() is "0"
 
 
 exports.Problem = Problem
