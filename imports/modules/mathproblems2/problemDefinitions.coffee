@@ -6,10 +6,15 @@ require "/imports/modules/nerdamer/Solve.js"
 
 #math = require "mathjs"
 
+exports.modules = [
+  "test"
+  "examples"
+]
 
 exports.problemDefinitions =
   test :
     title : "Test"
+    description : "Neue Aufgabengeneratoren, die noch getestet werden müssen"
     problems : [
       ->
         [a, b, c] = rnd.intsPlus(9)
@@ -28,22 +33,9 @@ exports.problemDefinitions =
     ]
   examples :
     title : "Vermischte Übungsaufgaben"
+    description : "Eine bunte Mischung von Aufgaben \
+      aus den unterschiedlichsten Themengebieten"
     problems : [
-      ->
-        [a, b, c] = rnd.intsPlus(9)
-        x = rnd.letter()
-        leftSide = "(#{x} + #{a})*(#{x} + #{b})"
-        rightSide = "(#{x} + #{c})^2"
-        problem = "#{leftSide} = #{rightSide}"
-        leftPoly = nerdamer("expand(#{leftSide})").text()
-        rightPoly = nerdamer("expand(#{rightSide})").text()
-        equation = "#{leftPoly} = #{rightPoly}"
-        solution = nerdamer.solveEquations(equation, x).toString()
-        #return
-        problem : problem
-        solution : solution
-        description : "Löse die Gleichung nach #{x} auf:"
-    ,
       ->
         [a, b, c] = rnd.ints2Plus()
         x = rnd.letter()

@@ -1,6 +1,9 @@
 template(name="problem")
   .ui.text.container
     h2.header($b="text : title")
+    if moduleScores
+      with moduleScores
+        +moduleScoresDisplay
     .ui.segment
       h3.header($b="text : description")
       p.tex($b="html : problemHtml")
@@ -19,6 +22,9 @@ template(name="problem")
       .ui.segment
         h3.header Lösung:
         p.tex($b="html : solutionHtml")
-        
+    
+    button.ui.left.floated.icon.button($b="click : gotoModulesList")
+      i.arrow.left.icon
+      span Module
     button.ui.right.floated.icon.button($b="click : newProblem") nächste Aufgabe
       i.arrow.right.icon

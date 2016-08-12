@@ -1,0 +1,13 @@
+template(name="moduleList")
+  .ui.text.container
+    h1.header Aufgabentypen
+    .ui.segment
+      .ui.selection.list
+        each modules
+          +moduleListItem
+      
+template(name="moduleListItem")
+  .item($b="click : gotoModule")
+    .content
+      .header #{title}
+      .description #{description}

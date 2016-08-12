@@ -1,12 +1,17 @@
 require "./layout.jade"
 require "/imports/ui/navbar/navbar.jade"
-#require "/imports/ui/home/home.coffee"
+require "/imports/ui/moduleList/moduleList.coffee"
 require "/imports/ui/problem/problem.coffee"
-#require "/imports/ui/outputtest/outputtest.coffee"
 require "/imports/ui/info/info.coffee"
 
 
 FlowRouter.route "/",
+  name : "moduleList"
+  action : ->
+    BlazeLayout.render "layout",
+      main : "moduleList"
+
+FlowRouter.route "/modul/:key",
   name : "problem"
   action : ->
     BlazeLayout.render "layout",
