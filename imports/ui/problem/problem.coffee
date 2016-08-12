@@ -25,7 +25,7 @@ Template.problem.viewmodel
   answered : false
   answerCorrect : false
   checkAnswer : ->
-    if @answered()
+    unless @answered()
       @answered true
       @answerCorrect @problem().checkAnswer(@answer())
       if Meteor.userId()
