@@ -1,3 +1,8 @@
 template(name="moduleScoresDisplay")
-  p($b="text : quotientText")
-  p($b="text : streakText")
+  .ui.green.label($b="attr : {title : rightTooltip}")
+    i.thumbs.up.icon
+    | #{rightText}
+  .ui.blue.label($b="attr : {title : streakTooltip}")
+    i.forward.icon
+    | #{streak}
+  

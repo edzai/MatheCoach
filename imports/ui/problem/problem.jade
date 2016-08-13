@@ -1,9 +1,14 @@
 template(name="problem")
   .ui.text.container
-    h2.header($b="text : title")
     if moduleScores
-      with moduleScores
-        +moduleScoresDisplay
+      .ui.grid
+        .ten.wide.column
+          h2.header($b="text : title")
+        .six.wide.right.aligned.column
+          with moduleScores
+            +moduleScoresDisplay
+    else
+      h2.header($b="text : title")
     .ui.segment
       h3.header($b="text : description")
       p.tex($b="html : problemHtml")

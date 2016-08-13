@@ -7,11 +7,58 @@ require "/imports/modules/nerdamer/Solve.js"
 #math = require "mathjs"
 
 exports.modules = [
+  "bruch1"
+  "bruch2"
   "test"
   "examples"
 ]
 
 exports.problemDefinitions =
+  bruch1 :
+    title : "Bruchrechnen 1"
+    description : "Addition und Subtraktion von Brüchen"
+    problems : [
+      ->
+        [a, b, c] = rnd.ints2Plus()
+        op = rnd.opStrich()
+        if op is "+"
+          opStr = "Addiere"
+        else
+          opStr = "Subtrahiere"
+          if b > a then [a, b] = [b, a]
+        #return:
+        problem : "#{a}/#{c} #{op} (#{b}/#{c})"
+        form : /\d+\/\d+/
+        description : "#{opStr} die Brüche:"
+        hint : "Die Brüche sind schon gleichnamig."
+    ,
+      ->
+        [a, b, c, d] = rnd.ints2Plus()
+        op = rnd.opStrich()
+        if op is "+"
+          opStr = "Addiere"
+          opStr2 = "addierst"
+        else
+          opStr = "Subtrahiere"
+          opStr2 = "subtrahierst"
+          if a/c < b/c
+            [a, b, c, d] = [b, a, d, c]
+        #return:
+        problem : "#{a}/#{c} #{op} (#{b}/#{d})"
+        description : "#{opStr} die Brüche:"
+        hint : "Mache die Brüche gleichnamig ehe du sie #{opStr2}."
+    ]
+  bruch2 :
+    title : "Bruchrechnen 2"
+    description : "Multiplikation von Brüchen"
+    problems : [
+      ->
+        [a, b] = rnd.intsPlus()
+        [c, d] = rnd.ints2Plus()
+        #return:
+        problem : "(#{a}/#{c}) * (#{b}/#{d})"
+        description : "Multipliziere die Brüche:"
+    ]
   test :
     title : "Test"
     description : "Neue Aufgabengeneratoren, die noch getestet werden müssen"

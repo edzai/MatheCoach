@@ -1,18 +1,17 @@
 require "./moduleScoresDisplay.jade"
 
 Template.moduleScoresDisplay.viewmodel
-  rightPercent : ->
+  answeredCount : -> @rightCount() + @wrongCount()
+  percentText : ->
     unless @answeredCount() is 0
       percent = Math.round(@rightCount() / @answeredCount() * 100)
-      "Das sind #{percent}%."
+      " = #{percent}%"
     else
       ""
-  answeredCount : -> @rightCount() + @wrongCount()
-  quotientText : -> " Du hast #{@rightCount()} von \
-    #{@answeredCount()} Aufgaben richtig beantwortet. \
-    #{@rightPercent()}"
-  streakText : ->
-    if @streak() > 1
-      "Du hast #{@streak()} Aufgaben hintereinander richtig beantwortet."
-    else
-      ""
+  rightText : ->
+    "#{@rightCount()}#{@percentText()}"
+  rightTooltip : ->
+    "Du hast #{@rightCount()} von #{@answeredCount()} Aufgaben \
+    richtig Beantwortet."
+  streakTooltip : ->
+    "Du hast #{@streak()} Aufgaben hintereinander richtig Beantwortet."
