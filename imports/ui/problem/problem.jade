@@ -24,6 +24,12 @@ template(name="problem")
       else
         .ui.red.inverted.center.aligned.segment
           h2.header Dein Ergebnis ist leider falsch.
+      unless formCorrect
+        .ui.orange.inverted.center.aligned.segment
+          h3.header Deine Lösung hat nicht die richtige Form.
+      if reducableFractions
+        .ui.yellow.inverted.center.aligned.segment
+          h3.header Da kann man noch was kürzen.
       .ui.segment
         h3.header Lösung:
         p.tex($b="html : solutionHtml")

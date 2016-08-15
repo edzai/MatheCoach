@@ -24,10 +24,16 @@ Template.problem.viewmodel
   answer : ""
   answered : false
   answerCorrect : false
+  formCorrect : false
+  reducableFractions : false
   checkAnswer : ->
     unless @answered()
       @answered true
-      @answerCorrect @problem().checkAnswer(@answer())
+      { equivalent, formCorrect, reducableFractions } =
+        @problem().checkAnswer(@answer())
+      @answerCorrect equivalent
+      @formCorrect formCorrect
+      @reducableFractions reducableFractions
       if Meteor.userId()
         updateModuleScores.call
           moduleKey : @moduleKey()
@@ -41,6 +47,8 @@ Template.problem.viewmodel
     @answer.reset()
     @answered.reset()
     @answerCorrect.reset()
+    @formCorrect.reset()
+    @reducableFractions.reset()
     @problem new Problem(@moduleKey())
   gotoModulesList : -> FlowRouter.go "/"
   onCreated : -> @problem new Problem(@moduleKey())

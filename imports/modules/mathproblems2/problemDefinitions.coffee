@@ -6,6 +6,8 @@ require "/imports/modules/nerdamer/Solve.js"
 
 #math = require "mathjs"
 
+fractionRe = /^[-]?\s?(\d+)\s?\*?\s?[a-z]*\s?\/\s?(\d+)\s?\*?\s?[a-z]*$/
+
 exports.modules = [
   "bruch1"
   "bruch2"
@@ -28,7 +30,7 @@ exports.problemDefinitions =
           if b > a then [a, b] = [b, a]
         #return:
         problem : "#{a}/#{c} #{op} (#{b}/#{c})"
-        form : /\d+\/\d+/
+        form : fractionRe
         description : "#{opStr} die Brüche:"
         hint : "Die Brüche sind schon gleichnamig."
     ,
@@ -45,6 +47,7 @@ exports.problemDefinitions =
             [a, b, c, d] = [b, a, d, c]
         #return:
         problem : "#{a}/#{c} #{op} (#{b}/#{d})"
+        form : fractionRe
         description : "#{opStr} die Brüche:"
         hint : "Mache die Brüche gleichnamig ehe du sie #{opStr2}."
     ]
@@ -57,6 +60,7 @@ exports.problemDefinitions =
         [c, d] = rnd.ints2Plus()
         #return:
         problem : "(#{a}/#{c}) * (#{b}/#{d})"
+        form : fractionRe
         description : "Multipliziere die Brüche:"
     ]
   test :

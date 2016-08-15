@@ -7,5 +7,4 @@ exports.getModulesList = ->
       key : module
       title : problemDefinitions[module].title
       description : problemDefinitions[module].description
-  console.log result
   result
