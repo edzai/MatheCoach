@@ -45,6 +45,8 @@ Template.problem.viewmodel
         updateModuleScores.call
           moduleKey : @moduleKey()
           answerCorrect : @answerCorrect()
+    else
+      @newProblem()
   newProblem : ->
     unless @answered()
       if Meteor.userId()

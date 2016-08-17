@@ -6,7 +6,7 @@ require "/imports/modules/nerdamer/Solve.js"
 
 #math = require "mathjs"
 
-fractionRe = /^[-]?\s?(\d+)\s?\*?\s?[a-z]*\s?\/\s?(\d+)\s?\*?\s?[a-z]*$/
+fractionRe = /^([-]?\s?(\d+)\s?\*?\s?[a-z]*\s?\/\s?(\d+)\s?\*?\s?[a-z]*)|(\d+)$/
 
 exports.modules = [
   "bruch1"
