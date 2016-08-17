@@ -20,8 +20,12 @@ exports.problemDefinitions =
     title : "Bruchrechnen 1"
     description : "Addition und Subtraktion von Brüchen"
     problems : [
-      ->
-        [a, b, c] = rnd.ints2Plus()
+      levels : [1..2]
+      generator : (level = 1) ->
+        [a, b, c] = if level is 1
+          rnd.ints2Plus(9)
+        else
+          rnd.ints2Plus(20)
         op = rnd.opStrich()
         if op is "+"
           opStr = "Addiere"
@@ -34,8 +38,12 @@ exports.problemDefinitions =
         description : "#{opStr} die Brüche:"
         hint : "Die Brüche sind schon gleichnamig."
     ,
-      ->
-        [a, b, c, d] = rnd.ints2Plus()
+      levels : [2..3]
+      generator : (level = 1) ->
+        [a, b, c, d] = if level is 2
+          rnd.uniqueInts2Plus(9)
+        else
+          rnd.uniqueInts2Plus(20)
         op = rnd.opStrich()
         if op is "+"
           opStr = "Addiere"
@@ -55,7 +63,8 @@ exports.problemDefinitions =
     title : "Bruchrechnen 2"
     description : "Multiplikation von Brüchen"
     problems : [
-      ->
+      levels : [1]
+      generator : (level = 1) ->
         [a, b] = rnd.intsPlus()
         [c, d] = rnd.ints2Plus()
         #return:
@@ -67,7 +76,8 @@ exports.problemDefinitions =
     title : "Test"
     description : "Neue Aufgabengeneratoren, die noch getestet werden müssen"
     problems : [
-      ->
+      levels : [1]
+      generator : (level = 1) ->
         [a, b, c] = rnd.intsPlus(9)
         x = rnd.letter()
         leftSide = "(#{x} + #{a})*(#{x} + #{b})"
@@ -87,20 +97,22 @@ exports.problemDefinitions =
     description : "Eine bunte Mischung von Aufgaben \
       aus den unterschiedlichsten Themengebieten"
     problems : [
-      ->
-        [a, b, c] = rnd.ints2Plus()
-        x = rnd.letter()
-        problem = "#{a}#{x} + #{b} = #{c}"
-        solution = nerdamer.solveEquations(problem, x).toString()
-        #return
-        problem : problem
-        solution : solution
-        description : "Löse die Gleichung nach #{x} auf."
-        hint : "(Du kannst die Antwort als Gleichung mit #{x} auf \
-        auf der linken Seite schreiben, oder einfach den Wert von \
-        #{x} eingeben)"
+      levels : [1]
+      generator :(level = 1) ->
+          [a, b, c] = rnd.ints2Plus()
+          x = rnd.letter()
+          problem = "#{a}#{x} + #{b} = #{c}"
+          solution = nerdamer.solveEquations(problem, x).toString()
+          #return
+          problem : problem
+          solution : solution
+          description : "Löse die Gleichung nach #{x} auf."
+          hint : "(Du kannst die Antwort als Gleichung mit #{x} auf \
+          auf der linken Seite schreiben, oder einfach den Wert von \
+          #{x} eingeben)"
     ,
-      ->
+      levels : [1]
+      generator : (level = 1) ->
         [a, b, c, d] = rnd.ints2Plus(9)
         x = rnd.letter()
         op = rnd.opStrich()
@@ -109,7 +121,8 @@ exports.problemDefinitions =
         problem : "#{a}#{x}/#{c} #{op} #{b}#{x}/#{d}"
         description : "#{opStr} die Brüche:"
     ,
-      ->
+      levels : [1]
+      generator : (level = 1) ->
         [a, b, c] = rnd.ints2Plus()
         #return:
         problem : "#{a}/#{c} + #{b}/#{c}"
@@ -118,7 +131,8 @@ exports.problemDefinitions =
         description : "Addiere die Brüche:"
         hint : "Die Brüche sind schon gleichnamig."
     ,
-      ->
+      levels : [1]
+      generator : (level = 1) ->
         [a, b] = rnd.intsPlus()
         [c, d] = rnd.uniqueInts2Plus(9)
         #return:
@@ -128,14 +142,16 @@ exports.problemDefinitions =
         description : "Addiere die Brüche:"
         hint : "Mache gleichnamig ehe Du addierst"
     ,
-      ->
+      levels : [1]
+      generator : (level = 1) ->
         [a, b, c, d] = rnd.uniqueInts2Plus(9)
         op = rnd.op()
         #return:
         problem : "(#{a}/#{c}) #{op} (#{b}/#{d})"
         description : "Löse die Bruchrechenaufgabe"
     ,
-      ->
+      levels : [1]
+      generator : (level = 1) ->
         [a, c] = rnd.primeReducable(10)
         [b, d] = rnd.primeReducable(10)
         op = rnd.opStrich()
@@ -151,21 +167,25 @@ exports.problemDefinitions =
         werden die Produkte beim Gleichnamigmachen in den meisten \
         Fällen deutlich einfacher."
     ,
-      ->
+      levels : [1]
+      generator : (level = 1) ->
         [a, b, c, d, e, f] = rnd.uniquePrimes(20)
         op = rnd.opStrich()
         #return:
         problem : "#{a}/#{b} * (#{c}/#{d} #{op} #{e}/#{f})"
         description : "Löse die fiese Bruchrechenaufgabe:"
         hint : "Diese Aufgabe ist absichtlich gemein. Sie besteht aus \
-        unterschiedlichen Primzahlen, so dass man garantiert nicht kürzen kann."
+        unterschiedlichen Primzahlen, so dass man garantiert nicht \
+        kürzen kann."
     ,
-      ->
+      levels : [1]
+      generator : (level = 1) ->
         a = rnd.int2Plus()
         problem : "sqrt(#{a**2})"
         description : "Ziehe die Wurzel:"
     ,
-      ->
+      levels : [1]
+      generator : (level = 1) ->
         a = rnd.int2Plus(9)
         [b, c] = rnd.uniquePrimes(7)
         description : "Ziehe teilweise die Wurzel:"

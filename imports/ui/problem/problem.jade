@@ -16,7 +16,7 @@ template(name="problem")
     .ui.segment
       h3.header Antwort:
       .ui.fluid.input
-        input($b="value : answer, enter : checkAnswer" placeholder="Deine Antwor (als Bruch oder Term)" type="text")
+        input($b="value : answer, enter : checkAnswer, focus : focusOnAnswer" placeholder="Deine Antwor (als Bruch oder Term)" type="text")
     if answered
       if answerCorrect
         .ui.green.inverted.center.aligned.segment
@@ -33,9 +33,17 @@ template(name="problem")
       .ui.segment
         h3.header Lösung:
         p.tex($b="html : solutionHtml")
-    
-    button.ui.left.floated.icon.button($b="click : gotoModulesList")
+          
+    button.ui.left.floated.blue.icon.button($b="click : gotoModulesList")
       i.arrow.left.icon
       span Module
-    button.ui.right.floated.icon.button($b="click : newProblem") nächste Aufgabe
+  
+    button.ui.right.floated.icon.button($b="click : newProblem, class : nextButtonClass") nächste Aufgabe
       i.arrow.right.icon
+    
+    .ui.hidden.clearing.divider
+    .ui.divider
+      
+    h3.header Schwierigkeitsgrad: #{newLevel}
+    input.ui.range($b="value : newLevel, attr : {min : minLevel, max : maxLevel}" type="range")
+    p (Änderungen werden bei der nächsten Aufgabe wirksam)

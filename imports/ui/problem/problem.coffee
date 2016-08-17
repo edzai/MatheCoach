@@ -1,3 +1,4 @@
+require "/imports/ui/ui-slider.css"
 require "./problem.jade"
 require "/imports/ui/moduleScoresDisplay/moduleScoresDisplay.coffee"
 
@@ -17,6 +18,10 @@ Template.problem.viewmodel
       userId : Meteor.userId()
       moduleKey : @moduleKey()
   title : -> @problem()?.title
+  maxLevel : -> @problem().maxLevel
+  minLevel : -> @problem().minLevel
+  currentLevel : -> @problem().level
+  newLevel : 1
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
   problemHtml : -> renderAM @problem()?.problem ? ""
@@ -26,6 +31,8 @@ Template.problem.viewmodel
   answerCorrect : false
   formCorrect : false
   reducableFractions : false
+  focusOnAnswer : true
+  nextButtonClass : -> if @answered() then "green" else "red"
   checkAnswer : ->
     unless @answered()
       @answered true
@@ -49,6 +56,10 @@ Template.problem.viewmodel
     @answerCorrect.reset()
     @formCorrect.reset()
     @reducableFractions.reset()
-    @problem new Problem(@moduleKey())
+    @focusOnAnswer.reset()
+    @problem new Problem(@moduleKey(), @newLevel())
+    @newLevel @currentLevel()
   gotoModulesList : -> FlowRouter.go "/"
-  onCreated : -> @problem new Problem(@moduleKey())
+  onCreated : ->
+    @problem new Problem(@moduleKey(), @newLevel())
+    @newLevel @currentLevel()

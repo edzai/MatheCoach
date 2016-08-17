@@ -12,10 +12,20 @@ math = require "mathjs"
 
 
 class Problem
-  constructor : (@moduleKey) ->
+  constructor : (@moduleKey, @level = 1) ->
+    @level = Number @level
+    problems = problemDefinitions[@moduleKey].problems
+    availableLevels = _(problems).map("levels").flatten().uniq().value()
+    @maxLevel = _.max availableLevels
+    @minLevel = _.min availableLevels
+    unless @level in availableLevels
+      @level = if @level > @maxLevel then @maxLevel else @minLevel
     @title = problemDefinitions[@moduleKey].title
     { @problem, @solution, @form, @description, @hint } =
-      (_.sample problemDefinitions[@moduleKey].problems)()
+      _(problems)
+        .filter (elem) => @level in elem.levels
+        .sample()
+        .generator(@level)
     @solution ?= nerdamer(@problem).text("fractions")
 
   checkAnswer : (answer) ->
