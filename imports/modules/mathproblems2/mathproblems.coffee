@@ -21,11 +21,15 @@ class Problem
     unless @level in availableLevels
       @level = if @level > @maxLevel then @maxLevel else @minLevel
     @title = problemDefinitions[@moduleKey].title
-    { @problem, @solution, @form, @description, @hint } =
+    sample =
       _(problems)
         .filter (elem) => @level in elem.levels
         .sample()
-        .generator(@level)
+    @levelOffset = sample?.levelOffset ? 0
+    generatorLevel = @level + @levelOffset
+    if generatorLevel < 1 then generatorLevel = 1
+    { @problem, @solution, @form, @description, @hint } =
+      sample?.generator generatorLevel
     @solution ?= nerdamer(@problem).text("fractions")
 
   checkAnswer : (answer) ->

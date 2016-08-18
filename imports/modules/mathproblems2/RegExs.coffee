@@ -1,0 +1,2 @@
+exports.re =
+  fraction : /^([-]?\s?(\d+)\s?\*?\s?[a-z]*\s?\/\s?(\d+)\s?\*?\s?[a-z]*)|(\d+)$/

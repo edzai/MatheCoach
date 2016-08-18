@@ -1,16 +1,20 @@
 { Rnd } = require "./randomGenerators.coffee"
 rnd = new Rnd()
 
+{ re } = require "./RegExs.coffee"
+
 nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
 require "/imports/modules/nerdamer/Solve.js"
 
+{ fractionGenerator } = require "./problemGenerators/fractions.coffee"
+
 #math = require "mathjs"
 
-fractionRe = /^([-]?\s?(\d+)\s?\*?\s?[a-z]*\s?\/\s?(\d+)\s?\*?\s?[a-z]*)|(\d+)$/
 
 exports.modules = [
   "bruch1"
   "bruch2"
+  "bruch3"
   "test"
   "examples"
 ]
@@ -21,56 +25,46 @@ exports.problemDefinitions =
     description : "Addition und Subtraktion von Brüchen"
     problems : [
       levels : [1..2]
-      generator : (level = 1) ->
-        [a, b, c] = if level is 1
-          rnd.ints2Plus(9)
-        else
-          rnd.ints2Plus(20)
-        op = rnd.opStrich()
-        if op is "+"
-          opStr = "Addiere"
-        else
-          opStr = "Subtrahiere"
-          if b > a then [a, b] = [b, a]
-        #return:
-        problem : "#{a}/#{c} #{op} (#{b}/#{c})"
-        form : fractionRe
-        description : "#{opStr} die Brüche:"
-        hint : "Die Brüche sind schon gleichnamig."
+      generator : fractionGenerator.strichGleichnamig
     ,
-      levels : [2..3]
-      generator : (level = 1) ->
-        [a, b, c, d] = if level is 2
-          rnd.uniqueInts2Plus(9)
-        else
-          rnd.uniqueInts2Plus(20)
-        op = rnd.opStrich()
-        if op is "+"
-          opStr = "Addiere"
-          opStr2 = "addierst"
-        else
-          opStr = "Subtrahiere"
-          opStr2 = "subtrahierst"
-          if a/c < b/c
-            [a, b, c, d] = [b, a, d, c]
-        #return:
-        problem : "#{a}/#{c} #{op} (#{b}/#{d})"
-        form : fractionRe
-        description : "#{opStr} die Brüche:"
-        hint : "Mache die Brüche gleichnamig ehe du sie #{opStr2}."
+      levels : [2..4]
+      levelOffset : -1
+      generator : fractionGenerator.strichUngleichnamig
     ]
   bruch2 :
     title : "Bruchrechnen 2"
     description : "Multiplikation von Brüchen"
     problems : [
+      levels : [1..2]
+      generator : fractionGenerator.malGanzeZahl
+    ,
+      levels : [1..3]
+      generator : fractionGenerator.malBruchKuerzbar
+    ,
+      levels : [2..3]
+      generator : fractionGenerator.malKreuzKuerzbar
+    ]
+  bruch3 :
+    title : "Bruchrechnen 3"
+    description : "Vermischte Aufgaben zur Bruchrechnung"
+    problems : [
+      levels : [1..2]
+      levelOffset : 1
+      generator : fractionGenerator.strichGleichnamig
+    ,
+      levels : [1..4]
+      generator : fractionGenerator.strichUngleichnamig
+    ,
       levels : [1]
-      generator : (level = 1) ->
-        [a, b] = rnd.intsPlus()
-        [c, d] = rnd.ints2Plus()
-        #return:
-        problem : "(#{a}/#{c}) * (#{b}/#{d})"
-        form : fractionRe
-        description : "Multipliziere die Brüche:"
+      levelOffset : 1
+      generator : fractionGenerator.malGanzeZahl
+    ,
+      levels : [1..4]
+      generator : fractionGenerator.malBruch
+    ,
+      levels : [2..4]
+      levelOffset : -1
+      generator : fractionGenerator.zusammenGesetzt
     ]
   test :
     title : "Test"

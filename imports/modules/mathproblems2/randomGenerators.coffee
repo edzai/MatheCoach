@@ -27,6 +27,9 @@ class Rnd
   prime : (max = 19) -> _.sample @primes(max) #returns just a single value
   uniquePrimes : (max = 19) -> _.shuffle @primes(max)
 
+  bool : -> _.sample [true, false]
+  bools : -> (@bool() for i in [1..10])
+  
   #produces numbers up to max^2
   reducable : (max = 20) ->
     n = @int2Plus(max)
@@ -52,5 +55,5 @@ class Rnd
   letter : -> _.sample alphabet
   letters : -> (letter for i in [1..10])
   uniqueLetters : -> _.sampleSize alphabet, 10
-  
+
 exports.Rnd = Rnd
