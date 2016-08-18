@@ -52,17 +52,17 @@ exports.problemDefinitions =
       levelOffset : 1
       generator : fractionGenerator.strichGleichnamig
     ,
-      levels : [1..4]
+      levels : [1..3]
       generator : fractionGenerator.strichUngleichnamig
     ,
-      levels : [1]
+      levels : [1..2]
       levelOffset : 1
       generator : fractionGenerator.malGanzeZahl
     ,
-      levels : [1..4]
+      levels : [1..3]
       generator : fractionGenerator.malBruch
     ,
-      levels : [2..4]
+      levels : [2..5]
       levelOffset : -1
       generator : fractionGenerator.zusammenGesetzt
     ]

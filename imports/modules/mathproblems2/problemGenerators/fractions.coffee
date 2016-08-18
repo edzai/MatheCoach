@@ -145,7 +145,7 @@ exports.fractionGenerator =
           maxN2 = 20
           maxN3 = 9
       else
-        maxN1 = maxN2 = maxN3 = 20
+        maxN1 = maxN2 = maxN3 = 40
     [a, b] = rnd.uniqueInts2Plus maxN1
     [c, d] = rnd.uniqueInts2Plus maxN2
     [e, f] = rnd.uniqueInts2Plus maxN3
