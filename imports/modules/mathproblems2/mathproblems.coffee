@@ -28,8 +28,11 @@ class Problem
     @levelOffset = sample?.levelOffset ? 0
     generatorLevel = @level + @levelOffset
     if generatorLevel < 1 then generatorLevel = 1
-    { @problem, @solution, @form, @description, @hint } =
-      sample?.generator generatorLevel
+    {
+      @problem, @problemTeX,
+      @solution, @solutionTeX,
+      @form, @description, @hint
+    } = sample?.generator generatorLevel
     @solution ?= nerdamer(@problem).text("fractions")
 
   checkAnswer : (answer) ->

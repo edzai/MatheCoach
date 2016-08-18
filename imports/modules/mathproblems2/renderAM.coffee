@@ -12,7 +12,7 @@ exports.teXifyAM = teXifyAM = (str) ->
   else
     (teXifyAM part for part in str.split "=").join "="
 
-renderTeX = (str) ->
+exports.renderTeX = (str) ->
   katex.renderToString str,
     displayMode : true
     throwOnError : false

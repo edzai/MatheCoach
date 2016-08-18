@@ -29,7 +29,7 @@ class Rnd
 
   bool : -> _.sample [true, false]
   bools : -> (@bool() for i in [1..10])
-  
+
   #produces numbers up to max^2
   reducable : (max = 20) ->
     n = @int2Plus(max)
@@ -50,6 +50,7 @@ class Rnd
   op : -> _.sample ["+", "-", "*", "/"]
   opStrich : -> _.sample ["+", "-"]
   opPunkt : -> _.sample ["*", "/"]
+  opNotDiv : -> _.sample ["+", "-", "*"]
 
   #random variable names (a.k.a. letters)
   letter : -> _.sample alphabet

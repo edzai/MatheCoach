@@ -4,10 +4,14 @@ require "/imports/ui/moduleScoresDisplay/moduleScoresDisplay.coffee"
 
 _ = require "lodash"
 
-{ Problem } = require "/imports/modules/mathproblems2/mathproblems.coffee"
-{ renderAM } = require "/imports/modules/mathproblems2/renderAM.coffee"
+{ Problem } =
+  require "/imports/modules/mathproblems2/mathproblems.coffee"
 
-{ ModuleScores, updateModuleScores } = require "/imports/api/collections.coffee"
+{ renderAM, renderTeX } =
+  require "/imports/modules/mathproblems2/renderAM.coffee"
+
+{ ModuleScores, updateModuleScores } =
+  require "/imports/api/collections.coffee"
 
 Template.problem.viewmodel
   testAM : ""
@@ -24,9 +28,16 @@ Template.problem.viewmodel
   newLevel : 1
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
-  problemHtml : -> renderAM @problem()?.problem ? ""
-  solutionHtml : -> renderAM(@problem()?.solution ? "")
-  answer : ""
+  problemHtml : ->
+    if @problem()?.problemTeX?
+      renderTeX @problem().problemTeX
+    else
+      renderAM @problem()?.problem ? ""
+  solutionHtml : ->
+    if @problem()?.solutionTeX?
+      renderTeX @problem().solutionTeX
+    else
+      renderAM @problem()?.solution ? ""
   answered : false
   answerCorrect : false
   formCorrect : false

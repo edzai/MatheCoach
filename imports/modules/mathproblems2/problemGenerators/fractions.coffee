@@ -150,7 +150,7 @@ exports.fractionGenerator =
     [c, d] = rnd.uniqueInts2Plus maxN2
     [e, f] = rnd.uniqueInts2Plus maxN3
     op1 = rnd.op()
-    op2 = rnd.op()
+    op2 = rnd.opNotDiv()
     head = rnd.bool()
     switch op1
       when "+"
@@ -169,7 +169,6 @@ exports.fractionGenerator =
       when "+" then "die Summe"
       when "-" then "die Differenz"
       when "*" then "das Produkt"
-      when "/" then "den Quotient"
     #return
     problem :
       if head
