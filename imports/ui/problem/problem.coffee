@@ -10,22 +10,26 @@ _ = require "lodash"
 { renderAM, renderTeX } =
   require "/imports/modules/mathproblems2/renderAM.coffee"
 
-{ ModuleScores, updateModuleScores } =
+{ ModuleScores, updateModuleScores,
+  LevelScores, updateLevelScores, resetLevelScores
+} =
   require "/imports/api/collections.coffee"
 
 Template.problem.viewmodel
   testAM : ""
   moduleKey : -> FlowRouter.getParam "key"
   problem : {}
-  moduleScores : ->
-    ModuleScores.findOne
+  levelScores : ->
+    LevelScores.findOne
       userId : Meteor.userId()
       moduleKey : @moduleKey()
+      level : @currentLevel()
   title : -> @problem()?.title
   maxLevel : -> @problem().maxLevel
   minLevel : -> @problem().minLevel
   currentLevel : -> @problem().level
   newLevel : 1
+  autoLevelOn : true
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
   problemHtml : ->
@@ -44,6 +48,12 @@ Template.problem.viewmodel
   reducableFractions : false
   focusOnAnswer : true
   nextButtonClass : -> if @answered() then "green" else "red"
+
+  resetData : ->
+    if confirm "Wirklich die Punktestände für dieses Modul löschen?"
+      resetLevelScores.call
+        moduleKey : @moduleKey()
+
   checkAnswer : ->
     unless @answered()
       @answered true
@@ -53,17 +63,61 @@ Template.problem.viewmodel
       @formCorrect formCorrect
       @reducableFractions reducableFractions
       if Meteor.userId()
-        updateModuleScores.call
+        updateLevelScores.call
           moduleKey : @moduleKey()
-          answerCorrect : @answerCorrect()
+          level : @currentLevel()
+          result : @answerCorrect()
     else
       @newProblem()
+
+  levelPerc : ->
+    recent = @levelScores()?.recent
+    if recent?
+      rightCount =
+        _(recent)
+          .filter (e) -> e
+          .value().length
+      totalCount = recent.length or 1
+      rightPercent = Math.round rightCount/totalCount*100
+      Math.round rightCount/Math.max(totalCount, 5)*100
+    else null
+
+  currentPerc : ->
+    cursor = LevelScores.find
+      userId : Meteor.userId()
+      moduleKey : @moduleKey()
+    result = 0
+    for doc in cursor.fetch()
+      totalCount = doc.recent.length
+      rightCount = _(doc.recent)
+        .filter (e) -> e
+        .value().length
+      result += Math.round(rightCount/Math.max(totalCount, 5)* 100 * doc.level)
+    result
+
+  maxCurrentPerc : -> (@maxLevel() - @minLevel() + 1) * 100
+  retryCountdown : 0
+  autoLevel : ->
+    if @autoLevelOn()
+      if @levelPerc() > 79 and
+      @currentLevel() < @maxLevel() and
+      @answerCorrect()
+        if @retryCountdown() < 1
+          @newLevel @currentLevel() + 1
+        else
+          @retryCountdown @retryCountdown() - 1
+      if @levelPerc() < 60 and not @answerCorrect()
+        @currentLevel() > @minLevel()
+        @newLevel @currentLevel() - 1
+        @retryCountdown 3
+
   newProblem : ->
     unless @answered()
       if Meteor.userId()
         updateModuleScores.call
           moduleKey : @moduleKey()
           answerCorrect : false
+    @autoLevel()
     @answer.reset()
     @answered.reset()
     @answerCorrect.reset()
@@ -76,3 +130,7 @@ Template.problem.viewmodel
   onCreated : ->
     @problem new Problem(@moduleKey(), @newLevel())
     @newLevel @currentLevel()
+  autorun : [
+    -> console.log "newLevel", @newLevel()
+    -> console.log "retryCountdown", @retryCountdown()
+  ]

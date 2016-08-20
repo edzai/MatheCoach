@@ -1,12 +1,14 @@
 template(name="problem")
   .ui.text.container
-    if moduleScores
+    if currentUser
       .ui.grid
         .ten.wide.column
           h2.header($b="text : title")
         .six.wide.right.aligned.column
-          with moduleScores
-            +moduleScoresDisplay
+          .ui.blue.label Level #{currentLevel}
+          .ui.red.label
+            i.yellow.star.icon
+            | #{currentPerc}
     else
       h2.header($b="text : title")
     .ui.segment
@@ -43,7 +45,16 @@ template(name="problem")
     
     .ui.hidden.clearing.divider
     .ui.divider
+    
+    P Momentan teste ich die automatische Steuerung für die Schwierigkeitsstufe. Deshalb gibt es momentan keine Möglichkeit die Schwierigkeit der Aufgaben von Hand zu Ändern. Wenn man sich nicht einloggt bleibt die Schwierigkeit der Aufgaben auf der untersten Stufe.
+    
+    P Wenn man sich einloggt, wird die Schwierigkeit der Aufgaben automatisch angepasst (Blaues Level Feld oben Rechts) und es wird ein Punktwert angezeigt (Rotes Feld mit Stern).
+    
+    if currentUser
+      p Mit diesem Knopf kann man seine Daten für das aktuelle Modul zurücksetzen und praktisch wieder bei Null anfangen:
       
-    h3.header Schwierigkeitsgrad: #{newLevel}
-    input.ui.range($b="value : newLevel, attr : {min : minLevel, max : maxLevel}" type="range")
-    p (Änderungen werden bei der nächsten Aufgabe wirksam)
+      button.ui.basic.red.button($b="click : resetData") Reset
+    
+    //- h3.header Schwierigkeitsgrad: #{newLevel} Score: #{currentPerc}
+    //- input.ui.range($b="value : newLevel, attr : {min : minLevel, max : maxLevel}" type="range")
+    //- p (Änderungen werden bei der nächsten Aufgabe wirksam)

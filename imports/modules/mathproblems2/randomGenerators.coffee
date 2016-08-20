@@ -2,8 +2,9 @@ _ = require "lodash"
 
 isPrime = (n) ->
   result = true
-  for i in [2..n-1]
-    if n % i is 0 then result = false
+  unless n is 2
+    for i in [2..n-1]
+      if n % i is 0 then result = false
   result
 
 alphabet = "abcdefghijklmnopqrstuvwxyz".split ""

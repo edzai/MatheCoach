@@ -30,8 +30,8 @@ exports.fractionGenerator =
     maxN = switch level
       when 1 then 9
       when 2 then 20
-      when 3 then 100
-      else 1000
+      when 3 then 50
+      else 100
     [a, b, c, d] = rnd.uniqueInts2Plus maxN
     op = rnd.opStrich()
     if op is "+"
@@ -52,8 +52,8 @@ exports.fractionGenerator =
     switch level
       when 1 then maxN = 9
       when 2 then maxN = 20
-      when 3 then maxN = 100
-      else maxN = 1000
+      when 3 then maxN = 50
+      else maxN = 100
     [a, b] = rnd.uniqueInts2Plus maxN
     c = rnd.int2Plus maxN
     head = rnd.bool()
@@ -67,12 +67,20 @@ exports.fractionGenerator =
     description : "Multipliziere den Bruch mit der Zahl:"
 
   malBruch : (level = 1) ->
+    head = rnd.bool()
     switch level
-      when 1 then maxN = 9
-      when 2 then maxN = 20
-      else maxN = 100
-    [a, b] = rnd.uniqueInts2Plus maxN
-    [c, d] = rnd.uniqueInts2Plus maxN
+      when 1
+        maxN1 = maxN2 = 9
+      when 2
+        if head
+          maxN1 = 20
+          maxN2 = 9
+        else
+          maxN1 = 9
+          maxN2 = 20
+      else maxN1 = maxN2 = 20
+    [a, b] = rnd.uniqueInts2Plus maxN1
+    [c, d] = rnd.uniqueInts2Plus maxN2
     #return
     problem : "(#{a}/#{b}) * (#{c}/#{d})"
     form : re.fraction
@@ -80,11 +88,18 @@ exports.fractionGenerator =
 
   malBruchKuerzbar : (level = 1) ->
     switch level
-      when 1 then maxN = 9
-      when 2 then maxN = 20
-      else maxN = 100
-    [a, b] = rnd.uniqueInts2Plus maxN
-    [c, d] = rnd.uniqueInts2Plus maxN
+      when 1
+        maxN1 = maxN2 = 9
+      when 2
+        if head
+          maxN1 = 20
+          maxN2 = 9
+        else
+          max N1 = 9
+          max N2 = 20
+      else maxN1 = maxN2 = 20
+    [a, b] = rnd.uniqueInts2Plus maxN1
+    [c, d] = rnd.uniqueInts2Plus maxN2
     e = rnd.int2Plus(9)
     head = rnd.bool()
     #return
@@ -102,8 +117,8 @@ exports.fractionGenerator =
   malKreuzKuerzbar : (level = 1) ->
     switch level
       when 1 then maxN = 9
-      when 2 then maxN = 20
-      else maxN = 100
+      when 2 then maxN = 15
+      else maxN = 20
     [a, b] = rnd.uniqueInts2Plus maxN
     [c, d] = rnd.uniqueInts2Plus maxN
     e = rnd.int2Plus 9
@@ -145,7 +160,7 @@ exports.fractionGenerator =
           maxN2 = 20
           maxN3 = 9
       else
-        maxN1 = maxN2 = maxN3 = 40
+        maxN1 = maxN2 = maxN3 = 20
     [a, b] = rnd.uniqueInts2Plus maxN1
     [c, d] = rnd.uniqueInts2Plus maxN2
     [e, f] = rnd.uniqueInts2Plus maxN3
@@ -180,3 +195,63 @@ exports.fractionGenerator =
     hint :
       "Nebenbei: Der Term ist #{opStr1}, weil man einen Bruch und #{opStr3} \
       von zwei Brüchen #{opStr2}."
+
+  bruchDurchZahl : (level = 1) ->
+    switch level
+      when 1
+        maxN1 = 5
+        maxN2 = 30
+      when 2
+        maxN1 = 9
+        maxN2 = 100
+      else
+        maxN1 = 20
+        maxN2 = 400
+    [a, n] = rnd.ints2Plus maxN1
+    b = rnd.int2Plus maxN2
+    #return
+    problem : "#{a}/#{b}"
+    problemTeX : "\\frac{#{a*n}}{#{b}} : #{n}"
+    description : "Teile den Bruch durch die natürliche Zahl."
+    hint: "#{a*n} Äpfel durch #{n} sind..."
+
+  bruchDurchZahl2 : (level = 1) ->
+    switch level
+      when 1
+        maxP = 17
+        maxN = 15
+        maxE = 1
+      when 2
+        maxP = 11
+        maxN = 20
+        maxE = 2
+      else
+        maxP = 13
+        maxN = 25
+        maxE = 2
+    console.log rnd.uniquePrimes 10
+    [a1, a2, c1, c2] = rnd.uniquePrimes maxP
+    [ae1, ae2] = rnd.uniqueInts maxE
+    [ce1, ce2] = rnd.uniqueInts maxE
+    [a1, a2, c1, c2] = [a1**ae1, a2**ae2, c1**ce1, c2**ce2]
+    b = rnd.int2Plus maxN
+    #return
+    problem : "(#{a1*a2}/#{b}) / #{c1 * c2}"
+    problemTeX : "\\frac{#{a1*a2}}{#{b}} : #{c1 * c2}"
+    description : "Teile den Bruch durch die Natürliche Zahl."
+    hint: "Wenn Du den Zähler nicht durch die Zahl teilen \
+      kannst, multiplizierst Du stattdessen den Nenner mit \
+      dieser Zahl."
+
+  bruchDurchBruch : (level = 1) ->
+    maxN = switch level
+      when 1 then 9
+      when 2 then 20
+      else 40
+    [a, b, c, d] = rnd.uniqueInts2Plus(maxN)
+    #return
+    problem : "(#{a}/#{b}) / (#{c}/#{d})"
+    problemTeX : "\\frac{#{a}}{#{b}} : \\frac{#{c}}{#{d}}"
+    form : re.fraction
+    description : "Löse die Bruchrechenaufgabe:"
+    hint : "Multipliziere mit dem Kehrwert."

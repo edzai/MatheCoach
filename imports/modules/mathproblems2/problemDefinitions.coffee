@@ -15,8 +15,7 @@ exports.modules = [
   "bruch1"
   "bruch2"
   "bruch3"
-  "test"
-  "examples"
+  "bruch4"
 ]
 
 exports.problemDefinitions =
@@ -46,6 +45,21 @@ exports.problemDefinitions =
     ]
   bruch3 :
     title : "Bruchrechnen 3"
+    description : "Division mit Brüchen"
+    problems : [
+      levels : [1..2]
+      generator : fractionGenerator.bruchDurchZahl
+    ,
+      levels : [2..3]
+      levelOffset : -1
+      generator : fractionGenerator.bruchDurchZahl2
+    ,
+      levels : [2..4]
+      levelOffset : -1
+      generator : fractionGenerator.bruchDurchBruch
+  ]
+  bruch4 :
+    title : "Bruchrechnen"
     description : "Vermischte Aufgaben zur Bruchrechnung"
     problems : [
       levels : [1..2]
@@ -62,13 +76,24 @@ exports.problemDefinitions =
       levels : [1..3]
       generator : fractionGenerator.malBruch
     ,
+      levels : [2..4]
+      levelOffset : -1
+      generator : fractionGenerator.bruchDurchBruch
+    ,
       levels : [2..5]
       levelOffset : -1
       generator : fractionGenerator.zusammenGesetzt
     ]
   test :
     title : "Test"
-    description : "Neue Aufgabengeneratoren, die noch getestet werden müssen"
+    description : "Aufgaben, die noch gestestet werden müssen."
+    problems : [
+      levels : [1..3]
+      generator : fractionGenerator.bruchDurchBruch
+    ]
+  equations :
+    title : "Gleichungen"
+    description : "Lösen Linearer Gleichungen"
     problems : [
       levels : [1]
       generator : (level = 1) ->
