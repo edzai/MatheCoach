@@ -10,6 +10,8 @@ require "/imports/modules/nerdamer/Solve.js"
 
 #math = require "mathjs"
 
+for generator of fractionGenerator
+  console.log generator
 
 exports.modules = [
   "bruch1"

@@ -95,8 +95,8 @@ exports.fractionGenerator =
           maxN1 = 20
           maxN2 = 9
         else
-          max N1 = 9
-          max N2 = 20
+          maxN1 = 9
+          maxN2 = 20
       else maxN1 = maxN2 = 20
     [a, b] = rnd.uniqueInts2Plus maxN1
     [c, d] = rnd.uniqueInts2Plus maxN2
@@ -229,7 +229,6 @@ exports.fractionGenerator =
         maxP = 13
         maxN = 25
         maxE = 2
-    console.log rnd.uniquePrimes 10
     [a1, a2, c1, c2] = rnd.uniquePrimes maxP
     [ae1, ae2] = rnd.uniqueInts maxE
     [ce1, ce2] = rnd.uniqueInts maxE
