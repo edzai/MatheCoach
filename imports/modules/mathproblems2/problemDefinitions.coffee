@@ -6,18 +6,20 @@ rnd = new Rnd()
 nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
 require "/imports/modules/nerdamer/Solve.js"
 
-{ fractionGenerator } = require "./problemGenerators/fractions.coffee"
-
+{ fractionGenerator } =
+  require "./problemGenerators/fractions.coffee"
+{ linearEquationGenerator } =
+  require "./problemGenerators/linearEquations.coffee"
 #math = require "mathjs"
 
-for generator of fractionGenerator
-  console.log generator
 
 exports.modules = [
   "bruch1"
   "bruch2"
   "bruch3"
   "bruch4"
+  #"test"
+  "lineareGleichung1"
 ]
 
 exports.problemDefinitions =
@@ -86,12 +88,42 @@ exports.problemDefinitions =
       levelOffset : -1
       generator : fractionGenerator.zusammenGesetzt
     ]
+  lineareGleichung1 :
+    title : "Lineare Gleichungen 1"
+    description : "Einfache Lineare Gleichungen"
+    problems : [
+      levels : [1..2]
+      generator : linearEquationGenerator.linGl1
+    ,
+      levels : [1..2]
+      generator : linearEquationGenerator.linGl2
+    ,
+      levels : [2..3]
+      levelOffset : -1
+      generator : linearEquationGenerator.linGl3
+    ,
+      levels : [3..6]
+      levelOffset : -2
+      generator : linearEquationGenerator.linGl4
+    ,
+      levels : [4..6]
+      levelOffset : -3
+      generator : linearEquationGenerator.linGl5
+    ,
+      levels : [5..6]
+      levelOffset : -4
+      generator : linearEquationGenerator.linGl6
+    ,
+      levels : [5..6]
+      levelOffset : -4
+      generator : linearEquationGenerator.linGl7
+    ]
   test :
     title : "Test"
     description : "Aufgaben, die noch gestestet werden müssen."
     problems : [
-      levels : [1..3]
-      generator : fractionGenerator.bruchDurchBruch
+      levels : [1..5]
+      generator : linearEquationGenerator.test
     ]
   equations :
     title : "Gleichungen"

@@ -18,7 +18,7 @@ template(name="problem")
     .ui.segment
       h3.header Antwort:
       .ui.fluid.input
-        input($b="value : answer, enter : checkAnswer, focus : focusOnAnswer" placeholder="Deine Antwor (als Bruch oder Term)" type="text")
+        input($b="value : answer, enter : checkAnswer, focus : focusOnAnswer" placeholder="Deine Antwort (als Bruch oder Term)" type="text")
     if answered
       if answerCorrect
         .ui.green.inverted.center.aligned.segment
@@ -46,7 +46,7 @@ template(name="problem")
     .ui.hidden.clearing.divider
     .ui.divider
     
-    P Momentan teste ich die automatische Steuerung für die Schwierigkeitsstufe. Deshalb gibt es momentan keine Möglichkeit die Schwierigkeit der Aufgaben von Hand zu Ändern. Wenn man sich nicht einloggt bleibt die Schwierigkeit der Aufgaben auf der untersten Stufe.
+    P Momentan teste ich die automatische Steuerung für die Schwierigkeitsstufe. Deshalb gibt es keine Möglichkeit die Schwierigkeit der Aufgaben von Hand zu ändern. Wenn man sich nicht einloggt bleibt die Schwierigkeit der Aufgaben auf der untersten Stufe.
     
     P Wenn man sich einloggt, wird die Schwierigkeit der Aufgaben automatisch angepasst (Blaues Level Feld oben Rechts) und es wird ein Punktwert angezeigt (Rotes Feld mit Stern).
     
@@ -54,6 +54,9 @@ template(name="problem")
       p Mit diesem Knopf kann man seine Daten für das aktuelle Modul zurücksetzen und praktisch wieder bei Null anfangen:
       
       button.ui.basic.red.button($b="click : resetData") Reset
+      
+      if area51
+        button.ui.basic.red.button($b="click : newProblemTest") nächste Aufgabe + Level
     
     //- h3.header Schwierigkeitsgrad: #{newLevel} Score: #{currentPerc}
     //- input.ui.range($b="value : newLevel, attr : {min : minLevel, max : maxLevel}" type="range")

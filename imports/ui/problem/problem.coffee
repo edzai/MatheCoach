@@ -29,7 +29,7 @@ Template.problem.viewmodel
   minLevel : -> @problem().minLevel
   currentLevel : -> @problem().level
   newLevel : 1
-  autoLevelOn : true
+  autoLevelOn : -> not @area51()
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
   problemHtml : ->
@@ -130,7 +130,11 @@ Template.problem.viewmodel
   onCreated : ->
     @problem new Problem(@moduleKey(), @newLevel())
     @newLevel @currentLevel()
-  autorun : [
-    -> console.log "newLevel", @newLevel()
-    -> console.log "retryCountdown", @retryCountdown()
-  ]
+  area51 : -> @moduleKey() is "test"
+  newProblemTest : ->
+    @newLevel (@currentLevel() % 5) + 1
+    @newProblem()
+  # autorun : [
+  #   -> console.log "newLevel", @newLevel()
+  #   -> console.log "retryCountdown", @retryCountdown()
+  # ]

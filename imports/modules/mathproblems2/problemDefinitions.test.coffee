@@ -7,13 +7,16 @@ if Meteor.isClient
   nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
   require "/imports/modules/nerdamer/Solve.js"
 
-  { fractionGenerator } = require "./problemGenerators/fractions.coffee"
-
+  { fractionGenerator } =
+    require "./problemGenerators/fractions.coffee"
+  { linearEquationGenerator } =
+    require "./problemGenerators/linearEquations.coffee"
   { expect, chai } = require "meteor/practicalmeteor:chai"
 
   chai.use require("chai-string")
 
   generatorLibs =
+    linearEquationGenerator : linearEquationGenerator
     fractionGenerator : fractionGenerator
 
   for generatorLibKey, generatorLib of generatorLibs

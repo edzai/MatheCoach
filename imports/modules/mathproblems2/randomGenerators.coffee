@@ -50,6 +50,7 @@ class Rnd
   #random operators
   op : -> _.sample ["+", "-", "*", "/"]
   opStrich : -> _.sample ["+", "-"]
+  opMinus : -> _.sample ["", "-"]
   opPunkt : -> _.sample ["*", "/"]
   opNotDiv : -> _.sample ["+", "-", "*"]
 
