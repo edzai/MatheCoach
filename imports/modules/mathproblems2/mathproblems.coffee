@@ -33,7 +33,7 @@ class Problem
       @solution, @solutionTeX,
       @form, @description, @hint
     } = sample?.generator generatorLevel
-    @solution ?= nerdamer(@problem).text("fractions")
+    @solution ?= nerdamer(@problem).text "fractions"
 
   checkAnswer : (answer) ->
     solution = @solution

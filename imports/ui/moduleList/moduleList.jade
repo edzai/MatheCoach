@@ -5,16 +5,16 @@ template(name="moduleList")
       .ui.relaxed.selection.list
         each modules
           +moduleListItem
-    if currentUser
-      .ui.checkbox
-        input($b="check : showScores" type="checkbox")
-        label Erfolgswerte anzeigen
+    //- if currentUser
+    //-   .ui.checkbox
+    //-     input($b="check : showScores" type="checkbox")
+    //-     label Erfolgswerte anzeigen
       
 template(name="moduleListItem")
   .item($b="click : gotoModule")
     .content
-      .extra.right.floated($b="if : parent.showScores")
-        with moduleScores
-          +moduleScoresDisplay
+      //- .extra.right.floated($b="if : parent.showScores")
+      //-   with moduleScores
+      //-     +moduleScoresDisplay
       .header #{title}
       .description #{description}

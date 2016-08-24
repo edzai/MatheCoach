@@ -20,6 +20,7 @@ exports.modules = [
   "bruch4"
   #"test"
   "lineareGleichung1"
+  "lineareGleichung2"
 ]
 
 exports.problemDefinitions =
@@ -118,32 +119,23 @@ exports.problemDefinitions =
       levelOffset : -4
       generator : linearEquationGenerator.linGl7
     ]
+  lineareGleichung2 :
+    title : "Lineare Gleichungen 2"
+    description : "Quadratische Gleichungen, bei denen der Quadratische Term wegfällt"
+    problems : [
+      levels : [1..2]
+      generator : linearEquationGenerator.linGl8
+    ,
+      levels : [2..3]
+      levelOffset : -1
+      generator : linearEquationGenerator.linGl9
+    ]
   test :
     title : "Test"
     description : "Aufgaben, die noch gestestet werden müssen."
     problems : [
       levels : [1..5]
       generator : linearEquationGenerator.test
-    ]
-  equations :
-    title : "Gleichungen"
-    description : "Lösen Linearer Gleichungen"
-    problems : [
-      levels : [1]
-      generator : (level = 1) ->
-        [a, b, c] = rnd.intsPlus(9)
-        x = rnd.letter()
-        leftSide = "(#{x} + #{a})*(#{x} + #{b})"
-        rightSide = "(#{x} + #{c})^2"
-        problem = "#{leftSide} = #{rightSide}"
-        leftPoly = nerdamer("expand(#{leftSide})").text()
-        rightPoly = nerdamer("expand(#{rightSide})").text()
-        equation = "#{leftPoly} = #{rightPoly}"
-        solution = nerdamer.solveEquations(equation, x).toString()
-        #return
-        problem : problem
-        solution : solution
-        description : "Löse die Gleichung nach #{x} auf:"
     ]
   examples :
     title : "Vermischte Übungsaufgaben"

@@ -7,7 +7,7 @@ require "/imports/ui/moduleScoresDisplay/moduleScoresDisplay.coffee"
 
 Template.moduleList.viewmodel
   modules : getModulesList()
-  showScores : false
+  #showScores : false
   autorun : ->
     console.log @showScores()
 

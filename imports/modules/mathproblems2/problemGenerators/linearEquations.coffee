@@ -6,6 +6,8 @@ rnd = new Rnd()
 nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
 require "/imports/modules/nerdamer/Solve.js"
 
+math = require "mathjs"
+
 exports.linearEquationGenerator =
 
   linGl1 : (level = 1) ->
@@ -146,4 +148,84 @@ exports.linearEquationGenerator =
     problem : problem
     problemTeX : "#{leftSideTeX}=#{rightSideTeX}"
     solution : "#{x}=" + nerdamer.solveEquations(problem, x).toString()
+    description : "Löse die Gleichung für #{x}:"
+
+  linGl8 : (level = 1) ->
+    findC = (a, b, maxN) ->
+      c = rnd.intPlus maxN
+      unless c in [2*a-b, 2*a+b, -(2*a-b), -(2*a+b)]
+        c
+      else
+        findC a, b, maxN
+
+    switch level
+      when 1
+        x = "x"
+        maxN = 9
+      else
+        x = rnd.letter()
+        maxN = 15
+    [a, b] = rnd.intsPlus maxN
+    c = findC a, b, maxN
+    op1 = rnd.opStrich()
+    op2 = rnd.opStrich()
+    op3 = rnd.opStrich()
+    head = rnd.bool()
+    leftSide = "(#{x}#{op1}#{a})^2"
+    rightSide = "(#{x}#{op2}#{b})*(#{x}#{op3}#{c})"
+    if head then [leftSide, rightSide] = [rightSide, leftSide]
+    problem = "#{leftSide}=#{rightSide}"
+    #nerdamer wants the polynomials expanded
+    leftPoly = nerdamer("expand(#{leftSide})").text()
+    rightPoly = nerdamer("expand(#{rightSide})").text()
+    polyProblem = "#{leftPoly}=#{rightPoly}"
+    #return
+    problem : problem
+    solution : "#{x}=" + nerdamer.solveEquations(polyProblem, x).toString()
+    description : "Löse die Gleichung für #{x}:"
+
+  linGl9 : (level = 1) ->
+    findD = (b, c, maxN) ->
+      dn = rnd.intPlus maxN
+      dd = rnd.int2Plus maxN
+      d = "#{dn}/#{dd}"
+      foundOne = true
+      forbiddenDs = [
+        "2*#{b}-#{c}"
+        "2*#{b}+#{c}"
+        "-(2*#{b}-#{c})"
+        "-(2*#{b}+#{c})"
+      ]
+      for elem in forbiddenDs
+        if nerdamer("#{d}-#{elem}").text() is "0" then foundOne = false
+      if foundOne
+        nerdamer(d).text "fractions"
+      else
+        findC a, b, maxN
+
+    x = switch level
+      when 1 then "x"
+      else rnd.letter()
+    maxN = 9
+    [a, b, c] = (
+      for i in [1..3]
+        [n, d] = rnd.uniqueInts2Plus maxN
+        nerdamer("#{n}/#{d}").text "fractions"
+    )
+    d = findD b, c, maxN
+    op1 = rnd.opStrich()
+    op2 = rnd.opStrich()
+    op3 = rnd.opStrich()
+    head = rnd.bool()
+    leftSide = "(#{a} #{x}#{op1}#{b})^2"
+    rightSide = "(#{a} #{x}#{op2}#{c})*(#{a} #{x}#{op3}#{d})"
+    if head then [leftSide, rightSide] = [rightSide, leftSide]
+    problem = "#{leftSide}=#{rightSide}"
+    #nerdamer wants the polynomials expanded
+    leftPoly = nerdamer("expand(#{leftSide})").text()
+    rightPoly = nerdamer("expand(#{rightSide})").text()
+    polyProblem = "#{leftPoly}=#{rightPoly}"
+    #return
+    problem : problem
+    solution : "#{x}=" + nerdamer.solveEquations(polyProblem, x).toString()
     description : "Löse die Gleichung für #{x}:"
