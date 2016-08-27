@@ -11,6 +11,9 @@ if Meteor.isClient
     require "./problemGenerators/fractions.coffee"
   { linearEquationGenerator } =
     require "./problemGenerators/linearEquations.coffee"
+  { expressionGenerator } =
+    require "./problemGenerators/expressions.coffee"
+
   { expect, chai } = require "meteor/practicalmeteor:chai"
 
   chai.use require("chai-string")

@@ -7,6 +7,7 @@ math = require "mathjs"
 
 { renderAM } = require "./renderAM.coffee"
 { Rnd } = require "./randomGenerators.coffee"
+{ Check } = require "./checks.coffee"
 
 { problemDefinitions } = require "./problemDefinitions.coffee"
 
@@ -31,9 +32,11 @@ class Problem
     {
       @problem, @problemTeX,
       @solution, @solutionTeX,
-      @form, @description, @hint
+      @description, @hint
+      @checks
     } = sample?.generator generatorLevel
     @solution ?= nerdamer(@problem).text "fractions"
+    @checks ?= [Check.equivalent, Check.noReducableFractionsOptional]
 
   checkAnswer : (answer) ->
     solution = @solution
@@ -41,22 +44,32 @@ class Problem
       solution = solution.split("=")[1]
     if "=" in answer.split ""
       answer = answer.split("=")[1]
-    equivalent = nerdamer("(#{answer}) - (#{solution})").text() is "0"
-    formCorrect = true
-    if @form?
-      formCorrect = @form.test answer
-    fractionRe = /(\d+)\s?\*?\s?[a-z]*\s?\/\s?(\d+)\s?\*?\s?[a-z]*/g
-    reducableFractions = false
-    while result = fractionRe.exec answer
-      [fraction, numeratorStr, denominatorStr] = result
-      numerator = Number(numeratorStr)
-      denominator = Number(denominatorStr)
-      unless math.gcd(numerator, denominator) is 1
-        reducableFractions = true
+    pass = true
+    passTextsRequired = []
+    passTextsOptional = []
+    failTextsRequired = []
+    failTextsOptional = []
+    for check in @checks
+      if check.pass answer, solution
+        if check.required
+          if check.passText?
+            passTextsRequired.push check.passText
+        else
+          if check.passText?
+            passTextsOptional.push check.passText
+      else
+        if check.required
+          pass = false
+          if check.failText?
+            failTextsRequired.push check.failText
+        else
+          if check.failText?
+            failTextsOptional.push check.failText
     #return
-    equivalent : equivalent
-    formCorrect : formCorrect
-    reducableFractions : reducableFractions
-
+    pass : pass
+    passTextsRequired : passTextsRequired
+    passTextsOptional : passTextsOptional
+    failTextsRequired : failTextsRequired
+    failTextsOptional : failTextsOptional
 
 exports.Problem = Problem

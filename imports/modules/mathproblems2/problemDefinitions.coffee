@@ -10,6 +10,9 @@ require "/imports/modules/nerdamer/Solve.js"
   require "./problemGenerators/fractions.coffee"
 { linearEquationGenerator } =
   require "./problemGenerators/linearEquations.coffee"
+{ expressionGenerator } =
+  require "./problemGenerators/expressions.coffee"
+
 #math = require "mathjs"
 
 
@@ -18,7 +21,7 @@ exports.modules = [
   "bruch2"
   "bruch3"
   "bruch4"
-  #"test"
+  "test"
   "lineareGleichung1"
   "lineareGleichung2"
 ]
@@ -121,7 +124,8 @@ exports.problemDefinitions =
     ]
   lineareGleichung2 :
     title : "Lineare Gleichungen 2"
-    description : "Quadratische Gleichungen, bei denen der Quadratische Term wegfällt"
+    description : "Quadratische Gleichungen, bei denen der\
+      Quadratische Term wegfällt"
     problems : [
       levels : [1..2]
       generator : linearEquationGenerator.linGl8
@@ -135,7 +139,7 @@ exports.problemDefinitions =
     description : "Aufgaben, die noch gestestet werden müssen."
     problems : [
       levels : [1..5]
-      generator : linearEquationGenerator.test
+      generator : expressionGenerator.test
     ]
   examples :
     title : "Vermischte Übungsaufgaben"

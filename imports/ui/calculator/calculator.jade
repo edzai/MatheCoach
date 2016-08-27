@@ -1,0 +1,22 @@
+template(name="calculator")
+  .ui.text.container
+    h2.header Rechner
+    .ui.segment
+      h3.header Input
+      .ui.fluid.input
+        input(
+          $b="value : input, enter : calculate, focus : focusOnInput"
+          type="text"
+        )
+    .ui.segment
+      h3.header Output
+      h4.header Input mit TeX Layout:
+      p($b="html : teXPreview")
+      h4.header Nerdamer TeX:
+      p($b="html : nerdamerOutputHtml")
+      h4.header Algebrajs mit TeX:
+      p($b="html : algebrajsOutputHtml")
+      h4.header Nerdamer als AM:
+      p($b="html : nerdamerOutputAM")
+      h4.header Algebrajs als AM:
+      p($b="html : algebrajsOutputAM")

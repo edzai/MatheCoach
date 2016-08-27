@@ -49,10 +49,15 @@ class Rnd
 
   #random operators
   op : -> _.sample ["+", "-", "*", "/"]
+  ops : -> (op() for i in [1..10])
   opStrich : -> _.sample ["+", "-"]
+  opsStrich : -> (opStrich() for i in [1..10])
   opMinus : -> _.sample ["", "-"]
+  opsMinus : -> (opMinus() for i in [1..10])
   opPunkt : -> _.sample ["*", "/"]
+  opsPunkt : -> (opPunkt() for i in [1..10])
   opNotDiv : -> _.sample ["+", "-", "*"]
+  opsNotDiv : -> (opNotDiv() for i in [1..10])
 
   #random variable names (a.k.a. letters)
   letter : -> _.sample alphabet

@@ -32,6 +32,10 @@ Template.problem.viewmodel
   autoLevelOn : -> not @area51()
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
+  passTextsRequired : []
+  passTextsOptional : []
+  failTextsRequired : []
+  failTextsOptional : []
   problemHtml : ->
     if @problem()?.problemTeX?
       renderTeX @problem().problemTeX
@@ -44,8 +48,6 @@ Template.problem.viewmodel
       renderAM @problem()?.solution ? ""
   answered : false
   answerCorrect : false
-  formCorrect : false
-  reducableFractions : false
   focusOnAnswer : true
   nextButtonClass : -> if @answered() then "green" else "red"
 
@@ -57,11 +59,13 @@ Template.problem.viewmodel
   checkAnswer : ->
     unless @answered()
       @answered true
-      { equivalent, formCorrect, reducableFractions } =
+      { pass, passTextsRequired, passTextsOptional, failTextsRequired, failTextsOptional } =
         @problem().checkAnswer(@answer())
-      @answerCorrect equivalent
-      @formCorrect formCorrect
-      @reducableFractions reducableFractions
+      @answerCorrect pass
+      @passTextsRequired passTextsRequired
+      @passTextsOptional passTextsOptional
+      @failTextsRequired failTextsRequired
+      @failTextsOptional failTextsOptional
       if Meteor.userId()
         updateLevelScores.call
           moduleKey : @moduleKey()
@@ -121,9 +125,10 @@ Template.problem.viewmodel
     @answer.reset()
     @answered.reset()
     @answerCorrect.reset()
-    @formCorrect.reset()
-    @reducableFractions.reset()
-    @focusOnAnswer.reset()
+    @passTextsRequired.reset()
+    @passTextsOptional.reset()
+    @failTextsRequired.reset()
+    @failTextsOptional.reset()
     @problem new Problem(@moduleKey(), @newLevel())
     @newLevel @currentLevel()
   gotoModulesList : -> FlowRouter.go "/"
