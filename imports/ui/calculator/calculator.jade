@@ -1,6 +1,6 @@
 template(name="calculator")
   .ui.text.container
-    h2.header Rechner
+    h2.header Output Test
     .ui.segment
       h3.header Input
       .ui.fluid.input
@@ -10,13 +10,18 @@ template(name="calculator")
         )
     .ui.segment
       h3.header Output
-      h4.header Input mit TeX Layout:
+      h4.header Input -> MathJs -> MathJax:
+      +mathjax
+        div $$#{teXFromInput}$$
+      h4.header Input -> MathJs -> KaTeX
       p($b="html : teXPreview")
-      h4.header Nerdamer TeX:
+      h4.header Nerdamer.toTeX -> KaTeX:
       p($b="html : nerdamerOutputHtml")
-      h4.header Algebrajs mit TeX:
+      h4.header Algebrajs -> MathJs -> KaTeX:
       p($b="html : algebrajsOutputHtml")
-      h4.header Nerdamer als AM:
+      h4.header Nerdamer AM:
       p($b="html : nerdamerOutputAM")
-      h4.header Algebrajs als AM:
+      h4.header Algebrajs AM:
       p($b="html : algebrajsOutputAM")
+
+    p Diese Seite ist ist nur für Testzwecke, um schnell unterschiedliche Optionen für die Ausgabe von Mathematischen Termen auszuprobieren.

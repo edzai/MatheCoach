@@ -7,7 +7,7 @@ _ = require "lodash"
 { Problem } =
   require "/imports/modules/mathproblems2/mathproblems.coffee"
 
-{ renderAM, renderTeX } =
+{ renderAM, renderTeX, teXifyAM } =
   require "/imports/modules/mathproblems2/renderAM.coffee"
 
 { ModuleScores, updateModuleScores,
@@ -16,7 +16,8 @@ _ = require "lodash"
   require "/imports/api/collections.coffee"
 
 Template.problem.viewmodel
-  testAM : ""
+  #testAM : ""
+  useKaTeX : false
   moduleKey : -> FlowRouter.getParam "key"
   problem : {}
   levelScores : ->
@@ -36,6 +37,10 @@ Template.problem.viewmodel
   passTextsOptional : []
   failTextsRequired : []
   failTextsOptional : []
+  problemTeX : ->
+    @problem()?.problemTeX ? teXifyAM @problem()?.problem
+  solutionTeX : ->
+    @problem()?.solutionTeX ? teXifyAM @problem()?.solution
   problemHtml : ->
     if @problem()?.problemTeX?
       renderTeX @problem().problemTeX

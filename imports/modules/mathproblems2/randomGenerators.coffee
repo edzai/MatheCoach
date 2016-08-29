@@ -7,7 +7,8 @@ isPrime = (n) ->
       if n % i is 0 then result = false
   result
 
-alphabet = "abcdefghijklmnopqrstuvwxyz".split ""
+#dropped some letters because they look weird in TeX output
+alphabet = "abcdehijkmnpqrstuvwxyz".split ""
 
 class Rnd
   constructor : () ->

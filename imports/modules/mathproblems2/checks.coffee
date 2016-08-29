@@ -65,5 +65,5 @@ exports.Check =
       re.test answer
     required : true
     passText : undefined
-    failText : "Das Ergebnis muss ein einzelner Bruch\
+    failText : "Das Ergebnis muss ein einzelner Bruch \
       oder eine einzelne ganze Zahl sein."

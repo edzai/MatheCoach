@@ -1,3 +1,4 @@
+#require "/imports/ui/mathJax/mathJax.coffee"
 require "./calculator.jade"
 
 _ = require "lodash"
@@ -16,6 +17,13 @@ math = require "mathjs"
 Template.calculator.viewmodel
   input : ""
 
+  teXFromInput : ->
+    try
+      output = teXifyAM @input()
+    catch error
+      output = ""
+    output
+
   teXPreview : ->
     try
       output = renderAM @input()
@@ -29,7 +37,6 @@ Template.calculator.viewmodel
       output = nerdamer(@input()).toTeX()
     catch error
       output = "error"
-    console.log output
     renderTeX output
 
   algebrajsOutputHtml : ->
@@ -46,7 +53,7 @@ Template.calculator.viewmodel
     catch error
       output = "error"
     output
-    
+
   algebrajsOutputAM : ->
     try
       exp = new algebra.parse @input()

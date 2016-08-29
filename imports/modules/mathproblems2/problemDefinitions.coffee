@@ -71,14 +71,12 @@ exports.problemDefinitions =
     description : "Vermischte Aufgaben zur Bruchrechnung"
     problems : [
       levels : [1..2]
-      levelOffset : 1
       generator : fractionGenerator.strichGleichnamig
     ,
       levels : [1..3]
       generator : fractionGenerator.strichUngleichnamig
     ,
       levels : [1..2]
-      levelOffset : 1
       generator : fractionGenerator.malGanzeZahl
     ,
       levels : [1..3]
@@ -88,8 +86,8 @@ exports.problemDefinitions =
       levelOffset : -1
       generator : fractionGenerator.bruchDurchBruch
     ,
-      levels : [2..5]
-      levelOffset : -1
+      levels : [3..5]
+      levelOffset : -2
       generator : fractionGenerator.zusammenGesetzt
     ]
   lineareGleichung1 :

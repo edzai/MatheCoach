@@ -1,11 +1,22 @@
 { Rnd } = require "../randomGenerators.coffee"
 rnd = new Rnd()
 
-{ re } = require "../RegExs.coffee"
+{ Check } = require "../checks.coffee"
 
 nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
 require "/imports/modules/nerdamer/Solve.js"
 
+defaultFractionChecks = [
+  Check.equivalent
+  Check.isSingleFraction
+  Check.noReducableFractionsOptional
+]
+
+mustReduce = [
+  Check.equivalent
+  Check.isSingleFraction
+  Check.noReducableFractionsRequired
+]
 
 exports.fractionGenerator =
 
@@ -22,7 +33,7 @@ exports.fractionGenerator =
       if b > a then [a, b] = [b, a]
     #return:
     problem : "#{a}/#{c} #{op} (#{b}/#{c})"
-    form : re.fraction
+    checks : if level > 1 then mustReduce else defaultFractionChecks
     description : "#{opStr} die Brüche:"
     hint : "Die Brüche sind schon gleichnamig."
 
@@ -44,7 +55,7 @@ exports.fractionGenerator =
         [a, b, c, d] = [b, a, d, c]
     #return:
     problem : "#{a}/#{c} #{op} (#{b}/#{d})"
-    form : re.fraction
+    checks : if level > 1 then mustReduce else defaultFractionChecks
     description : "#{opStr} die Brüche:"
     hint : "Mache die Brüche gleichnamig ehe du sie #{opStr2}."
 
@@ -63,7 +74,7 @@ exports.fractionGenerator =
         "(#{a}/#{b}) * #{c}"
       else
         "#{c} * (#{a}/#{b})"
-    form : re.fraction
+    checks : if level > 1 then mustReduce else defaultFractionChecks
     description : "Multipliziere den Bruch mit der Zahl:"
 
   malBruch : (level = 1) ->
@@ -83,7 +94,7 @@ exports.fractionGenerator =
     [c, d] = rnd.uniqueInts2Plus maxN2
     #return
     problem : "(#{a}/#{b}) * (#{c}/#{d})"
-    form : re.fraction
+    checks : if level > 1 then mustReduce else defaultFractionChecks
     description : "Multipliziere die Brüche:"
 
   malBruchKuerzbar : (level = 1) ->
@@ -108,7 +119,7 @@ exports.fractionGenerator =
         "(#{a*e}/#{b*e}) * (#{c}/#{d})"
       else
         "(#{a}/#{b}) * (#{c*e}/#{d*e})"
-    form : re.fraction
+    checks : mustReduce
     description : "Multipliziere die Brüche:"
     hint :
       "Du kannst auf jeden Fall mindestens einen der beiden Brüche \
@@ -129,7 +140,7 @@ exports.fractionGenerator =
         "(#{a*e}/#{b}) * (#{c}/#{d*e})"
       else
         "(#{a}/#{b*e}) * (#{c*e}/#{d})"
-    form : re.fraction
+    checks : mustReduce
     description : "Multipliziere die Brüche:"
     hint :
       "Du kannst auf jeden Fall mindestens einmal überkreuz \
@@ -190,7 +201,7 @@ exports.fractionGenerator =
         "(#{a}/#{b}) #{op1} ((#{c}/#{d}) #{op2} (#{e}/#{f}))"
       else
         "((#{a}/#{b}) #{op2} (#{c}/#{d})) #{op1} (#{e}/#{f})"
-    form : re.fraction
+    checks : if level > 1 then mustReduce else defaultFractionChecks
     description : "Löse die Bruchrechenaufgabe:"
     hint :
       "Nebenbei: Der Term ist #{opStr1}, weil man einen Bruch und #{opStr3} \
@@ -212,6 +223,7 @@ exports.fractionGenerator =
     #return
     problem : "#{a}/#{b}"
     problemTeX : "\\frac{#{a*n}}{#{b}} : #{n}"
+    checks : if level > 1 then mustReduce else defaultFractionChecks
     description : "Teile den Bruch durch die natürliche Zahl."
     hint: "#{a*n} Äpfel durch #{n} sind..."
 
@@ -237,6 +249,7 @@ exports.fractionGenerator =
     #return
     problem : "(#{a1*a2}/#{b}) / #{c1 * c2}"
     problemTeX : "\\frac{#{a1*a2}}{#{b}} : #{c1 * c2}"
+    checks : if level > 1 then mustReduce else defaultFractionChecks
     description : "Teile den Bruch durch die Natürliche Zahl."
     hint: "Wenn Du den Zähler nicht durch die Zahl teilen \
       kannst, multiplizierst Du stattdessen den Nenner mit \
@@ -251,6 +264,6 @@ exports.fractionGenerator =
     #return
     problem : "(#{a}/#{b}) / (#{c}/#{d})"
     problemTeX : "\\frac{#{a}}{#{b}} : \\frac{#{c}}{#{d}}"
-    form : re.fraction
+    checks : if level > 1 then mustReduce else defaultFractionChecks
     description : "Löse die Bruchrechenaufgabe:"
     hint : "Multipliziere mit dem Kehrwert."

@@ -23,10 +23,8 @@ exports.expressionGenerator =
           c = rnd.intPlus()
           "#{op}#{c}#{v[i]}"
     )
-    console.log bits
     problem = _.chain(bits).flatten().shuffle().value().join("")
       .split("")[1..].join("")
-    console.log problem
     #return
     problem : problem
     description : "Vereinfache den Term:"

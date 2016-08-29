@@ -13,7 +13,11 @@ template(name="problem")
       h2.header($b="text : title")
     .ui.segment
       h3.header($b="text : description")
-      p.tex($b="html : problemHtml")
+      if useKaTeX
+        p.tex($b="html : problemHtml")
+      else
+        +mathjax
+          div $$#{problemTeX}$$
       p($b="text : hint")
     .ui.segment
       h3.header Antwort:
@@ -25,13 +29,27 @@ template(name="problem")
           h1.header Richtig!
       else
         .ui.red.inverted.center.aligned.segment
-          h2.header Dein Ergebnis ist leider falsch.
+          h2.header Dein Ergebnis ist leider nicht korrekt.
+      each failTextsRequired
+        .ui.red.inverted.center.aligned.segment
+          h3.header($b="text : this")
       each failTextsOptional
         .ui.yellow.inverted.center.aligned.segment
           h3.header($b="text : this")
+      unless answerCorrect
+        each passTextsRequired
+          .ui.green.inverted.center.aligned.segment
+            h3.header($b="text : this")
+        each passTextsOptional
+          .ui.green.inverted.center.aligned.segment
+            h3.header($b="text : this")
       .ui.segment
         h3.header Lösung:
-        p.tex($b="html : solutionHtml")
+        if useKaTeX
+          p.tex($b="html : solutionHtml")
+        else
+          +mathjax
+            div $$#{solutionTeX}$$
           
     button.ui.left.floated.blue.icon.button($b="click : gotoModulesList")
       i.arrow.left.icon

@@ -8,8 +8,6 @@ require "/imports/ui/moduleScoresDisplay/moduleScoresDisplay.coffee"
 Template.moduleList.viewmodel
   modules : getModulesList()
   #showScores : false
-  autorun : ->
-    console.log @showScores()
 
 Template.moduleListItem.viewmodel
   gotoModule : ->
