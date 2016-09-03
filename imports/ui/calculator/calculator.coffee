@@ -17,35 +17,12 @@ math = require "mathjs"
 Template.calculator.viewmodel
   input : ""
 
-  teXFromInput : ->
+  teXPreview : ->
     try
       output = teXifyAM @input()
     catch error
-      output = ""
-    output
-
-  teXPreview : ->
-    try
-      output = renderAM @input()
-    catch error
       output = "error"
     output
-
-  nerdamerOutputHtml : ->
-    output = "kein Output"
-    try
-      output = nerdamer(@input()).toTeX()
-    catch error
-      output = "error"
-    renderTeX output
-
-  algebrajsOutputHtml : ->
-    try
-      exp = new algebra.parse @input()
-      output = exp.toString()
-    catch error
-      output = "error"
-    renderAM output
 
   nerdamerOutputAM : ->
     try
@@ -54,10 +31,5 @@ Template.calculator.viewmodel
       output = "error"
     output
 
-  algebrajsOutputAM : ->
-    try
-      exp = new algebra.parse @input()
-      output = exp.toString()
-    catch error
-      output = "error"
-    output
+  nerdamerOutputTeX : ->
+    teXifyAM @nerdamerOutputAM()

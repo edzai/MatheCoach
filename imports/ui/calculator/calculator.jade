@@ -12,16 +12,11 @@ template(name="calculator")
       h3.header Output
       h4.header Input -> MathJs -> MathJax:
       +mathjax
-        div $$#{teXFromInput}$$
-      h4.header Input -> MathJs -> KaTeX
-      p($b="html : teXPreview")
-      h4.header Nerdamer.toTeX -> KaTeX:
-      p($b="html : nerdamerOutputHtml")
-      h4.header Algebrajs -> MathJs -> KaTeX:
-      p($b="html : algebrajsOutputHtml")
-      h4.header Nerdamer AM:
+        div $$#{teXPreview}$$
+      h4.header Input -> Nerdamer:
       p($b="html : nerdamerOutputAM")
-      h4.header Algebrajs AM:
-      p($b="html : algebrajsOutputAM")
-
-    p Diese Seite ist ist nur für Testzwecke, um schnell unterschiedliche Optionen für die Ausgabe von Mathematischen Termen auszuprobieren.
+      h4.header Input -> Nerdamer -> MathJs -> MathJax:
+      +mathjax
+        div $$#{nerdamerOutputTeX}$$
+  
+    p Diese Seite ist nur für Testzwecke, um auszuprobieren, wie unterschiedliche mathematische Terme von den unterschiedlichen Funktionsbibiliotheken ausgewertet werden.

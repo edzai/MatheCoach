@@ -10,6 +10,8 @@ require "/imports/modules/nerdamer/Solve.js"
   require "./problemGenerators/fractions.coffee"
 { linearEquationGenerator } =
   require "./problemGenerators/linearEquations.coffee"
+{ powersGenerator } =
+  require "./problemGenerators/powers.coffee"
 { expressionGenerator } =
   require "./problemGenerators/expressions.coffee"
 
@@ -21,9 +23,9 @@ exports.modules = [
   "bruch2"
   "bruch3"
   "bruch4"
-  "test"
   "lineareGleichung1"
   "lineareGleichung2"
+  "test"
 ]
 
 exports.problemDefinitions =
@@ -86,8 +88,8 @@ exports.problemDefinitions =
       levelOffset : -1
       generator : fractionGenerator.bruchDurchBruch
     ,
-      levels : [3..5]
-      levelOffset : -2
+      levels : [4..5]
+      levelOffset : -3
       generator : fractionGenerator.zusammenGesetzt
     ]
   lineareGleichung1 :
@@ -122,7 +124,7 @@ exports.problemDefinitions =
     ]
   lineareGleichung2 :
     title : "Lineare Gleichungen 2"
-    description : "Quadratische Gleichungen, bei denen der\
+    description : "Quadratische Gleichungen, bei denen der \
       Quadratische Term wegfällt"
     problems : [
       levels : [1..2]
@@ -134,10 +136,11 @@ exports.problemDefinitions =
     ]
   test :
     title : "Test"
-    description : "Aufgaben, die noch gestestet werden müssen."
+    description : "Testbereich für den Aufgabengenerator, \
+      an dem ich gerade rumprogrammiere"
     problems : [
       levels : [1..5]
-      generator : expressionGenerator.test
+      generator : powersGenerator.test
     ]
   examples :
     title : "Vermischte Übungsaufgaben"

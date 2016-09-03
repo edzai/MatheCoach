@@ -30,7 +30,7 @@ Template.problem.viewmodel
   minLevel : -> @problem().minLevel
   currentLevel : -> @problem().level
   newLevel : 1
-  autoLevelOn : -> not @area51()
+  autoLevelOn : false
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
   passTextsRequired : []
@@ -108,17 +108,22 @@ Template.problem.viewmodel
   retryCountdown : 0
   autoLevel : ->
     if @autoLevelOn()
-      if @levelPerc() > 79 and
-      @currentLevel() < @maxLevel() and
-      @answerCorrect()
-        if @retryCountdown() < 1
-          @newLevel @currentLevel() + 1
-        else
-          @retryCountdown @retryCountdown() - 1
-      if @levelPerc() < 60 and not @answerCorrect()
-        @currentLevel() > @minLevel()
-        @newLevel @currentLevel() - 1
-        @retryCountdown 3
+      unless Meteor.userId()
+        alert "Benutzer ist nicht eingeloggt. \
+          Schalte automatische Schwierigkeitsstufe ab."
+        @autoLevelOn false
+      else
+        if @levelPerc() > 79 and
+        @currentLevel() < @maxLevel() and
+        @answerCorrect()
+          if @retryCountdown() < 1
+            @newLevel @currentLevel() + 1
+          else
+            @retryCountdown @retryCountdown() - 1
+        if @levelPerc() < 60 and not @answerCorrect()
+          @currentLevel() > @minLevel()
+          @newLevel @currentLevel() - 1
+          @retryCountdown 3
 
   newProblem : ->
     unless @answered()
@@ -141,10 +146,9 @@ Template.problem.viewmodel
     @problem new Problem(@moduleKey(), @newLevel())
     @newLevel @currentLevel()
   area51 : -> @moduleKey() is "test"
-  newProblemTest : ->
-    @newLevel (@currentLevel() % 5) + 1
+  harder : ->
+    @newLevel @currentLevel() + 1
     @newProblem()
-  # autorun : [
-  #   -> console.log "newLevel", @newLevel()
-  #   -> console.log "retryCountdown", @retryCountdown()
-  # ]
+  easier : ->
+    @newLevel Math.max( 1, @currentLevel() - 1)
+    @newProblem()

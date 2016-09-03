@@ -61,9 +61,44 @@ exports.Check =
 
   isSingleFraction :
     pass : (answer, solution) ->
-      re = /(^[-]?\s?(\d+)\s?\*?\s?[a-z]*\s?\/\s?(\d+)\s?\*?\s?[a-z]*$)|(^[-]?\d+$)/
+      re = ///
+        (
+          ^
+          [-]?\s?\d+\s?\*?\s?[a-z]*\s?
+          \/
+          \s?\d+\s?\*?\s?[a-z]*
+          $
+        )
+        |
+        (
+          ^
+          [-]?\d+
+          $
+        )
+      ///
       re.test answer
     required : true
     passText : undefined
     failText : "Das Ergebnis muss ein einzelner Bruch \
       oder eine einzelne ganze Zahl sein."
+
+  isSinglePower :
+    pass : (answer, solution) ->
+      re = ///
+        ^
+        (
+          [-]?
+          ((\d+)|(\d?\s?\w+))
+          \^
+          (
+            ([-]?\d+)
+            |
+            ([-]?\([^\(\)]+\))
+          )
+        )
+        $
+      ///
+      re.test answer
+    required : true
+    passText : undefined
+    failText : "Das Ergebnis muss eine einzelne Potenz sein."
