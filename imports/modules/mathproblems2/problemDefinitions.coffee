@@ -25,6 +25,7 @@ exports.modules = [
   "bruch4"
   "lineareGleichung1"
   "lineareGleichung2"
+  "potenz1"
   "test"
 ]
 
@@ -133,6 +134,27 @@ exports.problemDefinitions =
       levels : [2..3]
       levelOffset : -1
       generator : linearEquationGenerator.linGl9
+    ]
+  potenz1 :
+    title : "Potenzen und Wurzeln 1"
+    description : "Aufgaben zum 1. Potenzgesetz"
+    problems : [
+      levels : [1..3]
+      generator : powersGenerator.exp1Num
+    ,
+      levels : [2..4]
+      levelOffset : -1
+      generator : powersGenerator.exp1Var
+    ,
+      levels : [3..5]
+      levelOffset : -2
+      generator : powersGenerator.exp1NumQuotient
+    ,
+      levels : [4]
+      generator : powersGenerator.sqrtAsPower
+    ,
+      levels : [4..5]
+      generator : powersGenerator.sqrt1Num
     ]
   test :
     title : "Test"

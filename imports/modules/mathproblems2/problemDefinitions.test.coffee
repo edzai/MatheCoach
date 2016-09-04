@@ -38,19 +38,19 @@ if Meteor.isClient
               error = err
             it "does not throw an error", ->
               expect(error).to.equal null
-            # it "returns an object", ->
-            #   expect(problem).to.be.a "object"
-            # it "with a string for the problem", ->
-            #   expect(problem.problem).to.be.a "string"
-            # it "that doesn't contain NaN, null, undefined or Infinity", ->
-            #   expect(problem.problem).to.have.entriesCount "NaN", 0
-            #   expect(problem.problem).to.have.entriesCount "null", 0
-            #   expect(problem.problem).to.have.entriesCount "undefined", 0
-            #   expect(problem.problem).to.have.entriesCount "Infinity", 0
-            # it "with a string for the description", ->
-            #   expect(problem.description).to.be.a "string"
-            # it "that doesn't contain NaN, null, undefined or Infinity", ->
-            #   expect(problem.description).to.have.entriesCount "NaN", 0
-            #   expect(problem.description).to.have.entriesCount "null", 0
-            #   expect(problem.description).to.have.entriesCount "undefined", 0
-            #   expect(problem.description).to.have.entriesCount "Infinity", 0
+            it "returns an object", ->
+              expect(problem).to.be.a "object"
+            it "with a string for the problem", ->
+              expect(problem.problem).to.be.a "string"
+            it "that doesn't contain NaN, null, undefined or Infinity", ->
+              expect(problem.problem).to.have.entriesCount "NaN", 0
+              expect(problem.problem).to.have.entriesCount "null", 0
+              expect(problem.problem).to.have.entriesCount "undefined", 0
+              expect(problem.problem).to.have.entriesCount "Infinity", 0
+            it "with a string for the description", ->
+              expect(problem.description).to.be.a "string"
+            it "that doesn't contain NaN, null, undefined or Infinity", ->
+              expect(problem.description).to.have.entriesCount "NaN", 0
+              expect(problem.description).to.have.entriesCount "null", 0
+              expect(problem.description).to.have.entriesCount "undefined", 0
+              expect(problem.description).to.have.entriesCount "Infinity", 0

@@ -15,30 +15,6 @@ defaultPowerCheck = [
 
 exports.powersGenerator =
 
-  test : (level = 1) ->
-    [n, m] = rnd.ints(9)
-    x = rnd.letter()
-    [op1, op2] = switch level
-      when 1 then ["", ""]
-      when 2 then ["", rnd.opMinus()]
-      else rnd.opsMinus()
-    #returns
-    problem : "#{x}^(#{op1}#{n})*#{x}^(#{op2}#{m})"
-    description : "Vereinfache den Term mit dem 1. Potenzgesetz"
-    hint : "'a hoch 3b' gibst du so ein: a^(3b)"
-
-  exp1BruchNum : (level = 1) ->
-    [n, m] = rnd.ints(9)
-    [op1, op2] = switch level
-      when 1 then ["", ""]
-      when 2 then ["", rnd.opMinus()]
-      else rnd.opsMinus()
-    x = rnd.letter()
-    #returns
-    problem : "#{x}^(#{op1}#{n})/#{x}^(#{op2}#{m})"
-    description : "Vereinfache den Term mit dem 1. Potenzgesetz"
-    hint : "'a hoch 3b' gibst du so ein: a^(3b)"
-
   exp1Num : (level = 1) ->
     [n, m] = rnd.intsPlus(9)
     switch level
@@ -85,3 +61,49 @@ exports.powersGenerator =
     description : "Vereinfache den Term:"
     checks : defaultPowerCheck
     hint : "'a hoch 3b' gibst du so ein: a^(3b)"
+
+  exp1NumQuotient : (level = 1) -> #exp1NumQuotient
+    switch level
+      when 1
+        op = "*"
+      else
+        op = rnd.opPunkt()
+    [nd, md] = rnd.ints2Plus(9)
+    x = rnd.letter()
+    #return
+    problem : "#{x}^(1/#{nd})#{op}#{x}^(1/#{md})"
+    description : "Vereinfache den Term mit dem 1. Potenzgesetz:"
+    checks : defaultPowerCheck
+    hint : "'a hoch 3b' gibst du so ein: a^(3b)"
+
+  sqrtAsPower : (level = 1) ->
+    x = rnd.letter()
+    n = rnd.int2Plus(9)
+    magStr = if n is 2 then "" else "[#{n}]"
+    #return
+    problem : "#{x}^(1/#{n})"
+    problemTeX : "\\sqrt#{magStr}{#{x}}"
+    description : "Schreibe die Wurzel als Potenz:"
+
+  sqrt1Num : (level = 1) ->
+    x = rnd.letter()
+    [n, m] = rnd.ints2Plus(9)
+    [magStrN, magStrM] = (
+      for i in [n, m]
+        if i is 2 then "" else "[#{i}]"
+    )
+    op = switch level
+      when 1 then "*"
+      else rnd.opPunkt()
+    resultOp = switch op
+      when "*" then "+"
+      else "-"
+    resultFrac = nerdamer("1/#{n}#{resultOp}1/#{m}").text "fractions"
+    #return
+    problem : "#{x}^(1/#{n})#{op}#{x}^(1/#{m})"
+    solution : "#{x}^(#{resultFrac})"
+    problemTeX : switch op
+      when "*" then "\\sqrt#{magStrN}{#{x}}\\cdot\\sqrt#{magStrM}{#{x}}"
+      else "\\frac{\\sqrt#{magStrN}{#{x}}}{\\sqrt#{magStrM}{#{x}}}"
+    description : "Wende das 1. Potenzgesetz an und \
+      schreibe das Ergebnis als Potenz:"
