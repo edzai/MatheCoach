@@ -23,10 +23,11 @@ exports.modules = [
   "bruch2"
   "bruch3"
   "bruch4"
+  "terme1"
   "lineareGleichung1"
   "lineareGleichung2"
   "potenz1"
-  "test"
+  #{}"test"
 ]
 
 exports.problemDefinitions =
@@ -92,6 +93,25 @@ exports.problemDefinitions =
       levels : [4..5]
       levelOffset : -3
       generator : fractionGenerator.zusammenGesetzt
+    ]
+  terme1 :
+    title : "Terme vereinfachen"
+    description : "Terme zusammenfassen, Ausklammern und Ausmultipliezieren"
+    problems : [
+      levels : [1..3]
+      generator : expressionGenerator.summeZusFass
+    ,
+      levels : [2..3]
+      levelOffset : -1
+      generator : expressionGenerator.summeZusFassExp
+    ,
+      levels : [3..5]
+      levelOffset : -2
+      generator : expressionGenerator.expandKlammer
+    ,
+      levels : [4..5]
+      levelOffset : -3
+      generator : expressionGenerator.expandKlammerKlammer
     ]
   lineareGleichung1 :
     title : "Lineare Gleichungen 1"
@@ -162,7 +182,7 @@ exports.problemDefinitions =
       an dem ich gerade rumprogrammiere"
     problems : [
       levels : [1..5]
-      generator : powersGenerator.test
+      generator : expressionGenerator.test
     ]
   examples :
     title : "Vermischte Übungsaufgaben"

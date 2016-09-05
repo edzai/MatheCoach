@@ -14,6 +14,8 @@ alphabet = "abcdehjkmnpqrstuvwxyz".split ""
 class Rnd
   constructor : () ->
 
+  coeffify : (n) -> if n is 0 then "" else "#{n}"
+
   int : (max = 20) -> _.random max #returns just a single value
   intPlus : (max = 20) -> _.random 1, max
   int2Plus : (max = 20) -> _.random 2, max
@@ -63,7 +65,7 @@ class Rnd
 
   #random variable names (a.k.a. letters)
   letter : -> _.sample alphabet
-  letters : -> (letter for i in [1..10])
+  letters : -> (@letter() for i in [1..10])
   uniqueLetters : -> _.sampleSize alphabet, 10
 
 exports.Rnd = Rnd
