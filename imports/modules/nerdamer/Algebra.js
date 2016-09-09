@@ -174,8 +174,8 @@ if((typeof module) !== 'undefined') {
                 }
 
                 //clean up
-                var p1 = Polynomial.fromArray(dividend, variable).trim(),
-                    p2 = Polynomial.fromArray(quotient, variable);
+                var p1 = Polynomial.fromArray(dividend, variable || 'x').trim(), //pass in x for safety
+                    p2 = Polynomial.fromArray(quotient, variable || 'x');
                 return [p2, p1];
             },
             multiply: function(poly) {
@@ -403,6 +403,47 @@ if((typeof module) !== 'undefined') {
         
         return c;
     };
+    Symbol.LSORT = function(a, b) {
+        return (a.length || 1) - (b.length || 1);
+    };
+    Symbol.prototype.altVar = function(x) {
+        var m = this.multiplier.toString(), p = this.power.toString();
+        return (m === '1' ? '' : m+'*')+ x + (p === '1' ? '' : '^'+p);
+    };
+    Symbol.prototype.hasFunc = function() {
+        if(this.group === FN || this.group === EX) return true;
+        if(this.symbols) {
+            for(var x in this.symbols) {
+                if(this.symbols[x].hasFunc()) return true;
+            }
+        }
+        return false;
+    };
+    core.Utils.subFunctions = function(symbol, map) {
+        map = map || {};
+        var subbed = [];
+        symbol.each(function(x) {
+
+            if(x.group === FN || x.previousGroup === FN) {
+                //we need a new variable name so why not use one of the existing
+                var val = core.Utils.text(x, 'hash'), tvar = map[val];
+                if(!tvar) {
+                    //generate a unique enough name
+                    var t = x.fname+core.Utils.keys(map).length;
+                    map[val] = t;
+                    subbed.push(x.altVar(t));
+                }
+                else subbed.push(x.altVar(tvar));
+            }
+            else if(x.group === CB || x.group === PL || x.group === CP) {
+                subbed.push(core.Utils.subFunctions(x, map));
+            }
+            else subbed.push(x.text());
+        });
+        if(symbol.group === CP || symbol.group === PL) return symbol.altVar(core.Utils.inBrackets(subbed.join('+')));;
+        if(symbol.group === CB) return symbol.altVar(core.Utils.inBrackets(subbed.join('*')));
+        return symbol.text();
+    };
     /**
      * A debugging method to be stripped
      * @returns {String}
@@ -418,7 +459,7 @@ if((typeof module) !== 'undefined') {
     };
     var __ = core.Algebra = {
 
-        version: '1.3.1',
+        version: '1.3.2',
         init: (function() {})(),
         proots: function(symbol, decp) { 
             //the roots will be rounded up to 7 decimal places.
@@ -1489,6 +1530,176 @@ if((typeof module) !== 'undefined') {
         gcd: function(a, b) { 
             a = new Polynomial(a); b = new Polynomial(b);
             return a.gcd(b).toSymbol();
+        },
+        hasLargerPower: function(a, b, variable) {
+            var p1;
+            //A very unfortunate side effect of how symbols are stored
+            if(a.group === PL) {
+                p1 = Math.max(core.Utils.keys(a.symbols));
+            }
+            else {
+                p1 = (a.group === S ? a.power : a.symbols[variable].power).toString();
+            }
+            //the second symbol might be of group PL
+            var p2 = (b.group === S ? b.power : b.symbols[variable].power).toString();
+            return p2 > p1;
+        },
+        /**
+         * Divides one expression by another
+         * @param {Symbol} symbol1
+         * @param {Symbol} symbol2
+         * @returns {Array}
+         */
+        divide: function(symbol1, symbol2) {     
+            /*
+             * This function follows a similar principle as the Euclidian algorithm by 
+             * attempting to reduce one term during each iteration
+             * except that it doesn't care about the order. This presents some inefficiency as 
+             * extra terms on both sides of the sign are generated. However due to the sign
+             * the just end up canceling out.
+             */
+            //enable support for functions by temporarily substituting them for a variable
+            var variables = core.Utils.variables,
+                vars_a = variables(symbol1), vars_b = variables(symbol2),
+                map = {},
+                a = _.parse(core.Utils.subFunctions(symbol1, map)),
+                b = _.parse(core.Utils.subFunctions(symbol2, map)),
+                subs = {};
+
+            //prepare substitutions
+            for(var x in map) subs[map[x]] = _.parse(x);
+
+            var al = vars_a.length, bl = vars_b.length, result;
+            //quick test to see if we can get ways with univariate division
+            if( al <= 1 && bl <= 1 && (vars_a[0] || vars_b[0]) === (vars_b[0] || vars_a[0]) && !symbol1.hasFunc() && !symbol2.hasFunc()) {
+                if(al === bl && al === 0) {
+                    result = [];
+                    var t = a.multiplier.num.divide(a.multiplier.den)
+                            .divmod(b.multiplier.num.divide(b.multiplier.den));
+                    result[0] = new Symbol(t.quotient);
+                    result[1] = new Symbol(t.remainder);
+                }
+                else {
+                    var aa = new Polynomial(a),
+                        bb = new Polynomial(b);
+                    result = aa.divide(bb).map(function(x) {
+                        return x.toSymbol();
+                    });
+                }
+            }
+            else { 
+                /* check if symbol has denominator */
+                //remains constant throughout function
+                var divisor = b.collectSymbols(undefined, undefined, Symbol.LSORT, true),
+                    quotient = new Symbol(0),
+                    remainder = new Symbol(0),
+                    dividend = a.collectSymbols(undefined, undefined, Symbol.LSORT, true),
+                    divisor_vars = [],
+                    ndividend = a.clone();
+                    
+                //constants at the beginning cause problems. x^0/x^0=x^0 causing no reduction each iteration
+                while(divisor[0].isConstant()) divisor.push(divisor.shift());
+                
+                //cache the variables for the divisor. No need to keep fetching them
+                for(var i=0; i<divisor.length; i++) divisor_vars[i] = variables(divisor[i]); 
+
+                while(!ndividend.equals(0)) {
+                    var selected = [];
+                    var seen = [];
+                    //loop through the divisor variables and look for a match
+                    for(var i=0; i<divisor_vars.length; i++) {
+                        var vars = divisor_vars[i],
+                            divisor_term = divisor[i];//store the diversor terms
+                        //A constant cannot be the only match to satify division. Since constants are at the end of the list
+                        //the if the only match to satisfy division is a constant then just continue;
+                        if(selected.length === 0 && divisor_term.isConstant()) continue;
+                        
+                        var isCB = divisor_term.group === CB;
+                        //loop through the variables and look for match
+                        for(var j=0; j<dividend.length; j++) {
+                            var dividend_term = dividend[j];
+                            //Start with default as true since we're going to try and fail the test
+                            var select_term = true;
+                            var vl = vars.length;
+                            //don't bother if it's not a CB since x*y cannot divide y
+                            if(isCB && dividend_term.group !== CB) continue;
+                            if(seen.indexOf(j) === -1) {
+                                for(var k=0; k<vl; k++) {
+                                    var variable = vars[k];
+                                    if(dividend_term.group === EX || divisor_term.group === EX) break;
+                                    if(!dividend_term.contains(variable) || divisor_term.symbols && !dividend_term.symbols) {                                   
+                                        select_term = false; //we need to know if this is a good term to use
+                                        break; //don't keep looking since this term doesn't satisfy
+                                    }
+                                    else {
+                                        if(__.hasLargerPower(dividend_term, divisor_term, variable)) {
+                                            select_term = false;
+                                            break;
+                                        };
+                                    } 
+                                }
+                                
+                                if(select_term) { 
+                                    seen.push(j);
+                                    selected.push([divisor_term, dividend_term, i]);
+                                    break; //we can move to the next set of variables
+                                }
+                            }   
+                        }
+                    }
+
+
+                    //grab a term to use for division. The idea is to knock off one term.
+                    //the first one will do just fine
+                    var sl = selected.length;
+                    if(sl === 0) {
+                        //we're done 
+                        remainder = _.add(remainder, ndividend);
+                        break;
+                    }
+                    //we want the short term first
+                    else if(selected[0][1].group === CB) {
+                        for(var i=1; i<sl; i++) {
+                            var s = selected[i];
+                            if(s[1].group !== CB && !s[0].isConstant()) {
+                                selected.unshift(core.Utils.remove(selected, i));
+                            }
+                        }
+                    }
+                    
+                    var first_div_term = selected[0];   
+                    
+                    var q = _.divide(first_div_term[1].clone(), first_div_term[0].clone());
+
+                    if(sl < divisor.length) {
+                        var idx = first_div_term[2];
+                        //handle remainder
+                        for(var i=0; i<divisor.length; i++) {
+                            if(i !== idx) {
+                                remainder = _.subtract(remainder, _.multiply(q.clone(), divisor[i].clone()));
+                            }
+                        }
+                    }
+                    quotient = _.add(quotient, q.clone());
+                    var q_div = new Symbol(0);
+                    
+                    for(var i=0; i<selected.length; i++) {
+                        q_div = _.add(q_div, _.multiply(q.clone(), selected[i][0].clone()));
+                    }
+
+                    ndividend = _.subtract(ndividend, q_div);
+
+                    if(ndividend.group === core.groups.CB) dividend = [ndividend];
+                    else dividend = ndividend.collectSymbols(undefined, undefined, Symbol.LSORT, true);  
+                }
+                
+                result = [quotient, remainder];
+            }
+            
+            result[0] = _.parse(result[0].text(), subs);
+            result[1] = _.parse(result[1].text(), subs);
+                
+            return result;
         }
     };
     
@@ -1510,6 +1721,13 @@ if((typeof module) !== 'undefined') {
             visible: true,
             numargs: -1,
             build: function() { return __.proots; }
+        },
+        {
+            name: 'divide',
+            visible: true,
+            numargs: 2,
+            build: function() { return __.divide; }
         }
     ]);
 })();
+

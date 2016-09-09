@@ -7,18 +7,18 @@ math = require "mathjs"
 
 
 sortSum = (str) ->
+  console.log "in", str
   result = str.split("")
   .map (c) ->
     switch c
       when " " then ""
       when "-" then "+-"
-      when "*" then ""
       else c
   .join("")
   .split "+"
   .sort()
   .join("+")
-  console.log result
+  if result[0] is "+" then result = result[1..]
   result
 
 noReducableFractions = (answer, solution) ->

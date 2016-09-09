@@ -28,7 +28,7 @@ var test = require('./test.js'),
         expected: '4*x'
     },
     'diff(sqrt(x)*x,x)': {
-        expected: '(3/2)*sqrt(x)'
+        expected: '(3/2)*x^(1/2)'
     },
     'diff(sqrt(x)-1/sqrt(x),x)': {
         expected: '(1/2)*x^(-1/2)+(1/2)*x^(-3/2)'
@@ -37,10 +37,10 @@ var test = require('./test.js'),
         expected: '(2/3)*x+6*x^(-3)'
     },
     'diff(sqrt(x)*(x^2+1),x)': {
-        expected: '(1/2)*(1+x^2)*x^(-1/2)+2*sqrt(x)*x'
+        expected: '(1/2)*(1+x^2)*x^(-1/2)+2*x^(3/2)'
     },
     'diff(e^x/(e^x-1),x)': {
-        expected: '(-1+e^x)^(-1)*e^x-(-1+e^x)^(-2)*(e)^(2*x)'
+        expected: '(-1+e^x)^(-1)*e^x-(-1+e^x)^(-2)*e^(2*x)'
     },
     'diff(e^x,x)': {
         expected: 'e^x'
@@ -52,7 +52,7 @@ var test = require('./test.js'),
         expected: '-(-cos(x)^(-1)*sin(x)*tan(x)+log(cos(x))*sec(x)^2)'
     },
     'diff((2*x)^(e),x)': {
-        expected: '(x)^(-1+e)*2^e*e'
+        expected: '2^e*e*x^(-1+e)'
     },
     'diff(2*cos(x)*log(x),x)': {
         expected: '2*(-log(x)*sin(x)+cos(x)*x^(-1))'

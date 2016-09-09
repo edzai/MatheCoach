@@ -13,6 +13,8 @@ math = require "mathjs"
 { renderAM, renderTeX, teXifyAM } =
   require "/imports/modules/mathproblems2/renderAM.coffee"
 
+{ AMString } =
+  require "/imports/modules/mathproblems2/AMString.coffee"
 
 Template.calculator.viewmodel
   input : ""
@@ -24,12 +26,33 @@ Template.calculator.viewmodel
       output = "error"
     output
 
-  nerdamerOutputAM : ->
+  amString : ->
     try
-      output = nerdamer(@input()).text "fractions"
+      output = new AMString(@input())
+        .markReserved()
+        .removeWhitespace()
+        .productify()
+        .unmarkReserved()
+        .value()
     catch error
+      console.log error
       output = "error"
     output
 
-  nerdamerOutputTeX : ->
-    teXifyAM @nerdamerOutputAM()
+  nerdamerProcessedTeX : ->
+    try
+      nerdamerOutput = nerdamer(@amString()).text "fractions"
+      output = new AMString(nerdamerOutput).unproductify().value()
+      console.log "nerdamer", nerdamerOutput
+      console.log "AMString", output
+    catch error
+      output = "error"
+    teXifyAM output
+
+
+  nerdamerRawTeX : ->
+    try
+      output = nerdamer(@amString()).toTeX()
+    catch error
+      output = "error"
+    output

@@ -8,7 +8,7 @@
 var nerdamer = (function(imports) { 
     "use strict";
 
-    var version = '0.6.0',
+    var version = '0.6.3',
         _ = new Parser(), //nerdamer's parser
         //import bigInt
         bigInt = imports.bigInt,
@@ -907,7 +907,8 @@ var nerdamer = (function(imports) {
         },
         
         toString: function() {
-            return this.symbol.text();
+            if(isArray(this.symbol)) return '['+this.symbol.toString()+']'
+            return this.symbol.toString();
         },
         
         toDecimal: function() {
@@ -1443,7 +1444,7 @@ var nerdamer = (function(imports) {
             else if(group === EX) { 
                 //1^x is just one so check and make sure
                 if(!(this.group === N && this.multiplier.equals(1))) {
-                    this.previousGroup = this.group;
+                    if(this.group !== EX) this.previousGroup = this.group;
                     if(this.group === N) { 
                         this.value = this.multiplier.num.toString();
                         this.toUnitMultiplier();
@@ -1645,13 +1646,16 @@ var nerdamer = (function(imports) {
          * function is called on every symbol contained within the object.
          * @returns {Array}
          */
-        collectSymbols: function(fn, opt) { 
+        collectSymbols: function(fn, opt, sort_fn, expand_symbol) { 
             var collected = [];
             for(var x in this.symbols) {
                 var symbol = this.symbols[x];
-                collected.push( fn ? fn(symbol, opt) : symbol );
+                if(expand_symbol && symbol.group === PL || x.group === CP) {
+                    collected = collected.concat(symbol.collectSymbols());
+                }
+                else collected.push( fn ? fn(symbol, opt) : symbol );
             }
-            return collected.sort();//sort hopefully gives us some sort of consistency
+            return collected.sort(sort_fn);//sort hopefully gives us some sort of consistency
         },
         /**
          * Returns the latex representation of the symbol
@@ -1772,13 +1776,13 @@ var nerdamer = (function(imports) {
                 E:  Math.E
             };
         //list all the supported operators
-        var operators = {
-                '^': new Operator('^', 'pow', 4, false, false),
-                '*': new Operator('*', 'multiply', 3, true, false),
-                '/': new Operator('/', 'divide', 3, true, false),
-                '+': new Operator('+', 'add', 2, true, true),
-                '-': new Operator('-', 'subtract', 2, true, true),
-                ',': new Operator(',', 'comma', 1, true, false)
+        var operators = this.operators = {
+                '^' : new Operator('^', 'pow', 4, false, false),
+                '*' : new Operator('*', 'multiply', 3, true, false),
+                '/' : new Operator('/', 'divide', 3, true, false),
+                '+' : new Operator('+', 'add', 2, true, true),
+                '-' : new Operator('-', 'subtract', 2, true, true),
+                ',' : new Operator(',', 'comma', 1, true, false)
             },
 
             // Supported functions.
@@ -1951,7 +1955,7 @@ var nerdamer = (function(imports) {
             }
             return retval;
         };
-        
+
         /**
          * This is the method that triggers the parsing of the string. It generates a parse tree but processes 
          * it right away. The operator functions are called when their respective operators are reached. For instance
@@ -2093,7 +2097,7 @@ var nerdamer = (function(imports) {
                 //collect the substitutions
                 for(var x in constants) subs[x] = new Symbol(constants[x]);
             }
-            
+
             for(curpos=0; curpos<len; curpos++) { 
                 var cur_char = expression_string.charAt(curpos);
                 var operator = operators[cur_char], //a possible operator
@@ -2104,6 +2108,19 @@ var nerdamer = (function(imports) {
                     //the token has to be from the last position up to the current position
                     var token = expression_string.substring(pos,curpos),
                         isSquareBracket = bracket === LEFT_SQUARE_BRACKET;
+                    
+                    // support for compound operators
+                    var next_char = expression_string.charAt(curpos + 1);
+                    var also_operator = operators[next_char];
+                    if(also_operator) {
+                        var combined = cur_char+next_char;
+                        var compound_operator = operators[combined];
+                        if(compound_operator) { 
+                            operator = compound_operator;
+                            curpos++;
+                        }
+                    }
+                    
                     if(bracket === LEFT_PAREN && token || isSquareBracket) {
                         //make sure you insert the variables
                         if(isSquareBracket && token) insert(token);
@@ -2115,6 +2132,7 @@ var nerdamer = (function(imports) {
                         last_opr_pos = curpos; 
                         continue;
                     }
+                    
                     //place the token on the output stack. 
                     //This may be empty if we're at a unary or bracket so skip those.
                     insert(token);
@@ -2812,6 +2830,13 @@ var nerdamer = (function(imports) {
                     bnum = b.multiplier.num,
                     bden = b.multiplier.den;
 
+                if(g1 === FN && a.fname === SQRT && !b.isConstant() && a.args[0].value === b.value) {
+                    //unwrap sqrt
+                    a = a.args[0].clone();
+                    a.setPower(new Frac(0.5));
+                    g1 = a.group;
+                };
+                
                 var v1 = a.value,
                     v2 = b.value,
                     sign = new Frac(a.multiplier.lessThan(0) ? -1 : 1),
@@ -2829,6 +2854,7 @@ var nerdamer = (function(imports) {
                 if(g2 === EX && b.previousGroup === PL && g1 === PL) {
                     v1 = text(a, 'hash', EX);
                 }
+                
 
                 if((v1 === v2 || ONN) && !(g1 === PL && (g2 === S || g2 === P)) && !(g1 === PL && g2 === CB)) { 
                     var p1 = a.power,
@@ -2857,13 +2883,16 @@ var nerdamer = (function(imports) {
                             m.negate();
                         }
                     }
-                    
+                   
+                    //cleanup: this causes the LaTeX generator to get confused as to how to render the symbol
+                    if(result.group !== EX && result.previousGroup) result.previousGroup = undefined;
                     //the sign for b is floating around. Remember we are assuming that the odd variable will carry
                     //the sign but this isn't true if they're equals symbols
                     result.multiplier = result.multiplier.multiply(b.multiplier);
                     
                 }
                 else if(g1 === CB && a.isLinear()){ 
+                    if(g2 === CB) b.distributeExponent();
                     if(g2 === CB && b.isLinear()) { 
                         b.each(function(x) {
                             result = result.combine(x);
@@ -2877,7 +2906,11 @@ var nerdamer = (function(imports) {
                 else {
                     //the multiplier was already handled so nothing left to do
                     if(g1 !== N) { 
-                        if(!b.isOne()) result = Symbol.shell(CB).combine([result, b]);
+                        if(g1 === CB) {
+                            result.distributeExponent();
+                            result.combine(b);
+                        }
+                        else if(!b.isOne()) result = Symbol.shell(CB).combine([result, b]);
                     }     
                     else { 
                         result = b.clone().toUnitMultiplier();
@@ -2966,6 +2999,7 @@ var nerdamer = (function(imports) {
                         }
                     }
                 }
+
                 return b;
             }
         };
@@ -3080,7 +3114,14 @@ var nerdamer = (function(imports) {
                 }
 
                 if(aIsConstant && bIsConstant && Settings.PARSE2NUMBER) {
-                    result = new Symbol(Math.pow(a.multiplier.toDecimal(), b.multiplier.valueOf()));
+                    var base = a.multiplier.toDecimal(), e = b.multiplier.toDecimal();
+                    var sign = new Symbol(1);
+                    if(b.multiplier.den.isOdd) {
+                        var abs_base = Math.abs(base);
+                        sign = new Symbol(base/abs_base);
+                        base = abs_base;
+                    }
+                    result = _.multiply(new Symbol(Math.pow(base, e)), sign);
                 }
                 else if(bIsInt && !m.equals(1)) { 
                     var p = b.multiplier.toDecimal(),
@@ -3109,7 +3150,7 @@ var nerdamer = (function(imports) {
                     result = _.multiply(result, testPow(_.multiply(num, den)));
 
                     //retain the absolute value
-                    if(bIsConstant) {
+                    if(bIsConstant) { 
                         var evenr = even(b.multiplier.den),
                             evenp = even(a.power),
                             n = result.power.toDecimal(),
@@ -3260,6 +3301,13 @@ var nerdamer = (function(imports) {
         //grab a list of supported functions but remove the excluded ones found in exclFN
         
         latex: function(symbol, option) { 
+            if(isArray(symbol)) {
+                var LaTeXArray = [];
+                for(var i=0; i<symbol.length; i++) {
+                    LaTeXArray.push(this.latex(symbol[i]));
+                }
+                return this.brackets(LaTeXArray.join(', '), 'square');
+            }
             symbol = symbol.clone();
             var decimal = option === 'decimal',
                 power = symbol.power,
@@ -3307,7 +3355,7 @@ var nerdamer = (function(imports) {
                 //special case group P and decimal
 
 
-                var retval = (negative ? '-': '')+this.set(m_array, v_array, p_array);
+                var retval = (negative ? '-': '')+this.set(m_array, v_array, p_array, symbol.group === CB);
 
                 return retval.replace(/\+\-/gi, '-');
             }
@@ -3362,7 +3410,7 @@ var nerdamer = (function(imports) {
 
                 v[index] = !(symbol.isLinear() && symbol.multiplier.equals(1)) || negative ? this.brackets(value, 'parens') : value;
             }
-            else if(group === CB || previousGroup === EX) {
+            else if(group === CB || previousGroup === EX) { 
                 //this almost feels a little like cheating but I need to know if I should be wrapping the symbol
                 //in brackets or not. We'll do this by checking the value of the numerator and then comparing it 
                 //to whether the symbol value is "simple" or not.
@@ -3374,8 +3422,10 @@ var nerdamer = (function(imports) {
                     if(counter > 1 && map.length > 0) {
                         var l = map.length;
                         for(var i=0; i<l; i++) {
-                            var idx = map[i];
-                            container[idx] = LaTeX.brackets(container[idx], 'parens');
+                            var idx = map[i], item = container[idx];
+                            if(!(/^\\left\(.+\\right\)\^\{.+\}$/g.test(item) || /^\\left\(.+\\right\)$/g.test(item))) {
+                                container[idx] = LaTeX.brackets(item, 'parens');
+                            }
                         }
                     }  
                     return container;
@@ -3409,19 +3459,28 @@ var nerdamer = (function(imports) {
                 //apply brackets
                 setBrackets(numerator, num_map, num_c);
                 v[0] = numerator.join(this.dot); //collapse the numerator into one string
-                
+
                 setBrackets(denominator, den_map, den_c);
-                v[1] = denominator.join(this.dot);
+                v[1] = denominator.join(this.dot); 
             }
 
             return v;
         },
-        set: function(m, v, p, negative) { 
+        set: function(m, v, p, combine_power) { 
             var isBracketed = function(v) {
                 return /^\\left\(.+\\right\)$/.test(v);
             };
             //format the power if it exists
             if(p) p = this.formatP(p);
+            //group CB will have to be wrapped since the power applies to both it's numerator and denominator
+            if(combine_power) {
+                //POSSIBLE BUG: If powers for group CB format wrong, investigate this since I might have overlooked something
+                //the assumption is that in every case the denonimator should be empty when dealing with CB. I can't think
+                //of a case where this isn't true
+                var tp = p[0];
+                p[0] = ''; //temporarily make p blank
+            }
+
             //merge v and p. Not that v MUST be first since the order matters
             v = this.merge(v, p);
             var mn = m[0], md = m[1], vn = v[0], vd = v[1];
@@ -3432,11 +3491,16 @@ var nerdamer = (function(imports) {
             if(md == 1) md = ''; 
             //prepare the top portion but check that it's not already bracketed. If it is then leave out the cdot
             var top = this.join(mn, vn, !isBracketed(vn) ? this.dot : '');
+
             //prepare the bottom portion but check that it's not already bracketed. If it is then leave out the cdot
             var bottom = this.join(md, vd, !isBracketed(vd) ? this.dot : '');
             //format the power if it exists
             //make it a fraction if both top and bottom exists
-            if(top && bottom) return this.frac(top, bottom);
+            if(top && bottom) {
+                var frac = this.frac(top, bottom);
+                if(combine_power && tp) frac = this.brackets(frac)+tp; 
+                return frac;
+            }
             //otherwise only the top exists so return that
             else return top;
         },
@@ -4099,6 +4163,7 @@ var nerdamer = (function(imports) {
     //This contains all the parts of nerdamer and enables nerdamer's internal functions
     //to be used.
     var C = {};
+    C.Operator = Operator;
     C.groups = Groups;
     C.Symbol = Symbol;
     C.Expression = Expression;
