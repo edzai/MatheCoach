@@ -5,12 +5,21 @@ require "/imports/modules/nerdamer/Solve.js"
 
 math = require "mathjs"
 
-{ renderAM } = require "./renderAM.coffee"
+{ teXifyAM } = require "./renderAM.coffee"
 { Rnd } = require "./randomGenerators.coffee"
 { Check } = require "./checks.coffee"
+{ AMString } = require "./AMString.coffee"
 
 { problemDefinitions } = require "./problemDefinitions.coffee"
 
+defaultAnswerPreprocessor = (answer) ->
+  str = new AMString answer
+  str
+    .markReserved()
+    .removeWhitespace()
+    .productify()
+    .unmarkReserved()
+    .value()
 
 class Problem
   constructor : (@moduleKey, @level = 1) ->
@@ -34,11 +43,16 @@ class Problem
       @solution, @solutionTeX,
       @description, @hint
       @checks
+      @answerPreprocessor
     } = sample?.generator generatorLevel
+    @problemTeX = teXifyAM @problem
     @solution ?= nerdamer(@problem).text "fractions"
+    @solutionTeX ?= nerdamer(@problem).toTeX()
     @checks ?= [Check.equivalent, Check.noReducableFractionsOptional]
+    @answerPreprocessor ?= defaultAnswerPreprocessor
 
   checkAnswer : (answer) ->
+    answer = @answerPreprocessor answer
     solution = @solution
     if "=" in solution.split ""
       solution = solution.split("=")[1]

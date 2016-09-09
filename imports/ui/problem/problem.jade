@@ -11,11 +11,8 @@ template(name="problem")
             | #{currentPerc}
     .ui.segment
       h3.header($b="text : description")
-      if useKaTeX
-        p.tex($b="html : problemHtml")
-      else
-        +mathjax
-          div $$#{problemTeX}$$
+      +mathjax
+        div $$#{problemTeX}$$
       p($b="text : hint")
     .ui.segment
       h3.header Antwort:
@@ -43,11 +40,8 @@ template(name="problem")
             h3.header($b="text : this")
       .ui.segment
         h3.header Lösung:
-        if useKaTeX
-          p.tex($b="html : solutionHtml")
-        else
-          +mathjax
-            div $$#{solutionTeX}$$
+        +mathjax
+          div $$#{solutionTeX}$$
           
     button.ui.left.floated.blue.icon.button($b="click : gotoModulesList")
       i.arrow.left.icon

@@ -12,10 +12,8 @@ template(name="calculator")
       h3.header Output
       h4.header Input -> AMString
       p($b="html : amString")
-      h4.header Input -> AMString -> Nerdamer -> AMString -> MathJs -> MathJax:
-      +mathjax
-        div $$#{nerdamerProcessedTeX}$$
-      h4.header Input -> Nerdamer -> MathJs -> MathJax:
+      h4.header Input -> AMString -> Nerdamer -> MathJax:
+      p($b="text : nerdamerRawTeX")
       +mathjax
         div $$#{nerdamerRawTeX}$$
   

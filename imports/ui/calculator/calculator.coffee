@@ -1,4 +1,3 @@
-#require "/imports/ui/mathJax/mathJax.coffee"
 require "./calculator.jade"
 
 _ = require "lodash"
@@ -6,11 +5,9 @@ _ = require "lodash"
 nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
 require "/imports/modules/nerdamer/Solve.js"
 
-algebra = require "algebra.js"
-
 math = require "mathjs"
 
-{ renderAM, renderTeX, teXifyAM } =
+{ teXifyAM } =
   require "/imports/modules/mathproblems2/renderAM.coffee"
 
 { AMString } =
@@ -39,20 +36,11 @@ Template.calculator.viewmodel
       output = "error"
     output
 
-  nerdamerProcessedTeX : ->
-    try
-      nerdamerOutput = nerdamer(@amString()).text "fractions"
-      output = new AMString(nerdamerOutput).unproductify().value()
-      console.log "nerdamer", nerdamerOutput
-      console.log "AMString", output
-    catch error
-      output = "error"
-    teXifyAM output
-
-
   nerdamerRawTeX : ->
     try
       output = nerdamer(@amString()).toTeX()
     catch error
       output = "error"
     output
+
+  onCreated : -> console.log teXifyAM "alpha+beta"

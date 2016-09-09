@@ -1,6 +1,5 @@
 testStr = "sin(32) + abc + cos(xyzabc)"
 
-
 class AMString
   constructor : (@str) ->
   value : -> @str
@@ -11,7 +10,7 @@ class AMString
     this
 
   markReserved : ->
-    re = /sqrt|sin|cos|tan|expand|diff|alpha|beta|gamma|delta|pi/gi
+    re = /sqrt|sin|cos|tan|expand|diff|alpha|beta|gamma|delta|epsilon|pi/gi
     @str = @str.replace re, "$&@@@"
     this
 
@@ -40,6 +39,11 @@ class AMString
       result = str.replace re, "$1$2"
       if result is str then result else doRecursion result
     @str = doRecursion @str
+    this
+
+  greekify : ->
+    re = /alpha|beta|gamma|delta|epsilon|pi/g
+    @str = @str.replace re, "\$&"
     this
 
 exports.AMString = AMString

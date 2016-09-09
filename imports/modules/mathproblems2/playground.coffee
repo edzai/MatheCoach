@@ -6,4 +6,9 @@ _ = require "lodash"
 nerdamer = require "../nerdamer/nerdamer.core.js"
 require "../nerdamer/Solve.js"
 
-console.log (nerdamer("expand((x+1)^#{n})").text("fractions") for n in [1..30])
+math = require "../../../node_modules/mathjs"
+
+{ teXifyAM } =
+  require "./renderAM.coffee"
+
+console.log nerdamer("(x^2+2*x+1)/(x+1)").text "fractions"
