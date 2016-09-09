@@ -47,7 +47,7 @@ class Problem
     } = sample?.generator generatorLevel
     @problemTeX = teXifyAM @problem
     @solution ?= nerdamer(@problem).text "fractions"
-    @solutionTeX ?= nerdamer(@problem).toTeX()
+    @solutionTeX ?= teXifyAM @solution
     @checks ?= [Check.equivalent, Check.noReducableFractionsOptional]
     @answerPreprocessor ?= defaultAnswerPreprocessor
 
