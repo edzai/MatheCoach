@@ -2,12 +2,16 @@ template(name="navbar")
   .ui.fixed.transparent.main.menu
     .header.item MatheCoach
     a.item(class=isActiveRoute('info') href="/info")
-      i.large.info.icon
+      i.large.info.circle.icon
+      | Info
     .right.menu
-      a.item(class=isActiveRoute('problem') href="/")
-        | Aufgaben
+      a.item(class=isActiveRoute('moduleList') href="/")
+        | Module
       a.item(class=isActiveRoute('calculator') href="/rechner")
         | Test
+      a.item(class=isActiveRoute('help') href="/help")
+        i.large.help.circle.icon
+        | Hilfe
       //a.item(class=isActiveRoute('outputtest') href="/outputtest")
         | test 1
       //a.item(class=isActiveRoute('home') href="/")

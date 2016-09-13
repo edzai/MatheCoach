@@ -11,4 +11,4 @@ math = require "../../../node_modules/mathjs"
 { teXifyAM } =
   require "./renderAM.coffee"
 
-console.log nerdamer("(x^2+2*x+1)/(x+1)").text "fractions"
+console.log nerdamer("divide((x^2+3*x+1),(x+1))").text "fractions"

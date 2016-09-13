@@ -1,3 +1,3 @@
 require "./info.jade"
 
-Template.info.viewmode
+Template.info.viewmodel

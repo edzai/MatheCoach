@@ -7,12 +7,12 @@ math = require "mathjs"
 
 
 sortSum = (str) ->
-  console.log "in", str
   result = str.split("")
   .map (c) ->
     switch c
       when " " then ""
       when "-" then "+-"
+      when "*" then ""
       else c
   .join("")
   .split "+"

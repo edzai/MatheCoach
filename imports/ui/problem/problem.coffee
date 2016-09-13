@@ -28,6 +28,7 @@ Template.problem.viewmodel
   minLevel : -> @problem().minLevel
   currentLevel : -> @problem().level
   newLevel : 1
+  loggedIn : -> Meteor.userId() isnt null
   autoLevelOn : false
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
@@ -94,9 +95,7 @@ Template.problem.viewmodel
   retryCountdown : 0
   autoLevel : ->
     if @autoLevelOn()
-      unless Meteor.userId()
-        alert "Benutzer ist nicht eingeloggt. \
-          Schalte automatische Schwierigkeitsstufe ab."
+      unless @loggedIn()
         @autoLevelOn false
       else
         if @levelPerc() > 79 and

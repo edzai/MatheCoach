@@ -4,6 +4,7 @@ require "/imports/ui/moduleList/moduleList.coffee"
 require "/imports/ui/problem/problem.coffee"
 require "/imports/ui/calculator/calculator.coffee"
 require "/imports/ui/info/info.coffee"
+require "/imports/ui/help/help.coffee"
 
 
 FlowRouter.route "/",
@@ -24,12 +25,17 @@ FlowRouter.route "/rechner",
     BlazeLayout.render "layout",
       main : "calculator"
 
-
 FlowRouter.route "/info",
   name : "info"
   action : ->
     BlazeLayout.render "layout",
       main : "info"
+
+FlowRouter.route "/help",
+  name : "help"
+  action : ->
+    BlazeLayout.render "layout",
+      main : "help"
 
 # FlowRouter.route "/play/:id",
 #   name : "play"

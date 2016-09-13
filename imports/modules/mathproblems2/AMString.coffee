@@ -10,7 +10,11 @@ class AMString
     this
 
   markReserved : ->
-    re = /sqrt|sin|cos|tan|expand|diff|alpha|beta|gamma|delta|epsilon|pi/gi
+    re = ///
+      sqrt|sin|cos|tan|
+      expand|divide|diff|
+      alpha|beta|gamma|delta|epsilon|pi
+    ///gi
     @str = @str.replace re, "$&@@@"
     this
 
