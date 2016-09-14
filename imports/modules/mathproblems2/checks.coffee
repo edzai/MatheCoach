@@ -59,6 +59,13 @@ exports.Check =
     passText : undefined
     failText : "Der Term ist nicht richtig Vereinfacht."
 
+  isWholePositiveNumber :
+    pass : (answer, solution) ->
+      re = /^\+?\s?\d+\s?$/g
+      re.test answer
+    required : true
+    failText : "Das Ergebnis muss eine positive Ganze Zahl sein."
+
   isSingleFraction :
     pass : (answer, solution) ->
       re = ///
@@ -80,7 +87,7 @@ exports.Check =
     required : true
     passText : undefined
     failText : "Das Ergebnis muss ein einzelner Bruch \
-      oder eine einzelne ganze Zahl sein."
+      oder eine einzelne Ganze Zahl sein."
 
   isSinglePower :
     pass : (answer, solution) ->

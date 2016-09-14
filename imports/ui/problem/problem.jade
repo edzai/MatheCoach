@@ -54,9 +54,12 @@ template(name="problem")
         i.plus.icon
       button.ui.icon.button($b="toggle : autoLevelOn, class : {active : autoLevelOn}, enable : loggedIn" title="Level automatisch anpassen")
         i.setting.icon
-            
-    button.ui.right.floated.icon.button($b="click : newProblem, class : nextButtonClass") nächste Aufgabe
-      i.arrow.right.icon
+    
+    if answered        
+      button.ui.right.floated.green.icon.button($b="click : newProblem") nächste Aufgabe
+        i.arrow.right.icon
+    else
+      button.ui.right.floated.red.icon.button($b="click : checkAnswer") Lösung prüfen
     
     
     

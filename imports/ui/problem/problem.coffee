@@ -41,7 +41,6 @@ Template.problem.viewmodel
   answered : false
   answerCorrect : false
   focusOnAnswer : true
-  nextButtonClass : -> if @answered() then "green" else "red"
 
   resetData : ->
     if confirm "Wirklich die Punktestände für dieses Modul löschen?"
