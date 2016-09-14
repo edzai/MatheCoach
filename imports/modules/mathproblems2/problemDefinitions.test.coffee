@@ -15,16 +15,20 @@ if Meteor.isClient
     require "./problemGenerators/expressions.coffee"
   { powersGenerator } =
     require "./problemGenerators/powers.coffee"
+  { einXeinsGenerator } =
+    require "./problemGenerators/einXeins.coffee"
 
   { expect, chai } = require "meteor/practicalmeteor:chai"
 
   chai.use require("chai-string")
 
   generatorLibs =
+    einXeinsGenerator : einXeinsGenerator
     powersGenerator : powersGenerator
     expressionGenerator : expressionGenerator
     linearEquationGenerator : linearEquationGenerator
     fractionGenerator : fractionGenerator
+
 
   for generatorLibKey, generatorLib of generatorLibs
     for generatorKey, generator of generatorLib
