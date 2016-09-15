@@ -17,12 +17,15 @@ if Meteor.isClient
     require "./problemGenerators/powers.coffee"
   { einXeinsGenerator } =
     require "./problemGenerators/einXeins.coffee"
+  { polynomialDivisionGenerator } =
+    require "./problemGenerators/polynomialDivision.coffee"
 
   { expect, chai } = require "meteor/practicalmeteor:chai"
 
   chai.use require("chai-string")
 
   generatorLibs =
+    polynomialDivisionGenerator : polynomialDivisionGenerator
     einXeinsGenerator : einXeinsGenerator
     powersGenerator : powersGenerator
     expressionGenerator : expressionGenerator

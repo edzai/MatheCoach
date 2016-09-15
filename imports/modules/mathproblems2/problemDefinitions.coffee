@@ -16,6 +16,8 @@ require "/imports/modules/nerdamer/Solve.js"
   require "./problemGenerators/expressions.coffee"
 { einXeinsGenerator } =
   require "./problemGenerators/einXeins.coffee"
+{ polynomialDivisionGenerator } =
+  require "./problemGenerators/polynomialDivision.coffee"
 
 #math = require "mathjs"
 
@@ -30,7 +32,8 @@ exports.modules = [
   "lineareGleichung1"
   "lineareGleichung2"
   "potenz1"
-  #"test"
+  "polynomialDivision"
+  #{}"test"
 ]
 
 exports.problemDefinitions =
@@ -190,11 +193,18 @@ exports.problemDefinitions =
       levels : [4..5]
       generator : powersGenerator.sqrt1Num
     ]
+  polynomialDivision :
+    title : "Polynomdivision"
+    description : "Nicht so schlimm, wie es zunächst aussieht."
+    problems : [
+      levels : [1..5]
+      generator : polynomialDivisionGenerator.division
+    ]
   test :
     title : "Test"
     description : "Testbereich für den Aufgabengenerator, \
       an dem ich gerade rumprogrammiere"
     problems : [
       levels : [1..5]
-      generator : einXeinsGenerator.test
+      generator : polynomialDivisionGenerator.test
     ]
