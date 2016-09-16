@@ -10,11 +10,11 @@ template(name="calculator")
         )
     .ui.segment
       h3.header Output
-      h4.header Input -> AMString
-      p($b="html : amString")
+      h4.header Input -> AMString -> MathJS
+      p($b="html : teXPreview")
       h4.header Input -> AMString -> Nerdamer -> MathJax:
       p($b="text : nerdamerRawTeX")
       +mathjax
-        div $$#{nerdamerRawTeX}$$
+        div $$#{nerdamerTeX}$$
   
     p Diese Seite ist nur für Testzwecke, um auszuprobieren, wie unterschiedliche mathematische Terme von den unterschiedlichen Funktionsbibiliotheken ausgewertet werden.

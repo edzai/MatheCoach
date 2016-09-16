@@ -5,26 +5,10 @@ template(name="navbar")
       i.large.info.icon
     .right.menu
       a.item(class=isActiveRoute('moduleList') href="/")
-        | Module
-      a.item(class=isActiveRoute('calculator') href="/rechner")
+        i.large.list.icon
+      //a.item(class=isActiveRoute('calculator') href="/rechner")
         | Test
       a.item(class=isActiveRoute('help') href="/help")
         i.large.help.icon
-      //a.item(class=isActiveRoute('outputtest') href="/outputtest")
-        | test 1
-      //a.item(class=isActiveRoute('home') href="/")
-        i.large.home.icon
-      //a.item(class=isActiveRoute('high-scores') href="/high-scores")
-        i.large.star.icon
-        | high-scores
-      //if currentUser
-        a.item(class=isActiveRoute('myPins') href="/my-pins")
-          i.large.icons
-            i.user.icon
-            i.corner.pin.icon
-        a.item(class=isActiveRoute('addPin') href="/add-pin")
-          i.large.icons
-            i.pin.icon
-            i.corner.plus.icon
       +loginButtons(allign="right")
           

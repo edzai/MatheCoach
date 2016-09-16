@@ -28,8 +28,6 @@ Template.problem.viewmodel
   minLevel : -> @problem().minLevel
   currentLevel : -> @problem().level
   newLevel : 1
-  loggedIn : -> Meteor.userId() isnt null
-  autoLevelOn : false
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
   passTextsRequired : []
@@ -38,9 +36,19 @@ Template.problem.viewmodel
   failTextsOptional : []
   problemTeX : -> @problem()?.problemTeX
   solutionTeX : -> @problem()?.solutionTeX
+  loggedIn : -> Meteor.userId() isnt null
+  autoLevelOn : false
+  answer : ""
   answered : false
   answerCorrect : false
   focusOnAnswer : true
+  showPreview : false
+  previewIconClass : -> if @showPreview() then "hide" else "unhide"
+  preview : ->
+    try
+      teXifyAM @problem().answerPreprocessor(@answer())
+    catch error
+      "\\text{#{error.message}}"
 
   resetData : ->
     if confirm "Wirklich die Punktestände für dieses Modul löschen?"

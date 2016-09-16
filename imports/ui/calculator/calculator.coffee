@@ -18,7 +18,7 @@ Template.calculator.viewmodel
 
   teXPreview : ->
     try
-      output = teXifyAM @input()
+      output = teXifyAM @amString()
     catch error
       output = "error"
     output
@@ -36,7 +36,7 @@ Template.calculator.viewmodel
       output = "error"
     output
 
-  nerdamerRawTeX : ->
+  nerdamerTeX : ->
     try
       output = nerdamer(@amString()).toTeX()
     catch error
