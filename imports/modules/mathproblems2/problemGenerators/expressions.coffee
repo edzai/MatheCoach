@@ -41,7 +41,7 @@ exports.expressionGenerator =
 
   summeZusFassExp : (level = 1) ->
     n = Math.min 3, level
-    e = rnd.uniqueInts(9)
+    e = rnd.uniqueInts2Plus(9)
     x = rnd.letter()
     bits = (
       for i in [1..n]

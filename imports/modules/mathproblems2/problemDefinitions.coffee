@@ -18,6 +18,8 @@ require "/imports/modules/nerdamer/Solve.js"
   require "./problemGenerators/einXeins.coffee"
 { polynomialDivisionGenerator } =
   require "./problemGenerators/polynomialDivision.coffee"
+{ quadraticEquationGenerator } =
+  require "./problemGenerators/quadraticEquations.coffee"
 
 #math = require "mathjs"
 
@@ -29,11 +31,12 @@ exports.modules = [
   "bruch3"
   "bruch4"
   "terme1"
+  "potenz1"
   "lineareGleichung1"
   "lineareGleichung2"
-  "potenz1"
+  "quadratischeGleichung"
   "polynomialDivision"
-  #{}"test"
+  #"test"
 ]
 
 exports.problemDefinitions =
@@ -172,6 +175,13 @@ exports.problemDefinitions =
       levelOffset : -1
       generator : linearEquationGenerator.linGl9
     ]
+  quadratischeGleichung :
+    title : "Quadratische Gleichungen"
+    description : "Einfache Quadratische Gleichungen Lösen (z.B. mit der pq-Formel)"
+    problems : [
+      levels : [1..5]
+      generator : quadraticEquationGenerator.intsOnly
+    ]
   potenz1 :
     title : "Potenzen und Wurzeln 1"
     description : "Aufgaben zum 1. Potenzgesetz"
@@ -206,5 +216,5 @@ exports.problemDefinitions =
       an dem ich gerade rumprogrammiere"
     problems : [
       levels : [1..5]
-      generator : polynomialDivisionGenerator.test
+      generator : quadraticEquationGenerator.test
     ]

@@ -44,6 +44,7 @@ class Problem
       @description, @hint
       @checks
       @answerPreprocessor
+      @isSystemOfLinearEquations
     } = sample?.generator generatorLevel
     @problemTeX ?= teXifyAM @problem
     @solution ?= nerdamer(@problem).text "fractions"
@@ -51,34 +52,39 @@ class Problem
     @checks ?= [Check.equivalent, Check.noReducableFractionsOptional]
     @answerPreprocessor ?= defaultAnswerPreprocessor
 
-  checkAnswer : (answer) ->
-    answer = @answerPreprocessor answer
-    solution = @solution
-    if "=" in solution.split ""
-      solution = solution.split("=")[1]
-    if "=" in answer.split ""
-      answer = answer.split("=")[1]
+  checkAnswer : (answerString) ->
+    answers = @answerPreprocessor(answerString).split(",").sort()
+    solutions = @solution.split(",").sort()
     pass = true
     passTextsRequired = []
     passTextsOptional = []
     failTextsRequired = []
     failTextsOptional = []
-    for check in @checks
-      if check.pass answer, solution
-        if check.required
-          if check.passText?
-            passTextsRequired.push check.passText
-        else
-          if check.passText?
-            passTextsOptional.push check.passText
-      else
-        if check.required
-          pass = false
-          if check.failText?
-            failTextsRequired.push check.failText
-        else
-          if check.failText?
-            failTextsOptional.push check.failText
+    if answers.length isnt solutions.length
+      pass = false
+      failTextsRequired = ["Die Anzahl der Lösungen stimmt nicht."]
+    else
+      for solution, i in solutions
+        if "=" in solution.split ""
+          solution = solution.split("=")[1]
+        if "=" in answers[i].split ""
+          answers[i] = answers[i].split("=")[1]
+        for check in @checks
+          if check.pass answers[i], solution
+            if check.required
+              if check.passText?
+                passTextsRequired.push check.passText
+            else
+              if check.passText?
+                passTextsOptional.push check.passText
+          else
+            if check.required
+              pass = false
+              if check.failText?
+                failTextsRequired.push check.failText
+            else
+              if check.failText?
+                failTextsOptional.push check.failText
     #return
     pass : pass
     passTextsRequired : passTextsRequired

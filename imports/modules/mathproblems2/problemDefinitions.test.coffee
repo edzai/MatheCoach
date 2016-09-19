@@ -19,6 +19,8 @@ if Meteor.isClient
     require "./problemGenerators/einXeins.coffee"
   { polynomialDivisionGenerator } =
     require "./problemGenerators/polynomialDivision.coffee"
+  { quadraticEquationGenerator } =
+    require "./problemGenerators/quadraticEquations.coffee"
 
   { expect, chai } = require "meteor/practicalmeteor:chai"
 
@@ -31,6 +33,7 @@ if Meteor.isClient
     expressionGenerator : expressionGenerator
     linearEquationGenerator : linearEquationGenerator
     fractionGenerator : fractionGenerator
+    quadraticEquationGenerator : quadraticEquationGenerator
 
 
   for generatorLibKey, generatorLib of generatorLibs
