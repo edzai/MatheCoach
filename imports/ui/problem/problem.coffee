@@ -58,7 +58,8 @@ Template.problem.viewmodel
   checkAnswer : ->
     unless @answered()
       @answered true
-      { pass, passTextsRequired, passTextsOptional, failTextsRequired, failTextsOptional } =
+      { pass, passTextsRequired, passTextsOptional,
+        failTextsRequired, failTextsOptional } =
         @problem().checkAnswer(@answer())
       @answerCorrect pass
       @passTextsRequired passTextsRequired

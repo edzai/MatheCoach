@@ -4,6 +4,7 @@ require "/imports/ui/moduleList/moduleList.coffee"
 require "/imports/ui/problem/problem.coffee"
 require "/imports/ui/calculator/calculator.coffee"
 require "/imports/ui/info/info.coffee"
+require "/imports/ui/userSettings/userSettings.coffee"
 require "/imports/ui/help/help.coffee"
 
 
@@ -30,6 +31,12 @@ FlowRouter.route "/info",
   action : ->
     BlazeLayout.render "layout",
       main : "info"
+
+FlowRouter.route "/user-settings",
+  name : "userSettings"
+  action : ->
+    BlazeLayout.render "layout",
+      main : "userSettingsPage"
 
 FlowRouter.route "/help",
   name : "help"

@@ -1,14 +1,7 @@
 { Mongo } = require "meteor/mongo"
 { Meteor } = require "meteor/meteor"
 
-Students = new Mongo.Collection "students"
-Students.schema = new SimpleSchema
-  userId :
-    type : String
-  currentModule :
-    type : String
-Students.attachSchema Students.schema
-exports.Students = Students
+require "./users.coffee"
 
 LevelScoreDataPointsSchema = new SimpleSchema
   answerCorrect :

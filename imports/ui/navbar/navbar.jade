@@ -8,6 +8,9 @@ template(name="navbar")
         i.large.list.icon
       //a.item(class=isActiveRoute('calculator') href="/rechner")
         | Test
+      if currentUser
+        a.item(class=isActiveRoute('userSettings') href="/user-settings")
+          i.large.settings.icon
       a.item(class=isActiveRoute('help') href="/help")
         i.large.help.icon
       +loginButtons(allign="right")

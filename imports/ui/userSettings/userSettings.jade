@@ -1,0 +1,29 @@
+template(name="userSettingsPage")
+  with profile
+    +userSettings
+    
+template(name="userSettings")
+  .ui.text.container
+    h1.header Einstellungen
+    .ui.clearing.segment
+      form.ui.form
+        h4.ui.dividing.header Persönliche Daten
+        .field
+          label Name
+          .two.fields
+            .field
+              input($b="value : firstName" type="text" placeholder="Vorname")
+            .field
+              input($b="value : lastName" type="text" placeholder="Nachname")
+        h4.ui.dividing.header Lehrer/Mentor
+        .field
+          label Mein Lehrer/Mentor ist:
+          .field
+            input($b="value : mentorId" type="text" placeholder="Benutzername des Lehrers/Mentors")
+          .field
+            .ui.checkbox
+              input($b="check : isMentor" type="checkbox")
+              label Ich möchte selbst als Lehrer/Mentor aufgelistet werden.
+        p Hinweis: Als normaler Benutzer dieser Seite bist Du für andere normale Benutzer völlig unsichtbar. Als eingegragener Lehrer/Mentor erscheinst Du in der Auswahlliste auf dieser Seite. Mentoren erhalten eine Übersicht über die Aktivitäten ihrer Schüler.
+        button.right.floated.ui.button($b="click : save, enable : dataChanged") Speichern  
+          

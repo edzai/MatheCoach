@@ -8,4 +8,7 @@ MatheCoch befindet sich in der Entwicklung und ist noch weit davon entfernt, fer
 
 Die Web-app kannst Du ganz einfach mit deinem Webbrowser unter http://mathe-coach-janmp.herokuapp.com aufrufen.
 
- 
+##Änderungen
+
+###Donnerstag, 22. September 2016
+ * Änderung der Datenbankstruktur für die Erfassung der Ergebnisse. Das machte es erforderlich, Punktestände und die Daten für die Automatische Levelsteuerung zurückzusetzen.
