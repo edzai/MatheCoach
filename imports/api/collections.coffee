@@ -10,18 +10,26 @@ Students.schema = new SimpleSchema
 Students.attachSchema Students.schema
 exports.Students = Students
 
+LevelScoreDataPointsSchema = new SimpleSchema
+  answerCorrect :
+    type : Boolean
+  date :
+    type : Date
+  problem :
+    type : String
+  answer :
+    type : String
+
 LevelScores = new Mongo.Collection "levelScores"
 LevelScores.schema = new SimpleSchema
   moduleKey :
     type : String
   level :
     type : Number
-  date :
-    type : Date
   userId :
     type : String
   recent :
-    type : [Boolean]
+    type : [LevelScoreDataPointsSchema]
 LevelScores.attachSchema LevelScores.schema
 exports.LevelScores = LevelScores
 
@@ -38,7 +46,7 @@ exports.resetLevelScores = new ValidatedMethod
     LevelScores.remove
       userId : @userId
       moduleKey : moduleKey
-      
+
 exports.updateLevelScores = new ValidatedMethod
   name : "updateLevelScores"
   validate :
@@ -47,12 +55,21 @@ exports.updateLevelScores = new ValidatedMethod
         type : String
       level :
         type : Number
-      result :
+      answerCorrect :
         type : Boolean
+      problem :
+        type : String
+      answer :
+        type : String
     .validator()
-  run : ( {moduleKey, level, result} )->
+  run : ( {moduleKey, level, answerCorrect, problem, answer} )->
     unless @userId
       throw new Meteor.Error "not logged-in"
+    dataPoint =
+      answerCorrect : answerCorrect
+      date : new Date()
+      problem : problem
+      answer : answer
     LevelScores.upsert
       userId : @userId
       moduleKey : moduleKey
@@ -68,9 +85,10 @@ exports.updateLevelScores = new ValidatedMethod
         date : new Date()
       $push :
         recent :
-          $each : [result]
-          $slice : -20
+          $each : [dataPoint]
+          $slice : -100
 
+#Wird derzeit nicht benutzt
 ModuleScores = new Mongo.Collection "moduleScores"
 ModuleScores.schema = new SimpleSchema
   moduleKey :

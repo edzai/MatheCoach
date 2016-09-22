@@ -69,7 +69,9 @@ Template.problem.viewmodel
         updateLevelScores.call
           moduleKey : @moduleKey()
           level : @currentLevel()
-          result : @answerCorrect()
+          answerCorrect : @answerCorrect()
+          problem : @problemTeX()
+          answer : @answer()
     else
       @newProblem()
 
@@ -78,7 +80,8 @@ Template.problem.viewmodel
     if recent?
       rightCount =
         _(recent)
-          .filter (e) -> e
+          .map (dataPoint) -> dataPoint.answerCorrect
+          .filter (answerCorrect) -> answerCorrect
           .value().length
       totalCount = recent.length or 1
       rightPercent = Math.round rightCount/totalCount*100
@@ -93,12 +96,12 @@ Template.problem.viewmodel
     for doc in cursor.fetch()
       totalCount = doc.recent.length
       rightCount = _(doc.recent)
+        .map (dataPoint) -> dataPoint.answerCorrect
         .filter (e) -> e
         .value().length
       result += Math.round(rightCount/Math.max(totalCount, 5)* 100 * doc.level)
     result
 
-  maxCurrentPerc : -> (@maxLevel() - @minLevel() + 1) * 100
   retryCountdown : 0
   autoLevel : ->
     if @autoLevelOn()
