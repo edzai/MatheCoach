@@ -18,12 +18,11 @@ template(name="userSettings")
         h4.ui.dividing.header Lehrer/Mentor
         .field
           label Mein Lehrer/Mentor ist:
-          .field
-            input($b="value : mentorId" type="text" placeholder="Benutzername des Lehrers/Mentors")
-          .field
-            .ui.checkbox
-              input($b="check : isMentor" type="checkbox")
-              label Ich möchte selbst als Lehrer/Mentor aufgelistet werden.
+          select.ui.dropdown($b="value : mentorId, ref : mentorSelect, options : mentors, optionsValue : id, optionsText : name")    
+        .field
+          .ui.checkbox
+            input($b="check : isMentor" type="checkbox")
+            label Ich möchte selbst als Lehrer/Mentor aufgelistet werden.
         p Hinweis: Als normaler Benutzer dieser Seite bist Du für andere normale Benutzer völlig unsichtbar. Als eingegragener Lehrer/Mentor erscheinst Du in der Auswahlliste auf dieser Seite. Mentoren erhalten eine Übersicht über die Aktivitäten ihrer Schüler.
-        button.right.floated.ui.button($b="click : save, enable : dataChanged") Speichern  
+        button.right.floated.ui.button($b="click : save, enable : dataChanged") Speichern
           

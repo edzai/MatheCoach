@@ -72,6 +72,7 @@ mobile-experience@1.0.4
 mobile-status-bar@1.0.12
 modules@0.7.6
 modules-runtime@0.7.6
+momentjs:moment@2.14.4
 mongo@1.1.12
 mongo-id@1.0.5
 mongo-livedata@1.0.12
@@ -95,6 +96,7 @@ reactive-var@1.0.10
 reload@1.1.10
 retry@1.0.8
 routepolicy@1.0.11
+rzymek:moment-locale-de@2.14.1
 semantic:ui-css@2.1.2
 service-configuration@1.0.10
 session@1.1.6

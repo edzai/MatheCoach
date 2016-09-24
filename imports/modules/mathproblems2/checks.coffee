@@ -35,6 +35,7 @@ noReducableFractions = (answer, solution) ->
 exports.Check =
   equivalent :
     pass : (answer, solution) ->
+      answer isnt "" and
       nerdamer("(#{answer}) - (#{solution})").text() is "0"
     required : true
     passText : "Das Ergebnis ist zur Lösung equivalent."

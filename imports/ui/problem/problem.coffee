@@ -10,16 +10,18 @@ _ = require "lodash"
 { teXifyAM } =
   require "/imports/modules/mathproblems2/renderAM.coffee"
 
-{ ModuleScores, updateModuleScores,
-  LevelScores, updateLevelScores, resetLevelScores
-} =
-  require "/imports/api/collections.coffee"
+{ Tally } =
+  require "/imports/modules/tally.coffee"
+
+
+{ Submissions, resetSubmissions, insertSubmission } =
+  require "/imports/api/submissions.coffee"
 
 Template.problem.viewmodel
   moduleKey : -> FlowRouter.getParam "key"
   problem : {}
-  levelScores : ->
-    LevelScores.findOne
+  levelTally : ->
+    new Tally
       userId : Meteor.userId()
       moduleKey : @moduleKey()
       level : @currentLevel()
@@ -52,7 +54,7 @@ Template.problem.viewmodel
 
   resetData : ->
     if confirm "Wirklich die Punktestände für dieses Modul löschen?"
-      resetLevelScores.call
+      resetSubmissions.call
         moduleKey : @moduleKey()
 
   checkAnswer : ->
@@ -67,7 +69,7 @@ Template.problem.viewmodel
       @failTextsRequired failTextsRequired
       @failTextsOptional failTextsOptional
       if Meteor.userId()
-        updateLevelScores.call
+        insertSubmission.call
           moduleKey : @moduleKey()
           level : @currentLevel()
           answerCorrect : @answerCorrect()
@@ -76,32 +78,10 @@ Template.problem.viewmodel
     else
       @newProblem()
 
-  levelPerc : ->
-    recent = @levelScores()?.recent
-    if recent?
-      rightCount =
-        _(recent)
-          .map (dataPoint) -> dataPoint.answerCorrect
-          .filter (answerCorrect) -> answerCorrect
-          .value().length
-      totalCount = recent.length or 1
-      rightPercent = Math.round rightCount/totalCount*100
-      Math.round rightCount/Math.max(totalCount, 5)*100
-    else null
 
-  currentPerc : ->
-    cursor = LevelScores.find
-      userId : Meteor.userId()
-      moduleKey : @moduleKey()
-    result = 0
-    for doc in cursor.fetch()
-      totalCount = doc.recent.length
-      rightCount = _(doc.recent)
-        .map (dataPoint) -> dataPoint.answerCorrect
-        .filter (e) -> e
-        .value().length
-      result += Math.round(rightCount/Math.max(totalCount, 5)* 100 * doc.level)
-    result
+  currentPerc :  ->
+    @levelTally().rightPercent() *
+    @levelTally().rightCount() * @currentLevel()
 
   retryCountdown : 0
   autoLevel : ->
@@ -109,24 +89,18 @@ Template.problem.viewmodel
       unless @loggedIn()
         @autoLevelOn false
       else
-        if @levelPerc() > 79 and
-        @currentLevel() < @maxLevel() and
+        if @levelTally().rightPercent() > 79 and
+        @levelTally().rightCount() > 4 and
         @answerCorrect()
           if @retryCountdown() < 1
             @newLevel @currentLevel() + 1
           else
             @retryCountdown @retryCountdown() - 1
-        if @levelPerc() < 60 and not @answerCorrect()
-          @currentLevel() > @minLevel()
+        if @levelTally().rightPercent() < 60 and not @answerCorrect()
           @newLevel @currentLevel() - 1
           @retryCountdown 3
 
   newProblem : ->
-    unless @answered()
-      if Meteor.userId()
-        updateModuleScores.call
-          moduleKey : @moduleKey()
-          answerCorrect : false
     @autoLevel()
     @answer.reset()
     @answered.reset()

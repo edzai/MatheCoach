@@ -1,10 +1,11 @@
 require "./layout.jade"
-require "/imports/ui/navbar/navbar.jade"
+require "/imports/ui/navbar/navbar.coffee"
 require "/imports/ui/moduleList/moduleList.coffee"
 require "/imports/ui/problem/problem.coffee"
 require "/imports/ui/calculator/calculator.coffee"
 require "/imports/ui/info/info.coffee"
 require "/imports/ui/userSettings/userSettings.coffee"
+require "/imports/ui/mentorOverview/mentorOverview.coffee"
 require "/imports/ui/help/help.coffee"
 
 
@@ -37,6 +38,12 @@ FlowRouter.route "/user-settings",
   action : ->
     BlazeLayout.render "layout",
       main : "userSettingsPage"
+
+FlowRouter.route "/mentor/overview",
+  name : "mentorOverview"
+  action : ->
+    BlazeLayout.render "layout",
+      main : "mentorOverview"
 
 FlowRouter.route "/help",
   name : "help"

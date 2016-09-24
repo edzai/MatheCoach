@@ -1,0 +1,22 @@
+template(name="mentorOverview")
+  .ui.text.container
+    h1.header Übersicht für Mentoren
+    .ui.segment
+      each students
+        +studentDisplay
+
+template(name="studentDisplay")
+  h2.header #{name}
+  .ui.relaxed.selection.list
+    each submissions
+      +submissionDisplay
+    
+template(name="submissionDisplay")
+  .item
+    if answerCorrect
+      i.large.middle.aligined.green.checkmark.icon
+    else
+      i.large.middle.aligned.red.remove.icon
+    .content
+      .header #{moduleTitle}, Level #{level}
+      .description($b="text : timeAgo")

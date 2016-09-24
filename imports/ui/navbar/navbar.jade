@@ -9,6 +9,9 @@ template(name="navbar")
       //a.item(class=isActiveRoute('calculator') href="/rechner")
         | Test
       if currentUser
+        if isMentor
+          a.item(class=isActiveRoute('mentorOverview') href="/mentor/overview")
+            i.large.student.icon
         a.item(class=isActiveRoute('userSettings') href="/user-settings")
           i.large.settings.icon
       a.item(class=isActiveRoute('help') href="/help")

@@ -1,6 +1,6 @@
 { updateUserProfile } = require "/imports/api/users.coffee"
 { Meteor } = require "meteor/meteor"
-
+_ = require "lodash"
 require "./userSettings.jade"
 
 Template.userSettingsPage.viewmodel
@@ -10,7 +10,17 @@ Template.userSettings.viewmodel
   firstName : ""
   lastName : ""
   isMentor : false
-  mentorId : ""
+  mentors : ->
+    Meteor.users.find
+      "profile.isMentor" : true
+    .fetch()
+    .map (user) ->
+      name : "#{user.profile.firstName} #{user.profile.lastName}"
+      id : user._id
+    .concat
+      name : "Ich habe keinen Lehrer/Mentor."
+      id : "noMentor"
+  mentorId : "noMentor"
   save : (event) ->
     event.preventDefault()
     updateUserProfile.call
@@ -24,3 +34,9 @@ Template.userSettings.viewmodel
       @lastName() isnt profile.lastName or
       @isMentor() isnt profile.isMentor or
       @mentorId() isnt profile.mentorId
+  autorun : -> #handle semantic-ui dropdown
+    @mentorSelect.dropdown "set selected", @mentorId()
+    @mentorSelect.dropdown "set text",
+      _.chain @mentors()
+      .find id : @mentorId()
+      .value()?.name
