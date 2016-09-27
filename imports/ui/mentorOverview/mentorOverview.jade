@@ -1,16 +1,24 @@
 template(name="mentorOverview")
   .ui.text.container
-    h1.header Übersicht für Mentoren
+    h1.header Schüler
     .ui.segment
-      each students
-        +studentDisplay
+      .ui.list
+        each students
+          +studentDisplay
 
 template(name="studentDisplay")
-  h2.header #{name}
+  .item
+    i.large.middle.aligned.user.icon($b="class : userColor")
+    .content
+      .header($b="text : name")
+      .description($b="text : timeAgo")
+  
+
+template(name="submissionListing")
   .ui.relaxed.selection.list
     each submissions
       +submissionDisplay
-    
+       
 template(name="submissionDisplay")
   .item
     if answerCorrect

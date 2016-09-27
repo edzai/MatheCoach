@@ -15,16 +15,26 @@ Template.mentorOverview.viewmodel
         "profile.lastName" : 1
         "profile.firstName" : 1
 
+
 Template.studentDisplay.viewmodel
+  share : "reactiveTimer"
   name : -> "#{@profile().firstName} #{@profile().lastName}"
-  submissions : ->
-    Submissions.find
-      userId : @_id()
-    ,
-      sort :
-        date : -1
+  timeAgo : ->
+    @tick()
+    moment(@profile().lastActive).fromNow()
+  userColor : ->
+    moreThanDaysAgo = (days) =>
+      moment(@profile().lastActive).isBefore moment().subtract(7, "days")
+    switch
+      when moreThanDaysAgo 7 then "red"
+      when moreThanDaysAgo 3 then "orange"
+      when moreThanDaysAgo 1 then "yellow"
+      else "green"
+
 
 Template.submissionDisplay.viewmodel
+  share : "reactiveTimer"
   timeAgo : ->
+    @tick()
     moment(@date()).fromNow()
   moduleTitle : -> problemDefinitions[@moduleKey()].title

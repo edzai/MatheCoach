@@ -11,7 +11,7 @@ math = require "../../../node_modules/mathjs"
 { teXifyAM } =
   require "./renderAM.coffee"
 
-equation = "(x-3)(x+5)=(x+1)(x-1)/2+10"
+equation = "(x-2)(x-2)=0"
 expandedEquation =
   equation
     .split "="
@@ -21,7 +21,3 @@ console.log expandedEquation
 result = nerdamer.solveEquations(expandedEquation, "x").toString()
 resultArray = result.split(",").sort()
 console.log resultArray
-
-console.log nerdamer("expand((x+2)(x+3))").toTeX()
-
-console.log nerdamer.solveEquations(['x+y=1', '2*x=6', '4*z+y=6']).toString()

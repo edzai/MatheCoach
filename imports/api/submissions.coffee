@@ -53,14 +53,13 @@ exports.insertSubmission = new ValidatedMethod
       answer :
         type : String
     .validator()
-  run : ( {moduleKey, level, answerCorrect, problem, answer} )->
+  run : ( objectToInsert )->
     unless @userId
       throw new Meteor.Error "not logged-in"
-    Submissions.insert
-      userId : @userId
-      moduleKey : moduleKey
-      level : level
-      answerCorrect : answerCorrect
-      date : new Date()
-      problem : problem
-      answer : answer
+    now = new Date()
+    objectToInsert.userId = @userId
+    objectToInsert.date = now
+    Submissions.insert objectToInsert
+    Meteor.users.update @userId,
+      $set :
+        "profile.lastActive" : now

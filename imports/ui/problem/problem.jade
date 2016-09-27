@@ -68,25 +68,3 @@ template(name="problem")
         i.arrow.right.icon
     else
       button.ui.right.floated.red.icon.button($b="click : checkAnswer") OK
-    
-    
-    
-    //- .ui.hidden.clearing.divider
-    //- .ui.divider
-    
-    //- P Oben rechts wird die Schwierigkeitsstufe angezeigt. Je nach Level können unterschiedliche Aufgabentypen kommen und/oder die Zahlen mit denen man rechnen muss größer werden.
-    //- P Wenn man eingeloggt ist (ganz oben rechts), wird ein Punktwert angezeigt. Und man kann die automatische Schwierigkeitssteuerung einschalten. Die automatische Schwierigkeitssteuerung braucht jeweils ein paar Antworten, um zu entscheiden, ob sie die Schwierigkeit hoch setzt. 
-    //- 
-    //- P Bis schöne Bedienelemente für die manuelle Einstellung der Schwierigkeit kommen, könnt Ihr das hier machen:
-    //- 
-    //- input($b="check : autoLevelOn" type="checkbox")
-    //- label automatische Schweierigkeitssteuerung
-    //- 
-    //- p
-    //-   button.ui.basic.blue.button($b="click : easier, disable : autoLevelOn") Level -
-    //-   button.ui.basic.red.button($b="click : harder, disable : autoLevelOn") Level +
-    //- 
-    //- if currentUser
-    //-   p Mit diesem Knopf kann man seine Daten für das aktuelle Modul zurücksetzen. Die Punkte und die Daten für die automatische Schwierigkeitssteuerung für dieses Modul werden gelöscht.
-    //-   
-    //-   button.ui.basic.button($b="click : resetData") Reset

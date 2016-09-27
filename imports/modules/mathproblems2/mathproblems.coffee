@@ -53,8 +53,16 @@ class Problem
     @answerPreprocessor ?= defaultAnswerPreprocessor
 
   checkAnswer : (answerString) ->
-    answers = @answerPreprocessor(answerString).split(",").sort()
-    solutions = @solution.split(",").sort()
+    answers =
+      @answerPreprocessor(answerString)
+      .split(",")
+      .map (str) -> nerdamer(str).text "fractions"
+      .sort()
+    solutions =
+      @solution
+      .split(",")
+      .map (str) -> nerdamer(str).text "fractions"
+      .sort()
     pass = true
     passTextsRequired = []
     passTextsOptional = []

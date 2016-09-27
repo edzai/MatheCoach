@@ -8,16 +8,20 @@ require "/imports/modules/nerdamer/Solve.js"
 
 { teXifyAM } = require "../renderAM.coffee"
 
-math = require "mathjs"
+#math = require "mathjs"
 
-processEquation = (equation, variable) ->
+_ = require "lodash"
+
+exports.processEquation = processEquation = (equation, variable) ->
   doWithSides = (fkt) ->
     equation.split("=").map(fkt).join("=")
   expandedEquation = doWithSides (side) ->
     nerdamer("expand(#{side})").text "fractions"
   expandedEquationTeX = doWithSides (side) ->
     nerdamer("expand(#{side})").toTeX()
-  solution = nerdamer.solveEquations(expandedEquation, variable).toString()
+  solutionArray =
+    nerdamer.solveEquations(expandedEquation, variable).toString().split ","
+  solution = _(solutionArray).uniq().value().join ","
   elementsTeX =
     solution.split ","
       .map (e) -> nerdamer(e).toTeX()

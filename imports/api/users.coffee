@@ -1,5 +1,6 @@
 { Mongo } = require "meteor/mongo"
 { Meteor } = require "meteor/meteor"
+{ Submissions } = require "./submissions.coffee"
 
 userProfileSchema = new SimpleSchema
   isMentor :
@@ -13,6 +14,9 @@ userProfileSchema = new SimpleSchema
     optional : true
   lastName :
     type : String
+    optional : true
+  lastActive :
+    type : Date
     optional : true
 exports.userProfileSchema = userProfileSchema
 
@@ -47,6 +51,20 @@ userSchema = new SimpleSchema
     optional : true
 Meteor.users.attachSchema userSchema
 
+Meteor.users.helpers
+  submissions : ->
+    Submissions.find
+      userId : @_id()
+    ,
+      sort :
+        date : -1
+  lastSubmission : ->
+    Submissions.findOne
+      userId : @_id()
+    ,
+      sort :
+        date : -1
+
 exports.updateUserProfile = new ValidatedMethod
   name : "updateUserProfile"
   validate :
@@ -54,6 +72,7 @@ exports.updateUserProfile = new ValidatedMethod
   run : (profile) ->
     unless @userId
       throw new Meteor.Error "not logged-in"
+    profile.lastActive = Meteor.user().profile.lastActive
     Meteor.users.update @userId,
       $set :
         profile : profile

@@ -20,7 +20,8 @@ require "/imports/modules/nerdamer/Solve.js"
   require "./problemGenerators/polynomialDivision.coffee"
 { quadraticEquationGenerator } =
   require "./problemGenerators/quadraticEquations.coffee"
-
+{ nullStellenGenerator } =
+  require "./problemGenerators/nullstellen.coffee"
 #math = require "mathjs"
 
 
@@ -35,8 +36,8 @@ exports.modules = [
   "lineareGleichung1"
   "lineareGleichung2"
   "quadratischeGleichung"
+  "nullStellen"
   "polynomialDivision"
-  #"test"
 ]
 
 exports.problemDefinitions =
@@ -203,6 +204,21 @@ exports.problemDefinitions =
       levels : [4..5]
       generator : powersGenerator.sqrt1Num
     ]
+  nullStellen :
+    title : "Nullstellen Ganzrationaler Funktionen"
+    description : "pq-Formel, Substitution und teilweise factorisierte Polynome."
+    problems : [
+      levels : [1..4]
+      generator : nullStellenGenerator.pq
+    ,
+      levels : [2..5]
+      levelOffset : -1
+      generator : nullStellenGenerator.substitution
+    ,
+      levels : [3..5]
+      levelOffset : -2
+      generator : nullStellenGenerator.factorized
+    ]
   polynomialDivision :
     title : "Polynomdivision"
     description : "Nicht so schlimm, wie es zunächst aussieht."
@@ -216,5 +232,5 @@ exports.problemDefinitions =
       an dem ich gerade rumprogrammiere"
     problems : [
       levels : [1..5]
-      generator : quadraticEquationGenerator.test
+      generator : nullStellenGenerator.test
     ]
