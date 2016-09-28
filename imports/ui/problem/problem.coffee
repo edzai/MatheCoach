@@ -75,6 +75,7 @@ Template.problem.viewmodel
           answerCorrect : @answerCorrect()
           problem : @problemTeX()
           answer : @answer()
+          date : new Date()
     else
       @newProblem()
 
