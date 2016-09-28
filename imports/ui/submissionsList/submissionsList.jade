@@ -1,0 +1,16 @@
+template(name="submissionsList")
+  .ui.relaxed.selection.list
+    each submissions
+      +submissionDisplay
+       
+template(name="submissionDisplay")
+  .item
+    .ui.segment
+      .content
+        .header #{moduleTitle}, Level #{level}
+        .description($b="text : timeAgo")
+        .ui.segment
+          +mathjax
+            div $$#{problem}$$
+        .ui.center.aligned.inverted.segment($b="class : answerSegmentClass") #{answer}
+      

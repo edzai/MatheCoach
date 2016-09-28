@@ -1,0 +1,10 @@
+template(name="studentPage")
+  with student
+    +studentPageDisplay
+    
+template(name="studentPageDisplay")
+  .ui.text.container
+    h1.header #{name}
+    .ui.list
+      each submissions
+        +submissionDisplay

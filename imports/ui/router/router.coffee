@@ -6,6 +6,7 @@ require "/imports/ui/calculator/calculator.coffee"
 require "/imports/ui/info/info.coffee"
 require "/imports/ui/userSettings/userSettings.coffee"
 require "/imports/ui/mentorOverview/mentorOverview.coffee"
+require "/imports/ui/studentPage/studentPage.coffee"
 require "/imports/ui/help/help.coffee"
 
 
@@ -44,6 +45,12 @@ FlowRouter.route "/mentor/overview",
   action : ->
     BlazeLayout.render "layout",
       main : "mentorOverview"
+
+FlowRouter.route "/mentor/student/:studentId",
+  name : "student"
+  action : ->
+    BlazeLayout.render "layout",
+      main : "studentPage"
 
 FlowRouter.route "/help",
   name : "help"

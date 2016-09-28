@@ -1,8 +1,6 @@
 
 { Meteor } = require "meteor/meteor"
 { Submissions } = require "/imports/api/submissions.coffee"
-{ problemDefinitions } = require "/imports/modules/mathproblems2/problemDefinitions.coffee"
-
 
 require "./mentorOverview.jade"
 
@@ -16,7 +14,7 @@ Template.mentorOverview.viewmodel
         "profile.firstName" : 1
 
 
-Template.studentDisplay.viewmodel
+Template.studentListDisplay.viewmodel
   share : "reactiveTimer"
   name : -> "#{@profile().firstName} #{@profile().lastName}"
   timeAgo : ->
@@ -30,11 +28,4 @@ Template.studentDisplay.viewmodel
       when moreThanDaysAgo 3 then "orange"
       when moreThanDaysAgo 1 then "yellow"
       else "green"
-
-
-Template.submissionDisplay.viewmodel
-  share : "reactiveTimer"
-  timeAgo : ->
-    @tick()
-    moment(@date()).fromNow()
-  moduleTitle : -> problemDefinitions[@moduleKey()].title
+  gotoStudentPage : -> FlowRouter.go "/mentor/student/#{@_id()}"
