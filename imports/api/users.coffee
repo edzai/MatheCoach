@@ -1,5 +1,6 @@
 { Mongo } = require "meteor/mongo"
 { Meteor } = require "meteor/meteor"
+{ Tracker } = require "meteor/tracker"
 { Submissions } = require "./submissions.coffee"
 
 userProfileSchema = new SimpleSchema
@@ -76,3 +77,10 @@ exports.updateUserProfile = new ValidatedMethod
     Meteor.users.update @userId,
       $set :
         profile : profile
+
+if Meteor.isServer
+  Meteor.publish "mentorData", ->
+    Meteor.users.find "profile.isMentor" : true
+
+if Meteor.isClient
+  Meteor.subscribe "mentorData"

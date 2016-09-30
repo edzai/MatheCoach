@@ -6,7 +6,6 @@ aldeed:schema-deny@1.1.0
 aldeed:schema-index@1.1.0
 aldeed:simple-schema@1.5.3
 allow-deny@1.0.5
-autopublish@1.0.7
 autoupdate@1.2.11
 babel-compiler@6.9.1
 babel-runtime@0.1.11
@@ -97,6 +96,7 @@ reactive-dict@1.1.8
 reactive-var@1.0.10
 reload@1.1.10
 retry@1.0.8
+reywood:publish-composite@1.4.2
 routepolicy@1.0.11
 rzymek:moment-locale-de@2.14.1
 semantic:ui-css@2.1.2

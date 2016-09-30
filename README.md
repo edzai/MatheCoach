@@ -10,5 +10,8 @@ Die Web-app kannst Du ganz einfach mit deinem Webbrowser unter http://mathe-coac
 
 ##Änderungen
 
+###Mittwoch, 28. September 2016
+* Wenn man sich mit einem usernamen eingeloggt hat, kann man sich in den Einstellungen mit vollem Namen eintragen und einen Lehrer auswählen und/oder sich selbst als Lehrer auflisten lassen. Lehrer können alle Aufgaben und Antworten ihrer Schüler sehen.
+
 ###Donnerstag, 22. September 2016
  * Änderung der Datenbankstruktur für die Erfassung der Ergebnisse. Das machte es erforderlich, Punktestände und die Daten für die Automatische Levelsteuerung zurückzusetzen.

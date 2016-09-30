@@ -16,6 +16,8 @@ math = require "mathjs"
 Template.calculator.viewmodel
   input : ""
 
+  log : ->
+    console.log @amString(), @nerdamerTeX()
   teXPreview : ->
     try
       output = teXifyAM @amString()

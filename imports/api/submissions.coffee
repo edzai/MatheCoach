@@ -1,5 +1,6 @@
 { Mongo } = require "meteor/mongo"
 { Meteor } = require "meteor/meteor"
+{ Tracker } = require "meteor/tracker"
 
 require "./users.coffee"
 
@@ -64,3 +65,30 @@ exports.insertSubmission = new ValidatedMethod
     Meteor.users.update @userId,
       $set :
         "profile.lastActive" : now
+
+if Meteor.isServer
+  Meteor.publish "userSubmissions", ->
+    unless @userId
+      @ready()
+    else
+      Submissions.find userId : @userId
+
+  Meteor.publishComposite "studentSubmissions", (userId) ->
+    find : ->
+      Meteor.users.find
+        _id : userId
+        "profile.isMentor" : true
+    children : [
+      find : (mentor) ->
+        Meteor.users.find
+          "profile.mentorId" : mentor._id
+      children : [
+        find : (student) ->
+          Submissions.find userId : student._id
+      ]
+    ]
+
+if Meteor.isClient
+  Meteor.subscribe "userSubmissions"
+  Tracker.autorun ->
+    Meteor.subscribe "studentSubmissions", Meteor.userId()
