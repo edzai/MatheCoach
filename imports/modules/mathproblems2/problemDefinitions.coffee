@@ -38,7 +38,7 @@ exports.modules = [
   "quadratischeGleichung"
   "nullStellen"
   "polynomialDivision"
-  "test"
+  #"test"
 ]
 
 exports.problemDefinitions =
