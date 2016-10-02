@@ -12,22 +12,30 @@ checks = [Check.equivalent, Check.isWholePositiveNumber]
 
 exports.einXeinsGenerator =
   multiplikation : (level = 1) ->
-    maxN = switch level
-      when 1 then 9
-      when 2 then 15
-      when 3 then 20
-    [a, b] = rnd.intsPlus(maxN)
+    switch level
+      when 1
+        [a, b] = rnd.intsMin 1, 10
+      when 2
+        a = rnd.int2Plus(9)
+        b = rnd.intMin 11, 20
+        if rnd.bool() then [a, b] = [b, a]
+      else
+        [a, b] = rnd.intsMin 11, 20
     #return
     problem : "#{a}*#{b}"
     description : "Multipliziere die zwei Ganzen Zahlen:"
     checks : checks
 
   division : (level = 1) ->
-    maxN = switch level
-      when 1 then 9
-      when 2 then 15
-      when 3 then 20
-    [a, b] = rnd.intsPlus(maxN)
+    switch level
+      when 1
+        [a, b] = rnd.intsMin 1, 10
+      when 2
+        a = rnd.int2Plus(9)
+        b = rnd.intMin 11, 20
+        if rnd.bool() then [a, b] = [b, a]
+      else
+        [a, b] = rnd.intsMin 11, 20
     #return
     problem : "#{a}"
     problemTeX : "#{a*b}\\div#{b}"

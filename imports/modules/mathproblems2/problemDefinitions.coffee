@@ -38,6 +38,7 @@ exports.modules = [
   "quadratischeGleichung"
   "nullStellen"
   "polynomialDivision"
+  "test"
 ]
 
 exports.problemDefinitions =
@@ -45,11 +46,11 @@ exports.problemDefinitions =
     title : "1 x 1"
     description : "Multiplikation und Division mit Ganzen Zahlen"
     problems : [
-      levels : [1..5]
+      levels : [1..4]
       generator : einXeinsGenerator.multiplikation
     ,
-      levels : [3..5]
-      levelOffset : -2
+      levels : [2..4]
+      levelOffset : -1
       generator : einXeinsGenerator.division
     ]
   bruch1 :
