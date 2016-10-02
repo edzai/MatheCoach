@@ -8,6 +8,7 @@ require "/imports/ui/userSettings/userSettings.coffee"
 require "/imports/ui/mentorOverview/mentorOverview.coffee"
 require "/imports/ui/studentPage/studentPage.coffee"
 require "/imports/ui/help/help.coffee"
+require "/imports/ui/adminPanel/adminPanel.coffee"
 
 
 FlowRouter.route "/",
@@ -57,6 +58,12 @@ FlowRouter.route "/help",
   action : ->
     BlazeLayout.render "layout",
       main : "help"
+
+FlowRouter.route "/admin-panel",
+  name : "adminPanel"
+  action : ->
+    BlazeLayout.render "layout",
+      main : "adminPanel"
 
 # FlowRouter.route "/play/:id",
 #   name : "play"

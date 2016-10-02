@@ -73,15 +73,23 @@ if Meteor.isServer
     else
       Submissions.find userId : @userId
 
-  Meteor.publishComposite "studentSubmissions", (userId) ->
+  Meteor.publishComposite "studentSubmissions", ->
     find : ->
       Meteor.users.find
-        _id : userId
+        _id : @userId
         "profile.isMentor" : true
+      ,
+        fields :
+          username : 1
+          profile : 1
     children : [
       find : (mentor) ->
         Meteor.users.find
           "profile.mentorId" : mentor._id
+        ,
+          fields :
+            username : 1
+            profile : 1
       children : [
         find : (student) ->
           Submissions.find userId : student._id
@@ -90,5 +98,4 @@ if Meteor.isServer
 
 if Meteor.isClient
   Meteor.subscribe "userSubmissions"
-  Tracker.autorun ->
-    Meteor.subscribe "studentSubmissions", Meteor.userId()
+  Meteor.subscribe "studentSubmissions"

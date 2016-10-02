@@ -80,7 +80,20 @@ exports.updateUserProfile = new ValidatedMethod
 
 if Meteor.isServer
   Meteor.publish "mentorData", ->
-    Meteor.users.find "profile.isMentor" : true
+    Meteor.users.find
+      "profile.isMentor" : true
+    ,
+      fields :
+        username : 1
+        profile : 1
+
+  Meteor.publishComposite "allUserData", ->
+    find : ->
+      if Roles.userIsInRole @userId, "admin"
+        Meteor.users.find()
 
 if Meteor.isClient
   Meteor.subscribe "mentorData"
+  Tracker.autorun ->
+    if Roles.userIsInRole @Meteor.userId(), "admin"
+      Meteor.subscribe "allUserData"

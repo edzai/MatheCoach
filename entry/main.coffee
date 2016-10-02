@@ -9,3 +9,9 @@ if Meteor.isClient
   { Accounts } = require "meteor/accounts-base"
   Accounts.ui.config
     passwordSignupFields : "USERNAME_ONLY"
+
+if Meteor.isServer
+  Meteor.startup ->
+    admin = Meteor.users.findOne username : "admin"
+    if admin?
+      Roles.addUsersToRoles admin._id, ["admin"]

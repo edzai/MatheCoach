@@ -1,0 +1,24 @@
+template(name="adminPanel")
+  unless isInRole "admin"
+    .ui.text.container.segment
+      h1.red.header Zugriff Verboten
+      p Nur der Systemadministrator hat Zugriff auf diese Seite.
+  else
+    .ui.text.container
+      h1.header Admin-Panel
+      h2.header Benutzer
+      .ui.segment
+        .ui.relaxed.divided.list
+          each users
+            +adminUserDisplay
+          
+template(name="adminUserDisplay")
+  .item
+    .content
+      .header #{profile.firstName} #{profile.lastName} (#{username})
+      .description
+        |createdAt: #{createdAt} <br>
+        |lastActive : #{profile.lastActive} <br>
+        |isMentor : #{profile.isMentor} <br>
+      
+  
