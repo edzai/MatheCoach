@@ -78,6 +78,42 @@ exports.updateUserProfile = new ValidatedMethod
       $set :
         profile : profile
 
+exports.deleteUser = new ValidatedMethod
+  name : "deleteUser"
+  validate :
+    new SimpleSchema
+      id :
+        type : String
+    .validator()
+  run : ({id}) ->
+    unless @userId
+      throw new Meteor.Error "not logged-in"
+    unless Roles.userIsInRole @userId, "admin"
+      throw new Meteor.Error "not admin"
+    submissionsRemoved = Submissions.remove userId : id
+    usersRemoved = Meteor.users.remove _id : id
+    if Meteor.isServer
+      console.log "delete user: #{id}"
+      console.log "#{submissionsRemoved} submissions removed."
+      console.log "#{usersRemoved} user removed."
+
+exports.deleteSubmissions = new ValidatedMethod
+  name : "deleteSubmissions"
+  validate :
+    new SimpleSchema
+      userId :
+        type : String
+    .validator()
+  run : ({userId}) ->
+    unless @userId
+      throw new Meteor.Error "not logged-in"
+    unless Roles.userIsInRole @userId, "admin"
+      throw new Meteor.Error "not admin"
+    submissionsRemoved = Submissions.remove userId : userId
+    if Meteor.isServer
+      console.log "delete all submissions for user: #{userId}"
+      console.log "#{submissionsRemoved} submissions removed."
+
 if Meteor.isServer
   Meteor.publish "mentorData", ->
     Meteor.users.find

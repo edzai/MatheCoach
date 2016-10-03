@@ -1,4 +1,5 @@
 require "./adminPanel.jade"
+{ deleteUser, deleteSubmissions } = require "/imports/api/users.coffee"
 
 Template.adminPanel.viewmodel
   users : ->
@@ -7,3 +8,14 @@ Template.adminPanel.viewmodel
         "profile.lastName" : 1
         "profile.firstName" : 1
         "username" : 1
+
+Template.adminUserDisplay.viewmodel
+  deleteUser : ->
+    if @username() is "admin"
+      alert "admin account kann nicht gelöscht werden"
+    else
+      if confirm "Benutzer #{@username()} wirklich löschen?"
+        deleteUser.call id : @_id()
+  deleteSubmissions : ->
+    if confirm "Alle submissions von #{@username()} wirklich löschen?"
+      deleteSubmissions.call userId : @_id()

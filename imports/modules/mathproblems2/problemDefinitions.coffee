@@ -179,7 +179,8 @@ exports.problemDefinitions =
     ]
   quadratischeGleichung :
     title : "Quadratische Gleichungen"
-    description : "Einfache Quadratische Gleichungen Lösen (z.B. mit der pq-Formel)"
+    description :
+      "Einfache Quadratische Gleichungen Lösen (z.B. mit der pq-Formel)"
     problems : [
       levels : [1..5]
       generator : quadraticEquationGenerator.intsOnly
@@ -207,7 +208,8 @@ exports.problemDefinitions =
     ]
   nullStellen :
     title : "Nullstellen Ganzrationaler Funktionen"
-    description : "pq-Formel, Substitution und teilweise factorisierte Polynome."
+    description :
+      "pq-Formel, Substitution und teilweise factorisierte Polynome."
     problems : [
       levels : [1..4]
       generator : nullStellenGenerator.pq
