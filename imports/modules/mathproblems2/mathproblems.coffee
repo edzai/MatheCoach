@@ -53,16 +53,17 @@ class Problem
     @answerPreprocessor ?= defaultAnswerPreprocessor
 
   checkAnswer : (answerString) ->
-    answers =
-      @answerPreprocessor(answerString)
-      .split(",")
-      .map (str) -> nerdamer(str).text "fractions"
+    arrayify = (inputString) ->
+      inputString
+      .split ","
+      .map (str) ->
+        unless "=" in str.split("")
+          nerdamer(str).text "fractions"
+        else
+          str
       .sort()
-    solutions =
-      @solution
-      .split(",")
-      .map (str) -> nerdamer(str).text "fractions"
-      .sort()
+    answers = arrayify @answerPreprocessor(answerString)
+    solutions = arrayify @solution
     pass = true
     passTextsRequired = []
     passTextsOptional = []
