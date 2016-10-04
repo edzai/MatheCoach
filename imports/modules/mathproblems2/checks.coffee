@@ -95,13 +95,17 @@ exports.Check =
       re = ///
         ^
         (
-          [-]?
-          ((\d+)|(\d?\s?\w+))
-          \^
+          ([-]?\d+)
+          |
           (
-            ([-]?\d+)
-            |
-            ([-]?\([^\(\)]+\))
+            [-]?
+            ((\d+)|(\d?\s?\w+))
+            \^
+            (
+              ([-]?\d+)
+              |
+              ([-]?\([^\(\)]+\))
+            )
           )
         )
         $
@@ -109,4 +113,5 @@ exports.Check =
       re.test answer
     required : true
     passText : undefined
-    failText : "Das Ergebnis muss eine einzelne Potenz sein."
+    failText :
+      "Das Ergebnis muss eine einzelne Potenz oder eine einzelne Zahl sein."
