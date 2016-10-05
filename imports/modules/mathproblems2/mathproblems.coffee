@@ -58,10 +58,15 @@ class Problem
       .split ","
       .map (str) ->
         unless "=" in str.split("")
-          nerdamer(str).text "fractions" #this is causing issue #6
+          sortString : nerdamer(str).text "fractions"
+          answerString : str
         else
-          str
-      .sort()
+          [leftSide, rightSide] = str.split "="
+          sortString : nerdamer(leftSide).text "fractions"
+          answerString : rightSide
+      .sort (a,b) ->
+        if a.sortString < b.sortString then -1 else 1
+      .map (obj) -> obj.answerString
     answers = arrayify @answerPreprocessor(answerString)
     solutions = arrayify @solution
     pass = true
@@ -73,7 +78,6 @@ class Problem
       pass = false
       failTextsRequired = ["Die Anzahl der Lösungen stimmt nicht."]
     else
-      debugger
       for solution, i in solutions
         if "=" in solution.split ""
           solution = solution.split("=")[1]
