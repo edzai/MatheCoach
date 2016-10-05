@@ -22,8 +22,8 @@ require "/imports/modules/nerdamer/Solve.js"
   require "./problemGenerators/quadraticEquations.coffee"
 { nullStellenGenerator } =
   require "./problemGenerators/nullstellen.coffee"
-{ someModule } =
-  require "./problemGenerators/some.coffee"
+# { someModule } =
+#   require "./problemGenerators/some.coffee"
 
 exports.modules = [
   "einXeins"
@@ -38,11 +38,11 @@ exports.modules = [
   "quadratischeGleichung"
   "nullStellen"
   "polynomialDivision"
-  "someModule"
+  # "someModule"
 ]
 
 exports.problemDefinitions =
-  someModule : someModule
+  # someModule : someModule
   einXeins :
     title : "1 x 1"
     description : "Multiplikation und Division mit Ganzen Zahlen"
