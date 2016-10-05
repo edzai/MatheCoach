@@ -58,7 +58,7 @@ class Problem
       .split ","
       .map (str) ->
         unless "=" in str.split("")
-          nerdamer(str).text "fractions"
+          nerdamer(str).text "fractions" #this is causing issue #6
         else
           str
       .sort()
@@ -73,6 +73,7 @@ class Problem
       pass = false
       failTextsRequired = ["Die Anzahl der Lösungen stimmt nicht."]
     else
+      debugger
       for solution, i in solutions
         if "=" in solution.split ""
           solution = solution.split("=")[1]

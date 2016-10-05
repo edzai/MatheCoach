@@ -21,7 +21,7 @@ math = require "../../../node_modules/mathjs"
 # result = nerdamer.solveEquations(expandedEquation, "x").toString()
 # resultArray = result.split(",").sort()
 # console.log resultArray
-console.log nerdamer.solveEquations(['x+y=1', '2x=6', '4z+y=6']).toString()
+# console.log nerdamer.solveEquations(['x+y=1', '2x=6', '4z+y=6']).toString()
 console.log(nerdamer.solveEquations("x+1=2", "x").toString())
-console.log(nerdamer("x=2").text("fractions"))
+console.log(nerdamer("x=1").text("fractions"))
 console.log(nerdamer.solveEquations("x+1=2", "x").toString())
