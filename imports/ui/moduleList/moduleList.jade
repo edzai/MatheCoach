@@ -8,6 +8,8 @@ template(name="moduleList")
       
 template(name="moduleListItem")
   .item($b="click : gotoModule")
+    +moduleScoreDisplay(moduleKey=key userId=userId)
     .content
       .header #{title}
       .description #{description}
+      

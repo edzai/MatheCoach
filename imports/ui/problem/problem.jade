@@ -1,14 +1,12 @@
 template(name="problem")
   .ui.text.container
     .ui.grid
-      .ten.wide.column
+      .nine.wide.column
         h2.header($b="text : title")
-      .six.wide.right.aligned.column
-        .ui.blue.label Level #{currentLevel}
+      .seven.wide.right.aligned.column
+        .ui.blue.circular.label Level #{currentLevel}
         if currentUser
-          .ui.red.label
-            i.yellow.star.icon
-            | #{currentPerc}
+          +moduleScoreDisplay(moduleKey=moduleKey userId=userId)
     .ui.segment
       h3.header($b="text : description")
       +mathjax

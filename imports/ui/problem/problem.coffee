@@ -1,6 +1,6 @@
 require "/imports/ui/ui-slider.css"
 require "./problem.jade"
-require "/imports/ui/moduleScoresDisplay/moduleScoresDisplay.coffee"
+require "/imports/ui/moduleScoreDisplay/moduleScoreDisplay.coffee"
 
 _ = require "lodash"
 
@@ -18,13 +18,20 @@ _ = require "lodash"
   require "/imports/api/submissions.coffee"
 
 Template.problem.viewmodel
+  share : "reactiveTimer"
   moduleKey : -> FlowRouter.getParam "key"
+  userId : -> Meteor.userId()
   problem : {}
+  threeDaysAgo : ->
+    @tick()
+    moment().subtract(3, "days").toDate()
   levelTally : ->
     new Tally
       userId : Meteor.userId()
       moduleKey : @moduleKey()
       level : @currentLevel()
+      date :
+        $gt : @threeDaysAgo()
   title : -> @problem()?.title
   maxLevel : -> @problem().maxLevel
   minLevel : -> @problem().minLevel
@@ -116,7 +123,6 @@ Template.problem.viewmodel
   onCreated : ->
     @problem new Problem(@moduleKey(), @newLevel())
     @newLevel @currentLevel()
-  area51 : -> @moduleKey() is "test"
   harder : ->
     @newLevel @currentLevel() + 1
     @newProblem()

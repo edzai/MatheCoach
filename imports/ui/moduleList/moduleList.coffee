@@ -2,7 +2,7 @@ require "./moduleList.jade"
 { getModulesList } =
   require "/imports/modules/mathproblems2/getModulesList.coffee"
 
-require "/imports/ui/moduleScoresDisplay/moduleScoresDisplay.coffee"
+require "/imports/ui/moduleScoreDisplay/moduleScoreDisplay.coffee"
 
 Template.moduleList.viewmodel
   modules : getModulesList()
@@ -11,3 +11,4 @@ Template.moduleList.viewmodel
 Template.moduleListItem.viewmodel
   gotoModule : ->
     FlowRouter.go "/modul/#{@key()}"
+  userId : -> Meteor.userId()

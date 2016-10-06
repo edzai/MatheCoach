@@ -28,6 +28,13 @@ class Tally
     _(@docs())
     .takeWhile (doc) -> doc.answerCorrect
     .value().length
+  score : ->
+    _(@docs())
+    .filter (doc) -> doc.answerCorrect
+    .map (doc) ->
+      t = moment().diff(moment(doc.date))/moment.duration(2, "days")
+      _.round doc.level * 100 * 2 ** -t
+    .sum()
 
 
 exports.Tally = Tally
