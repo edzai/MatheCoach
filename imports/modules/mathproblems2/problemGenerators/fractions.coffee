@@ -38,12 +38,15 @@ exports.fractionGenerator =
     hint : "Die Brüche sind schon gleichnamig."
 
   strichUngleichnamig : (level = 1) ->
-    maxN = switch level
-      when 1 then 9
-      when 2 then 20
-      when 3 then 50
-      else 100
-    [a, b, c, d] = rnd.uniqueInts2Plus maxN
+    switch level
+      when 1
+        [a, b, c, d] = rnd.uniqueInts2Plus 9
+      when 2
+        [a, b] = rnd.uniqueIntsPlus 20
+        [c, d] = rnd.uniqueInts2Plus 9
+      else
+        [a, b] = rnd.uniqueIntsPlus 20
+        [c, d] = rnd.uniqueInts2Plus 20
     op = rnd.opStrich()
     if op is "+"
       opStr = "Addiere"

@@ -19,7 +19,8 @@ Template.studentListDisplay.viewmodel
   name : -> "#{@profile().firstName} #{@profile().lastName}"
   timeAgo : ->
     @tick()
-    moment(@profile().lastActive).fromNow()
+    date = moment(@profile().lastActive)
+    "#{date.calendar()} (#{date.fromNow()})"
   userColor : ->
     @tick()
     moreThanDaysAgo = (days) =>

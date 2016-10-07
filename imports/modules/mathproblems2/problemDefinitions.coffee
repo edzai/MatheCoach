@@ -61,21 +61,21 @@ exports.problemDefinitions =
       levels : [1..2]
       generator : fractionGenerator.strichGleichnamig
     ,
-      levels : [2..4]
-      levelOffset : -1
+      levels : [2..3]
       generator : fractionGenerator.strichUngleichnamig
     ]
   bruch2 :
     title : "Bruchrechnen 2"
     description : "Multiplikation von Brüchen"
     problems : [
-      levels : [1..2]
+      levels : [1]
       generator : fractionGenerator.malGanzeZahl
     ,
       levels : [1..3]
       generator : fractionGenerator.malBruchKuerzbar
     ,
       levels : [2..3]
+      levelOffset : -1
       generator : fractionGenerator.malKreuzKuerzbar
     ]
   bruch3 :

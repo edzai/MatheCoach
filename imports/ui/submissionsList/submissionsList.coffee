@@ -9,7 +9,8 @@ Template.submissionDisplay.viewmodel
   share : "reactiveTimer"
   timeAgo : ->
     @tick()
-    moment(@date()).fromNow()
+    date = moment(@date())
+    "#{date.calendar()} (#{date.fromNow()})"
   moduleTitle : -> problemDefinitions[@moduleKey()].title
   answerSegmentClass : ->
     if @answerCorrect() then "green" else "red"
