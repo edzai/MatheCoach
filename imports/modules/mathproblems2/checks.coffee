@@ -33,6 +33,12 @@ noReducableFractions = (answer, solution) ->
   not reducableFractions
 
 exports.Check =
+  exactFit :
+    pass : (answer, solution) -> answer is solution
+    required : true
+    failText : "Das Ergebnis muss bei dieser Aufgabe \
+      exakt mit der Lösung übereinstimmen."
+
   equivalent :
     pass : (answer, solution) ->
       answer isnt "" and

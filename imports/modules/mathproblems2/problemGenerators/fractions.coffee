@@ -18,7 +18,73 @@ mustReduce = [
   Check.noReducableFractionsRequired
 ]
 
+exactFit = [
+  Check.equivalent
+  Check.exactFit
+]
+
 exports.fractionGenerator =
+  kuerzen : (level = 1) ->
+    switch level
+      when 1
+        maxAB = 9
+        maxC = 9
+      when 2
+        maxAB = 20
+        maxC = 9
+      else
+        maxAB = 20
+        maxC = 20
+    [a, b] = rnd.uniqueInts2Plus maxAB
+    c = rnd.int maxC
+    #return
+    problem : "#{a*c}/#{b*c}"
+    checks : mustReduce
+    description : "Kürze den Bruch soweit wie möglich."
+
+  erweitern : (level = 1) ->
+    switch level
+      when 1
+        maxAB = 9
+        maxC = 9
+      when 2
+        maxAB = 20
+        maxC = 9
+      else
+        maxAB = 20
+        maxC = 20
+    [a, b] = rnd.uniqueInts2Plus maxAB
+    c = rnd.int2Plus maxC
+    #return
+    problem : "#{a}/#{b}"
+    checks : exactFit
+    solution : "#{a*c}/#{b*c}"
+    description : "Erweitere den Bruch mit der Zahl #{c}."
+
+  erweitern2 : (level = 1) ->
+    switch level
+      when 1
+        maxAB = 9
+        maxN = 9
+      when 2
+        maxAB = 20
+        maxN = 9
+      else
+        maxAB = 20
+        maxN = 20
+    [a, b] = rnd.uniqueInts2Plus maxAB
+    n = rnd.int2Plus maxN
+    c = a * n
+    solution = b * n
+    d = "\\square"
+    [bool1, bool2] = rnd.bools()
+    if bool1 then [a, b, c, d] = [c, d, a, b]
+    if bool2 then [a, b, c, d] = [b, a, d, c]
+    #return
+    problem : "not used"
+    problemTeX : "\\frac{#{a}}{#{b}}=\\frac{#{c}}{#{d}}"
+    solution : "#{solution}"
+    description : "Gibt die fehlende Zahl an."
 
   strichGleichnamig : (level = 1) ->
     [a, b, c] = if level is 1

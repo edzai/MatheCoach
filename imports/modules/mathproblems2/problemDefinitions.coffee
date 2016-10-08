@@ -27,6 +27,7 @@ require "/imports/modules/nerdamer/Solve.js"
 
 exports.modules = [
   "einXeins"
+  "bruch0"
   "bruch1"
   "bruch2"
   "bruch3"
@@ -53,6 +54,20 @@ exports.problemDefinitions =
       levels : [2..4]
       levelOffset : -1
       generator : einXeinsGenerator.division
+    ]
+  bruch0 :
+    title : "Bruchrechnen 0"
+    description : "Kürzen und Erweitern von Brüchen"
+    problems : [
+      levels : [1..4]
+      generator : fractionGenerator.kuerzen
+    ,
+      levels : [1..4]
+      generator : fractionGenerator.erweitern
+    ,
+      levels : [2..4]
+      levelOffset : -1
+      generator : fractionGenerator.erweitern2
     ]
   bruch1 :
     title : "Bruchrechnen 1"
@@ -236,5 +251,5 @@ exports.problemDefinitions =
       an dem ich gerade rumprogrammiere"
     problems : [
       levels : [1..5]
-      generator : nullStellenGenerator.test
+      generator : fractionGenerator.test
     ]
