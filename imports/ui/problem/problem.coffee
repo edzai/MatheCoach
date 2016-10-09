@@ -80,6 +80,7 @@ Template.problem.viewmodel
           moduleKey : @moduleKey()
           level : @currentLevel()
           answerCorrect : @answerCorrect()
+          description : @description()
           problem : @problemTeX()
           answer : @answer()
           date : new Date()

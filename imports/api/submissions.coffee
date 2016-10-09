@@ -17,6 +17,8 @@ Submissions.schema = new SimpleSchema
     type : Boolean
   date :
     type : Date
+  description :
+    type : String
   problem :
     type : String
   answer :
@@ -49,6 +51,8 @@ exports.insertSubmission = new ValidatedMethod
         type : Number
       answerCorrect :
         type : Boolean
+      description :
+        type : String
       problem :
         type : String
       answer :

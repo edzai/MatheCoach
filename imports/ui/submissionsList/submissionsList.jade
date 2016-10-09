@@ -10,6 +10,7 @@ template(name="submissionDisplay")
         .header #{moduleTitle}, Level #{level}
         .description($b="text : timeAgo")
         .ui.segment
+          h3.ui.header #{description}
           +mathjax
             div $$#{problem}$$
         .ui.center.aligned.inverted.segment($b="class : answerSegmentClass") #{answer}
