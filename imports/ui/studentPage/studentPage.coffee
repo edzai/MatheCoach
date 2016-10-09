@@ -1,4 +1,5 @@
 require "./studentPage.jade"
+require "/imports/ui/activityGraph/activityGraph.coffee"
 require "/imports/ui/submissionsList/submissionsList.coffee"
 
 Template.studentPage.viewmodel

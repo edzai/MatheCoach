@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "bcrypt": "^0.8.7",
+    "chartist": "^0.9.8",
     "lodash": "^4.14.1",
     "mathjax": "^2.6.1",
     "mathjs": "^3.3.0",

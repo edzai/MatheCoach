@@ -5,6 +5,7 @@ template(name="studentPage")
 template(name="studentPageDisplay")
   .ui.text.container
     h1.header #{name}
+    +activityGraph(userId=_id)
     .ui.list
       each submissions
         +submissionDisplay
