@@ -4,20 +4,23 @@
 { Submissions } = require "./submissions.coffee"
 
 userProfileSchema = new SimpleSchema
-  isMentor :
-    type : Boolean
-    optional : true
-  mentorId :
-    type : String
-    optional : true
   firstName :
     type : String
     optional : true
   lastName :
     type : String
     optional : true
+  isMentor :
+    type : Boolean
+    optional : true
+  mentorId :
+    type : String
+    optional : true
   lastActive :
     type : Date
+    optional : true
+  useKaTeX :
+    type : Boolean
     optional : true
 exports.userProfileSchema = userProfileSchema
 

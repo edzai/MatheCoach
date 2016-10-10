@@ -11,7 +11,8 @@ template(name="submissionDisplay")
         .description($b="text : timeAgo")
         .ui.segment
           h3.ui.header #{description}
-          +mathjax
-            div $$#{problem}$$
+          +teXDisplay(teX=problem)
+          //- +mathjax
+          //-   div $$#{problem}$$
         .ui.center.aligned.inverted.segment($b="class : answerSegmentClass") #{answer}
       

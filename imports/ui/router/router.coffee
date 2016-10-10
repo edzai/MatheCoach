@@ -1,4 +1,5 @@
 require "./layout.jade"
+require "/imports/ui/teXDisplay/teXDisplay.coffee"
 require "/imports/ui/navbar/navbar.coffee"
 require "/imports/ui/moduleList/moduleList.coffee"
 require "/imports/ui/problem/problem.coffee"

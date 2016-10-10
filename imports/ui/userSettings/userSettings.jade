@@ -13,7 +13,7 @@ template(name="userSettings")
     h1.header Einstellungen
     .ui.clearing.segment
       form.ui.form
-        h4.ui.dividing.header Persönliche Daten
+        h3.ui.dividing.header Persönliche Daten
         .field
           label Name
           .two.fields
@@ -21,7 +21,7 @@ template(name="userSettings")
               input($b="value : firstName" type="text" placeholder="Vorname")
             .field
               input($b="value : lastName" type="text" placeholder="Nachname")
-        h4.ui.dividing.header Lehrer/Mentor
+        h3.ui.dividing.header Lehrer/Mentor
         .field
           label Mein Lehrer/Mentor ist:
           select.ui.dropdown($b="value : mentorId, ref : mentorSelect, options : mentors, optionsValue : id, optionsText : name")    
@@ -30,5 +30,12 @@ template(name="userSettings")
             input($b="check : isMentor" type="checkbox")
             label Ich möchte selbst als Lehrer/Mentor aufgelistet werden.
         p Hinweis: Als normaler Benutzer dieser Seite bist Du für andere normale Benutzer völlig unsichtbar. Als eingegragener Lehrer/Mentor erscheinst Du in der Auswahlliste auf dieser Seite. Mentoren erhalten eine Übersicht über die Aktivitäten ihrer Schüler.
+        
+        h3.ui.dividing.header Technische Einstellungen
+        .field
+          .ui.checkbox
+            input($b="check : useKaTeX" type="checkbox")
+            label KaTeX anstelle von MathJax benutzen
+        p Hinweis: MathJax und KaTeX sind zwei Javascript Bibliotheken, die aus einfachen Texteingaben schöne Mathematische Formeln machen. KaTeX arbeitet wesentlich schneller als MathJax, fabriziert aber (zumindest auf manchen Webbrowsern) manchmal kein wirklich schönes Ergebnis. Falls MathJax (z.B. bei langsamen Netzwerkverbindungen) zu langsam ist, kann KaTeX dennoch die bessere Wahl sein.
+        
         button.right.floated.ui.button($b="click : save, enable : dataChanged") Speichern
-          

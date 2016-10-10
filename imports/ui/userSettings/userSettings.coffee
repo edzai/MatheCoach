@@ -28,12 +28,14 @@ Template.userSettings.viewmodel
       lastName : @lastName()
       isMentor : @isMentor()
       mentorId : @mentorId()
+      useKaTeX : @useKaTeX()
   dataChanged : ->
     if profile = Meteor.user()?.profile
       @firstName() isnt profile.firstName or
       @lastName() isnt profile.lastName or
       @isMentor() isnt profile.isMentor or
-      @mentorId() isnt profile.mentorId
+      @mentorId() isnt profile.mentorId or
+      @useKaTeX() isnt profile.useKaTeX
   autorun : -> #handle semantic-ui dropdown
     @mentorSelect.dropdown "set selected", @mentorId()
     @mentorSelect.dropdown "set text",

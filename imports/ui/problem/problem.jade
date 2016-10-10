@@ -9,8 +9,9 @@ template(name="problem")
           +moduleScoreDisplay(moduleKey=moduleKey userId=userId)
     .ui.segment
       h3.header($b="text : description")
-      +mathjax
-        div $$#{problemTeX}$$
+      +teXDisplay(teX=problemTeX)
+      //- +mathjax
+      //-   div $$#{problemTeX}$$
       p($b="text : hint")
     .ui.segment
       .ui.grid
@@ -19,8 +20,9 @@ template(name="problem")
         .four.wide.right.aligned.column
           i.icon($b="toggle : showPreview, class : previewIconClass")
       if showPreview
-        +mathjax
-          p $$#{preview}$$
+        +teXDisplay(teX=preview)
+        //- +mathjax
+        //-   p $$#{preview}$$
       .ui.fluid.input
         input($b="value : answer, enter : checkAnswer, focus : focusOnAnswer" placeholder="Deine Antwort (als Bruch oder Term)" type="text")
     if answered
@@ -45,8 +47,9 @@ template(name="problem")
             h3.header($b="text : this")
       .ui.segment
         h3.header Lösung:
-        +mathjax
-          div $$#{solutionTeX}$$
+        +teXDisplay(teX=solutionTeX)
+        //- +mathjax
+        //-   div $$#{solutionTeX}$$
            
     button.ui.left.floated.teal.icon.button($b="click : gotoModulesList")
       i.arrow.left.icon
