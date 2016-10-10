@@ -54,6 +54,12 @@ FlowRouter.route "/mentor/student/:studentId",
     BlazeLayout.render "layout",
       main : "studentPage"
 
+FlowRouter.route "/my-results",
+  name : "studentOwnPage"
+  action : ->
+    BlazeLayout.render "layout",
+      main : "studentOwnPage"
+
 FlowRouter.route "/help",
   name : "help"
   action : ->

@@ -9,6 +9,8 @@ template(name="navbar")
       //a.item(class=isActiveRoute('calculator') href="/rechner")
         | Test
       if currentUser
+        a.item(class=isActiveRoute('studentOwnPage') href="/my-results")
+          i.large.bar.graph.icon
         if isInRole "admin"
           a.item(class=isActiveRoute('adminPanel')
             href="/admin-panel")

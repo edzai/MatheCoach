@@ -68,6 +68,13 @@ Meteor.users.helpers
     ,
       sort :
         date : -1
+  submissionsPage : (page = 1) ->
+    Submissions.find
+      userId : @_id()
+    ,
+      sort :
+        date : -1
+      limit : 10*page
 
 exports.updateUserProfile = new ValidatedMethod
   name : "updateUserProfile"

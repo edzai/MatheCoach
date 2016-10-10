@@ -2,10 +2,15 @@ template(name="studentPage")
   with student
     +studentPageDisplay
     
+template(name="studentOwnPage")
+  with student
+    +studentPageDisplay
+    
 template(name="studentPageDisplay")
   .ui.text.container
     h1.header #{name}
     +activityGraph(userId=_id)
     .ui.list
-      each submissions
+      each submissionsPage(page)
         +submissionDisplay
+    button.ui.right.floated.button($b="click : showMore") Mehr
