@@ -23,7 +23,7 @@ exactFit = [
   Check.exactFit
 ]
 
-exports.fractionGenerator =
+exports.fractionGenerator = fractionGenerator =
   kuerzen : (level = 1) ->
     switch level
       when 1
@@ -336,3 +336,82 @@ exports.fractionGenerator =
     checks : if level > 1 then mustReduce else defaultFractionChecks
     description : "Löse die Bruchrechenaufgabe:"
     hint : "Multipliziere mit dem Kehrwert."
+
+exports.fractions =
+  bruch0 :
+    title : "Bruchrechnen 0"
+    description : "Kürzen und Erweitern von Brüchen"
+    problems : [
+      levels : [1..4]
+      generator : fractionGenerator.kuerzen
+    ,
+      levels : [1..4]
+      generator : fractionGenerator.erweitern
+    ,
+      levels : [2..4]
+      levelOffset : -1
+      generator : fractionGenerator.erweitern2
+    ]
+  bruch1 :
+    title : "Bruchrechnen 1"
+    description : "Addition und Subtraktion von Brüchen"
+    problems : [
+      levels : [1..2]
+      generator : fractionGenerator.strichGleichnamig
+    ,
+      levels : [2..3]
+      generator : fractionGenerator.strichUngleichnamig
+    ]
+  bruch2 :
+    title : "Bruchrechnen 2"
+    description : "Multiplikation von Brüchen"
+    problems : [
+      levels : [1]
+      generator : fractionGenerator.malGanzeZahl
+    ,
+      levels : [1..3]
+      generator : fractionGenerator.malBruchKuerzbar
+    ,
+      levels : [2..3]
+      levelOffset : -1
+      generator : fractionGenerator.malKreuzKuerzbar
+    ]
+  bruch3 :
+    title : "Bruchrechnen 3"
+    description : "Division mit Brüchen"
+    problems : [
+      levels : [1..2]
+      generator : fractionGenerator.bruchDurchZahl
+    ,
+      levels : [2..3]
+      levelOffset : -1
+      generator : fractionGenerator.bruchDurchZahl2
+    ,
+      levels : [2..4]
+      levelOffset : -1
+      generator : fractionGenerator.bruchDurchBruch
+  ]
+  bruch4 :
+    title : "Bruchrechnen"
+    description : "Vermischte Aufgaben zur Bruchrechnung"
+    problems : [
+      levels : [1..2]
+      generator : fractionGenerator.strichGleichnamig
+    ,
+      levels : [1..3]
+      generator : fractionGenerator.strichUngleichnamig
+    ,
+      levels : [1..2]
+      generator : fractionGenerator.malGanzeZahl
+    ,
+      levels : [1..3]
+      generator : fractionGenerator.malBruch
+    ,
+      levels : [2..4]
+      levelOffset : -1
+      generator : fractionGenerator.bruchDurchBruch
+    ,
+      levels : [4..5]
+      levelOffset : -3
+      generator : fractionGenerator.zusammenGesetzt
+    ]

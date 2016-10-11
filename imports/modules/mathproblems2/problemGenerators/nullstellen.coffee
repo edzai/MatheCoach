@@ -10,7 +10,7 @@ math = require "mathjs"
 
 {processEquation} = require "./quadraticEquations.coffee"
 
-exports.nullStellenGenerator =
+exports.nullStellenGenerator = nullStellenGenerator =
   pq : (level = 1) ->
     [a, b, c] = rnd.intsPlus(9)
     x = rnd.letter()
@@ -80,3 +80,20 @@ exports.nullStellenGenerator =
     solutionTeX : "\\mathbb{L}=\\left\\{#{solution}\\right\\}"
     description : "Finde die Nullstellen:"
     hint : if level < 2 then "Substitution hilft." else null
+
+exports.nullstellen =
+  title : "Nullstellen Ganzrationaler Funktionen"
+  description :
+    "pq-Formel, Substitution und teilweise factorisierte Polynome."
+  problems : [
+    levels : [1..4]
+    generator : nullStellenGenerator.pq
+  ,
+    levels : [2..5]
+    levelOffset : -1
+    generator : nullStellenGenerator.substitution
+  ,
+    levels : [3..5]
+    levelOffset : -2
+    generator : nullStellenGenerator.factorized
+  ]

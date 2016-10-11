@@ -13,8 +13,7 @@ defaultPowerCheck = [
   Check.isSinglePower
 ]
 
-exports.powersGenerator =
-
+exports.powersGenerator = powersGenerator =
   exp1Num : (level = 1) ->
     [n, m] = rnd.intsPlus(9)
     switch level
@@ -107,3 +106,26 @@ exports.powersGenerator =
       else "\\frac{\\sqrt#{magStrN}{#{x}}}{\\sqrt#{magStrM}{#{x}}}"
     description : "Wende das 1. Potenzgesetz an und \
       schreibe das Ergebnis als Potenz:"
+
+exports.powers =
+  potenz1 :
+    title : "Potenzen und Wurzeln 1"
+    description : "Aufgaben zum 1. Potenzgesetz"
+    problems : [
+      levels : [1..3]
+      generator : powersGenerator.exp1Num
+    ,
+      levels : [2..4]
+      levelOffset : -1
+      generator : powersGenerator.exp1Var
+    ,
+      levels : [3..5]
+      levelOffset : -2
+      generator : powersGenerator.exp1NumQuotient
+    ,
+      levels : [4]
+      generator : powersGenerator.sqrtAsPower
+    ,
+      levels : [4..5]
+      generator : powersGenerator.sqrt1Num
+    ]

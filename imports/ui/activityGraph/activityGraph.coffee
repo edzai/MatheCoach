@@ -39,7 +39,6 @@ Template.activityGraph.viewmodel
     labels : labels
     series : [series1, series2]
   autorun : ->
-    console.log @chartData()
     new Chartist.Bar ".ct-chart", @chartData(),
       stackBars : true
       axisY :

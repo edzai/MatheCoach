@@ -20,8 +20,7 @@ zipper = (arrays) ->
     ).join ""
   ).join ""
 
-exports.expressionGenerator =
-
+exports.expressionGenerator = expressionGenerator =
   summeZusFass : (level = 1) ->
     n = Math.min 3, level
     v = rnd.uniqueLetters()
@@ -83,3 +82,23 @@ exports.expressionGenerator =
     solution : nerdamer("expand(#{problem})").text "fractions"
     description : "Multipliziere die Klammer aus:"
     checks : defaultExpressionCheck
+
+exports.expressions =
+  title : "Terme vereinfachen"
+  description : "Terme zusammenfassen, Ausklammern und Ausmultiplizieren"
+  problems : [
+    levels : [1..3]
+    generator : expressionGenerator.summeZusFass
+  ,
+    levels : [2..3]
+    levelOffset : -1
+    generator : expressionGenerator.summeZusFassExp
+  ,
+    levels : [3..5]
+    levelOffset : -2
+    generator : expressionGenerator.expandKlammer
+  ,
+    levels : [4..5]
+    levelOffset : -3
+    generator : expressionGenerator.expandKlammerKlammer
+  ]

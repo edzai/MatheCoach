@@ -10,7 +10,7 @@ math = require "mathjs"
 
 checks = [Check.equivalent, Check.isWholePositiveNumber]
 
-exports.einXeinsGenerator =
+exports.einXeinsGenerator = einXeinsGenerator =
   multiplikation : (level = 1) ->
     switch level
       when 1
@@ -41,3 +41,15 @@ exports.einXeinsGenerator =
     problemTeX : "#{a*b}\\div#{b}"
     description : "Teile durch die Ganze Zahl:"
     checks : checks
+
+exports.einXeins =
+  title : "1 x 1"
+  description : "Multiplikation und Division mit Ganzen Zahlen"
+  problems : [
+    levels : [1..4]
+    generator : einXeinsGenerator.multiplikation
+  ,
+    levels : [2..4]
+    levelOffset : -1
+    generator : einXeinsGenerator.division
+  ]

@@ -8,7 +8,7 @@ require "/imports/modules/nerdamer/Solve.js"
 
 math = require "mathjs"
 
-exports.linearEquationGenerator =
+exports.linearEquationGenerator = linearEquationGenerator =
 
   linGl1 : (level = 1) ->
     switch level
@@ -229,3 +229,47 @@ exports.linearEquationGenerator =
     problem : problem
     solution : "#{x}=" + nerdamer.solveEquations(polyProblem, x).toString()
     description : "Löse die Gleichung für #{x}:"
+
+exports.linearEquations =
+  lineareGleichung1 :
+    title : "Lineare Gleichungen 1"
+    description : "Einfache Lineare Gleichungen"
+    problems : [
+      levels : [1..2]
+      generator : linearEquationGenerator.linGl1
+    ,
+      levels : [1..2]
+      generator : linearEquationGenerator.linGl2
+    ,
+      levels : [2..3]
+      levelOffset : -1
+      generator : linearEquationGenerator.linGl3
+    ,
+      levels : [3..6]
+      levelOffset : -2
+      generator : linearEquationGenerator.linGl4
+    ,
+      levels : [4..6]
+      levelOffset : -3
+      generator : linearEquationGenerator.linGl5
+    ,
+      levels : [5..6]
+      levelOffset : -4
+      generator : linearEquationGenerator.linGl6
+    ,
+      levels : [5..6]
+      levelOffset : -4
+      generator : linearEquationGenerator.linGl7
+    ]
+  lineareGleichung2 :
+    title : "Lineare Gleichungen 2"
+    description : "Quadratische Gleichungen, bei denen der \
+      Quadratische Term wegfällt"
+    problems : [
+      levels : [1..2]
+      generator : linearEquationGenerator.linGl8
+    ,
+      levels : [2..3]
+      levelOffset : -1
+      generator : linearEquationGenerator.linGl9
+    ]

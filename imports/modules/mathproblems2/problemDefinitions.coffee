@@ -1,26 +1,18 @@
-{ Rnd } = require "./randomGenerators.coffee"
-rnd = new Rnd()
-
-{ re } = require "./RegExs.coffee"
-
-nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
-require "/imports/modules/nerdamer/Solve.js"
-
-{ fractionGenerator } =
+{ fractions } =
   require "./problemGenerators/fractions.coffee"
-{ linearEquationGenerator } =
+{ linearEquations } =
   require "./problemGenerators/linearEquations.coffee"
-{ powersGenerator } =
+{ powers } =
   require "./problemGenerators/powers.coffee"
-{ expressionGenerator } =
+{ expressions } =
   require "./problemGenerators/expressions.coffee"
-{ einXeinsGenerator } =
+{ einXeins } =
   require "./problemGenerators/einXeins.coffee"
-{ polynomialDivisionGenerator } =
+{ polynomialDivision} =
   require "./problemGenerators/polynomialDivision.coffee"
-{ quadraticEquationGenerator } =
+{ quadratischeGleichung } =
   require "./problemGenerators/quadraticEquations.coffee"
-{ nullStellenGenerator } =
+{ nullstellen } =
   require "./problemGenerators/nullstellen.coffee"
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
@@ -44,212 +36,24 @@ exports.modules = [
 
 exports.problemDefinitions =
   # someModule : someModule
-  einXeins :
-    title : "1 x 1"
-    description : "Multiplikation und Division mit Ganzen Zahlen"
-    problems : [
-      levels : [1..4]
-      generator : einXeinsGenerator.multiplikation
-    ,
-      levels : [2..4]
-      levelOffset : -1
-      generator : einXeinsGenerator.division
-    ]
-  bruch0 :
-    title : "Bruchrechnen 0"
-    description : "Kürzen und Erweitern von Brüchen"
-    problems : [
-      levels : [1..4]
-      generator : fractionGenerator.kuerzen
-    ,
-      levels : [1..4]
-      generator : fractionGenerator.erweitern
-    ,
-      levels : [2..4]
-      levelOffset : -1
-      generator : fractionGenerator.erweitern2
-    ]
-  bruch1 :
-    title : "Bruchrechnen 1"
-    description : "Addition und Subtraktion von Brüchen"
-    problems : [
-      levels : [1..2]
-      generator : fractionGenerator.strichGleichnamig
-    ,
-      levels : [2..3]
-      generator : fractionGenerator.strichUngleichnamig
-    ]
-  bruch2 :
-    title : "Bruchrechnen 2"
-    description : "Multiplikation von Brüchen"
-    problems : [
-      levels : [1]
-      generator : fractionGenerator.malGanzeZahl
-    ,
-      levels : [1..3]
-      generator : fractionGenerator.malBruchKuerzbar
-    ,
-      levels : [2..3]
-      levelOffset : -1
-      generator : fractionGenerator.malKreuzKuerzbar
-    ]
-  bruch3 :
-    title : "Bruchrechnen 3"
-    description : "Division mit Brüchen"
-    problems : [
-      levels : [1..2]
-      generator : fractionGenerator.bruchDurchZahl
-    ,
-      levels : [2..3]
-      levelOffset : -1
-      generator : fractionGenerator.bruchDurchZahl2
-    ,
-      levels : [2..4]
-      levelOffset : -1
-      generator : fractionGenerator.bruchDurchBruch
-  ]
-  bruch4 :
-    title : "Bruchrechnen"
-    description : "Vermischte Aufgaben zur Bruchrechnung"
-    problems : [
-      levels : [1..2]
-      generator : fractionGenerator.strichGleichnamig
-    ,
-      levels : [1..3]
-      generator : fractionGenerator.strichUngleichnamig
-    ,
-      levels : [1..2]
-      generator : fractionGenerator.malGanzeZahl
-    ,
-      levels : [1..3]
-      generator : fractionGenerator.malBruch
-    ,
-      levels : [2..4]
-      levelOffset : -1
-      generator : fractionGenerator.bruchDurchBruch
-    ,
-      levels : [4..5]
-      levelOffset : -3
-      generator : fractionGenerator.zusammenGesetzt
-    ]
-  terme1 :
-    title : "Terme vereinfachen"
-    description : "Terme zusammenfassen, Ausklammern und Ausmultiplizieren"
-    problems : [
-      levels : [1..3]
-      generator : expressionGenerator.summeZusFass
-    ,
-      levels : [2..3]
-      levelOffset : -1
-      generator : expressionGenerator.summeZusFassExp
-    ,
-      levels : [3..5]
-      levelOffset : -2
-      generator : expressionGenerator.expandKlammer
-    ,
-      levels : [4..5]
-      levelOffset : -3
-      generator : expressionGenerator.expandKlammerKlammer
-    ]
-  lineareGleichung1 :
-    title : "Lineare Gleichungen 1"
-    description : "Einfache Lineare Gleichungen"
-    problems : [
-      levels : [1..2]
-      generator : linearEquationGenerator.linGl1
-    ,
-      levels : [1..2]
-      generator : linearEquationGenerator.linGl2
-    ,
-      levels : [2..3]
-      levelOffset : -1
-      generator : linearEquationGenerator.linGl3
-    ,
-      levels : [3..6]
-      levelOffset : -2
-      generator : linearEquationGenerator.linGl4
-    ,
-      levels : [4..6]
-      levelOffset : -3
-      generator : linearEquationGenerator.linGl5
-    ,
-      levels : [5..6]
-      levelOffset : -4
-      generator : linearEquationGenerator.linGl6
-    ,
-      levels : [5..6]
-      levelOffset : -4
-      generator : linearEquationGenerator.linGl7
-    ]
-  lineareGleichung2 :
-    title : "Lineare Gleichungen 2"
-    description : "Quadratische Gleichungen, bei denen der \
-      Quadratische Term wegfällt"
-    problems : [
-      levels : [1..2]
-      generator : linearEquationGenerator.linGl8
-    ,
-      levels : [2..3]
-      levelOffset : -1
-      generator : linearEquationGenerator.linGl9
-    ]
-  quadratischeGleichung :
-    title : "Quadratische Gleichungen"
-    description :
-      "Einfache Quadratische Gleichungen Lösen (z.B. mit der pq-Formel)"
-    problems : [
-      levels : [1..5]
-      generator : quadraticEquationGenerator.intsOnly
-    ]
-  potenz1 :
-    title : "Potenzen und Wurzeln 1"
-    description : "Aufgaben zum 1. Potenzgesetz"
-    problems : [
-      levels : [1..3]
-      generator : powersGenerator.exp1Num
-    ,
-      levels : [2..4]
-      levelOffset : -1
-      generator : powersGenerator.exp1Var
-    ,
-      levels : [3..5]
-      levelOffset : -2
-      generator : powersGenerator.exp1NumQuotient
-    ,
-      levels : [4]
-      generator : powersGenerator.sqrtAsPower
-    ,
-      levels : [4..5]
-      generator : powersGenerator.sqrt1Num
-    ]
-  nullStellen :
-    title : "Nullstellen Ganzrationaler Funktionen"
-    description :
-      "pq-Formel, Substitution und teilweise factorisierte Polynome."
-    problems : [
-      levels : [1..4]
-      generator : nullStellenGenerator.pq
-    ,
-      levels : [2..5]
-      levelOffset : -1
-      generator : nullStellenGenerator.substitution
-    ,
-      levels : [3..5]
-      levelOffset : -2
-      generator : nullStellenGenerator.factorized
-    ]
-  polynomialDivision :
-    title : "Polynomdivision"
-    description : "Nicht so schlimm, wie es zunächst aussieht."
-    problems : [
-      levels : [1..5]
-      generator : polynomialDivisionGenerator.division
-    ]
-  test :
-    title : "Test"
-    description : "Testbereich für den Aufgabengenerator, \
-      an dem ich gerade rumprogrammiere"
-    problems : [
-      levels : [1..5]
-      generator : fractionGenerator.test
-    ]
+  einXeins : einXeins
+  bruch0 : fractions.bruch0
+  bruch1 : fractions.bruch1
+  bruch2 : fractions.bruch2
+  bruch3 : fractions.bruch3
+  bruch4 : fractions.bruch4
+  terme1 : expressions
+  lineareGleichung1 : linearEquations.lineareGleichung1
+  lineareGleichung2 : linearEquations.lineareGleichung2
+  quadratischeGleichung : quadratischeGleichung
+  potenz1 : powers.potenz1
+  nullStellen : nullstellen
+  polynomialDivision : polynomialDivision
+  # test :
+  #   title : "Test"
+  #   description : "Testbereich für den Aufgabengenerator, \
+  #     an dem ich gerade rumprogrammiere"
+  #   problems : [
+  #     levels : [1..5]
+  #     generator : fractionGenerator.test
+  #   ]
