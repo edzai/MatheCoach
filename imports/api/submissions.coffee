@@ -1,9 +1,7 @@
 { Mongo } = require "meteor/mongo"
 { Meteor } = require "meteor/meteor"
-{ Tracker } = require "meteor/tracker"
 
 require "./users.coffee"
-
 
 Submissions = new Mongo.Collection "submissions"
 Submissions.schema = new SimpleSchema

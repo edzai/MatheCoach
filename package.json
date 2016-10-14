@@ -11,6 +11,7 @@
     "lodash": "^4.14.1",
     "mathjax": "^2.6.1",
     "mathjs": "^3.3.0",
+    "md5": "^2.2.1",
     "meteor-node-stubs": "~0.2.0",
     "nerdamer": "^0.5.7"
   },

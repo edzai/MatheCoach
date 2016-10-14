@@ -31,3 +31,4 @@ Template.studentListDisplay.viewmodel
       when moreThanDaysAgo 1 then "yellow"
       else "green"
   gotoStudentPage : -> FlowRouter.go "/mentor/student/#{@_id()}"
+  gotoStudentChat : -> FlowRouter.go "/chat/#{@_id()}"

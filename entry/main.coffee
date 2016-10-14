@@ -1,6 +1,7 @@
 { Meteor } = require "meteor/meteor"
 require "/imports/api/users.coffee"
 require "/imports/api/submissions.coffee"
+require "/imports/api/chatMessages.coffee"
 
 if Meteor.isClient
   require "/imports/ui/shares.coffee"

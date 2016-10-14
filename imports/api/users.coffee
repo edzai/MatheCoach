@@ -2,6 +2,7 @@
 { Meteor } = require "meteor/meteor"
 { Tracker } = require "meteor/tracker"
 { Submissions } = require "./submissions.coffee"
+md5 = require "md5"
 
 userProfileSchema = new SimpleSchema
   firstName :
@@ -21,6 +22,9 @@ userProfileSchema = new SimpleSchema
     optional : true
   useKaTeX :
     type : Boolean
+    optional : true
+  gravatar :
+    type : String
     optional : true
 exports.userProfileSchema = userProfileSchema
 
@@ -56,6 +60,11 @@ userSchema = new SimpleSchema
 Meteor.users.attachSchema userSchema
 
 Meteor.users.helpers
+  fullName : ->
+    "#{@profile.firstName} #{@profile.lastName}"
+  avatar : ->
+    hash = md5(@profile?.gravatar?.toLowerCase() ? "0")
+    "https://www.gravatar.com/avatar/#{hash}"
   submissions : ->
     Submissions.find
       userId : @_id()

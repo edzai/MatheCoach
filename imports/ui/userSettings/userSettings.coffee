@@ -7,6 +7,7 @@ Template.userSettingsPage.viewmodel
   profile : -> Meteor.user()?.profile
 
 Template.userSettings.viewmodel
+  #properties from Meteor.users.profile
   firstName : ""
   lastName : ""
   isMentor : false
@@ -29,13 +30,15 @@ Template.userSettings.viewmodel
       isMentor : @isMentor()
       mentorId : @mentorId()
       useKaTeX : @useKaTeX()
+      gravatar : @gravatar()
   dataChanged : ->
     if profile = Meteor.user()?.profile
       @firstName() isnt profile.firstName or
       @lastName() isnt profile.lastName or
       @isMentor() isnt profile.isMentor or
       @mentorId() isnt profile.mentorId or
-      @useKaTeX() isnt profile.useKaTeX
+      @useKaTeX() isnt profile.useKaTeX or
+      @gravatar() isnt profile.gravatar
   autorun : -> #handle semantic-ui dropdown
     @mentorSelect.dropdown "set selected", @mentorId()
     @mentorSelect.dropdown "set text",

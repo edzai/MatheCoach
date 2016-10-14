@@ -11,6 +11,10 @@ template(name="navbar")
       if currentUser
         a.item(class=isActiveRoute('studentOwnPage') href="/my-results")
           i.large.bar.graph.icon
+        if hasMentor
+          a.item(class=isActiveRoute('mentorChat')
+          $b="attr : {href : chatUrl}")
+            i.large.comments.outline.icon
         if isInRole "admin"
           a.item(class=isActiveRoute('adminPanel')
             href="/admin-panel")
