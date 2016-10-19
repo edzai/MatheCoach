@@ -14,14 +14,14 @@ template(name="navbar")
         if hasMentor
           a.item(class=isActiveRoute('mentorChat')
           $b="attr : {href : chatUrl}")
-            i.large.comments.outline.icon
+            i.large.comments.outline.icon($b="class : {red : hasUnreadMessages}")
         if isInRole "admin"
           a.item(class=isActiveRoute('adminPanel')
             href="/admin-panel")
             i.large.red.settings.icon
         if isMentor
           a.item(class=isActiveRoute('mentorOverview') href="/mentor/overview")
-            i.large.student.icon
+            i.large.student.icon($b="class : {red : hasUnreadMessages}")
         a.item(class=isActiveRoute('userSettings') href="/user-settings")
           i.large.settings.icon
       a.item(class=isActiveRoute('help') href="/help")

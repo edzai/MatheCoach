@@ -2,6 +2,7 @@
 { Meteor } = require "meteor/meteor"
 { Tracker } = require "meteor/tracker"
 { Submissions } = require "./submissions.coffee"
+
 md5 = require "md5"
 
 userProfileSchema = new SimpleSchema

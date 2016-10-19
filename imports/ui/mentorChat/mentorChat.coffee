@@ -1,5 +1,5 @@
 { Meteor } = require "meteor/meteor"
-{ ChatMessages, sendMessage } = require "/imports/api/chatMessages.coffee"
+{ ChatMessages, sendMessage, markAsRead } = require "/imports/api/chatMessages.coffee"
 
 require "./mentorChat.jade"
 
@@ -37,3 +37,7 @@ Template.chatMessageDisplay.viewmodel
     @tick()
     date = moment(@dateSent())
     "#{date.calendar()} (#{date.fromNow()})"
+  onRendered : ->
+    if @receiverId() is Meteor.userId()
+      unless @read()
+        markAsRead.call id : @_id()

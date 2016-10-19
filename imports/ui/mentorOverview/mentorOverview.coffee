@@ -1,6 +1,7 @@
 
 { Meteor } = require "meteor/meteor"
 { Submissions } = require "/imports/api/submissions.coffee"
+{ ChatMessages } = require "/imports/api/chatMessages.coffee"
 
 require "./mentorOverview.jade"
 
@@ -15,6 +16,7 @@ Template.mentorOverview.viewmodel
 
 
 Template.studentListDisplay.viewmodel
+  #has properties of Meteor.users
   share : "reactiveTimer"
   name : -> "#{@profile().firstName} #{@profile().lastName}"
   timeAgo : ->
@@ -30,5 +32,11 @@ Template.studentListDisplay.viewmodel
       when moreThanDaysAgo 3 then "orange"
       when moreThanDaysAgo 1 then "yellow"
       else "green"
+  hasUnreadMessagesFromStudent : ->
+    ChatMessages.find
+      receiverId : Meteor.userId()
+      senderId : @_id()
+      read : false
+    .count() isnt 0
   gotoStudentPage : -> FlowRouter.go "/mentor/student/#{@_id()}"
   gotoStudentChat : -> FlowRouter.go "/chat/#{@_id()}"
