@@ -12,5 +12,3 @@ Template.navbar.viewmodel
       read : false
     .count()
   hasUnreadMessages : -> @unreadMessagesCount() isnt 0
-  autorun : ->
-    console.log @unreadMessagesCount()
