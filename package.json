@@ -5,6 +5,7 @@
     "start": "meteor run"
   },
   "dependencies": {
+    "babel-runtime": "^6.18.0",
     "bcrypt": "^0.8.7",
     "chartist": "^0.9.8",
     "katex": "^0.6.0",
@@ -19,7 +20,7 @@
   "description": "Web App for practicing basic math skills",
   "main": "index.js",
   "author": "Jan Pilgenröder",
-  "license": "MIT",
+  "license": "",
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-string": "^1.2.0"

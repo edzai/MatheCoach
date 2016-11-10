@@ -14,3 +14,8 @@ Template.submissionDisplay.viewmodel
   moduleTitle : -> problemDefinitions[@moduleKey()].title
   answerSegmentClass : ->
     if @answerCorrect() then "green" else "red"
+  onRendered : ->
+    unless moment().diff(moment(@date()), "minutes") > 10
+      @element
+      .transition "hide"
+      .transition "scale"

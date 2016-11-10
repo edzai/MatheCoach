@@ -9,7 +9,7 @@ if Meteor.isClient
 
   { Accounts } = require "meteor/accounts-base"
   Accounts.ui.config
-    passwordSignupFields : "USERNAME_ONLY"
+    passwordSignupFields : "USERNAME_AND_EMAIL"
 
 if Meteor.isServer
   Meteor.startup ->

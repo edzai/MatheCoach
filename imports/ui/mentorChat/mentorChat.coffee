@@ -38,6 +38,10 @@ Template.chatMessageDisplay.viewmodel
     date = moment(@dateSent())
     "#{date.calendar()} (#{date.fromNow()})"
   onRendered : ->
+    unless moment().diff(moment(@dateSent()), "minutes") > 10
+      @element
+      .transition "hide"
+      .transition "scale"
     if @receiverId() is Meteor.userId()
       unless @read()
         markAsRead.call id : @_id()

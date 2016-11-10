@@ -9,7 +9,7 @@ template(name="mentorChat")
           +chatMessageDisplay
           
 template(name="chatMessageDisplay")
-  .event
+  .event($b="if : show, ref : element")
     .label
       img($b="attr : {src : avatar}")
     .content
