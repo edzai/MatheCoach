@@ -7,23 +7,11 @@ require "/imports/modules/nerdamer/Solve.js"
 
 math = require "mathjs"
 
-{ teXifyAM } =
-  require "/imports/modules/mathproblems2/renderAM.coffee"
-
 { AMString } =
   require "/imports/modules/mathproblems2/AMString.coffee"
 
 Template.calculator.viewmodel
   input : ""
-
-  log : ->
-    console.log @amString(), @nerdamerTeX()
-  teXPreview : ->
-    try
-      output = teXifyAM @amString()
-    catch error
-      output = "error"
-    output
 
   amString : ->
     try
@@ -44,5 +32,3 @@ Template.calculator.viewmodel
     catch error
       output = "error"
     output
-
-  onCreated : -> console.log teXifyAM "alpha+beta"
