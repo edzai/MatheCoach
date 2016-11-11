@@ -12,6 +12,8 @@ if Meteor.isClient
     passwordSignupFields : "USERNAME_AND_EMAIL"
 
 if Meteor.isServer
+  Accounts.emailTemplates.from = "MatheCoach <pille@mac.com>"
+
   Meteor.startup ->
     admin = Meteor.users.findOne username : "admin"
     if admin?
