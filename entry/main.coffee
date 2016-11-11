@@ -12,6 +12,7 @@ if Meteor.isClient
     passwordSignupFields : "USERNAME_AND_EMAIL"
 
 if Meteor.isServer
+  { Accounts } = require "meteor/accounts-base"
   Accounts.emailTemplates.from = "MatheCoach <pille@mac.com>"
 
   Meteor.startup ->
