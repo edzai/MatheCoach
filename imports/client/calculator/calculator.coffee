@@ -16,15 +16,6 @@ math = require "mathjs"
 Template.calculator.viewmodel
   input : ""
 
-  log : ->
-    console.log @amString(), @nerdamerTeX()
-  teXPreview : ->
-    try
-      output = teXifyAM @amString()
-    catch error
-      output = "error"
-    output
-
   amString : ->
     try
       output = new AMString(@input())
@@ -44,5 +35,3 @@ Template.calculator.viewmodel
     catch error
       output = "error"
     output
-
-  onCreated : -> console.log teXifyAM "alpha+beta"

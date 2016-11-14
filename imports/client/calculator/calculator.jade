@@ -1,21 +1,14 @@
 template(name="calculator")
   .ui.text.container
-    h2.header Output Test
+    h2.header Rechner
     .ui.segment
       h3.header Input
       .ui.fluid.input
         input(
-          $b="value : input, enter : log, focus : focusOnInput"
+          $b="value : input, focus : focusOnInput"
           type="text"
         )
     .ui.segment
       h3.header Output
-      h4.header Input -> AMString -> MathJS
-      p($b="html : teXPreview")
-      h4.header Input -> AMString -> Nerdamer -> MathJax:
-      p($b="text : nerdamerRawTeX")
-      +mathjax
-        div $$#{nerdamerTeX}$$
       +teXDisplay(teX=nerdamerTeX)
   
-    p Diese Seite ist nur für Testzwecke, um auszuprobieren, wie unterschiedliche mathematische Terme von den unterschiedlichen Funktionsbibiliotheken ausgewertet werden.
