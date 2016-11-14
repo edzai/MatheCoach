@@ -8,10 +8,10 @@ require "/imports/modules/nerdamer/Solve.js"
 math = require "mathjs"
 
 { teXifyAM } =
-  require "/imports/modules/mathproblems2/renderAM.coffee"
+  require "/imports/client/mathproblems/renderAM.coffee"
 
 { AMString } =
-  require "/imports/modules/mathproblems2/AMString.coffee"
+  require "/imports/client/mathproblems/AMString.coffee"
 
 Template.calculator.viewmodel
   input : ""

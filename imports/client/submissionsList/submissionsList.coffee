@@ -1,6 +1,6 @@
 require "./submissionsList.jade"
 { problemDefinitions } =
-  require  "/imports/modules/mathproblems2/problemDefinitions.coffee"
+  require  "/imports/client/mathproblems/problemDefinitions.coffee"
 
 
 Template.submissionsList.viewmodel

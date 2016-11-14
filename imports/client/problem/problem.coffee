@@ -1,14 +1,14 @@
-require "/imports/ui/ui-slider.css"
+require "/imports/client/ui-slider.css"
 require "./problem.jade"
-require "/imports/ui/moduleScoreDisplay/moduleScoreDisplay.coffee"
+require "/imports/client/moduleScoreDisplay/moduleScoreDisplay.coffee"
 
 _ = require "lodash"
 
 { Problem } =
-  require "/imports/modules/mathproblems2/mathproblems.coffee"
+  require "/imports/client/mathproblems/mathproblems.coffee"
 
 { teXifyAM } =
-  require "/imports/modules/mathproblems2/renderAM.coffee"
+  require "/imports/client/mathproblems/renderAM.coffee"
 
 { Tally } =
   require "/imports/modules/tally.coffee"

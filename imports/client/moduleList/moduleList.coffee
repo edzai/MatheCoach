@@ -1,8 +1,8 @@
 require "./moduleList.jade"
 { getModulesList } =
-  require "/imports/modules/mathproblems2/getModulesList.coffee"
+  require "/imports/client/mathproblems/getModulesList.coffee"
 
-require "/imports/ui/moduleScoreDisplay/moduleScoreDisplay.coffee"
+require "/imports/client/moduleScoreDisplay/moduleScoreDisplay.coffee"
 
 Template.moduleList.viewmodel
   modules : getModulesList()
