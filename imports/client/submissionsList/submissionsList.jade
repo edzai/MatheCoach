@@ -7,6 +7,10 @@ template(name="submissionDisplay")
   .item($b="ref : element")
     .ui.segment
       .content
+        if answerCorrect
+          i.ui.big.green.right.floated.checkmark.icon
+        else
+          i.ui.big.red.right.floated.remove.icon
         .header #{moduleTitle}, Level #{level}
         .description($b="text : timeAgo")
         .ui.segment
@@ -14,5 +18,4 @@ template(name="submissionDisplay")
           +teXDisplay(teX=problem)
           //- +mathjax
           //-   div $$#{problem}$$
-        .ui.center.aligned.inverted.segment($b="class : answerSegmentClass") #{answer}
       
