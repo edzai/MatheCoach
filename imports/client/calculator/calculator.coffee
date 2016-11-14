@@ -7,8 +7,14 @@ require "/imports/modules/nerdamer/Solve.js"
 
 math = require "mathjs"
 
+<<<<<<< HEAD:imports/ui/calculator/calculator.coffee
+=======
+{ teXifyAM } =
+  require "/imports/client/mathproblems/renderAM.coffee"
+
+>>>>>>> master:imports/client/calculator/calculator.coffee
 { AMString } =
-  require "/imports/modules/mathproblems2/AMString.coffee"
+  require "/imports/client/mathproblems/AMString.coffee"
 
 Template.calculator.viewmodel
   input : ""

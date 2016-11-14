@@ -4,8 +4,8 @@ require "/imports/api/submissions.coffee"
 require "/imports/api/chatMessages.coffee"
 
 if Meteor.isClient
-  require "/imports/ui/shares.coffee"
-  require "/imports/ui/router/router.coffee"
+  require "/imports/client/shares.coffee"
+  require "/imports/client/router/router.coffee"
 
   { Accounts } = require "meteor/accounts-base"
   Accounts.ui.config
