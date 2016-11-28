@@ -1,0 +1,7 @@
+template(name="userLinkDisplay")
+  .item
+    .content
+      a.header(href=url) #{userName}
+      .meta #{userType}
+      .description eMail:
+        a.span(href=mailto) #{email}

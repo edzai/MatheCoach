@@ -1,4 +1,4 @@
-{ updateUserProfile } = require "/imports/api/users.coffee"
+{ updateUserProfile, profileFromVM } = require "/imports/api/users.coffee"
 { Meteor } = require "meteor/meteor"
 _ = require "lodash"
 require "./userSettings.jade"
@@ -24,13 +24,9 @@ Template.userSettings.viewmodel
   mentorId : "noMentor"
   save : (event) ->
     event.preventDefault()
+    #this wont work for admin
     updateUserProfile.call
-      firstName : @firstName()
-      lastName : @lastName()
-      isMentor : @isMentor()
-      mentorId : @mentorId()
-      useKaTeX : @useKaTeX()
-      gravatar : @gravatar()
+      profile : profileFromVM this
   dataChanged : ->
     if profile = Meteor.user()?.profile
       @firstName() isnt profile.firstName or

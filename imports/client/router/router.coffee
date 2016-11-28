@@ -11,6 +11,7 @@ require "/imports/client/mentorChat/mentorChat.coffee"
 require "/imports/client/studentPage/studentPage.coffee"
 require "/imports/client/help/help.coffee"
 require "/imports/client/adminPanel/adminPanel.coffee"
+require "/imports/client/editUser/editUser.coffee"
 
 
 FlowRouter.route "/",
@@ -72,6 +73,12 @@ FlowRouter.route "/help",
   action : ->
     BlazeLayout.render "layout",
       main : "help"
+
+FlowRouter.route "/benutzer-daten/:userId",
+  name : "editUser"
+  action : ->
+    BlazeLayout.render "layout",
+    main : "editUserPage"
 
 FlowRouter.route "/admin-panel",
   name : "adminPanel"

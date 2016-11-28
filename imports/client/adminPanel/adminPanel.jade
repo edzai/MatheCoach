@@ -16,10 +16,8 @@ template(name="adminUserDisplay")
   .item
     .content
       .header #{profile.firstName} #{profile.lastName} (#{username})
-      .description
-        |createdAt: #{createdAt} <br>
-        |lastActive : #{profile.lastActive} <br>
-        |isMentor : #{profile.isMentor} <br>
+      .meta userId: #{_id}
+      button.ui.right.floated.blue.button($b="click : editUser") Edit User
       button.ui.right.floated.red.button($b="click : deleteUser") Delete User
       button.ui.right.floated.orange.button($b="click : deleteSubmissions") Delete Submissions
       

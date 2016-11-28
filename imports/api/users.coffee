@@ -12,10 +12,34 @@ userProfileSchema = new SimpleSchema
   lastName :
     type : String
     optional : true
-  isMentor :
-    type : Boolean
+  userType :
+    type : String
+    optional : true
+  dateOfBirth :
+    type : String
+    optional : true
+  street :
+    type : String
+    optional : true
+  plz :
+    type : String
+    optional : true
+  city :
+    type : String
+    optional : true
+  phone :
+    type : String
     optional : true
   mentorId :
+    type : String
+    optional : true
+  parentId :
+    type : String
+    optional : true
+  school :
+    type : String
+    optional : true
+  grade :
     type : String
     optional : true
   lastActive :
@@ -23,9 +47,6 @@ userProfileSchema = new SimpleSchema
     optional : true
   useKaTeX :
     type : Boolean
-    optional : true
-  gravatar :
-    type : String
     optional : true
 exports.userProfileSchema = userProfileSchema
 
@@ -89,12 +110,21 @@ Meteor.users.helpers
 exports.updateUserProfile = new ValidatedMethod
   name : "updateUserProfile"
   validate :
-    userProfileSchema.validator()
-  run : (profile) ->
+    new SimpleSchema
+      profile :
+        type : userProfileSchema
+      userId :
+        type : String
+        optional : true
+    .validator()
+  run : ({ profile, userId }) ->
     unless @userId
       throw new Meteor.Error "not logged-in"
-    profile.lastActive = Meteor.user().profile.lastActive
-    Meteor.users.update @userId,
+    unless Roles.userIsInRole @userId, "admin"
+      userId = @userId
+    unless userId?
+      throw new Meteor.Error "no userId"
+    Meteor.users.update userId,
       $set :
         profile : profile
 
@@ -137,7 +167,7 @@ exports.deleteSubmissions = new ValidatedMethod
 if Meteor.isServer
   Meteor.publish "mentorData", ->
     Meteor.users.find
-      "profile.isMentor" : true
+      "profile.userType" : "mentor"
     ,
       fields :
         username : 1

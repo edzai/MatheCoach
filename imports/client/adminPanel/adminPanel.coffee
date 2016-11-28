@@ -19,3 +19,5 @@ Template.adminUserDisplay.viewmodel
   deleteSubmissions : ->
     if confirm "Alle submissions von #{@username()} wirklich löschen?"
       deleteSubmissions.call userId : @_id()
+  editUser : ->
+    FlowRouter.go "/benutzer-daten/#{@_id()}"

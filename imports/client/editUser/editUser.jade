@@ -1,0 +1,85 @@
+template(name="editUserPage")
+  if mayEdit
+    with profile
+      +editUser
+  else
+    .ui.text.container.segment
+      h1.header Kein Zugriff.
+      p Sie sind für den Zugriff auf die Benutzerdaten mit der ID #{userId} nicht autorisiert. Nur der Benutzer selbst oder ein Administrator haben Zugriff auf diese Daten.
+    
+template(name="editUser")
+  .ui.text.container
+    h1.header Benutzerdaten für #{firstName} #{lastName}
+    .ui.clearing.segment
+      h3.ui.dividing.header userId
+      p #{userId}
+      form.ui.form
+        h3.ui.dividing.header userType
+        .field
+          input($b="value : userType" type="text" placeholder="student, mentor, parent or admin")
+      if isStudent
+        h3.ui.dividing.header links
+        .field
+          input($b="check : editLinks" type="checkbox")
+          label Edit Links
+        if editLinks
+          form.ui.form
+            .field
+              label mentorId
+              input($b="value : mentorId" type="text" placeholder="userId des mentors")
+            .field
+              label parentId
+              input($b="value : parentId" type="text" placeholder="userId des Elternaccounts")
+        else
+          .ui.items
+            +userLinkDisplay(userId=mentorId)
+            +userLinkDisplay(userId=parentId)
+            
+    .ui.clearing.segment
+      form.ui.form
+        h3.ui.dividing.header Zugriffsrechte
+        .field
+          .ui.checkbox
+            input($b="check : userMayEditProfile" type="checkbox")
+            label Der Benutzer darf seine Persönlichen Daten editieren.
+    .ui.clearing.segment
+      form.ui.form
+        h3.ui.dividing.header Persönliche Daten
+        .field
+          label Name
+          .two.fields
+            .field
+              input($b="value : firstName" type="text" placeholder="Vorname")
+            .field
+              input($b="value : lastName" type="text" placeholder="Nachname")
+        .field
+          label Geburtsdatum
+            .field
+              .ui.left.icon.input
+                i.calendar.icon
+                input($b="value : dateOfBirth, ref : dateField")
+        .field
+          label Straße/Hausnummer
+          input($b="value : street", type="text" placeholder="Musterstraße 123")
+        .field
+          label Plz/Ort
+          .two.fields
+            .field
+              input($b="value : plz" type="text" placeholder="Plz")
+            .field
+              input($b="value : city" type="text" placeholder="Ort")
+        .field
+          label Telefon
+          input($b="value : phone" type="text" placeholder="Telefonnummer des Schülers (falls vorhanden)")
+        if isStudent
+          h3.dividing.header Schule
+          .field
+            label Schule
+            input($b="value : school" type="text" placeholder="Name und Typ der Schule")
+          .field
+            label Klasse/Jahrgangsstufe
+            input($b="value : grade" type="text" placeholder="Klasse bzw. Jahrgangsstufe")
+        button.right.floated.ui.button($b="click : save, enable : docHandlerVMChanged") Speichern
+          
+        
+                
