@@ -8,12 +8,12 @@ require "./mentorOverview.jade"
 Template.mentorOverview.viewmodel
   students : ->
     Meteor.users.find
+      "profile.userType" : "student"
       "profile.mentorId" : Meteor.userId()
     ,
       sort :
         "profile.lastName" : 1
         "profile.firstName" : 1
-
 
 Template.studentListDisplay.viewmodel
   #has properties of Meteor.users

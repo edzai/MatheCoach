@@ -22,7 +22,6 @@ ViewModel.mixin
       changed = false
       vmDoc = @docHandlerVMDoc()
       doc = @docHandlerDoc()
-      console.log "docHanlerVMChanged starting"
       for key, value of vmDoc
         unless _.isEqual value, doc[key]
           unless value is "" and doc[key] is undefined
