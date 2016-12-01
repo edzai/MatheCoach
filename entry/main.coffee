@@ -18,4 +18,6 @@ if Meteor.isServer
   Meteor.startup ->
     admin = Meteor.users.findOne username : "admin"
     if admin?
-      Roles.addUsersToRoles admin._id, ["admin"]
+      Roles.addUsersToRoles admin._id, [
+        "admin"
+      ]

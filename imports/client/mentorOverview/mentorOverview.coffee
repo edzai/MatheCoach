@@ -14,7 +14,6 @@ Template.mentorOverview.viewmodel
         "profile.lastName" : 1
         "profile.firstName" : 1
 
-
 Template.studentListDisplay.viewmodel
   #has properties of Meteor.users
   share : "reactiveTimer"

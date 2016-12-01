@@ -12,10 +12,31 @@ userProfileSchema = new SimpleSchema
   lastName :
     type : String
     optional : true
-  isMentor :
-    type : Boolean
+  dateOfBirth :
+    type : String
+    optional : true
+  street :
+    type : String
+    optional : true
+  plz :
+    type : String
+    optional : true
+  city :
+    type : String
+    optional : true
+  phone :
+    type : String
     optional : true
   mentorId :
+    type : String
+    optional : true
+  parentId :
+    type : String
+    optional : true
+  school :
+    type : String
+    optional : true
+  grade :
     type : String
     optional : true
   lastActive :
@@ -23,9 +44,6 @@ userProfileSchema = new SimpleSchema
     optional : true
   useKaTeX :
     type : Boolean
-    optional : true
-  gravatar :
-    type : String
     optional : true
 exports.userProfileSchema = userProfileSchema
 
@@ -64,7 +82,7 @@ Meteor.users.helpers
   fullName : ->
     "#{@profile.firstName} #{@profile.lastName}"
   avatar : ->
-    hash = md5(@profile?.gravatar?.toLowerCase() ? "0")
+    hash = md5(@emails[0]?.address.toLowerCase() ? "0")
     "https://www.gravatar.com/avatar/#{hash}"
   submissions : ->
     Submissions.find
@@ -85,16 +103,53 @@ Meteor.users.helpers
       sort :
         date : -1
       limit : 10*page
+  isMentor : ->
+    Roles.userIsInRole @_id(), "mentor"
+  isAdmin : ->
+    Roles.userIsInRole @_id(), "admin"
+  hasMentor : ->
+    mentorId = @profile?.mentorId and Roles.userIsInRole mentorId, "mentor"
+
+exports.toggleRole = new ValidatedMethod
+  name : "toggleRole"
+  validate :
+    new SimpleSchema
+      userId :
+        type : String
+      role :
+        type : String
+    .validator()
+  run : ({ userId, role }) ->
+    unless @userId
+      throw new Meteor.Error "not logged-in"
+    unless Roles.userIsInRole @userId, "admin"
+      throw new Meteor.Error "not admin"
+    if Roles.userIsInRole userId, role
+      Roles.removeUsersFromRoles userId, role
+    else
+      Roles.addUsersToRoles userId, role
+
 
 exports.updateUserProfile = new ValidatedMethod
   name : "updateUserProfile"
   validate :
-    userProfileSchema.validator()
-  run : (profile) ->
+    new SimpleSchema
+      profile :
+        type : userProfileSchema
+      userId :
+        type : String
+        optional : true
+    .validator()
+  run : ({ profile, userId }) ->
     unless @userId
       throw new Meteor.Error "not logged-in"
-    profile.lastActive = Meteor.user().profile.lastActive
-    Meteor.users.update @userId,
+    unless Roles.userIsInRole @userId, "admin"
+      if Roles.userIsInRole @userId, "mayNotEditOwnProfile"
+        throw new Meteor.Error "may not edit own profile"
+      userId = @userId
+    unless userId?
+      throw new Meteor.Error "no userId"
+    Meteor.users.update userId,
       $set :
         profile : profile
 
@@ -137,7 +192,7 @@ exports.deleteSubmissions = new ValidatedMethod
 if Meteor.isServer
   Meteor.publish "mentorData", ->
     Meteor.users.find
-      "profile.isMentor" : true
+      "profile.userType" : "mentor"
     ,
       fields :
         username : 1

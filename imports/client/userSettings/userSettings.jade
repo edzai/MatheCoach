@@ -1,44 +1,41 @@
 template(name="userSettingsPage")
   unless currentUser
     .ui.text.container.segment
-      .h1.header Nicht als Benutzer eingeloggt!
+      h1.header Nicht als Benutzer eingeloggt!
       p Wenn man nicht als Benutzer eingeloggt ist kann man auch keine Einstellungen am Benutzerprofil vornemen.
       p Vermutlich bist Du hier gelandet, weil Du dich ausgeloggt hast, während Du auf der Einstellungsseite warst. Logge dich wieder ein, oder wähle einfach eine andere Seite aus dem Menu aus.
   else
+    unless currentUserMayEditProfile
+      .ui.text.container
+        .ui.icon.message
+          i.lock.icon
+          .content
+            .header Zuggriff auf Benutzerdaten gesperrt.
+            p Der Zugriff auf die Benutzerdaten wurde gesperrt. Änderungen können nur vom Systemadministrator vorgenommen werden.
+      .ui.hidden.divider
     with profile
-      +userSettings
+      .ui.text.container
+        +editUser
+        +userSettings
+        +userLogout
+        
+template(name="userLogout")
+  .ui.clearing.segment
+    button.ui.red.icon.button($b="click : logout")
+      i.sign.out.icon
+      | Abmelden
+    p Hinweis: Normalerweise brauchst Du dich auf einem Gerät nur einmal anzumelden und hast dann beim nächsten Besuch wieder sofort Zugriff auf deinen Benutzeraccount. Du brauchst dich beim Verlassen der Seite nicht abmelden. Lediglich wenn Du ein Gerät und einen Benutzeraccount für dieses Gerät mit anderen Menschen teilst, kann es Sinnvoll sein, dich zwischendurch abzumelden. Du kannst dich dann beim nächsten Besuch einfach wieder mit deinem Benutzernamen oder deiner Email und deinem Passwort anmelden.
     
 template(name="userSettings")
-  .ui.text.container
-    h1.header Einstellungen
-    .ui.clearing.segment
-      form.ui.form
-        h3.ui.dividing.header Persönliche Daten
-        .field
-          label Name
-          .two.fields
-            .field
-              input($b="value : firstName" type="text" placeholder="Vorname")
-            .field
-              input($b="value : lastName" type="text" placeholder="Nachname")
-        .field
-          label Gravatar email
-          input($b="value : gravatar" type="text" placeholder="email, mit der Du bei Gravatar eingetragen bist")
-        h3.ui.dividing.header Lehrer/Mentor
-        .field
-          label Mein Lehrer/Mentor ist:
-          select.ui.dropdown($b="value : mentorId, ref : mentorSelect, options : mentors, optionsValue : id, optionsText : name")    
-        .field
-          .ui.checkbox
-            input($b="check : isMentor" type="checkbox")
-            label Ich möchte selbst als Lehrer/Mentor aufgelistet werden.
-        p Hinweis: Als normaler Benutzer dieser Seite bist Du für andere normale Benutzer völlig unsichtbar. Als eingegragener Lehrer/Mentor erscheinst Du in der Auswahlliste auf dieser Seite. Mentoren erhalten eine Übersicht über die Aktivitäten ihrer Schüler.
-        
-        h3.ui.dividing.header Technische Einstellungen
-        .field
-          .ui.checkbox
-            input($b="check : useKaTeX" type="checkbox")
-            label KaTeX anstelle von MathJax benutzen
-        p Hinweis: MathJax und KaTeX sind zwei Javascript Bibliotheken, die aus einfachen Texteingaben schöne Mathematische Formeln machen. KaTeX arbeitet wesentlich schneller als MathJax, fabriziert aber (zumindest auf manchen Webbrowsern) manchmal kein wirklich schönes Ergebnis. Falls MathJax (z.B. bei langsamen Netzwerkverbindungen) zu langsam ist, kann KaTeX dennoch die bessere Wahl sein.
-        
-        button.right.floated.ui.button($b="click : save, enable : dataChanged") Speichern
+  .ui.clearing.segment
+    h3.ui.dividing.header Technische Einstellungen
+    .field
+      .ui.checkbox
+        input($b="check : useKaTeX" type="checkbox")
+        label KaTeX anstelle von MathJax benutzen
+    p Hinweis: MathJax und KaTeX sind zwei Javascript Bibliotheken, die aus einfachen Texteingaben schöne Mathematische Formeln machen. KaTeX arbeitet wesentlich schneller als MathJax, fabriziert aber (zumindest auf manchen Webbrowsern) manchmal kein wirklich schönes Ergebnis. Falls MathJax (z.B. bei langsamen Netzwerkverbindungen) zu langsam ist, kann KaTeX dennoch die bessere Wahl sein.
+    if currentUserMayEditProfile
+      button.right.floated.ui.button($b="click : save, enable : docHandlerVMChanged") Speichern
+    else
+      button.right.floated.ui.button($b="enable : false") Speichern
+        i.lock.icon
