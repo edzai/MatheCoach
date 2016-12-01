@@ -1,43 +1,33 @@
-{ updateUserProfile, profileFromVM } = require "/imports/api/users.coffee"
+{ updateUserProfile, userProfileSchema } = require "/imports/api/users.coffee"
 { Meteor } = require "meteor/meteor"
 _ = require "lodash"
+require "../editUser/editUser.coffee"
 require "./userSettings.jade"
 
 Template.userSettingsPage.viewmodel
-  profile : -> Meteor.user()?.profile
+  mixin : "rolesForUserId"
+  userId : -> Meteor.userId()
+  profile : ->
+    profile = Meteor.user()?.profile or {}
+    profile.userId = @userId()
+    profile
+
+Template.userLogout.viewmodel
+  logout : ->
+    Meteor.logout (error) ->
+      if error
+        alert "Fehler. Benutzer konnte nicht ausloggen."
+      else
+        FlowRouter.go "/sign-in"
+
 
 Template.userSettings.viewmodel
-  #properties from Meteor.users.profile
-  firstName : ""
-  lastName : ""
-  isMentor : false
-  mentors : ->
-    Meteor.users.find
-      "profile.isMentor" : true
-    .fetch()
-    .map (user) ->
-      name : "#{user.profile.firstName} #{user.profile.lastName}"
-      id : user._id
-    .concat
-      name : "Ich habe keinen Lehrer/Mentor."
-      id : "noMentor"
-  mentorId : "noMentor"
-  save : (event) ->
+  mixin : ["docHandler", "rolesForUserId"]
+  docHandlerSchema : userProfileSchema
+  docHandlerDoc : ->
+    (Meteor.users.findOne _id : @userId())?.profile
+  save : ->
     event.preventDefault()
-    #this wont work for admin
     updateUserProfile.call
-      profile : profileFromVM this
-  dataChanged : ->
-    if profile = Meteor.user()?.profile
-      @firstName() isnt profile.firstName or
-      @lastName() isnt profile.lastName or
-      @isMentor() isnt profile.isMentor or
-      @mentorId() isnt profile.mentorId or
-      @useKaTeX() isnt profile.useKaTeX or
-      @gravatar() isnt profile.gravatar
-  autorun : -> #handle semantic-ui dropdown
-    @mentorSelect.dropdown "set selected", @mentorId()
-    @mentorSelect.dropdown "set text",
-      _.chain @mentors()
-      .find id : @mentorId()
-      .value()?.name
+      profile : @docHandlerVMDoc()
+      userId : @userId()

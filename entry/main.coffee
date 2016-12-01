@@ -20,6 +20,4 @@ if Meteor.isServer
     if admin?
       Roles.addUsersToRoles admin._id, [
         "admin"
-        "manage-mentors"
-        "manage-students"
       ]

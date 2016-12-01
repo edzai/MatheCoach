@@ -4,10 +4,8 @@ template(name="navbar")
     a.item(class=isActiveRoute('info') href="/info")
       i.large.info.icon
     .right.menu
-      a.item(class=isActiveRoute('moduleList') href="/")
+      a.item(class=isActiveRoute('moduleList') href="/modules")
         i.large.list.icon
-      //a.item(class=isActiveRoute('calculator') href="/rechner")
-        | Test
       if currentUser
         a.item(class=isActiveRoute('studentOwnPage') href="/my-results")
           i.large.bar.graph.icon
@@ -22,9 +20,9 @@ template(name="navbar")
         if isMentor
           a.item(class=isActiveRoute('mentorOverview') href="/mentor/overview")
             i.large.student.icon($b="class : {red : hasUnreadMessages}")
-        a.item(class=isActiveRoute('userSettings') href="/user-settings")
-          i.large.settings.icon
+          a.item(class=isActiveRoute('calculator') href="/rechner")
+            i.large.calculator.icon
       a.item(class=isActiveRoute('help') href="/help")
         i.large.help.icon
-      +loginButtons(allign="right")
+      +navbarUserField
           

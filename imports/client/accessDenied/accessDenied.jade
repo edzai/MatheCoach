@@ -1,0 +1,7 @@
+template(name="accessDenied")
+  .ui.text.container.segment
+    h1.header Zugriff nicht Gestattet
+    p Du bist auf einer Seite gelandet, für die Du keine Zugriffsberechtigung hast.
+    unless currentUser
+      p Du bist nicht als Benutzer eingelogged.
+      a.ui.button(href="/sign-in") Login

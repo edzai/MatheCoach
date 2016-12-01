@@ -3,24 +3,47 @@ require "./editUser.jade"
 require "/imports/client/shares.coffee"
 
 
-{ updateUserProfile, userProfileSchema } = require "/imports/api/users.coffee"
+{ updateUserProfile, toggleRole, userProfileSchema } = require "/imports/api/users.coffee"
 { testQuery } = require "/imports/api/users.coffee"
 
 Template.editUserPage.viewmodel
+  mixin : "rolesForUserId"
   userId : -> FlowRouter.getParam "userId"
-  profile : -> (Meteor.users.findOne _id : @userId())?.profile
-  mayEdit : true
+  profile : ->
+    profile = (Meteor.users.findOne _id : @userId())?.profile or {}
+    profile.userId = @userId()
+    profile
 
-Template.editUser.viewmodel
-  mixin : "docHandler"
+Template.editUserAdmin.viewmodel
+  mixin : ["docHandler", "rolesForUserId"]
   docHandlerSchema : userProfileSchema
   docHandlerDoc : ->
     (Meteor.users.findOne _id : @userId())?.profile
-  userId : -> FlowRouter.getParam "userId"
   userType : ""
-  isMentor : -> @userType() is "mentor"
-  isStudent : -> @userType() is "student"
-  isParent : -> @userType() is "parent"
+  editLinks : false
+  save : ->
+    event.preventDefault()
+    updateUserProfile.call
+      profile : @docHandlerVMDoc()
+      userId : @userId()
+  toggleIsMentor : ->
+    toggleRole.call
+      userId : @userId()
+      role : "mentor"
+  toggleIsParent : ->
+    toggleRole.call
+      userId : @userId()
+      role : "parent"
+  toggleMayNotEditOwnProfile : ->
+    toggleRole.call
+      userId : @userId()
+      role : "mayNotEditOwnProfile"
+
+Template.editUser.viewmodel
+  mixin : ["docHandler", "rolesForUserId"]
+  docHandlerSchema : userProfileSchema
+  docHandlerDoc : ->
+    (Meteor.users.findOne _id : @userId())?.profile
   editLinks : false
   save : ->
     event.preventDefault()

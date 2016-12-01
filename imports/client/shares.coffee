@@ -4,8 +4,25 @@ ViewModel.share
   reactiveTimer :
     reactiveTimer : new ReactiveTimer(10)
     tick : -> @reactiveTimer().tick()
+  FlowRouterAuth :
+    permissionGranted : ->
+      FlowRouter.Auth.permissionGranted()
 
 ViewModel.mixin
+  rolesForUserId :
+    #viewmodel must have provide
+    userId : ""
+    #provided by this mixin:
+    isMentor : -> Roles.userIsInRole @userId(), "mentor"
+    isParent : -> Roles.userIsInRole @userId(), "parent"
+    isAdmin : -> Roles.userIsInRole @userId(), "admin"
+    isStudent : -> not @isMentor() and not @isParent() and not @isAdmin()
+    mayNotEditOwnProfile : ->
+      Roles.userIsInRole @userId(), "mayNotEditOwnProfile"
+    currentUserMayEditProfile : ->
+      (Roles.userIsInRole Meteor.userId(), "admin") or
+      (@userId() is Meteor.userId() and not @mayNotEditOwnProfile())
+
   docHandler :
     #must be defined in viewmodel:
     docHandlerSchema : {} #the simpleSchema of the doc

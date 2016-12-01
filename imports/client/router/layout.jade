@@ -2,7 +2,10 @@ template(name="layout")
   .site
     +navbar
     .sitecontent
-      +Template.dynamic(template=main)
+      if permissionGranted
+        +Template.dynamic(template=main)
+      else
+        +accessDenied
     .sitefooter
       +footer
 

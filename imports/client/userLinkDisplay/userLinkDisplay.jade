@@ -1,7 +1,7 @@
 template(name="userLinkDisplay")
   .item
     .content
-      a.header(href=url) #{userName}
-      .meta #{userType}
-      .description eMail:
-        a.span(href=mailto) #{email}
+      a.header($b="text : userName, attr : {href : url}")
+      .meta eMail:
+        a.span($b="text : email, attr : {href : mailto}")
+      .description($b="text : comment")

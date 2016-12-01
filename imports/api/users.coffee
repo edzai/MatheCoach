@@ -12,9 +12,6 @@ userProfileSchema = new SimpleSchema
   lastName :
     type : String
     optional : true
-  userType :
-    type : String
-    optional : true
   dateOfBirth :
     type : String
     optional : true
@@ -85,7 +82,7 @@ Meteor.users.helpers
   fullName : ->
     "#{@profile.firstName} #{@profile.lastName}"
   avatar : ->
-    hash = md5(@profile?.gravatar?.toLowerCase() ? "0")
+    hash = md5(@emails[0]?.address.toLowerCase() ? "0")
     "https://www.gravatar.com/avatar/#{hash}"
   submissions : ->
     Submissions.find
@@ -106,6 +103,32 @@ Meteor.users.helpers
       sort :
         date : -1
       limit : 10*page
+  isMentor : ->
+    Roles.userIsInRole @_id(), "mentor"
+  isAdmin : ->
+    Roles.userIsInRole @_id(), "admin"
+  hasMentor : ->
+    mentorId = @profile?.mentorId and Roles.userIsInRole mentorId, "mentor"
+
+exports.toggleRole = new ValidatedMethod
+  name : "toggleRole"
+  validate :
+    new SimpleSchema
+      userId :
+        type : String
+      role :
+        type : String
+    .validator()
+  run : ({ userId, role }) ->
+    unless @userId
+      throw new Meteor.Error "not logged-in"
+    unless Roles.userIsInRole @userId, "admin"
+      throw new Meteor.Error "not admin"
+    if Roles.userIsInRole userId, role
+      Roles.removeUsersFromRoles userId, role
+    else
+      Roles.addUsersToRoles userId, role
+
 
 exports.updateUserProfile = new ValidatedMethod
   name : "updateUserProfile"
@@ -121,6 +144,8 @@ exports.updateUserProfile = new ValidatedMethod
     unless @userId
       throw new Meteor.Error "not logged-in"
     unless Roles.userIsInRole @userId, "admin"
+      if Roles.userIsInRole @userId, "mayNotEditOwnProfile"
+        throw new Meteor.Error "may not edit own profile"
       userId = @userId
     unless userId?
       throw new Meteor.Error "no userId"

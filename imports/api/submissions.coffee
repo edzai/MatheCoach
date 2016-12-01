@@ -79,7 +79,6 @@ if Meteor.isServer
     find : ->
       Meteor.users.find
         _id : @userId
-        "profile.userType" : "mentor"
       ,
         fields :
           username : 1
