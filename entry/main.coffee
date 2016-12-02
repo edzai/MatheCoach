@@ -16,6 +16,8 @@ if Meteor.isServer
   Accounts.emailTemplates.from = "MatheCoach <pille@mac.com>"
 
   Meteor.startup ->
+    Accounts.config
+      sendVerificationEmail : true
     admin = Meteor.users.findOne username : "admin"
     if admin?
       Roles.addUsersToRoles admin._id, [

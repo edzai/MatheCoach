@@ -1,5 +1,6 @@
 require "./adminPanel.jade"
 { deleteUser, deleteSubmissions } = require "/imports/api/users.coffee"
+{ Accounts } = require "meteor/accounts-base"
 
 Template.adminPanel.viewmodel
   users : ->
@@ -21,3 +22,5 @@ Template.adminUserDisplay.viewmodel
       deleteSubmissions.call userId : @_id()
   editUser : ->
     FlowRouter.go "/benutzer-daten/#{@_id()}"
+  sendVerificationEmail : ->
+    Accounts.sendVerificationEmail @_id()
