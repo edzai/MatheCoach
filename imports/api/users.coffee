@@ -2,6 +2,7 @@
 { Meteor } = require "meteor/meteor"
 { Tracker } = require "meteor/tracker"
 { Submissions } = require "./submissions.coffee"
+{ Accounts } = require "meteor/accounts-base"
 
 md5 = require "md5"
 
@@ -109,6 +110,16 @@ Meteor.users.helpers
     Roles.userIsInRole @_id(), "admin"
   hasMentor : ->
     mentorId = @profile?.mentorId and Roles.userIsInRole mentorId, "mentor"
+
+exports.verifyEmail = new ValidatedMethod
+  name : "verifyEmail"
+  validate :
+    new SimpleSchema
+      userId :
+        type : String
+    .validator()
+  run : ({ userId }) ->
+    Accounts.sendVerificationEmail userId
 
 exports.toggleRole = new ValidatedMethod
   name : "toggleRole"
