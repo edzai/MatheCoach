@@ -3,6 +3,7 @@
 { Tracker } = require "meteor/tracker"
 { Submissions } = require "./submissions.coffee"
 { Accounts } = require "meteor/accounts-base"
+{ Email } = require "meteor/email"
 
 md5 = require "md5"
 
@@ -111,15 +112,33 @@ Meteor.users.helpers
   hasMentor : ->
     mentorId = @profile?.mentorId and Roles.userIsInRole mentorId, "mentor"
 
-exports.verifyEmail = new ValidatedMethod
-  name : "verifyEmail"
+exports.sendVerificationEmail = new ValidatedMethod
+  name : "sendVerificationEmail"
   validate :
     new SimpleSchema
       userId :
         type : String
     .validator()
   run : ({ userId }) ->
-    Accounts.sendVerificationEmail userId
+    if Meteor.isServer
+      console.log "sending verificationEmail to #{userId}"
+      Accounts.sendVerificationEmail userId
+
+  exports.sendTestEmail = new ValidatedMethod
+    name : "sendTestEmail"
+    validate :
+      new SimpleSchema
+        text :
+          type : String
+      .validator()
+    run : -> ({ text }) ->
+      if Meteor.isServer
+        console.log "sending test mail"
+        Email.send
+          from : "MatheCoach <pille@mac.com>"
+          to : "pille@mac.com"
+          subject : text
+          text : text
 
 exports.toggleRole = new ValidatedMethod
   name : "toggleRole"
