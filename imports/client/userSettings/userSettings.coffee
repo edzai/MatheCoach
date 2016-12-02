@@ -20,7 +20,6 @@ Template.userLogout.viewmodel
       else
         FlowRouter.go "/sign-in"
 
-
 Template.userSettings.viewmodel
   mixin : ["docHandler", "rolesForUserId"]
   docHandlerSchema : userProfileSchema
