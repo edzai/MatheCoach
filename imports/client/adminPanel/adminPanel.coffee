@@ -1,5 +1,6 @@
 require "./adminPanel.jade"
-{ deleteUser, deleteSubmissions, verifyEmail } = require "/imports/api/users.coffee"
+{ deleteUser, deleteSubmissions,
+  sendVerificationEmail, sendTestEmail } = require "/imports/api/users.coffee"
 
 Template.adminPanel.viewmodel
   users : ->
@@ -22,4 +23,5 @@ Template.adminUserDisplay.viewmodel
   editUser : ->
     FlowRouter.go "/benutzer-daten/#{@_id()}"
   sendVerificationEmail : ->
-    verifyEmail.call userId : @_id()
+    sendVerificationEmail.call userId : @_id()
+    sendTestEmail.call text : "tut et dat?"

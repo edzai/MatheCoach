@@ -22,10 +22,12 @@ AccountsTemplates.configure
   defaultLayoutRegions : {}
   defaultContentRegion : "main"
   showForgotPasswordLink: true
-  overrideLoginErrors: true
-  enablePasswordChange: true
-  confirmPassword: true
-  continuousValidation: false
+  sendVerificationEmail : true
+  enforceEmailVerification : true
+  # overrideLoginErrors: true
+  # enablePasswordChange: true
+  # confirmPassword: true
+  # continuousValidation: false
 
 pwd = AccountsTemplates.removeField "password"
 AccountsTemplates.removeField "email"
