@@ -37,7 +37,7 @@ FlowRouter.route "/info",
   name : "info"
   action : ->
     BlazeLayout.render "layout",
-      main : "info"
+      main : "home"
 
 FlowRouter.route "/help",
   name : "help"
