@@ -1,4 +1,5 @@
 require "./layout.coffee"
+require "/imports/api/AccountsTemplates.coffee"
 require "/imports/client/teXDisplay/teXDisplay.coffee"
 require "/imports/client/accessDenied/accessDenied.coffee"
 require "/imports/client/home/home.coffee"
@@ -14,45 +15,6 @@ require "/imports/client/studentPage/studentPage.coffee"
 require "/imports/client/help/help.coffee"
 require "/imports/client/adminPanel/adminPanel.coffee"
 require "/imports/client/editUser/editUser.coffee"
-
-T9n.setLanguage "de"
-
-AccountsTemplates.configure
-  defaultLayout : "layout"
-  defaultLayoutRegions : {}
-  defaultContentRegion : "main"
-  showForgotPasswordLink: true
-  sendVerificationEmail : true
-  enforceEmailVerification : true
-  # overrideLoginErrors: true
-  # enablePasswordChange: true
-  # confirmPassword: true
-  # continuousValidation: false
-
-pwd = AccountsTemplates.removeField "password"
-AccountsTemplates.removeField "email"
-AccountsTemplates.addFields [
-  _id : "username"
-  type : "text"
-  displayName : "username"
-  required : true
-  minLength : 5
-,
-  _id : "email"
-  type : "email"
-  required : true
-  displayName : "email"
-  re: /.+@(.+){2,}\.(.+){2,}/
-  errStr : "Invalid email"
-,
-  pwd
-]
-
-AccountsTemplates.configureRoute "signIn"
-AccountsTemplates.configureRoute "signUp"
-#AccountsTemplates.configureRoute "changePwd"
-AccountsTemplates.configureRoute "forgotPwd"
-AccountsTemplates.configureRoute "resetPwd"
 
 FlowRouter.Auth.allow ->
   true
