@@ -7,9 +7,9 @@ Template.navbar.viewmodel
   mixin : "rolesForUserId"
   userId : -> Meteor.userId()
   hasMentor : ->
-    mentorId = Meteor.user()?.profile?.mentorId and
-      Roles.userIsInRole mentorId, "mentor"
-  chatUrl : -> "/chat/#{@userId()?.profile?.mentorId}"
+    (mentorId = Meteor.user()?.profile?.mentorId) #and
+      #Roles.userIsInRole mentorId, "mentor"
+  chatUrl : -> "/chat/#{Meteor.user()?.profile?.mentorId}"
   unreadMessagesCount : ->
     ChatMessages.find
       receiverId : @userId()

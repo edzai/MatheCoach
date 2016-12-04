@@ -83,6 +83,7 @@ if Meteor.isServer
         fields :
           username : 1
           profile : 1
+          emails : 1
     children : [
       find : (mentor) ->
         Meteor.users.find
@@ -91,6 +92,7 @@ if Meteor.isServer
           fields :
             username : 1
             profile : 1
+            emails : 1
       children : [
         find : (student) ->
           Submissions.find userId : student._id

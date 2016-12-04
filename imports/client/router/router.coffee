@@ -1,7 +1,6 @@
-require "./layout.coffee"
+require "./layout.jade"
 require "/imports/api/AccountsTemplates.coffee"
 require "/imports/client/teXDisplay/teXDisplay.coffee"
-require "/imports/client/accessDenied/accessDenied.coffee"
 require "/imports/client/home/home.coffee"
 require "/imports/client/navbar/navbar.coffee"
 require "/imports/client/moduleList/moduleList.coffee"
@@ -16,11 +15,6 @@ require "/imports/client/help/help.coffee"
 require "/imports/client/adminPanel/adminPanel.coffee"
 require "/imports/client/editUser/editUser.coffee"
 
-FlowRouter.Auth.allow ->
-  true
-,
-  only : ["home", "info", "help", "moduleList",
-    "signIn", "signUp", "forgotPwd", "resetPwd", "notFound"]
 
 FlowRouter.notFound =
   action : ->
@@ -51,11 +45,6 @@ FlowRouter.route "/modules",
     BlazeLayout.render "layout",
       main : "moduleList"
 
-FlowRouter.Auth.allow ->
-  Meteor.userId()?
-,
-  only : ["problem", "userSettings", "mentorChat", "studentOwnPage"]
-
 FlowRouter.route "/modul/:key",
   name : "problem"
   triggersEnter: [AccountsTemplates.ensureSignedIn]
@@ -84,11 +73,6 @@ FlowRouter.route "/my-results",
     BlazeLayout.render "layout",
       main : "studentOwnPage"
 
-FlowRouter.Auth.allow ->
-  Meteor.userId() and Roles.userIsInRole Meteor.userId(), "mentor"
-,
-  only : ["calculator", "mentorOverview", "student"]
-
 FlowRouter.route "/rechner",
   name : "calculator"
   action : ->
@@ -108,11 +92,6 @@ FlowRouter.route "/mentor/student/:studentId",
   action : ->
     BlazeLayout.render "layout",
       main : "studentPage"
-
-FlowRouter.Auth.allow ->
-  Meteor.userId()? and Roles.userIsInRole Meteor.userId(), "admin"
-,
-  only : ["editUser", "adminPanel"]
 
 FlowRouter.route "/benutzer-daten/:userId",
   name : "editUser"
