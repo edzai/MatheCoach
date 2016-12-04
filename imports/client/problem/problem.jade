@@ -1,71 +1,74 @@
 template(name="problem")
-  .ui.text.container
-    .ui.grid
-      .nine.wide.column
-        h2.header($b="text : title")
-      .seven.wide.right.aligned.column
-        .ui.blue.circular.label Level #{currentLevel}
-        if currentUser
-          +moduleScoreDisplay(moduleKey=moduleKey userId=userId)
-    .ui.segment
-      h3.header($b="text : description")
-      +teXDisplay(teX=problemTeX)
-      //- +mathjax
-      //-   div $$#{problemTeX}$$
-      p($b="text : hint")
-    .ui.segment
+  unless currentUser
+    +mustBeLoggedIn
+  else
+    .ui.text.container
       .ui.grid
-        .twelve.wide.column
-          h3.header Antwort:
-        .four.wide.right.aligned.column
-          i.icon($b="toggle : showPreview, class : previewIconClass")
-      if showPreview
-        +teXDisplay(teX=preview)
-        //- +mathjax
-        //-   p $$#{preview}$$
-      .ui.fluid.input
-        input($b="value : answer, enter : checkAnswer, focus : focusOnAnswer" placeholder="Deine Antwort (als Bruch oder Term)" type="text")
-    if answered
-      if answerCorrect
-        .ui.green.inverted.center.aligned.segment
-          h1.header Richtig!
-      else
-        .ui.red.inverted.center.aligned.segment
-          h2.header Dein Ergebnis ist leider nicht korrekt.
-      each failTextsRequired
-        .ui.red.inverted.center.aligned.segment
-          h3.header($b="text : this")
-      each failTextsOptional
-        .ui.yellow.inverted.center.aligned.segment
-          h3.header($b="text : this")
-      unless answerCorrect
-        each passTextsRequired
-          .ui.green.inverted.center.aligned.segment
-            h3.header($b="text : this")
-        each passTextsOptional
-          .ui.green.inverted.center.aligned.segment
-            h3.header($b="text : this")
+        .nine.wide.column
+          h2.header($b="text : title")
+        .seven.wide.right.aligned.column
+          .ui.blue.circular.label Level #{currentLevel}
+          if currentUser
+            +moduleScoreDisplay(moduleKey=moduleKey userId=userId)
       .ui.segment
-        h3.header Lösung:
-        +teXDisplay(teX=solutionTeX)
+        h3.header($b="text : description")
+        +teXDisplay(teX=problemTeX)
         //- +mathjax
-        //-   div $$#{solutionTeX}$$
-           
-    button.ui.left.floated.teal.icon.button($b="click : gotoModulesList")
-      i.arrow.left.icon
-      i.list.icon
-  
-    .ui.blue.icon.buttons
-      button.ui.icon.button($b="click : easier, disable : autoLevelOn" title="Level verringern")
-        i.minus.icon
-      button.ui.button($b="click : harder, disable : autoLevelOn" title="Level erhöhen")
-        i.plus.icon
-      button.ui.icon.button($b="toggle : autoLevelOn, class : {active : autoLevelOn}, enable : loggedIn" title="Level automatisch anpassen")
-        i.setting.icon
+        //-   div $$#{problemTeX}$$
+        p($b="text : hint")
+      .ui.segment
+        .ui.grid
+          .twelve.wide.column
+            h3.header Antwort:
+          .four.wide.right.aligned.column
+            i.icon($b="toggle : showPreview, class : previewIconClass")
+        if showPreview
+          +teXDisplay(teX=preview)
+          //- +mathjax
+          //-   p $$#{preview}$$
+        .ui.fluid.input
+          input($b="value : answer, enter : checkAnswer, focus : focusOnAnswer" placeholder="Deine Antwort (als Bruch oder Term)" type="text")
+      if answered
+        if answerCorrect
+          .ui.green.inverted.center.aligned.segment
+            h1.header Richtig!
+        else
+          .ui.red.inverted.center.aligned.segment
+            h2.header Dein Ergebnis ist leider nicht korrekt.
+        each failTextsRequired
+          .ui.red.inverted.center.aligned.segment
+            h3.header($b="text : this")
+        each failTextsOptional
+          .ui.yellow.inverted.center.aligned.segment
+            h3.header($b="text : this")
+        unless answerCorrect
+          each passTextsRequired
+            .ui.green.inverted.center.aligned.segment
+              h3.header($b="text : this")
+          each passTextsOptional
+            .ui.green.inverted.center.aligned.segment
+              h3.header($b="text : this")
+        .ui.segment
+          h3.header Lösung:
+          +teXDisplay(teX=solutionTeX)
+          //- +mathjax
+          //-   div $$#{solutionTeX}$$
+             
+      button.ui.left.floated.teal.icon.button($b="click : gotoModulesList")
+        i.arrow.left.icon
+        i.list.icon
     
-    if answered
-      button.ui.right.floated.green.icon.button($b="click : newProblem")
-        | weiter
-        i.arrow.right.icon
-    else
-      button.ui.right.floated.red.icon.button($b="click : checkAnswer") OK
+      .ui.blue.icon.buttons
+        button.ui.icon.button($b="click : easier, disable : autoLevelOn" title="Level verringern")
+          i.minus.icon
+        button.ui.button($b="click : harder, disable : autoLevelOn" title="Level erhöhen")
+          i.plus.icon
+        button.ui.icon.button($b="toggle : autoLevelOn, class : {active : autoLevelOn}, enable : loggedIn" title="Level automatisch anpassen")
+          i.setting.icon
+      
+      if answered
+        button.ui.right.floated.green.icon.button($b="click : newProblem")
+          | weiter
+          i.arrow.right.icon
+      else
+        button.ui.right.floated.red.icon.button($b="click : checkAnswer") OK

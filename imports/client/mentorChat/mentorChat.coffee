@@ -6,7 +6,7 @@ require "./mentorChat.jade"
 Template.mentorChat.viewmodel
   text : ""
   isMentor : ->
-    Meteor.user()?.profile?.isMentor
+    Roles.userIsInRole Meteor.userId(), "mentor"
   chatPartnerId : -> FlowRouter.getParam "chatPartnerId"
   chatPartner : -> Meteor.users.findOne _id : @chatPartnerId()
   chatPartnerName : -> @chatPartner().fullName()

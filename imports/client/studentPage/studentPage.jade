@@ -1,6 +1,9 @@
 template(name="studentPage")
-  with student
-    +studentPageDisplay
+  unless isInRole "mentor"
+    +mustBeMentor
+  else
+    with student
+      +studentPageDisplay
     
 template(name="studentOwnPage")
   with student

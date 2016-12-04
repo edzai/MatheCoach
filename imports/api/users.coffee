@@ -221,12 +221,7 @@ exports.deleteSubmissions = new ValidatedMethod
 
 if Meteor.isServer
   Meteor.publish "mentorData", ->
-    Meteor.users.find
-      "profile.userType" : "mentor"
-    ,
-      fields :
-        username : 1
-        profile : 1
+    Roles.getUsersInRole "mentor"
 
   Meteor.publishComposite "allUserData", ->
     find : ->

@@ -1,10 +1,13 @@
 template(name="mentorOverview")
-  .ui.text.container
-    h1.header Schüler
-    .ui.segment
-      .ui.relaxed.list
-        each students
-          +studentListDisplay
+  unless isInRole "mentor"
+    +mustBeMentor
+  else
+    .ui.text.container
+      h1.header Schüler
+      .ui.segment
+        .ui.relaxed.list
+          each students
+            +studentListDisplay
 
 template(name="studentListDisplay")
   .item

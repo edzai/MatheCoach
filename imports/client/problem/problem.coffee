@@ -1,4 +1,5 @@
 require "/imports/client/ui-slider.css"
+require "/imports/client/mustBeLoggedIn/mustBeLoggedIn.coffee"
 require "./problem.jade"
 require "/imports/client/moduleScoreDisplay/moduleScoreDisplay.coffee"
 

@@ -1,9 +1,6 @@
 template(name="userSettingsPage")
   unless currentUser
-    .ui.text.container.segment
-      h1.header Nicht als Benutzer eingeloggt!
-      p Wenn man nicht als Benutzer eingeloggt ist kann man auch keine Einstellungen am Benutzerprofil vornemen.
-      p Vermutlich bist Du hier gelandet, weil Du dich ausgeloggt hast, während Du auf der Einstellungsseite warst. Logge dich wieder ein, oder wähle einfach eine andere Seite aus dem Menu aus.
+    +mustBeLogedIn
   else
     unless currentUserMayEditProfile
       .ui.text.container

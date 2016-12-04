@@ -41,7 +41,6 @@ reywood:publish-composite
 kadira:flow-router
 kadira:blaze-layout
 zimme:active-route
-cottz:flow-router-auth
 
 #accounts-base@1.2.14
 useraccounts:semantic-ui
