@@ -1,6 +1,6 @@
 template(name="userSettingsPage")
   unless currentUser
-    +mustBeLogedIn
+    +mustBeLoggedIn
   else
     unless currentUserMayEditProfile
       .ui.text.container

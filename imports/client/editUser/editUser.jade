@@ -44,29 +44,29 @@ template(name="editUser")
       .field
         label Name
         .two.fields
-          .field
+          .field($b="class : { error : firstName.invalid }, attr : { title : firstName.message}")
             input($b="value : firstName" type="text" placeholder="Vorname")
-          .field
-            input($b="value : lastName" type="text" placeholder="Nachname")
+          .field($b="class : { error : lastName.invalid }")
+            input($b="value : lastName, attr : { title : lastName.message}" type="text" placeholder="Nachname")
       .field
         label Geburtsdatum
-          .field
+          .field($b="class : { error : dateOfBirth.invalid }")
             .ui.left.icon.input
               i.calendar.icon
-              input($b="value : dateOfBirth, ref : dateField")
-      .field
+              input($b="value : dateOfBirth, attr : { title : dateOfBirth.message}, ref : dateField")
+      .field($b="class : { error : street.invalid }")
         label Straße/Hausnummer
-        input($b="value : street", type="text" placeholder="Musterstraße 123")
+        input($b="value : street, attr : { title : street.message}", type="text" placeholder="Musterstraße 123")
       .field
         label Plz/Ort
         .two.fields
-          .field
-            input($b="value : plz" type="text" placeholder="Plz")
-          .field
-            input($b="value : city" type="text" placeholder="Ort")
-      .field
+          .field($b="class : { error : plz.invalid }")
+            input($b="value : plz, attr : { title : plz.message}" type="text" placeholder="Plz")
+          .field($b="class : { error : city.invalid }")
+            input($b="value : city, attr : { title : city.message}" type="text" placeholder="Ort")
+      .field($b="class : { error : phone.invalid }")
         label Telefon
-        input($b="value : phone" type="text" placeholder="Telefonnummer des Schülers (falls vorhanden)")
+        input($b="value : phone, attr : { title : phone.message}" type="text" placeholder="Telefonnummer des Schülers (falls vorhanden)")
       if isStudent
         h3.dividing.header Schule
         .field
