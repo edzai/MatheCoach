@@ -10,25 +10,18 @@ md5 = require "md5"
 userProfileSchema = new SimpleSchema
   firstName :
     type : String
-    optional : true
   lastName :
     type : String
-    optional : true
   dateOfBirth :
     type : String
-    optional : true
   street :
     type : String
-    optional : true
   plz :
     type : String
-    optional : true
   city :
     type : String
-    optional : true
   phone :
     type : String
-    optional : true
   mentorId :
     type : String
     optional : true
