@@ -66,7 +66,7 @@ template(name="editUser")
             input($b="value : city, attr : { title : city.message}" type="text" placeholder="Ort")
       .field($b="class : { error : phone.invalid }")
         label Telefon
-        input($b="value : phone, attr : { title : phone.message}" type="text" placeholder="Telefonnummer des Schülers (falls vorhanden)")
+        input($b="value : phone, attr : { title : phone.message}" type="text" placeholder="Telefonnummer")
       if isStudent
         h3.dividing.header Schule
         .field
@@ -76,7 +76,7 @@ template(name="editUser")
           label Klasse/Jahrgangsstufe
           input($b="value : grade" type="text" placeholder="Klasse bzw. Jahrgangsstufe")
       if currentUserMayEditProfile
-        button.right.floated.ui.button($b="click : save, enable : docHandlerVMChanged") Speichern
+        button.right.floated.ui.button($b="click : save, enable : enableSaveButton") Speichern
       else
         button.right.floated.ui.button($b="enable : false") Speichern
           i.lock.icon

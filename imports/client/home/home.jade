@@ -2,6 +2,7 @@ template(name="home")
   .ui.text.container
     h1.header MatheCoach Öffentlicher Test Attendorn
     .ui.very.padded.segment
+      
       +markdown
         Dies ist die Entwicklerversion des kommenden Mathematik Trainingprogramms.
         Das Programm ist bereits voll Funktionsfähig, aber es gibt noch jede Menge Arbeit:
@@ -14,9 +15,16 @@ template(name="home")
         
         ## Erste Testphase:
         Lehrer melden sich auf der Seite an, tragen ihre Daten ein und machen sich mit dem Programm aus der Sicht eines Nachhilfeschülers vertraut.
+        
+        ### Achtung:
+        Bei der Registrierung müsst ihr unbedingt darauf achten, dass ihr die richtige Emailaddresse angebt. Ihr bekommt dann eine Bestätigungsmail und erst wenn ihr auf den Link in dieser Email geklickt habt, erhaltet ihr Zugriff auf das Programm.
 
         ## Zweite Testphase:
         Lehrer werden im Programm als Lehrer autorisiert und gegenseitig als Nachhilfelehrer eingesetzt.
         
         ## Dritte Testphase:
         Erste Tests mit echten Schülern.
+
+      a.ui.primary.fluid.icon.button(href="/modules")
+        i.list.icon
+        | hier geht's los

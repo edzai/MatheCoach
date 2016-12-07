@@ -40,7 +40,7 @@ ViewModel.mixin
       vmDoc = @docHandlerVMDoc()
       doc = @docHandlerDoc()
       for key, value of vmDoc
-        unless _.isEqual value, doc[key]
-          unless value is "" and doc[key] is undefined
+        unless _.isEqual value, doc?[key]
+          unless value is "" and doc?[key] is undefined
             changed = true
       changed
