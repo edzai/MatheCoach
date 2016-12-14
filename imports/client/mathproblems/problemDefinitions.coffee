@@ -1,5 +1,7 @@
 { fractions } =
   require "./problemGenerators/fractions.coffee"
+{ proportionality } =
+  require "./problemGenerators/proportionality.coffee"
 { linearEquations } =
   require "./problemGenerators/linearEquations.coffee"
 { powers } =
@@ -24,6 +26,7 @@ exports.modules = [
   "bruch2"
   "bruch3"
   "bruch4"
+  "proportionality"
   "terme1"
   "potenz1"
   "lineareGleichung1"
@@ -42,6 +45,7 @@ exports.problemDefinitions =
   bruch2 : fractions.bruch2
   bruch3 : fractions.bruch3
   bruch4 : fractions.bruch4
+  proportionality : proportionality
   terme1 : expressions
   lineareGleichung1 : linearEquations.lineareGleichung1
   lineareGleichung2 : linearEquations.lineareGleichung2

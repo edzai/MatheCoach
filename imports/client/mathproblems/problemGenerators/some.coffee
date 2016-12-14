@@ -48,5 +48,3 @@ exports.someModule =
     levelOffset : -1 # at level 2 we will call anotherGenerator(1)
     generator : someGenerators.anotherGenerator
   ]
-
-#This is the js that  coffescript generates:

@@ -10,6 +10,76 @@ isPrime = (n) ->
 #dropped some letters because they look weird in TeX output
 #or have a special meaning in nerdamer (like i)
 alphabet = "abcdehjkmnpqrstuvwxyz".split ""
+namesOfThings = [
+  sg : "Dings"
+  pl : "Dingse"
+,
+  sg : "Knotz"
+  pl : "Knötze"
+,
+  sg : "Bramf"
+  pl : "Brämfe"
+,
+  sg : "Gnargel"
+  pl : "Gnargel"
+,
+  sg : "Fomp"
+  pl : "Fömpe"
+,
+  sg : "Dork"
+  pl : "Dorks"
+,
+  sg : "Sack Heu"
+  pl : "Säcke Heu"
+,
+  sg : "Wumpel"
+  pl : "Wumpel"
+,
+  sg : "Glas Öl"
+  pl : "Gläser Öl"
+,
+  sg : "Tüte Gnel"
+  pl : "Tüten Gnel"
+
+]
+
+verbList = [
+  sg : "kostet"
+  pl : "kosten"
+,
+  sg : "macht"
+  pl : "machen"
+,
+  sg : "kabunzelt"
+  pl : "kabunzeln"
+,
+  sg : "kombobuliert"
+  pl : "kombobulieren"
+,
+  sg : "verdinkelt"
+  pl : "verdinkeln"
+,
+  sg : "unterstritzelt"
+  pl : "unterstritzeln"
+,
+  sg : "verknust"
+  pl : "verknusen"
+,
+  sg : "überbratzelt"
+  pl : "überbratzeln"
+,
+  sg : "zerknüttert"
+  pl : "zerknüttern"
+,
+  sg : "interplumbiert"
+  pl : "interplumbieren"
+]
+
+numerusFunction = (word) ->
+  (amount = 1) ->
+    if amount in [0,1] then word.sg else word.pl
+
+
 
 class Rnd
   constructor : () ->
@@ -70,5 +140,18 @@ class Rnd
   letter : -> _.sample alphabet
   letters : -> (@letter() for i in [1..10])
   uniqueLetters : -> _.sampleSize alphabet, 10
+
+  #random names for things
+  #returns a function that returns the sg or pl form of the name
+
+  thing : ->
+    numerusFunction(_.sample namesOfThings)
+  verb : ->
+    numerusFunction(_.sample verbList)
+  #things and verbs are always a list of unique elements
+  uniqueThings : ->
+    (numerusFunction(thing) for thing in _.shuffle namesOfThings)
+  uniqueVerbs : ->
+    (numerusFunction(verb) for verb in _.shuffle verbList)
 
 exports.Rnd = Rnd
