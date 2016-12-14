@@ -1,3 +1,4 @@
+require "/imports/client/systemMessages/systemMessages.coffee"
 require "./layout.jade"
 require "/imports/api/AccountsTemplates.coffee"
 require "/imports/client/teXDisplay/teXDisplay.coffee"
@@ -41,6 +42,7 @@ FlowRouter.route "/help",
 
 FlowRouter.route "/modules",
   name : "moduleList"
+  triggersEnter: [AccountsTemplates.ensureSignedIn]
   action : ->
     BlazeLayout.render "layout",
       main : "moduleList"

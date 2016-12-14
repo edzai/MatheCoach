@@ -13,7 +13,7 @@ Template.editUserPage.viewmodel
     profile = (Meteor.users.findOne _id : @userId())?.profile or {}
     profile.userId = @userId()
     profile
-
+    
 Template.editUserAdmin.viewmodel
   mixin : ["docHandler", "rolesForUserId"]
   docHandlerSchema : userProfileSchema
@@ -50,25 +50,23 @@ Template.editUser.viewmodel
   lastName : ViewModel.property.string.notBlank.min(2).max(60)
     .invalidMessage "Der Nachname muss zwischen 2 und 60 Zeichen lang sein."
   dateOfBirth : ViewModel.property.string.notBlank
-    .regex /^\d{1,2}\.\d{1,2}\.\d{4}$/g
+    .regex /^\d{1,2}\.\d{1,2}\.\d{4}$/
     .invalidMessage "Das Geburtsdatum muss ein herkömmliches Datum
       sein, z.B.: 1.10.2016"
   street : ViewModel.property.string.notBlank.min(3).max(80)
     .invalidMessage "Die Zeile mit Straßenname und Hausnummer muss
       zwischen 3 und 80 Zeichen lang sein."
   plz : ViewModel.property.string.notBlank
-    .regex /^\d{5}$/g
+    .regex /^\d{5}$/
     .invalidMessage "Die Plz muss eine fünfstellige Ziffer sein."
   city : ViewModel.property.string.notBlank.min(3).max(80)
     .invalidMessage "Der Name der Stadt muss zwischen 3 und 80
       Zeichen lang sein."
   phone : ViewModel.property.string.notBlank
-    .regex /^\d+?[-/ ]?\d+$/g
-    .invalidMessage "Vorwahl und Rufnummer. Können mit Bindestrich,
-      Querstrich oder Lehrzeichen getrennt werden."
+    .regex /^\d+[-]\d+$/
+    .invalidMessage "Vorwahl und Rufnummer mit Bindestrich getrennt, z.B.: 0123-12345"
   editLinks : false
-  enableSaveButton : ->
-    @docHandlerVMChanged() and
+  allFieldsValid : ->
     @firstName.valid() and
     @lastName.valid() and
     @dateOfBirth.valid() and
@@ -76,6 +74,8 @@ Template.editUser.viewmodel
     @plz.valid() and
     @city.valid() and
     @phone.valid()
+  enableSaveButton : ->
+    @docHandlerVMChanged() and @allFieldsValid()
   save : ->
     event.preventDefault()
     updateUserProfile.call

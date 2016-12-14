@@ -5,6 +5,7 @@ AccountsTemplates.configure
   defaultLayoutRegions : {}
   defaultContentRegion : "main"
   showForgotPasswordLink: true
+  showResendVerificationEmailLink : true
   sendVerificationEmail : true
   enforceEmailVerification : true
   overrideLoginErrors: true

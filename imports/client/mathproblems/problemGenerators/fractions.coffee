@@ -108,7 +108,7 @@ exports.fractionGenerator = fractionGenerator =
       when 1
         [a, b, c, d] = rnd.uniqueInts2Plus 9
       when 2
-        [a, b] = rnd.uniqueIntsPlus 20
+        [a, b] = rnd.uniqueIntsPlus 15
         [c, d] = rnd.uniqueInts2Plus 9
       else
         [a, b] = rnd.uniqueIntsPlus 20
@@ -360,6 +360,7 @@ exports.fractions =
       generator : fractionGenerator.strichGleichnamig
     ,
       levels : [2..3]
+      levelOffset : -1
       generator : fractionGenerator.strichUngleichnamig
     ]
   bruch2 :
