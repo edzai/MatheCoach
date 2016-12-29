@@ -2,6 +2,7 @@
 { Meteor } = require "meteor/meteor"
 { Tracker } = require "meteor/tracker"
 { Submissions } = require "./submissions.coffee"
+{ SchoolClasses } = require "./schoolClasses.coffee"
 { Accounts } = require "meteor/accounts-base"
 { Email } = require "meteor/email"
 
@@ -22,16 +23,7 @@ userProfileSchema = new SimpleSchema
     type : String
   phone :
     type : String
-  mentorId :
-    type : String
-    optional : true
-  parentId :
-    type : String
-    optional : true
-  school :
-    type : String
-    optional : true
-  grade :
+  schoolClassId :
     type : String
     optional : true
   lastActive :
@@ -98,12 +90,14 @@ Meteor.users.helpers
       sort :
         date : -1
       limit : 10*page
+  schoolClass : ->
+    SchoolClasses.findOne
+      _id : @profile.schoolClassId
   isMentor : ->
     Roles.userIsInRole @_id(), "mentor"
   isAdmin : ->
     Roles.userIsInRole @_id(), "admin"
-  hasMentor : ->
-    mentorId = @profile?.mentorId and Roles.userIsInRole mentorId, "mentor"
+  hasTeacher : -> @schoolClass?.teacher?
 
 exports.sendVerificationEmail = new ValidatedMethod
   name : "sendVerificationEmail"
@@ -152,6 +146,21 @@ exports.toggleRole = new ValidatedMethod
     else
       Roles.addUsersToRoles userId, role
 
+exports.removeUserFromClass = new ValidatedMethod
+  name : "removeUserFromClass"
+  validate :
+    new SimpleSchema
+      id :
+        type : String
+    .validator()
+  run : ({ id }) ->
+    unless @userId
+      throw new Meteor.Error "not logged-in"
+    unless Roles.userIsInRole @userId, "admin"
+      throw new Meteor.Error "not admin"
+    Meteor.users.update _id : id,
+      $unset :
+        "profile.schoolClassId" : ""
 
 exports.updateUserProfile = new ValidatedMethod
   name : "updateUserProfile"

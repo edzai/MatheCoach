@@ -15,6 +15,7 @@ require "/imports/client/studentPage/studentPage.coffee"
 require "/imports/client/help/help.coffee"
 require "/imports/client/adminPanel/adminPanel.coffee"
 require "/imports/client/editUser/editUser.coffee"
+require "/imports/client/schoolClassSettings/schoolClassSettings.coffee"
 
 
 FlowRouter.notFound =
@@ -108,3 +109,17 @@ FlowRouter.route "/admin-panel",
   action : ->
     BlazeLayout.render "layout",
       main : "adminPanel"
+
+FlowRouter.route "/klasse/:schoolClassId",
+  name : "editSchoolClass"
+  triggersEnter : [AccountsTemplates.ensureSignedIn]
+  action : ->
+    BlazeLayout.render "layout",
+      main : "schoolClassSettings"
+
+FlowRouter.route "/neue-klasse",
+  name : "newSchoolClass"
+  triggersEnter : [AccountsTemplates.ensureSignedIn]
+  action : ->
+    BlazeLayout.render "layout",
+      main : "schoolClassSettings"
