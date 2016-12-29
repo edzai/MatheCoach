@@ -42,11 +42,6 @@ Template.editUserAdmin.viewmodel
     toggleRole.call
       userId : @userId()
       role : "mayNotEditOwnProfile"
-  teacherType : ->
-    if @nachhilfe()
-      "Nachhilfelehrer"
-    else
-      "Lehrer"
 
 Template.editUser.viewmodel
   mixin : ["docHandler", "rolesForUserId"]
@@ -103,11 +98,9 @@ Template.editUser.viewmodel
     picker = new Pikaday
       field : @dateField[0]
       format : "D.M.Y"
-  autorun : [
-    ->
-      @schoolClassSelect.dropdown "set selected", @schoolClassId()
-      @schoolClassSelect.dropdown "set text",
-        _.chain @schoolClasses()
-          .find id : @schoolClassId()
-          .value()?.name ? ""
-  ]
+  autorun : ->
+    @schoolClassSelect.dropdown "set selected", @schoolClassId()
+    @schoolClassSelect.dropdown "set text",
+      _.chain @schoolClasses()
+        .find id : @schoolClassId()
+        .value()?.name ? ""
