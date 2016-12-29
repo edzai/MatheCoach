@@ -10,6 +10,7 @@ isPrime = (n) ->
 #dropped some letters because they look weird in TeX output
 #or have a special meaning in nerdamer (like i)
 alphabet = "abcdehjkmnpqrstuvwxyz".split ""
+
 namesOfThings = [
   sg : "Dings"
   pl : "Dingse"
@@ -40,7 +41,6 @@ namesOfThings = [
 ,
   sg : "Tüte Gnel"
   pl : "Tüten Gnel"
-
 ]
 
 verbList = [

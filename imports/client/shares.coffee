@@ -10,7 +10,7 @@ ViewModel.share
 
 ViewModel.mixin
   rolesForUserId :
-    #viewmodel must have provide
+    #viewmodel must provide
     userId : ""
     #provided by this mixin:
     isMentor : -> Roles.userIsInRole @userId(), "mentor"

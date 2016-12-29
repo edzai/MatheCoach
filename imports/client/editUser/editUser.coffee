@@ -1,9 +1,10 @@
 require "/imports/client/userLinkDisplay/userLinkDisplay.coffee"
 require "./editUser.jade"
 require "/imports/client/shares.coffee"
-
-
-{ updateUserProfile, toggleRole, userProfileSchema } = require "/imports/api/users.coffee"
+_ = require "lodash"
+{ updateUserProfile, toggleRole, userProfileSchema,
+  removeUserFromClass } = require "/imports/api/users.coffee"
+{ SchoolClasses } = require "/imports/api/schoolClasses.coffee"
 { testQuery } = require "/imports/api/users.coffee"
 
 Template.editUserPage.viewmodel
@@ -12,8 +13,9 @@ Template.editUserPage.viewmodel
   profile : ->
     profile = (Meteor.users.findOne _id : @userId())?.profile or {}
     profile.userId = @userId()
+    profile.schoolClassId ?= undefined
     profile
-    
+
 Template.editUserAdmin.viewmodel
   mixin : ["docHandler", "rolesForUserId"]
   docHandlerSchema : userProfileSchema
@@ -27,6 +29,8 @@ Template.editUserAdmin.viewmodel
       profile : @docHandlerVMDoc()
       userId : @userId()
   toggleIsMentor : ->
+    unless Roles.userIsInRole @userId(), "mentor"
+      removeUserFromClass.call id : @userId()
     toggleRole.call
       userId : @userId()
       role : "mentor"
@@ -64,7 +68,16 @@ Template.editUser.viewmodel
       Zeichen lang sein."
   phone : ViewModel.property.string.notBlank
     .regex /^\d+[-]\d+$/
-    .invalidMessage "Vorwahl und Rufnummer mit Bindestrich getrennt, z.B.: 0123-12345"
+    .invalidMessage "Vorwahl und Rufnummer mit\
+      Bindestrich getrennt, z.B.: 0123-12345"
+  schoolClasses : ->
+    SchoolClasses.find {},
+      sort :
+        name : 1
+    .fetch().map (e) ->
+      id : e._id
+      name : e.name
+  schoolClassId : ViewModel.property.string
   editLinks : false
   allFieldsValid : ->
     @firstName.valid() and
@@ -85,3 +98,9 @@ Template.editUser.viewmodel
     picker = new Pikaday
       field : @dateField[0]
       format : "D.M.Y"
+  autorun : ->
+    @schoolClassSelect.dropdown "set selected", @schoolClassId()
+    @schoolClassSelect.dropdown "set text",
+      _.chain @schoolClasses()
+        .find id : @schoolClassId()
+        .value()?.name ? ""

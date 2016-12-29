@@ -6,20 +6,41 @@ template(name="adminPanel")
   else
     .ui.text.container
       h1.header Admin-Panel
+      h2.header Klassen
+      .ui.segment
+        .ui.right.floated.circular.icon.button($b="click : newSchoolClass")
+          i.plus.icon
+        .ui.clearing.hidden.divider
+        .ui.relaxed.divided.list
+          each schoolClasses
+            +adminSchoolClassDisplay
       h2.header Benutzer
       .ui.segment
         .ui.relaxed.divided.list
           each users
             +adminUserDisplay
-          
+
+template(name="adminSchoolClassDisplay")
+  .item
+    .ui.right.floated.circular.blue.icon.button($b="click : editSchoolClass")
+      i.edit.icon
+    .ui.right.floated.circular.red.icon.button($b="click : deleteSchoolClass")
+      i.trash.icon
+    .content
+      .header($b="text : name")
+      .meta($b="text : teacherName")
+      
+                
 template(name="adminUserDisplay")
   .item
+    button.ui.right.floated.circular.blue.icon.button($b="click : editUser")
+      i.edit.icon
+    button.ui.right.floated.circular.red.icon.button($b="click : deleteUser")
+      i.trash.icon
     .content
       .header #{profile.firstName} #{profile.lastName} (#{username})
-      .meta userId: #{_id}
-      button.ui.right.floated.blue.button($b="click : editUser") Edit User
-      button.ui.right.floated.red.button($b="click : deleteUser") Delete User
-      button.ui.right.floated.orange.button($b="click : deleteSubmissions") Delete Submissions
-      button.ui.right.floated.button($b="click : sendVerificationEmail") Request Verification
-      
-  
+      .meta Klasse: 
+        span($b="text : schoolClassName")
+        <br> zuletzt aktiv: 
+        span($b="text : timeAgo")
+        
