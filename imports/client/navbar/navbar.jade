@@ -9,7 +9,7 @@ template(name="navbar")
       if currentUser
         a.item(class=isActiveRoute('studentOwnPage') href="/my-results")
           i.large.bar.graph.icon
-        if hasMentor
+        if hasTeacher
           a.item(class=isActiveRoute('mentorChat')
           $b="attr : {href : chatUrl}")
             i.large.comments.outline.icon($b="class : {red : hasUnreadMessages}")

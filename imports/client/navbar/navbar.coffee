@@ -6,10 +6,10 @@ require "./navbar.jade"
 Template.navbar.viewmodel
   mixin : "rolesForUserId"
   userId : -> Meteor.userId()
-  hasMentor : ->
-    (mentorId = Meteor.user()?.profile?.mentorId) #and
-      #Roles.userIsInRole mentorId, "mentor"
-  chatUrl : -> "/chat/#{Meteor.user()?.profile?.mentorId}"
+  hasTeacher : ->
+    Meteor.user()?.schoolClass()?.teacherId?
+  chatUrl : ->
+    "/chat/#{Meteor.user()?.schoolClass?().teacherId}"
   unreadMessagesCount : ->
     ChatMessages.find
       receiverId : @userId()

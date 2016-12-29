@@ -9,15 +9,15 @@ Template.mentorChat.viewmodel
     Roles.userIsInRole Meteor.userId(), "mentor"
   chatPartnerId : -> FlowRouter.getParam "chatPartnerId"
   chatPartner : -> Meteor.users.findOne _id : @chatPartnerId()
-  chatPartnerName : -> @chatPartner().fullName()
+  chatPartnerName : -> @chatPartner()?.fullName()
   messages : ->
     ChatMessages.find
       $or :
         [
           senderId : Meteor.userId()
-          receiverId : @chatPartner()?._id
+          receiverId : @chatPartnerId()
         ,
-          senderId : @chatPartner()?._id
+          senderId : @chatPartnerId()
           receiverId : Meteor.userId()
         ]
     ,
@@ -25,7 +25,7 @@ Template.mentorChat.viewmodel
         dateSent : -1
   sendMessage : ->
     sendMessage.call
-      receiverId : @chatPartner()._id
+      receiverId : @chatPartnerId()
       dateSent : new Date()
       text : @text()
     @text.reset()
@@ -38,10 +38,9 @@ Template.chatMessageDisplay.viewmodel
     date = moment(@dateSent())
     "#{date.calendar()} (#{date.fromNow()})"
   onRendered : ->
-    unless moment().diff(moment(@dateSent()), "minutes") > 10
-      @element
-      .transition "hide"
-      .transition "scale"
+    @element
+    .transition "hide"
+    .transition "scale"
     if @receiverId() is Meteor.userId()
       unless @read()
         markAsRead.call id : @_id()

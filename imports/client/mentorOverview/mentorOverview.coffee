@@ -1,5 +1,6 @@
 
 { Meteor } = require "meteor/meteor"
+{ SchoolClasses } = require "/imports/api/schoolClasses.coffee"
 { Submissions } = require "/imports/api/submissions.coffee"
 { ChatMessages } = require "/imports/api/chatMessages.coffee"
 
@@ -7,9 +8,18 @@ require "/imports/client/mustBeMentor/mustBeMentor.coffee"
 require "./mentorOverview.jade"
 
 Template.mentorOverview.viewmodel
+  schoolClasses : ->
+    SchoolClasses.find
+      teacherId : Meteor.userId()
+    ,
+      sort :
+        name : 1
+
+
+Template.schoolClassListDisplay.viewmodel
   students : ->
     Meteor.users.find
-      "profile.mentorId" : Meteor.userId()
+      "profile.schoolClassId" : @_id()
     ,
       sort :
         "profile.lastName" : 1

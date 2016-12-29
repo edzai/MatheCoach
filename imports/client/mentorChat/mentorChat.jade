@@ -1,6 +1,7 @@
 template(name="mentorChat")
   .ui.text.container
-    h1.header Mentor Chat
+    h1.header Chat mit 
+      span($b="text : chatPartnerName")
     .ui.fluid.input
       input($b="value : text, enter : sendMessage" type="text" placeholder="Deine Nachricht. Senden mit Enter.")
     .ui.segment
@@ -9,7 +10,7 @@ template(name="mentorChat")
           +chatMessageDisplay
           
 template(name="chatMessageDisplay")
-  .event($b="if : show, ref : element")
+  .event($b="ref : element")
     .label
       img($b="attr : {src : avatar}")
     .content

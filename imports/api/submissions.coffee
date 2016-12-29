@@ -1,5 +1,6 @@
 { Mongo } = require "meteor/mongo"
 { Meteor } = require "meteor/meteor"
+{ SchoolClasses} = require "/imports/api/schoolClasses.coffee"
 
 require "./users.coffee"
 
@@ -85,17 +86,22 @@ if Meteor.isServer
           profile : 1
           emails : 1
     children : [
-      find : (mentor) ->
-        Meteor.users.find
-          "profile.mentorId" : mentor._id
-        ,
-          fields :
-            username : 1
-            profile : 1
-            emails : 1
+      find : (teacher) ->
+        SchoolClasses.find
+          teacherId : teacher._id
       children : [
-        find : (student) ->
-          Submissions.find userId : student._id
+        find : (schoolClass) ->
+          Meteor.users.find
+            "profile.schoolClassId" : schoolClass._id
+          ,
+            fields :
+              username : 1
+              profile : 1
+              emails : 1
+        children : [
+          find : (student) ->
+            Submissions.find userId : student._id
+        ]
       ]
     ]
 
