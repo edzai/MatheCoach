@@ -7,7 +7,7 @@ AccountsTemplates.configure
   showForgotPasswordLink: true
   showResendVerificationEmailLink : true
   sendVerificationEmail : true
-  enforceEmailVerification : true
+  enforceEmailVerification : false
   overrideLoginErrors: true
   enablePasswordChange: true
   confirmPassword: true
