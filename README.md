@@ -2,11 +2,11 @@
 
 ##Eine Web-app zum Matheüben
 
-MatheCoach ist eine Webseite, die Dir hilft, die wichtigsten Arbeitsschritte in der Mathematik zu trainieren, damit Du bei schwierigen Aufgaben nicht mehr über die einzelnen Schritte nachzudenken brauchst und Dich auf das eigentliche Problem konzentrieren kanns.
+MatheCoach ist eine Webseite, die dabei hilft, die wichtigsten Arbeitsschritte in der Mathematik zu trainieren und zu wiederholen.
 
 MatheCoch befindet sich in der Entwicklung und ist noch weit davon entfernt, fertig zu sein. Über Anregungen und Fehlermeldungen würde ich mich sehr freuen.
 
-Die Web-app kannst Du ganz einfach mit deinem Webbrowser unter http://mathe-coach-janmp.herokuapp.com aufrufen.
+Die Web-app kann unter http://mathe-coach-janmp.herokuapp.com getestet werden.
 
 ##Aufgabengeneratoren
 MatheCoach enthält nicht einfach eine Sammlung von Aufgaben, sondern generiert die Aufgaben selbst. Für jeden Aufgabentyp gibt es eigene Aufgabengeneratoren. Das sind Java-Script (bzw. Coffee-Script) funktionen, welche die Aufgaben aus Zufallsdaten zusammensetzen.
@@ -32,13 +32,13 @@ Der Parameter `level` der Funktion bestimmt den Schwierigkeitsgrad. `level`ist e
 Das Erzeugte Objekt kann folgende Elemente enthalten:
 
 ####problem : String
-String mit dem Mathematischen Ausdruck der Aufgabe. Das Herzstück der meisten Aufgaben, dass Benutzt wird, um die meisten anderen Elemente automatisch zu generieren, wenn diese nicht definiert werden. Wenn `problemTeX` und `solution` definiert sind, kann `problem` einen Bedeutungslosen Platzhalter Text (z.B. "nicht Verwendet") enthalten, sollte aber immer definiert werden.
+String mit dem Mathematischen Ausdruck der Aufgabe. Das Herzstück der meisten Aufgaben, das Benutzt wird, um die meisten anderen Elemente automatisch zu generieren, wenn diese nicht definiert wurden. Wenn `problemTeX` und `solution` definiert sind, kann `problem` einen bedeutungslosen Platzhalter Text (z.B. "nicht Verwendet") enthalten, sollte aber immer definiert werden.
 
 ####problemTeX : String
-Der Mathematische Ausdruck der Aufgabe im LaTeX Format. Dieses Format wird benutzt, um Mathematische Terme mit Brüchen etc. zu ermöglichen. Wenn `problemTeX` nicht definiert wird, wird es aus `problem`generiert.
+Der Mathematische Ausdruck der Aufgabe im LaTeX Format. Dieses Format wird benutzt, um die Darstellung Mathematischer Terme mit Brüchen etc. zu ermöglichen. Wenn `problemTeX` nicht definiert wird, wird es aus `problem`generiert.
 
 ####description : String
-Der Text, der vor dem Mathematischen Ausdruck der Aufgabe erscheint. Sollte IMMER definiert werden.
+Der Text, der vor dem Mathematischen Ausdruck der Aufgabe erscheint. Sollte immer definiert werden.
 
 ####hint : String
 Optionaler Text nach dem Mathematischen Ausdruck der Aufgabe.
@@ -58,6 +58,8 @@ Ein Array von Funktionen, die das Ergebnis auf Richtigkeit überprüfen und entw
 ```
 [Check.equivalent, Check.noReducableFractionsOptional]
 ```
+
+Die Checkfunktionen sind in /imports/client/mathproblems/checks.coffee definiert.
 
 ####answerPreprocessor : ->
 Eine Funktion, die die Zeichenkette mit dem Ergebnis des Schülers bearbeitet, ehe sie checks durchläuft. Optional. Wenn nicht definiert, wird eine Funktion aufgerufen, die "abc" in "a*b*c" verwandelt, aber einige Ausdrücke wie "sin", "cos", "sqrt", "alpha", "beta" etc. erhält (die Liste mit Wörtern, die erhalten bleiben muss noch deutlich ausgebaut werden).
