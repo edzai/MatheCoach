@@ -11,8 +11,10 @@ Template.navbar.viewmodel
   chatUrl : ->
     "/chat/#{Meteor.user()?.schoolClass?().teacherId}"
   unreadMessagesCount : ->
-    ChatMessages.find
+    query =
       receiverId : @userId()
       read : false
-    .count()
+    if @hasTeacher()
+      query.senderId = Meteor.user().schoolClass().teacherId
+    ChatMessages.find(query).count()
   hasUnreadMessages : -> @unreadMessagesCount() isnt 0
