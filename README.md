@@ -62,7 +62,7 @@ Ein Array von Funktionen, die das Ergebnis auf Richtigkeit überprüfen und entw
 Die Checkfunktionen sind in /imports/client/mathproblems/checks.coffee definiert.
 
 ####answerPreprocessor : ->
-Eine Funktion, die die Zeichenkette mit dem Ergebnis des Schülers bearbeitet, ehe sie checks durchläuft. Optional. Wenn nicht definiert, wird eine Funktion aufgerufen, die "abc" in "a*b*c" verwandelt, aber einige Ausdrücke wie "sin", "cos", "sqrt", "alpha", "beta" etc. erhält (die Liste mit Wörtern, die erhalten bleiben muss noch deutlich ausgebaut werden).
+Eine Funktion, die die Zeichenkette mit dem Ergebnis des Schülers bearbeitet, ehe sie checks durchläuft. Optional. Wenn nicht definiert, wird eine Funktion aufgerufen, die "abc" in "a * b * c" verwandelt, aber einige Ausdrücke wie "sin", "cos", "sqrt", "alpha", "beta" etc. erhält (die Liste mit Wörtern, die erhalten bleiben muss noch deutlich ausgebaut werden).
 
 
 ##Module
@@ -84,3 +84,14 @@ beispielModul =
 Dieses Beispielmodul enthält Aufgaben mit den Schwierigkeitsgraden 1 bis 5 (Achtung: es sollte keine Lücken geben). Bei Level 1 bis 2 kommen nur Aufgaben von unserem Beispielgenerator von oben. Auf Level 3 und 4 kommen Aufgaben von beiden Generatoren (der effektive Level von `einAndererGenerator` wird dabei um 2 vermindert). Und auf Level 5 stehen nur noch aufgaben von `einAndererGenerator` zur Verfügung.
 
 Aufgabengeneratoren können natürlich mehrfach in unterschiedlichen Modulen kombiniert werden.
+
+##Funktionsbibliotheken
+MatheCoach nutzt folgende Funktionsbibliotheken:
+
+  * Nerdamer https://github.com/jiggzson/nerdamer
+  * Math.js http://mathjs.org/index.html
+  * Chartist.js https://gionkunz.github.io/chartist-js/
+  * lodash https://lodash.com
+
+
+Copyright (c) 2016, Jan Pilgenröder
