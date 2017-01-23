@@ -20,6 +20,8 @@
   require "./problemGenerators/differentiation.coffee"
 { integration } =
   require "./problemGenerators/integration.coffee"
+{ binomischeFormeln } =
+  require "./problemGenerators/binomischeFormeln.coffee"
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
 
@@ -35,6 +37,7 @@ exports.modules = [
   "potenz1"
   "lineareGleichung1"
   "lineareGleichung2"
+  "binomischeFormeln"
   "quadratischeGleichung"
   "nullStellen"
   "polynomialDivision"
@@ -55,6 +58,7 @@ exports.problemDefinitions =
   terme1 : expressions
   lineareGleichung1 : linearEquations.lineareGleichung1
   lineareGleichung2 : linearEquations.lineareGleichung2
+  binomischeFormeln : binomischeFormeln
   quadratischeGleichung : quadratischeGleichung
   potenz1 : powers.potenz1
   nullStellen : nullstellen
