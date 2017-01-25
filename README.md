@@ -11,6 +11,8 @@ Die Web-app kann unter http://mathe-coach-janmp.herokuapp.com getestet werden.
 ##Aufgabengeneratoren
 MatheCoach enthält nicht einfach eine Sammlung von Aufgaben, sondern generiert die Aufgaben selbst. Für jeden Aufgabentyp gibt es eigene Aufgabengeneratoren. Das sind Java-Script (bzw. Coffee-Script) funktionen, welche die Aufgaben aus Zufallsdaten zusammensetzen.
 
+Die Aufgabengeneratoren und Moduldefinitionen finden sich im Unterverzeichnis /imports/client/mathproblems/problemGenerators
+
 Ein einfaches Beispiel in Coffee-Script:
 
 ```
@@ -85,8 +87,16 @@ Dieses Beispielmodul enthält Aufgaben mit den Schwierigkeitsgraden 1 bis 5 (Ach
 
 Aufgabengeneratoren können natürlich mehrfach in unterschiedlichen Modulen kombiniert werden.
 
-##Funktionsbibliotheken
-MatheCoach nutzt folgende Funktionsbibliotheken:
+##Framework/Funktionsbibliotheken
+
+MatheCoach basiert auf Meteor. Das Front-End ist Blaze (Bestandteil von Meteor) mit Viewmodel. Anstelle von Java-Script und Html verwenden wir Coffee-Script und Jade/Pug.
+
+  * Meteor https://www.meteor.com
+  * Viewmodel https://viewmodel.org
+  * Coffee-Script http://coffeescript.org
+  * Jade/Pug https://pugjs.org/api/getting-started.html (Jade für Meteor/Blaze weicht in einigen Punkten von Pug ab)
+
+MatheCoach nutzt u.A. folgende Funktionsbibliotheken:
 
   * Nerdamer https://github.com/jiggzson/nerdamer
   * Math.js http://mathjs.org/index.html
