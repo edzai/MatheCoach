@@ -11,13 +11,16 @@ math = require "mathjs"
 exports.differentiationGenerator = differentiationGenerator =
   polynomial : (level = 1) ->
     problem = ""
-    for n, i in rnd.intsPlus(9)[1..level]
-      unless i is 0 then problem += "*"
-      problem += "(x+#{n})"
+    for i in [level+1..0]
+      [a] = rnd.intsPlus(9)
+      problem += "+#{a}x^#{i}"
+    solution = nerdamer("diff(#{problem}, x)").text "factions"
+    solutionExpanded = nerdamer("expand(#{solution})")
     #return
     problem : problem
-    problemTeX : nerdamer("expand(#{problem})").toTeX() #for poly sorting
-    solution : nerdamer("diff(#{problem}, x)").text "factions"
+    problemTeX : nerdamer(problem).toTeX() #for poly sorting
+    solution : solutionExpanded.text "fractions"
+    solutionTeX : solutionExpanded.toTeX() #for poly sorting
     description : "Berechne die Ableitung des Terms"
 
 exports.differentiation =
