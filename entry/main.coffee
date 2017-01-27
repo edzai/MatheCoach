@@ -1,3 +1,4 @@
+require "newrelic"
 { Meteor } = require "meteor/meteor"
 { Accounts } = require "meteor/accounts-base"
 require "/imports/api/AccountsTemplates.coffee"
