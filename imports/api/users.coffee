@@ -11,18 +11,31 @@ md5 = require "md5"
 userProfileSchema = new SimpleSchema
   firstName :
     type : String
+    optional : true
   lastName :
     type : String
+    optional : true
   dateOfBirth :
     type : String
+    optional : true
   street :
     type : String
+    optional : true
   plz :
     type : String
+    optional : true
   city :
     type : String
+    optional : true
   phone :
     type : String
+    optional : true
+  mobile :
+    type : String
+    optional : true
+  referenceNumber :
+    type : String
+    optional : true
   schoolClassId :
     type : String
     optional : true
@@ -141,6 +154,9 @@ exports.toggleRole = new ValidatedMethod
       throw new Meteor.Error "not logged-in"
     unless Roles.userIsInRole @userId, "admin"
       throw new Meteor.Error "not admin"
+    if role is "admin" and not
+    Roles.userIsInRole @userId, "superAdmin"
+      throw new Meteor.Error "not superAdmin"
     if Roles.userIsInRole userId, role
       Roles.removeUsersFromRoles userId, role
     else

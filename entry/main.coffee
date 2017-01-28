@@ -23,5 +23,5 @@ if Meteor.isServer
     admin = Meteor.users.findOne username : "admin"
     if admin?
       Roles.addUsersToRoles admin._id, [
-        "admin"
+        "admin", "superAdmin"
       ]
