@@ -16,6 +16,12 @@
   require "./problemGenerators/quadraticEquations.coffee"
 { nullstellen } =
   require "./problemGenerators/nullstellen.coffee"
+{ differentiation } =
+  require "./problemGenerators/differentiation.coffee"
+{ integration } =
+  require "./problemGenerators/integration.coffee"
+{ binomischeFormeln } =
+  require "./problemGenerators/binomischeFormeln.coffee"
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
 
@@ -31,9 +37,12 @@ exports.modules = [
   "potenz1"
   "lineareGleichung1"
   "lineareGleichung2"
+  "binomischeFormeln"
   "quadratischeGleichung"
   "nullStellen"
   "polynomialDivision"
+  "differentiation"
+  "integration"
   # "someModule"
 ]
 
@@ -49,10 +58,13 @@ exports.problemDefinitions =
   terme1 : expressions
   lineareGleichung1 : linearEquations.lineareGleichung1
   lineareGleichung2 : linearEquations.lineareGleichung2
+  binomischeFormeln : binomischeFormeln
   quadratischeGleichung : quadratischeGleichung
   potenz1 : powers.potenz1
   nullStellen : nullstellen
   polynomialDivision : polynomialDivision
+  differentiation : differentiation
+  integration : integration
   # test :
   #   title : "Test"
   #   description : "Testbereich für den Aufgabengenerator, \
