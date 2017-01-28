@@ -16,6 +16,7 @@ ViewModel.mixin
     isMentor : -> Roles.userIsInRole @userId(), "mentor"
     isParent : -> Roles.userIsInRole @userId(), "parent"
     isAdmin : -> Roles.userIsInRole @userId(), "admin"
+    isSuperAdmin : -> Roles.userIsInRole @userId(), "superAdmin"
     isStudent : -> not @isMentor() and not @isParent() and not @isAdmin()
     mayNotEditOwnProfile : ->
       Roles.userIsInRole @userId(), "mayNotEditOwnProfile"

@@ -21,8 +21,12 @@ Template.editUserAdmin.viewmodel
   docHandlerSchema : userProfileSchema
   docHandlerDoc : ->
     (Meteor.users.findOne _id : @userId())?.profile
-  userType : ""
-  editLinks : false
+  referenceNumber : ViewModel.property.string.notBlank
+    .invalidMessage "Das Feld darf nicht lehr sein."
+  allFieldsValid : ->
+    @referenceNumber.valid()
+  enableSaveButton : ->
+    @docHandlerVMChanged() and @allFieldsValid()
   save : ->
     event.preventDefault()
     updateUserProfile.call
@@ -34,10 +38,13 @@ Template.editUserAdmin.viewmodel
     toggleRole.call
       userId : @userId()
       role : "mentor"
-  toggleIsParent : ->
-    toggleRole.call
-      userId : @userId()
-      role : "parent"
+  toggleIsAdmin : ->
+    unless Roles.userIsInRole Meteor.userId(), "superAdmin"
+      alert "Das darf nur der Super Administrator!"
+    else
+      toggleRole.call
+        userId : @userId()
+        role : "admin"
   toggleMayNotEditOwnProfile : ->
     toggleRole.call
       userId : @userId()
@@ -67,6 +74,10 @@ Template.editUser.viewmodel
     .invalidMessage "Der Name der Stadt muss zwischen 3 und 80
       Zeichen lang sein."
   phone : ViewModel.property.string.notBlank
+    .regex /^\d+[-]\d+$/
+    .invalidMessage "Vorwahl und Rufnummer mit\
+      Bindestrich getrennt, z.B.: 0123-12345"
+  mobile : ViewModel.property.string.notBlank
     .regex /^\d+[-]\d+$/
     .invalidMessage "Vorwahl und Rufnummer mit\
       Bindestrich getrennt, z.B.: 0123-12345"
