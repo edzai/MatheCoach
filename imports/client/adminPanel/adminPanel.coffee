@@ -41,10 +41,6 @@ Template.adminUserDisplay.viewmodel
         deleteUser.call id : @_id()
   schoolClassName : ->
     SchoolClasses.findOne(_id : @profile()?.schoolClassId)?.name ? "keine"
-  timeAgo : ->
-    @tick()
-    date = moment(@profile().lastActive)
-    "#{date.calendar()} (#{date.fromNow()})"
   deleteSubmissions : ->
     if confirm "Alle submissions von #{@username()} wirklich löschen?"
       deleteSubmissions.call userId : @_id()
@@ -53,3 +49,10 @@ Template.adminUserDisplay.viewmodel
   sendVerificationEmail : ->
     sendVerificationEmail.call userId : @_id()
     sendTestEmail.call text : "tut et dat?"
+  timeAgo : ->
+    @tick()
+    if @profile?().lastActive?
+      date = moment(@profile().lastActive)
+      "#{date.calendar()} (#{date.fromNow()})"
+    else
+      "(bisher noch nicht aktiv)"

@@ -29,10 +29,6 @@ Template.studentListDisplay.viewmodel
   #has properties of Meteor.users
   share : "reactiveTimer"
   name : -> "#{@profile().firstName} #{@profile().lastName}"
-  timeAgo : ->
-    @tick()
-    date = moment(@profile().lastActive)
-    "#{date.calendar()} (#{date.fromNow()})"
   userColor : ->
     @tick()
     moreThanDaysAgo = (days) =>
@@ -42,6 +38,13 @@ Template.studentListDisplay.viewmodel
       when moreThanDaysAgo 3 then "orange"
       when moreThanDaysAgo 1 then "yellow"
       else "green"
+  timeAgo : ->
+    @tick()
+    if @profile?().lastActive?
+      date = moment(@profile().lastActive)
+      "#{date.calendar()} (#{date.fromNow()})"
+    else
+      "(bisher noch nicht aktiv)"
   hasUnreadMessagesFromStudent : ->
     ChatMessages.find
       receiverId : Meteor.userId()
