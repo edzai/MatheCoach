@@ -32,7 +32,7 @@ Template.adminSchoolClassDisplay.viewmodel
     "#{profile?.lastName}, #{profile?.firstName}"
 
 Template.adminUserDisplay.viewmodel
-  share : "reactiveTimer"
+  mixin : "timeAgo"
   deleteUser : ->
     if @username() is "admin"
       alert "admin account kann nicht gelöscht werden"
@@ -49,10 +49,3 @@ Template.adminUserDisplay.viewmodel
   sendVerificationEmail : ->
     sendVerificationEmail.call userId : @_id()
     sendTestEmail.call text : "tut et dat?"
-  timeAgo : ->
-    @tick()
-    if @profile?().lastActive?
-      date = moment(@profile().lastActive)
-      "#{date.calendar()} (#{date.fromNow()})"
-    else
-      "(bisher noch nicht aktiv)"

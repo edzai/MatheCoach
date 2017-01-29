@@ -24,6 +24,16 @@ ViewModel.mixin
       (Roles.userIsInRole Meteor.userId(), "admin") or
       (@userId() is Meteor.userId() and not @mayNotEditOwnProfile())
 
+  timeAgo :
+    timeAgoReactiveTimer : new ReactiveTimer(10)
+    timeAgo : ->
+      @timeAgoReactiveTimer().tick()
+      if @profile?().lastActive?
+        date = moment(@profile().lastActive)
+        "#{date.calendar()} (#{date.fromNow()})"
+      else
+        "(bisher noch nicht aktiv)"
+
   docHandler :
     #must be defined in viewmodel:
     docHandlerSchema : {} #the simpleSchema of the doc
