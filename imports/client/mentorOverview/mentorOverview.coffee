@@ -28,11 +28,8 @@ Template.schoolClassListDisplay.viewmodel
 Template.studentListDisplay.viewmodel
   #has properties of Meteor.users
   share : "reactiveTimer"
+  mixin : "timeAgo"
   name : -> "#{@profile().firstName} #{@profile().lastName}"
-  timeAgo : ->
-    @tick()
-    date = moment(@profile().lastActive)
-    "#{date.calendar()} (#{date.fromNow()})"
   userColor : ->
     @tick()
     moreThanDaysAgo = (days) =>
@@ -50,3 +47,5 @@ Template.studentListDisplay.viewmodel
     .count() isnt 0
   gotoStudentPage : -> FlowRouter.go "/mentor/student/#{@_id()}"
   gotoStudentChat : -> FlowRouter.go "/chat/#{@_id()}"
+  mailLink : -> "mailto:#{@emails()[0].address}"
+  mailVerified : -> @emails()[0].verified

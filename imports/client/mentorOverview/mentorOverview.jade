@@ -17,6 +17,11 @@ template(name="schoolClassListDisplay")
 template(name="studentListDisplay")
   .item
     .right.floated.content
+      a.ui.circular.icon.button($b="attr : {href : mailLink}")
+        if mailVerified
+          i.green.mail.outline.icon
+        else
+          i.orange.mail.outline.icon
       .ui.circular.icon.button($b="click : gotoStudentPage")
         i.bar.graph.icon
       .ui.circular.icon.button($b="click : gotoStudentChat, class : {red : hasUnreadMessagesFromStudent}")
