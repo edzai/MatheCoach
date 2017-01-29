@@ -33,10 +33,16 @@ template(name="adminSchoolClassDisplay")
                 
 template(name="adminUserDisplay")
   .item
-    button.ui.right.floated.circular.blue.icon.button($b="click : editUser")
-      i.edit.icon
-    button.ui.right.floated.circular.red.icon.button($b="click : deleteUser")
-      i.trash.icon
+    .right.floated.content
+      a.ui.circular.icon.button($b="attr : {href : mailLink}")
+        if mailVerified
+          i.green.mail.outline.icon
+        else
+          i.orange.mail.outline.icon
+      button.ui.circular.red.icon.button($b="click : deleteUser")
+        i.trash.icon
+      button.ui.circular.blue.icon.button($b="click : editUser")
+        i.edit.icon
     .content
       .header #{profile.firstName} #{profile.lastName} (#{username})
       .meta Klasse: 

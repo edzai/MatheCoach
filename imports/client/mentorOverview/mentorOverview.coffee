@@ -47,3 +47,5 @@ Template.studentListDisplay.viewmodel
     .count() isnt 0
   gotoStudentPage : -> FlowRouter.go "/mentor/student/#{@_id()}"
   gotoStudentChat : -> FlowRouter.go "/chat/#{@_id()}"
+  mailLink : -> "mailto:#{@emails()[0].address}"
+  mailVerified : -> @emails()[0].verified
