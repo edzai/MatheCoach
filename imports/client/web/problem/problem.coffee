@@ -1,7 +1,7 @@
-require "/imports/client/ui-slider.css"
-require "/imports/client/mustBeLoggedIn/mustBeLoggedIn.coffee"
+#require "/imports/client/ui-slider.css"
+require "/imports/client/web/mustBeLoggedIn/mustBeLoggedIn.coffee"
 require "./problem.jade"
-require "/imports/client/moduleScoreDisplay/moduleScoreDisplay.coffee"
+require "/imports/client/web/moduleScoreDisplay/moduleScoreDisplay.coffee"
 
 _ = require "lodash"
 

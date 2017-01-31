@@ -1,8 +1,8 @@
 { updateUserProfile, userProfileSchema } = require "/imports/api/users.coffee"
 { Meteor } = require "meteor/meteor"
 _ = require "lodash"
-require "/imports/client/editUser/editUser.coffee"
-require "/imports/client/mustBeLoggedIn/mustBeLoggedIn.coffee"
+require "/imports/client/web/editUser/editUser.coffee"
+require "/imports/client/web/mustBeLoggedIn/mustBeLoggedIn.coffee"
 require "./userSettings.jade"
 
 Template.userSettingsPage.viewmodel
