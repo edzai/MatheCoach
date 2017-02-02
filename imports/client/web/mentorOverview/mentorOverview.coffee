@@ -4,7 +4,7 @@
 { Submissions } = require "/imports/api/submissions.coffee"
 { ChatMessages } = require "/imports/api/chatMessages.coffee"
 
-require "/imports/client/mustBeMentor/mustBeMentor.coffee"
+require "/imports/client/web/mustBeMentor/mustBeMentor.coffee"
 require "./mentorOverview.jade"
 
 Template.mentorOverview.viewmodel

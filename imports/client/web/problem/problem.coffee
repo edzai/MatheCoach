@@ -1,7 +1,7 @@
-require "/imports/client/ui-slider.css"
-require "/imports/client/mustBeLoggedIn/mustBeLoggedIn.coffee"
+#require "/imports/client/ui-slider.css"
+require "/imports/client/web/mustBeLoggedIn/mustBeLoggedIn.coffee"
 require "./problem.jade"
-require "/imports/client/moduleScoreDisplay/moduleScoreDisplay.coffee"
+require "/imports/client/web/moduleScoreDisplay/moduleScoreDisplay.coffee"
 
 _ = require "lodash"
 
@@ -18,8 +18,40 @@ _ = require "lodash"
 { Submissions, resetSubmissions, insertSubmission } =
   require "/imports/api/submissions.coffee"
 
+Template.inputKey.viewmodel
+
 Template.problem.viewmodel
   share : "reactiveTimer"
+  isMobile : false
+  handleInputKey : (keyValue) ->
+    strArray = @answer().split ""
+    if keyValue is "backspace"
+      strArray.pop()
+    else
+      strArray.push keyValue
+    @answer strArray.join("")
+  inputKeys : ->
+    numberKeys = [0..9].map (i) ->
+      text : "#{i}"
+      value : "#{i}"
+    operatorKeys = "+-*/^=()".split("").map (e) ->
+      text : e
+      value : e
+    .concat [
+      text : "√"
+      value : "sqrt("
+    ,
+      text : "⌫"
+      value : "backspace"
+    ]
+    letterKeys = _(@problem()?.solution?.match /[a-z]/gi)
+      .uniq()
+      .sort()
+      .value()
+      .map (e) ->
+        text : e
+        value : e
+    numberKeys.concat operatorKeys, letterKeys
   moduleKey : -> FlowRouter.getParam "key"
   userId : -> Meteor.userId()
   problem : {}

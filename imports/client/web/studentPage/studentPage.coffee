@@ -1,6 +1,6 @@
 require "./studentPage.jade"
-require "/imports/client/activityGraph/activityGraph.coffee"
-require "/imports/client/submissionsList/submissionsList.coffee"
+require "/imports/client/web/activityGraph/activityGraph.coffee"
+require "/imports/client/web/submissionsList/submissionsList.coffee"
 
 Template.studentPage.viewmodel
   studentId : -> FlowRouter.getParam "studentId"

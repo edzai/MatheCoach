@@ -1,4 +1,4 @@
-require "/imports/client/userLinkDisplay/userLinkDisplay.coffee"
+require "/imports/client/web/userLinkDisplay/userLinkDisplay.coffee"
 require "./editUser.jade"
 require "/imports/client/shares.coffee"
 _ = require "lodash"
