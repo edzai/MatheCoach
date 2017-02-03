@@ -1,7 +1,7 @@
 T9n.setLanguage "de"
 
 AccountsTemplates.configure
-  defaultLayout : "layout"
+  defaultLayout : "web"
   defaultLayoutRegions : {}
   defaultContentRegion : "main"
   showForgotPasswordLink: true
