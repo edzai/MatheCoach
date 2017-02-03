@@ -1,5 +1,5 @@
 template(name="inputKey")
-  button.ui.inverse.tiny.grey.button($b="click : parent.handleInputKey(value), text : text")
+  button.input-key($b="click : parent.handleInputKey(value), text : text")
     
 template(name="problem")
   unless currentUser
@@ -60,11 +60,7 @@ template(name="problem")
         .ui.segment
           h4.header Lösung:
           +teXDisplay(teX=solutionTeX)
-          //- +mathjax
-          //-   div $$#{solutionTeX}$$
       div    
-        //- a.ui.left.floated.teal.icon.button(href="/modules")
-        //-   i.list.icon
         button.ui.left.floated.grey.inverse.icon.button($b="toggle : isMobile")
           i.keyboard.icon
         .ui.blue.icon.buttons
