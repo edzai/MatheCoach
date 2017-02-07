@@ -109,7 +109,7 @@ Template.problem.viewmodel
       @failTextsRequired failTextsRequired
       @failTextsOptional failTextsOptional
       if Meteor.userId()
-        @unsyncedCountInc() if insertSubmission.apply
+        incCount = insertSubmission.call
           moduleKey : @moduleKey()
           level : @currentLevel()
           answerCorrect : @answerCorrect()
@@ -121,6 +121,7 @@ Template.problem.viewmodel
           (error, result) =>
             unless error
               @unsyncedCountDec()
+        if incCount then @unsyncedCountInc()
     else
       @newProblem()
 
