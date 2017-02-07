@@ -4,6 +4,7 @@ require "../navbarUserField/navbarUserField.coffee"
 require "./navbar.jade"
 
 Template.navbar.viewmodel
+  share : "unsyncedCount"
   mixin : "rolesForUserId"
   userId : -> Meteor.userId()
   hasTeacher : ->
@@ -18,3 +19,6 @@ Template.navbar.viewmodel
       query.senderId = Meteor.user().schoolClass().teacherId
     ChatMessages.find(query).count()
   hasUnreadMessages : -> @unreadMessagesCount() isnt 0
+  showUnsyncedCount : ->
+    alert "#{@unsyncedCount()} Ergebnisse sind noch nicht \
+      mit dem Server synchronisiert."

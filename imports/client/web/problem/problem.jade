@@ -5,6 +5,19 @@ template(name="problem")
   unless currentUser
     +mustBeLoggedIn
   else
+    if warnUnsyncedDimmer
+      .ui.active.page.dimmer
+        .content
+          .center
+            .ui.inverted.icon.header
+              i.red.cloud.upload.icon
+              | Keine Verbindung zum Server
+            .ui.left.aligned.text.container
+              p Du kannst weiter Aufgaben lösen. Wenn Du wieder Verbindung zum Server hast, werden die Daten automatisch dort hochgeladen. Solange die Verbindungsprobleme bestehen, siehst Du das rote Warnsymbol oben links im Menü.
+              p Vorsicht: Wenn du das Browserfenster mit Mathe-Coach schließt, ehe alle Daten hochgeladen wurden, gehen diese Daten verloren.
+              p
+            button.ui.inverted.button($b="click : dismissWarnUnsynced") OK
+            
     .ui.text.container
       .ui.grid
         .nine.wide.column

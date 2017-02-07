@@ -68,6 +68,8 @@ exports.insertSubmission = new ValidatedMethod
     Meteor.users.update @userId,
       $set :
         "profile.lastActive" : now
+    return true
+
 
 if Meteor.isServer
   Meteor.publish "userSubmissions", ->

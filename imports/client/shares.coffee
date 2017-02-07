@@ -7,6 +7,16 @@ ViewModel.share
   FlowRouterAuth :
     permissionGranted : ->
       FlowRouter.Auth.permissionGranted()
+  unsyncedCount :
+    unsyncedCount : 0
+    warnUnsyncedDismissed : false
+    unsyncedCountInc : -> @unsyncedCount @unsyncedCount + 1
+    unsyncedCountDec : -> @unsyncedCount @unsyncedCount - 1
+    warnUnsyncedDimmer : ->
+      @unsyncedCount() > 1 and not @warnUnsyncedDismissed()
+    warnUnsyncedMenu : ->
+      @unsyncedCount() > 1 and @warnUnsyncedDismissed()
+    dismissWarnUnsynced : -> @warnUnsyncedDismissed true
 
 ViewModel.mixin
   rolesForUserId :
