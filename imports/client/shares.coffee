@@ -10,13 +10,14 @@ ViewModel.share
   unsyncedCount :
     unsyncedCount : 0
     warnUnsyncedDismissed : false
-    unsyncedCountInc : -> @unsyncedCount @unsyncedCount + 1
-    unsyncedCountDec : -> @unsyncedCount @unsyncedCount - 1
+    unsyncedCountInc : -> @unsyncedCount @unsyncedCount() + 1
+    unsyncedCountDec : -> @unsyncedCount @unsyncedCount() - 1
     warnUnsyncedDimmer : ->
       @unsyncedCount() > 1 and not @warnUnsyncedDismissed()
     warnUnsyncedMenu : ->
       @unsyncedCount() > 1 and @warnUnsyncedDismissed()
     dismissWarnUnsynced : -> @warnUnsyncedDismissed true
+    autorun : -> console.log "unsyncedCount", @unsyncedCount()
 
 ViewModel.mixin
   rolesForUserId :
