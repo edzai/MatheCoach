@@ -11,7 +11,7 @@ template(name="studentOwnPage")
     
 template(name="studentPageDisplay")
   .ui.text.container
-    h1.header #{name}
+    h2.header #{name}
     +activityGraph(userId=_id)
     .ui.list
       each submissionsPage(page)

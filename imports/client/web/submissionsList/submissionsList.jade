@@ -14,7 +14,7 @@ template(name="submissionDisplay")
         .header #{moduleTitle}, Level #{level}
         .description($b="text : timeAgo")
         .ui.segment
-          h3.ui.header #{description}
+          h4.ui.header #{description}
           +teXDisplay(teX=problem)
           //- +mathjax
           //-   div $$#{problem}$$

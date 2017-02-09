@@ -1,6 +1,10 @@
 template(name="navbar")
   .ui.fixed.transparent.main.menu
-    a.header.item(href="/") MatheCoach
+    if warnUnsyncedMenu
+      a.item($b="click : showUnsyncedCount")
+        i.large.red.cloud.upload.icon
+    a.item(href="/")
+      i.large.info.circle.icon
     //- a.item(class=isActiveRoute('info') href="/info")
     //-   i.large.info.icon
     .right.menu
@@ -13,16 +17,16 @@ template(name="navbar")
           a.item(class=isActiveRoute('mentorChat')
           $b="attr : {href : chatUrl}")
             i.large.comments.outline.icon($b="class : {red : hasUnreadMessages}")
+        if isMentor
+          a.item(class=isActiveRoute('mentorOverview') href="/mentor/overview")
+            i.large.student.icon($b="class : {red : hasUnreadMessages}")
+          //- a.item(class=isActiveRoute('calculator') href="/rechner")
+          //-   i.large.calculator.icon
+      a.item(class=isActiveRoute('help') href="/help")
+        i.large.help.icon
+      +navbarUserField
+      if currentUser
         if isInRole "admin"
           a.item(class=isActiveRoute('adminPanel')
             href="/admin-panel")
             i.large.red.settings.icon
-        if isMentor
-          a.item(class=isActiveRoute('mentorOverview') href="/mentor/overview")
-            i.large.student.icon($b="class : {red : hasUnreadMessages}")
-          a.item(class=isActiveRoute('calculator') href="/rechner")
-            i.large.calculator.icon
-      a.item(class=isActiveRoute('help') href="/help")
-        i.large.help.icon
-      +navbarUserField
-          

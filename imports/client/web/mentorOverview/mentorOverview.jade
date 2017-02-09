@@ -3,12 +3,11 @@ template(name="mentorOverview")
     +mustBeMentor
   else
     .ui.text.container
-      h1.header Schüler
       each schoolClasses
         +schoolClassListDisplay
 
 template(name="schoolClassListDisplay")
-  h2.header($b="text : name")        
+  h3.header($b="text : name")        
   .ui.segment
     .ui.relaxed.list
       each students
