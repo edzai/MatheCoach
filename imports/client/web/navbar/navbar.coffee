@@ -19,6 +19,3 @@ Template.navbar.viewmodel
       query.senderId = Meteor.user().schoolClass().teacherId
     ChatMessages.find(query).count()
   hasUnreadMessages : -> @unreadMessagesCount() isnt 0
-  showUnsyncedCount : ->
-    alert "#{@unsyncedCount()} Ergebnisse sind noch nicht \
-      mit dem Server synchronisiert."

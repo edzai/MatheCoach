@@ -21,7 +21,7 @@ _ = require "lodash"
 Template.inputKey.viewmodel
 
 Template.problem.viewmodel
-  share : ["reactiveTimer", "unsyncedCount"]
+  share : ["reactiveTimer", "unsyncedSubmissions"]
   isMobile : false
   handleInputKey : (keyValue) ->
     strArray = @answer().split ""
@@ -98,7 +98,9 @@ Template.problem.viewmodel
         moduleKey : @moduleKey()
 
   checkAnswer : ->
-    unless @answered()
+    if @answered()
+      @newProblem()
+    else
       @answered true
       { pass, passTextsRequired, passTextsOptional,
         failTextsRequired, failTextsOptional } =
@@ -109,7 +111,7 @@ Template.problem.viewmodel
       @failTextsRequired failTextsRequired
       @failTextsOptional failTextsOptional
       if Meteor.userId()
-        incCount = insertSubmission.call
+        @insertSubmission
           moduleKey : @moduleKey()
           level : @currentLevel()
           answerCorrect : @answerCorrect()
@@ -117,14 +119,6 @@ Template.problem.viewmodel
           problem : @problemTeX()
           answer : @answer()
           date : new Date()
-        ,
-          (error, result) =>
-            unless error
-              @unsyncedCountDec()
-        if incCount then @unsyncedCountInc()
-    else
-      @newProblem()
-
 
   currentPerc :  ->
     @levelTally().rightPercent() *
