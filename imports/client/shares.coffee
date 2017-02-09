@@ -1,5 +1,10 @@
 _ = require "lodash"
 
+{ pushToStore, removeFromStore , flushStore } =
+  require "./localStore.coffee"
+
+{ insertSubmission } = require "/imports/api/submissions.coffee"
+
 ViewModel.share
   reactiveTimer :
     reactiveTimer : new ReactiveTimer(10)
@@ -7,17 +12,19 @@ ViewModel.share
   FlowRouterAuth :
     permissionGranted : ->
       FlowRouter.Auth.permissionGranted()
-  unsyncedCount :
+  unsyncedSubmissions :
     unsyncedCount : 0
-    warnUnsyncedDismissed : false
-    unsyncedCountInc : -> @unsyncedCount @unsyncedCount() + 1
-    unsyncedCountDec : -> @unsyncedCount @unsyncedCount() - 1
-    warnUnsyncedDimmer : ->
-      @unsyncedCount() > 1 and not @warnUnsyncedDismissed()
-    warnUnsyncedMenu : ->
-      @unsyncedCount() > 1 and @warnUnsyncedDismissed()
-    dismissWarnUnsynced : -> @warnUnsyncedDismissed true
-    autorun : -> console.log "unsyncedCount", @unsyncedCount()
+    insertSubmission : (submissionObject) ->
+      inserted = insertSubmission.call submissionObject,
+        (error, result) =>
+          unless error
+            removeFromStore submissionObject
+            @unsyncedCount @unsyncedCount() - 1
+          else console.log error
+      if inserted
+        pushToStore submissionObject
+        @unsyncedCount @unsyncedCount() + 1
+
 
 ViewModel.mixin
   rolesForUserId :
