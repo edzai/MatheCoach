@@ -2,3 +2,4 @@ node_modules/
 .DS_Store
 imports/modules/nerdamer/
 imports/modules/playground.coffee
+settings.json
