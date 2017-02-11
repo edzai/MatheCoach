@@ -63,5 +63,5 @@ email@1.1.18
 semantic:ui
 juliancwirko:postcss
 less@2.7.8
-cultofcoders:redis-oplog
-disable-oplog
+#cultofcoders:redis-oplog
+#disable-oplog
