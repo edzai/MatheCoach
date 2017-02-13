@@ -8,9 +8,10 @@ require "/imports/modules/nerdamer/Solve.js"
 
 math = require "mathjs"
 
+#TODO fix checks
 #nerdamer doesnt recognize that (a+b)^2-(a^2+2ab+b^2) is 0
 #so we don't have to worry about checking if the problem was
-#actually solved
+#actually solved. but the checks should actually say it's equivalent...
 
 exports.binomischeFormelnGenerator = generator =
   einfach : (level = 1) ->
