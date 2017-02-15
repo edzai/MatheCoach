@@ -1,14 +1,33 @@
 body, html
   height : auto
   background : linear-gradient(aliceblue, lightsteelblue) fixed
+  @media screen and (max-width : 414px)
+    font-size : .9em
+  @media screen and (max-width : 375px)
+    font-size : .8em
+  @media screen and (max-width : 320px)
+    font-size : .65em
+  @media screen and (width : 768px) and (height : 1024px)
+    font-size : 1.3em
+  @media screen and (height : 768px) and (width : 1024px)
+    font-size : 1.15em
 
 .site
-  padding-top: 70px
+  padding-top: 60px
   margin : 0
   display: flex
   min-height: 100vh
   flex-direction: column
-
+  @media screen and (max-width : 414px)
+    padding-top : 60px
+  @media screen and (max-width : 375px)
+    padding-top : 55px
+  @media screen and (max-width : 320px)
+    padding-top : 45px
+  @media screen and (width : 768px) and (height : 1024px)
+    padding-top : 90px
+  @media screen and (height : 768px) and (width : 1024px)
+    padding-top : 80px
 .sitecontent
   flex : 1
 
