@@ -33,7 +33,7 @@ template(name="problem")
             input($b="value : answer, enter : checkAnswer, focus : focusOnAnswer" placeholder="Deine Antwort (als Bruch oder Term)" type="text")
       if isMobile
         unless answered
-          .ui.grey.inverted.segment.input-pad
+          .ui.grey.inverted.segment.input-pad($b="style : style")
             each inputKeys
               +inputKey
             

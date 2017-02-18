@@ -25,6 +25,17 @@ ViewModel.share
         pushToStore submissionObject
         @unsyncedCount @unsyncedCount() + 1
 
+  layout :
+    navbarSize : -> Meteor.user()?.profile?.navbarSize or 1
+    contentSize : -> Meteor.user()?.profile?.contentSize or 1
+    keypadSize : -> Meteor.user()?.profile?.keypadSize or 1
+    showViewportSize : -> Meteor.user()?.profile?.showViewportSize or false
+    isMobile : true
+    contentStyle : ->
+      "font-size" : "#{@contentSize()}em"
+    autorun : ->
+      document.body.style.zoom = "#{@contentSize()*100}%"
+
 
 ViewModel.mixin
   rolesForUserId :

@@ -4,7 +4,7 @@ require "../navbarUserField/navbarUserField.coffee"
 require "./navbar.jade"
 
 Template.navbar.viewmodel
-  share : "unsyncedCount"
+  share : "layout"
   mixin : "rolesForUserId"
   userId : -> Meteor.userId()
   hasTeacher : ->
@@ -19,3 +19,5 @@ Template.navbar.viewmodel
       query.senderId = Meteor.user().schoolClass().teacherId
     ChatMessages.find(query).count()
   hasUnreadMessages : -> @unreadMessagesCount() isnt 0
+  style : ->
+    "font-size" : "#{@navbarSize()}em"

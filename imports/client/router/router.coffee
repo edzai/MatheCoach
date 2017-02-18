@@ -15,7 +15,9 @@ require "/imports/client/web/help/help.coffee"
 require "/imports/client/web/adminPanel/adminPanel.coffee"
 require "/imports/client/web/editUser/editUser.coffee"
 require "/imports/client/web/schoolClassSettings/schoolClassSettings.coffee"
-require "./layout.jade"
+require "./layout.coffee"
+
+
 
 FlowRouter.notFound =
   action : ->
