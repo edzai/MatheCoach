@@ -13,4 +13,8 @@ template(name="web")
 template(name="footer")
   .ui.center.aligned.container
     .ui.divider
-    p &copy; 2016 - Jan Pilgenröder
+    if showViewportSize
+      p
+        span($b="text : viewportSize")
+    else
+      p &copy; 2016 - Jan Pilgenröder

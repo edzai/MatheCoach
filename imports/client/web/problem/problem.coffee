@@ -21,8 +21,7 @@ _ = require "lodash"
 Template.inputKey.viewmodel
 
 Template.problem.viewmodel
-  share : ["reactiveTimer", "unsyncedSubmissions"]
-  isMobile : false
+  share : ["reactiveTimer", "unsyncedSubmissions", "layout"]
   handleInputKey : (keyValue) ->
     strArray = @answer().split ""
     if keyValue is "backspace"
@@ -162,3 +161,5 @@ Template.problem.viewmodel
   easier : ->
     @newLevel Math.max( 1, @currentLevel() - 1)
     @newProblem()
+  style : ->
+    "font-size" : "#{@keypadSize()}em"

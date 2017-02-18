@@ -45,6 +45,18 @@ userProfileSchema = new SimpleSchema
   useKaTeX :
     type : Boolean
     optional : true
+  navbarSize :
+    type : Number
+    optional : true
+  contentSize :
+    type : Number
+    optional : true
+  keypadSize :
+    type : Number
+    optional : true
+  showViewportSize :
+    type : Boolean
+    optional : true
 exports.userProfileSchema = userProfileSchema
 
 userSchema = new SimpleSchema
