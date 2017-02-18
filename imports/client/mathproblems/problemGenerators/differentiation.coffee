@@ -14,13 +14,12 @@ exports.differentiationGenerator = differentiationGenerator =
     for i in [level+1..0]
       [a] = rnd.intsPlus(9)
       problem += "+#{a}x^#{i}"
-    solution = nerdamer("diff(#{problem}, x)").text "factions"
-    solutionExpanded = nerdamer("expand(#{solution})")
+    solution = nerdamer("diff(#{problem}, x)")
     #return
     problem : problem
-    problemTeX : nerdamer(problem).toTeX() #for poly sorting
-    solution : solutionExpanded.text "fractions"
-    solutionTeX : solutionExpanded.toTeX() #for poly sorting
+    problemTeX : nerdamer(problem).toTeX() #get rid of superfluous + and x^0
+    solution : solution.text "factions"
+    solutionTeX : solution.toTeX() #ditto
     description : "Berechne die Ableitung des Terms"
 
 exports.differentiation =

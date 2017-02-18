@@ -91,6 +91,10 @@ if Meteor.isServer
       find : (teacher) ->
         SchoolClasses.find
           teacherId : teacher._id
+        ,
+          fields :
+            name : 1
+            teacherId : 1
       children : [
         find : (schoolClass) ->
           Meteor.users.find

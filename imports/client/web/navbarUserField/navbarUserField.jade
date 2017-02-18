@@ -2,7 +2,7 @@ template(name="navbarUserField")
   if currentUser
     a.item(class=isActiveRoute("userSettings") href="/user-settings")
       i.large.settings.icon
-      span($b="text : userName")
+      //span($b="text : userName")
   else
     a.item(class=isActiveRoute("logIn") href="/sign-in")
       i.large.sign.in.icon
