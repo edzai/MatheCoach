@@ -1,0 +1,30 @@
+template(name="setLayout")
+  .ui.small.basic.modal($b="ref : layoutEditor")
+    .ui.center.aligned.text.container
+      .ui.inverted.icon.header
+        i.expand.icon
+        | Layout einstellen
+      .ui.content
+        p
+          .ui.huge.basic.inverted.buttons
+            button.ui.icon.button($b="click : adjust('content', '-')")
+              i.minus.icon
+            button.ui.button($b="click : adjust('content', 'reset')") Zoom
+            button.ui.icon.button($b="click : adjust('content', '+')")
+              i.plus.icon
+        p
+          .ui.huge.basic.inverted.buttons
+            button.ui.icon.button($b="click : adjust('navbar', '-')")
+              i.minus.icon
+            button.ui.button($b="click : adjust('navbar', 'reset')") Menü
+            button.ui.icon.button($b="click : adjust('navbar', '+')")
+              i.plus.icon
+        p
+          .ui.huge.basic.inverted.buttons
+            button.ui.icon.button($b="click : adjust('keypad', '-')")
+              i.minus.icon
+            button.ui.button($b="click : adjust('keypad', 'reset')") Tasten
+            button.ui.icon.button($b="click : adjust('keypad', '+')")
+              i.plus.icon
+        
+        

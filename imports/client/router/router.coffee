@@ -27,40 +27,40 @@ FlowRouter.notFound =
 FlowRouter.route "/",
   name : "home"
   action : ->
-    BlazeLayout.render "web",
+    BlazeLayout.render "layout",
       main : "home"
 
 FlowRouter.route "/info",
   name : "info"
   action : ->
-    BlazeLayout.render "web",
+    BlazeLayout.render "layout",
       main : "home"
 
 FlowRouter.route "/help",
   name : "help"
   action : ->
-    BlazeLayout.render "web",
+    BlazeLayout.render "layout",
       main : "help"
 
 FlowRouter.route "/modules",
   name : "moduleList"
   triggersEnter: [AccountsTemplates.ensureSignedIn]
   action : ->
-    BlazeLayout.render "web",
+    BlazeLayout.render "layout",
       main : "moduleList"
 
 FlowRouter.route "/modul/:key",
   name : "problem"
   triggersEnter: [AccountsTemplates.ensureSignedIn]
   action : ->
-    BlazeLayout.render "web",
+    BlazeLayout.render "layout",
       main : "problem"
 
 FlowRouter.route "/user-settings",
   name : "userSettings"
   triggersEnter: [AccountsTemplates.ensureSignedIn]
   action : ->
-    BlazeLayout.render "web",
+    BlazeLayout.render "layout",
       main : "userSettingsPage"
 
 FlowRouter.route "/chat/:chatPartnerId",

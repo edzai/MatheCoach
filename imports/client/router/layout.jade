@@ -1,5 +1,14 @@
+template(name="layout")
+  if useMobile
+    +mobile
+  else
+    +web
+
 template(name="mobile")
-  +Template.dynamic(template=main)
+  +navbar
+  div($b="style : {padding-top : paddingTop}")
+    +systemMessages
+    +Template.dynamic(template=main)
 
 template(name="web")
   .site
