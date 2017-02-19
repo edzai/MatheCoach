@@ -16,6 +16,12 @@ if Meteor.isClient
 if Meteor.isServer
   Accounts.emailTemplates.from = "MatheCoach <pille@mac.com>"
 
+  Accounts.onCreateUser (options, user) ->
+    user.navbarSize = 1
+    user.contentSize = 1
+    user.keypadSize = 1
+    return user
+
   Meteor.startup ->
     Accounts.config
       sendVerificationEmail : true
