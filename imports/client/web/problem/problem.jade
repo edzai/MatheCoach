@@ -25,13 +25,13 @@ template(name="problem")
             i.icon($b="toggle : showPreview, class : previewIconClass")
         if showPreview
           +teXDisplay(teX=preview)
-        if isMobile
+        if useKeypad
           .text-input-div
             span.text-input-span($b="text : answer")
         else
           .ui.fluid.input
             input($b="value : answer, enter : checkAnswer, focus : focusOnAnswer" placeholder="Deine Antwort (als Bruch oder Term)" type="text")
-      if isMobile
+      if useKeypad
         unless answered
           .ui.grey.inverted.segment.input-pad($b="style : style")
             each inputKeys
@@ -61,7 +61,7 @@ template(name="problem")
           h4.header Lösung:
           +teXDisplay(teX=solutionTeX)
       div    
-        button.ui.left.floated.grey.inverse.icon.button($b="toggle : isMobile")
+        button.ui.left.floated.grey.inverse.icon.button($b="toggle : forceUseKeyboard")
           i.keyboard.icon
         .ui.blue.icon.buttons
           button.ui.icon.button($b="click : easier, disable : autoLevelOn" title="Level verringern")

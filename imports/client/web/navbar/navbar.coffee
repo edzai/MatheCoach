@@ -1,6 +1,7 @@
 { Meteor } = require "meteor/meteor"
 { ChatMessages } = require "/imports/api/chatMessages.coffee"
 require "../navbarUserField/navbarUserField.coffee"
+require "/imports/client/web/setLayout/setLayout.coffee"
 require "./navbar.jade"
 
 Template.navbar.viewmodel

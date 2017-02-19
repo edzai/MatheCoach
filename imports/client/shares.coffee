@@ -1,4 +1,5 @@
 _ = require "lodash"
+MobileDetect = require "mobile-detect"
 
 { pushToStore, removeFromStore , flushStore } =
   require "./localStore.coffee"
@@ -26,16 +27,26 @@ ViewModel.share
         @unsyncedCount @unsyncedCount() + 1
 
   layout :
-    navbarSize : -> Meteor.user()?.profile?.navbarSize or 1
-    contentSize : -> Meteor.user()?.profile?.contentSize or 1
-    keypadSize : -> Meteor.user()?.profile?.keypadSize or 1
+    navbarSize : 1#-> Meteor.user()?.profile?.navbarSize or 1
+    contentSize : 1#-> Meteor.user()?.profile?.contentSize or 1
+    keypadSize : 1#-> Meteor.user()?.profile?.keypadSize or 1
     showViewportSize : -> Meteor.user()?.profile?.showViewportSize or false
-    isMobile : true
-    contentStyle : ->
-      "font-size" : "#{@contentSize()}em"
-    autorun : ->
-      document.body.style.zoom = "#{@contentSize()*100}%"
-
+    layoutEditorToggle : false
+    isMobile : ->
+      md = new MobileDetect window.navigator.userAgent
+      console.log md
+      console.log "mobile", md.mobile()
+      md.mobile()?
+    forceUseMobile : false
+    useMobile : ->
+      if @forceUseMobile() then true else if @isMobile() then true
+    forceUseKeyboard : false
+    useKeypad : ->
+      if @forceUseKeyboard() then false else if @useMobile() then true
+    autorun : [
+      ->
+        document.body.style.zoom = "#{@contentSize()*100}%"
+    ]
 
 ViewModel.mixin
   rolesForUserId :
