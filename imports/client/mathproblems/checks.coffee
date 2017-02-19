@@ -44,8 +44,8 @@ exports.Check =
       answer isnt "" and
       nerdamer("(#{answer}) - (#{solution})").text() is "0"
     required : true
-    passText : "Das Ergebnis ist zur Lösung equivalent."
-    failText : "Das Ergebnis is nicht zur Lösung equivalent."
+    passText : "Das Ergebnis ist zur Lösung äquivalent."
+    failText : "Das Ergebnis ist nicht zur Lösung äquivalent."
 
   noReducableFractionsOptional :
     pass : noReducableFractions
@@ -64,14 +64,14 @@ exports.Check =
       sortSum(answer) is sortSum solution
     required : true
     passText : undefined
-    failText : "Der Term ist nicht richtig Vereinfacht."
+    failText : "Der Term ist nicht richtig vereinfacht."
 
   isWholePositiveNumber :
     pass : (answer, solution) ->
       re = /^\+?\s?\d+\s?$/g
       re.test answer
     required : true
-    failText : "Das Ergebnis muss eine positive Ganze Zahl sein."
+    failText : "Das Ergebnis muss eine positive ganze Zahl sein."
 
   isSingleFraction :
     pass : (answer, solution) ->
@@ -94,7 +94,7 @@ exports.Check =
     required : true
     passText : undefined
     failText : "Das Ergebnis muss ein einzelner Bruch \
-      oder eine einzelne Ganze Zahl sein."
+      oder eine einzelne ganze Zahl sein."
 
   isSinglePower :
     pass : (answer, solution) ->
