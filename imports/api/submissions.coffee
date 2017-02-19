@@ -87,6 +87,9 @@ if Meteor.isServer
           username : 1
           profile : 1
           emails : 1
+          navbarSize : 1
+          contentSize : 1
+          keypadSize : 1
     children : [
       find : (teacher) ->
         SchoolClasses.find

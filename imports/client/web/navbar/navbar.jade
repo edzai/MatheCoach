@@ -1,9 +1,11 @@
 template(name="navbar")
   +setLayout
   .ui.fixed.transparent.main.menu($b="style : style")
+    if useMobile
+      a.item($b="toggle : layoutEditorToggle")
+        i.large.expand.icon
     a.item(href="/")
       i.large.info.circle.icon
-    
     //- a.item(class=isActiveRoute('info') href="/info")
     //-   i.large.info.icon
     .right.menu
@@ -29,6 +31,3 @@ template(name="navbar")
           a.item(class=isActiveRoute('adminPanel')
             href="/admin-panel")
             i.large.red.settings.icon
-      if useMobile
-        a.item($b="toggle : layoutEditorToggle")
-          i.large.expand.icon

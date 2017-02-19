@@ -27,25 +27,36 @@ ViewModel.share
         @unsyncedCount @unsyncedCount() + 1
 
   layout :
-    navbarSize : 1#-> Meteor.user()?.profile?.navbarSize or 1
-    contentSize : 1#-> Meteor.user()?.profile?.contentSize or 1
-    keypadSize : 1#-> Meteor.user()?.profile?.keypadSize or 1
-    showViewportSize : -> Meteor.user()?.profile?.showViewportSize or false
+    navbarSize : ->
+      if @useMobile()
+        Meteor.user()?.navbarSize or 1
+      else 1
+    contentSize : ->
+      if @useMobile()
+        Meteor.user()?.contentSize or 1
+      else 1
+    keypadSize : ->
+      if @useMobile()
+        Meteor.user()?.keypadSize or 1
+      else 1
     layoutEditorToggle : false
     isMobile : ->
-      md = new MobileDetect window.navigator.userAgent
-      console.log md
-      console.log "mobile", md.mobile()
-      md.mobile()?
+      (new MobileDetect window.navigator.userAgent).mobile()?
     forceUseMobile : false
     useMobile : ->
       if @forceUseMobile() then true else if @isMobile() then true
-    forceUseKeyboard : false
+    forceUseOtherKeyboard : false
     useKeypad : ->
-      if @forceUseKeyboard() then false else if @useMobile() then true
+      if @useMobile()
+        not @forceUseOtherKeyboard()
+      else
+        @forceUseOtherKeyboard()
+
+
     autorun : [
       ->
-        document.body.style.zoom = "#{@contentSize()*100}%"
+        document.getElementsByTagName('html')[0].style['font-size'] =
+          "#{@contentSize()*100}%"
     ]
 
 ViewModel.mixin

@@ -45,18 +45,7 @@ userProfileSchema = new SimpleSchema
   useKaTeX :
     type : Boolean
     optional : true
-  navbarSize :
-    type : Number
-    optional : true
-  contentSize :
-    type : Number
-    optional : true
-  keypadSize :
-    type : Number
-    optional : true
-  showViewportSize :
-    type : Boolean
-    optional : true
+
 exports.userProfileSchema = userProfileSchema
 
 userSchema = new SimpleSchema
@@ -87,6 +76,24 @@ userSchema = new SimpleSchema
     optional : true
   heartbeat :
     type : Date
+    optional : true
+  navbarSize :
+    type : Number
+    decimal : true
+    min : .3
+    max : 3
+    optional : true
+  contentSize :
+    type : Number
+    decimal : true
+    min : .3
+    max : 3
+    optional : true
+  keypadSize :
+    type : Number
+    decimal : true
+    min : .3
+    max : 3
     optional : true
 Meteor.users.attachSchema userSchema
 
@@ -123,6 +130,30 @@ Meteor.users.helpers
   isAdmin : ->
     Roles.userIsInRole @_id(), "admin"
   hasTeacher : -> @schoolClass?.teacher?
+
+
+exports.setLayout = new ValidatedMethod
+  name : "setLayout"
+  validate :
+    new SimpleSchema
+      property :
+        type : String
+        allowedValues : ["navbarSize", "contentSize", "keypadSize"]
+      operation :
+        type : String
+        allowedValues : ["+", "-", "reset"]
+    .validator()
+  run : ({ property, operation })   ->
+    unless @userId
+      throw new Meteor.Error "not logged-in"
+    if operation is "reset"
+      Meteor.users.update @userId,
+        $set :
+          "#{property}" : 1
+    else
+      Meteor.users.update @userId,
+        $inc :
+          "#{property}" : if operation is "+" then .05 else -0.05
 
 exports.sendVerificationEmail = new ValidatedMethod
   name : "sendVerificationEmail"

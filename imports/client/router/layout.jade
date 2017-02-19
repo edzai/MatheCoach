@@ -1,8 +1,8 @@
 template(name="layout")
-  if useMobile
-    +mobile
-  else
-    +web
+  //- if useMobile
+  //-   +mobile
+  //- else
+  +web
 
 template(name="mobile")
   +navbar
@@ -13,7 +13,7 @@ template(name="mobile")
 template(name="web")
   .site
     +navbar
-    .sitecontent
+    .sitecontent($b="style : {padding-top : paddingTop}")
       +systemMessages
       +Template.dynamic(template=main)
     .sitefooter
@@ -22,8 +22,4 @@ template(name="web")
 template(name="footer")
   .ui.center.aligned.container
     .ui.divider
-    if showViewportSize
-      p
-        span($b="text : viewportSize")
-    else
-      p &copy; 2016 - Jan Pilgenröder
+    p &copy; 2016 - Jan Pilgenröder
