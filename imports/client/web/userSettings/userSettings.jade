@@ -10,9 +10,11 @@ template(name="userSettingsPage")
             .header Zuggriff auf Benutzerdaten gesperrt.
             p Der Zugriff auf die Benutzerdaten wurde gesperrt. Änderungen können nur vom Systemadministrator vorgenommen werden.
       .ui.hidden.divider
-    with profile
-      .ui.text.container
-        +editUser
+    .ui.text.container
+      with user
+        +editUserSchoolClass
+      with profile
+        +editUserProfile
         +userSettings
         +userLogout
         

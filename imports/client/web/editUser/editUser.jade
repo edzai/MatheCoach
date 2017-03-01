@@ -1,25 +1,38 @@
 template(name="editUserPage")
   if currentUserMayEditProfile
-    with profile
-      .ui.text.container
+    .ui.text.container
+      with profile
         +editUserAdmin
-        +editUser
+      with user
+        +editUserSchoolClass
+      with profile
+        +editUserProfile
   else
     .ui.text.container.segment
       h1.header Kein Zugriff.
       p Sie sind für den Zugriff auf die Benutzerdaten mit der ID #{userId} nicht autorisiert.
 
+template(name="editUserSchoolClass")
+  .ui.clearing.segment
+    form.ui.form($b="visible : isStudent")
+      .field
+        label Klasse
+        select.ui.search.dropdown($b="options : schoolClasses, optionsValue : id, optionsText : name, value : schoolClassId, ref : schoolClassSelect")
+      button.right.floated.ui.button($b="click : save") Speichern
+    p($b="visible : !isStudent") Nur Schüler haben eine Schulklasse.
+    
 template(name="editUserAdmin")
-  h1.header Benutzerdaten für #{firstName} #{lastName}
+  h2.header Benutzerdaten für #{profile.firstName} #{profile.lastName} (#{username})
   //- .ui.clearing.segment
   //-   h3.ui.dividing.header userId
   //-   p #{userId}
-  .ui.clearing.segment
+  //- .ui.clearing.segment
     h3.ui.dividing.header Interne Benutzerdaten
     form.ui.form
       .field
         label Referenznummer
         input($b="value : referenceNumber, attr : { title : referenceNumber.message}", type="text")
+      
       button.right.floated.ui.button($b="click : save, enable : enableSaveButton") Speichern
   .ui.clearing.segment
     h3.ui.dividing.header Zugriffsrechte
@@ -28,20 +41,20 @@ template(name="editUserAdmin")
       button.ui.button($b="click : toggleIsMentor, class : {positive : isMentor}") Der Benutzer ist Lehrer.
       button.ui.button($b="click : toggleMayNotEditOwnProfile, class : {negative : mayNotEditOwnProfile}") Der Benutzer darf sein eigenes Profil NICHT selbst verwalten.
         
-template(name="editUser")
+template(name="editUserProfile")
   .ui.clearing.segment
     form.ui.form
       h3.ui.dividing.header Persönliche Daten
       .field
-        label Name
+        label Name *
         .two.fields
           .field($b="class : { error : firstName.invalid }, attr : { title : firstName.message}")
             input($b="value : firstName" type="text" placeholder="Vorname")
           .field($b="class : { error : lastName.invalid }")
             input($b="value : lastName, attr : { title : lastName.message}" type="text" placeholder="Nachname")
-      .field
+      .field($b="class : { error : dateOfBirth.invalid }")
         label Geburtsdatum
-          .field($b="class : { error : dateOfBirth.invalid }")
+          .field
             .ui.left.icon.input
               i.calendar.icon
               input($b="value : dateOfBirth, attr : { title : dateOfBirth.message}, ref : dateField")
@@ -61,9 +74,7 @@ template(name="editUser")
       .field($b="class : { error : mobile.invalid }")
         label Telefon (Mobil)
         input($b="value : mobile, attr : { title : mobile.message}" type="text" placeholder="Handynummer")
-      .field($b="if : isStudent")
-        label Klasse
-        select.ui.search.dropdown($b="options : schoolClasses, optionsValue : id, optionsText : name, value : schoolClassId, ref : schoolClassSelect")
+      
       if currentUserMayEditProfile
         button.right.floated.ui.button($b="click : save, enable : enableSaveButton") Speichern
       else

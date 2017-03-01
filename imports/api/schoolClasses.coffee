@@ -53,9 +53,9 @@ exports.removeAllStudentsFromClass = new ValidatedMethod
       throw new Meteor.Error "not logged-in"
     unless Roles.userIsInRole @userId, "admin"
       throw new Meteor.Error "not admin"
-    Meteor.users.update "profile.schoolClassId" : id,
+    Meteor.users.update "schoolClassId" : id,
       $unset :
-        "profile.schoolClassId" : ""
+        "schoolClassId" : ""
 
 if Meteor.isServer
   Meteor.publish "schoolClasses", ->

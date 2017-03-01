@@ -19,7 +19,7 @@ Template.mentorOverview.viewmodel
 Template.schoolClassListDisplay.viewmodel
   students : ->
     Meteor.users.find
-      "profile.schoolClassId" : @_id()
+      "schoolClassId" : @_id()
     ,
       sort :
         "profile.lastName" : 1

@@ -8,6 +8,7 @@ require "./userSettings.jade"
 Template.userSettingsPage.viewmodel
   mixin : "rolesForUserId"
   userId : -> Meteor.userId()
+  user : -> Meteor.user()
   profile : ->
     profile = Meteor.user()?.profile or {}
     profile.userId = @userId()

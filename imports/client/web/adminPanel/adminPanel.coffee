@@ -40,7 +40,7 @@ Template.adminUserDisplay.viewmodel
       if confirm "Benutzer #{@username()} wirklich löschen?"
         deleteUser.call id : @_id()
   schoolClassName : ->
-    SchoolClasses.findOne(_id : @profile()?.schoolClassId)?.name ? "keine"
+    SchoolClasses.findOne(_id : @schoolClassId())?.name ? "keine"
   deleteSubmissions : ->
     if confirm "Alle submissions von #{@username()} wirklich löschen?"
       deleteSubmissions.call userId : @_id()
