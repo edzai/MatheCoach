@@ -2,7 +2,8 @@ require "/imports/client/web/userLinkDisplay/userLinkDisplay.coffee"
 require "./editUser.jade"
 require "/imports/client/shares.coffee"
 _ = require "lodash"
-{ updateUserProfile, toggleRole, userProfileSchema,
+
+{ updateUserProfile, toggleRole, userProfileSchema, setUserSchoolClass,
   removeUserFromClass } = require "/imports/api/users.coffee"
 { SchoolClasses } = require "/imports/api/schoolClasses.coffee"
 { testQuery } = require "/imports/api/users.coffee"
@@ -10,11 +11,33 @@ _ = require "lodash"
 Template.editUserPage.viewmodel
   mixin : "rolesForUserId"
   userId : -> FlowRouter.getParam "userId"
+  user : -> Meteor.users.findOne _id : @userId()
   profile : ->
-    profile = (Meteor.users.findOne _id : @userId())?.profile or {}
+    profile = @user()?.profile or {}
     profile.userId = @userId()
-    profile.schoolClassId ?= undefined
     profile
+
+Template.editUserSchoolClass.viewmodel
+  mixin : "rolesForUserId"
+  schoolClassId : ViewModel.property.string
+  schoolClasses : ->
+    SchoolClasses.find {},
+      sort :
+        name : 1
+    .fetch().map (e) ->
+      id : e._id
+      name : e.name
+  save : ->
+    event.preventDefault()
+    setUserSchoolClass.call
+      userId : @_id()
+      schoolClassId : @schoolClassId()
+  autorun : ->
+    @schoolClassSelect.dropdown "set selected", @schoolClassId()
+    @schoolClassSelect.dropdown "set text",
+      _.chain @schoolClasses()
+        .find id : @schoolClassId()
+        .value()?.name ? ""
 
 Template.editUserAdmin.viewmodel
   mixin : ["docHandler", "rolesForUserId"]
@@ -50,7 +73,9 @@ Template.editUserAdmin.viewmodel
       userId : @userId()
       role : "mayNotEditOwnProfile"
 
-Template.editUser.viewmodel
+
+
+Template.editUserProfile.viewmodel
   mixin : ["docHandler", "rolesForUserId"]
   docHandlerSchema : userProfileSchema
   docHandlerDoc : ->
@@ -81,23 +106,15 @@ Template.editUser.viewmodel
     .regex /^\d+[-]\d+$/
     .invalidMessage "Vorwahl und Rufnummer mit\
       Bindestrich getrennt, z.B.: 0123-12345"
-  schoolClasses : ->
-    SchoolClasses.find {},
-      sort :
-        name : 1
-    .fetch().map (e) ->
-      id : e._id
-      name : e.name
-  schoolClassId : ViewModel.property.string
   editLinks : false
   allFieldsValid : ->
     @firstName.valid() and
-    @lastName.valid() and
-    @dateOfBirth.valid() and
-    @street.valid() and
-    @plz.valid() and
-    @city.valid() and
-    @phone.valid()
+    @lastName.valid() #and
+  # @dateOfBirth.valid() and
+  # @street.valid() and
+  # @plz.valid() and
+  # @city.valid() and
+  # @phone.valid()
   enableSaveButton : ->
     @docHandlerVMChanged() and @allFieldsValid()
   save : ->
@@ -109,9 +126,3 @@ Template.editUser.viewmodel
     picker = new Pikaday
       field : @dateField[0]
       format : "D.M.Y"
-  autorun : ->
-    @schoolClassSelect.dropdown "set selected", @schoolClassId()
-    @schoolClassSelect.dropdown "set text",
-      _.chain @schoolClasses()
-        .find id : @schoolClassId()
-        .value()?.name ? ""

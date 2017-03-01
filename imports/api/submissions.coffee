@@ -90,6 +90,7 @@ if Meteor.isServer
           navbarSize : 1
           contentSize : 1
           keypadSize : 1
+          schoolClassId : 1
     children : [
       find : (teacher) ->
         SchoolClasses.find
@@ -101,12 +102,13 @@ if Meteor.isServer
       children : [
         find : (schoolClass) ->
           Meteor.users.find
-            "profile.schoolClassId" : schoolClass._id
+            "schoolClassId" : schoolClass._id
           ,
             fields :
               username : 1
               profile : 1
               emails : 1
+              schoolClassId : 1
         children : [
           find : (student) ->
             Submissions.find userId : student._id

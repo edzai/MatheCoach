@@ -33,19 +33,18 @@ userProfileSchema = new SimpleSchema
   mobile :
     type : String
     optional : true
-  referenceNumber :
-    type : String
-    optional : true
-  schoolClassId :
-    type : String
-    optional : true
+  #TODO Move lastActive out of profile
   lastActive :
     type : Date
     optional : true
+  #TODO Move referenceNumber out of profile
+  referenceNumber :
+    type : String
+    optional : true
+  #TODO Move useKaTeX out of profile
   useKaTeX :
     type : Boolean
     optional : true
-
 exports.userProfileSchema = userProfileSchema
 
 userSchema = new SimpleSchema
@@ -76,6 +75,10 @@ userSchema = new SimpleSchema
     optional : true
   heartbeat :
     type : Date
+    optional : true
+  #DOING Move schoolClassId out of profile
+  schoolClassId :
+    type : String
     optional : true
   navbarSize :
     type : Number
@@ -124,7 +127,7 @@ Meteor.users.helpers
       limit : 10*page
   schoolClass : ->
     SchoolClasses.findOne
-      _id : @profile.schoolClassId
+      _id : @schoolClassId
   isMentor : ->
     Roles.userIsInRole @_id(), "mentor"
   isAdmin : ->
@@ -205,6 +208,25 @@ exports.toggleRole = new ValidatedMethod
     else
       Roles.addUsersToRoles userId, role
 
+
+exports.setUserSchoolClass = new ValidatedMethod
+  name : "setUserSchoolClass"
+  validate :
+    new SimpleSchema
+      userId :
+        type : String
+      schoolClassId :
+        type : String
+    .validator()
+  run : ({ userId, schoolClassId }) ->
+    unless @userId
+      throw new Meteor.Error "not logged-in"
+    unless (Roles.userIsInRole @userId, "admin") or (userId is @userId)
+      throw new Meteor.Error "not admin or user"
+    Meteor.users.update _id : userId,
+      $set :
+        "schoolClassId" : schoolClassId
+
 exports.removeUserFromClass = new ValidatedMethod
   name : "removeUserFromClass"
   validate :
@@ -219,7 +241,7 @@ exports.removeUserFromClass = new ValidatedMethod
       throw new Meteor.Error "not admin"
     Meteor.users.update _id : id,
       $unset :
-        "profile.schoolClassId" : ""
+        "schoolClassId" : ""
 
 exports.updateUserProfile = new ValidatedMethod
   name : "updateUserProfile"
@@ -282,7 +304,7 @@ exports.deleteSubmissions = new ValidatedMethod
 
 if Meteor.isServer
   Meteor.publish "mentorData", ->
-    Roles.getUsersInRole "mentor"
+    Roles.getUsersInRole("mentor")
 
   Meteor.publishComposite "allUserData", ->
     find : ->
