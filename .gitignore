@@ -3,3 +3,4 @@ node_modules/
 imports/modules/nerdamer/
 imports/modules/playground.coffee
 settings.json
+.imdone
