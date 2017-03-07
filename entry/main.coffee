@@ -24,7 +24,7 @@ if Meteor.isServer
     return user
 
   Meteor.startup ->
-    Migrations.migrateTo "1,rerun"
+    Migrations.migrateTo "latest"
 
     Accounts.config
       sendVerificationEmail : true
