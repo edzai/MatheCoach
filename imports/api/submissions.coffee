@@ -67,7 +67,7 @@ exports.insertSubmission = new ValidatedMethod
     Submissions.insert objectToInsert
     Meteor.users.update @userId,
       $set :
-        "profile.lastActive" : now
+        lastActive : now
     return true
 
 
@@ -87,6 +87,7 @@ if Meteor.isServer
           username : 1
           profile : 1
           emails : 1
+          useKaTeX : 1
           navbarSize : 1
           contentSize : 1
           keypadSize : 1
@@ -109,6 +110,7 @@ if Meteor.isServer
               profile : 1
               emails : 1
               schoolClassId : 1
+              lastActive : 1
         children : [
           find : (student) ->
             Submissions.find userId : student._id

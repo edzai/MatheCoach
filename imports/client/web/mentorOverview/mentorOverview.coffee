@@ -33,7 +33,7 @@ Template.studentListDisplay.viewmodel
   userColor : ->
     @tick()
     moreThanDaysAgo = (days) =>
-      moment(@profile().lastActive).isBefore moment().subtract(days, "days")
+      moment(@lastActive()).isBefore moment().subtract(days, "days")
     switch
       when moreThanDaysAgo 7 then "red"
       when moreThanDaysAgo 3 then "orange"

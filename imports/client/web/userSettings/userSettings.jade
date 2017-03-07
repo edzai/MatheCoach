@@ -11,12 +11,12 @@ template(name="userSettingsPage")
             p Der Zugriff auf die Benutzerdaten wurde gesperrt. Änderungen können nur vom Systemadministrator vorgenommen werden.
       .ui.hidden.divider
     .ui.text.container
-      with user
-        +editUserSchoolClass
       with profile
         +editUserProfile
+      with user
+        +editUserSchoolClass
         +userSettings
-        +userLogout
+      +userLogout
         
 template(name="userLogout")
   .ui.clearing.segment
@@ -28,13 +28,6 @@ template(name="userLogout")
 template(name="userSettings")
   .ui.clearing.segment
     h3.ui.dividing.header Technische Einstellungen
-    .field
-      .ui.checkbox
-        input($b="check : useKaTeX" type="checkbox")
-        label KaTeX anstelle von MathJax benutzen
+    button.ui.button($b="class : { positive : useKaTeX}, click : toggle") Benutze KaTeX anstelle von Mathjax
     p Hinweis: MathJax und KaTeX sind zwei Javascript Bibliotheken, die aus einfachen Texteingaben schöne Mathematische Formeln machen. KaTeX arbeitet wesentlich schneller als MathJax, fabriziert aber (zumindest auf manchen Webbrowsern) manchmal kein wirklich schönes Ergebnis. Falls MathJax (z.B. bei langsamen Netzwerkverbindungen) zu langsam ist, kann KaTeX dennoch die bessere Wahl sein.
-    if currentUserMayEditProfile
-      button.right.floated.ui.button($b="click : save, enable : docHandlerVMChanged") Speichern
-    else
-      button.right.floated.ui.button($b="enable : false") Speichern
-        i.lock.icon
+    //- button.right.floated.ui.button($b="click : save, enable : docHandlerVMChanged") Speichern

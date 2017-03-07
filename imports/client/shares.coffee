@@ -79,8 +79,8 @@ ViewModel.mixin
     timeAgoReactiveTimer : new ReactiveTimer(10)
     timeAgo : ->
       @timeAgoReactiveTimer().tick()
-      if @profile?().lastActive?
-        date = moment(@profile().lastActive)
+      if @lastActive()?
+        date = moment @lastActive()
         "#{date.calendar()} (#{date.fromNow()})"
       else
         "(bisher noch nicht aktiv)"

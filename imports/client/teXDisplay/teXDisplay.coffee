@@ -5,7 +5,7 @@ require "./teXDisplay.jade"
 Template.teXDisplay.viewmodel
   #teX : String with TeX to display
   useKaTeX : ->
-    Meteor.user()?.profile?.useKaTeX
+    Meteor.user()?.useKaTeX
   kaTeXHtml : ->
     katex.renderToString @teX(),
       displayMode : true

@@ -33,21 +33,12 @@ userProfileSchema = new SimpleSchema
   mobile :
     type : String
     optional : true
-  #TODO Move lastActive out of profile
-  lastActive :
-    type : Date
-    optional : true
-  #TODO Move referenceNumber out of profile
   referenceNumber :
     type : String
     optional : true
-  #TODO Move useKaTeX out of profile
-  useKaTeX :
-    type : Boolean
-    optional : true
 exports.userProfileSchema = userProfileSchema
 
-userSchema = new SimpleSchema
+exports.userSchema = userSchema = new SimpleSchema
   username :
     type : String
     optional : true
@@ -76,9 +67,17 @@ userSchema = new SimpleSchema
   heartbeat :
     type : Date
     optional : true
-  #DOING Move schoolClassId out of profile
+  #DONE Move schoolClassId out of profile
   schoolClassId :
     type : String
+    optional : true
+  #DONE Move lastActive out of profile
+  lastActive :
+    type : Date
+    optional : true
+  #DONE Move useKaTeX out of profile
+  useKaTeX :
+    type : Boolean
     optional : true
   navbarSize :
     type : Number
@@ -265,6 +264,21 @@ exports.updateUserProfile = new ValidatedMethod
     Meteor.users.update userId,
       $set :
         profile : profile
+
+exports.updateTeXSetting = new ValidatedMethod
+  name : "updateTeXSetting"
+  validate :
+    new SimpleSchema
+      useKaTeX :
+        type : Boolean
+    .validator()
+  run : ({ useKaTeX }) ->
+    unless @userId
+      throw new Meteor.Error "not logged-in"
+    Meteor.users.update @userId,
+      $set :
+        useKaTeX : useKaTeX
+
 
 exports.deleteUser = new ValidatedMethod
   name : "deleteUser"

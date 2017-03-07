@@ -14,6 +14,7 @@ if Meteor.isClient
     passwordSignupFields : "USERNAME_AND_OPTIONAL_EMAIL"
 
 if Meteor.isServer
+  require "/imports/api/migrations.coffee"
   Accounts.emailTemplates.from = "MatheCoach <pille@mac.com>"
 
   Accounts.onCreateUser (options, user) ->
@@ -23,6 +24,8 @@ if Meteor.isServer
     return user
 
   Meteor.startup ->
+    Migrations.migrateTo "1,rerun"
+
     Accounts.config
       sendVerificationEmail : true
 
