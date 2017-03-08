@@ -1,0 +1,15 @@
+template(name="checkmarkToggle")
+  div(style="cursor : default")
+    span
+      if checked
+        i.green.check.square.icon
+      else
+        i.grey.square.outline.icon
+    span($b="text : label")
+      
+template(name="checkmarkToggleTest")
+  .ui.text.container.segment
+    div($b="toggle : bestanden")
+      +checkmarkToggle(checked=bestanden label="test super gut bestanden")
+    div($b="toggle : bestanden")
+      +checkmarkToggle(checked=nichtBestanden label="test nicht bestanden")

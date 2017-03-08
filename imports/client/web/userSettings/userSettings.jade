@@ -28,6 +28,5 @@ template(name="userLogout")
 template(name="userSettings")
   .ui.clearing.segment
     h3.ui.dividing.header Technische Einstellungen
-    button.ui.button($b="class : { positive : useKaTeX}, click : toggle") Benutze KaTeX anstelle von Mathjax
-    p Hinweis: MathJax und KaTeX sind zwei Javascript Bibliotheken, die aus einfachen Texteingaben schöne Mathematische Formeln machen. KaTeX arbeitet wesentlich schneller als MathJax, fabriziert aber (zumindest auf manchen Webbrowsern) manchmal kein wirklich schönes Ergebnis. Falls MathJax (z.B. bei langsamen Netzwerkverbindungen) zu langsam ist, kann KaTeX dennoch die bessere Wahl sein.
-    //- button.right.floated.ui.button($b="click : save, enable : docHandlerVMChanged") Speichern
+    div($b="click : toggle")
+      +checkmarkToggle(checked=useKaTeX label="Benutze KaTeX anstelle von Mathjax")
