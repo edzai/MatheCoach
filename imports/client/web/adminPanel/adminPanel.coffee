@@ -1,5 +1,6 @@
 require "./adminPanel.jade"
-{ SchoolClasses, saveSchoolClass, deleteSchoolClass } = require "/imports/api/schoolClasses.coffee"
+{ SchoolClasses, saveSchoolClass, deleteSchoolClass } =
+  require "/imports/api/schoolClasses.coffee"
 { deleteUser, deleteSubmissions,
   sendVerificationEmail, sendTestEmail } = require "/imports/api/users.coffee"
 
@@ -10,9 +11,9 @@ Template.adminPanel.viewmodel
     SchoolClasses.find()
     .fetch()
     .filter (schoolClass) ->
-      regex.test schoolClass.name
+      regex.test schoolClass?.name
     .map (schoolClass) ->
-      schoolClass._id
+      schoolClass?._id
   users : ->
     regex = ///#{@userSearchString()}///i
     Meteor.users.find {},
@@ -22,9 +23,9 @@ Template.adminPanel.viewmodel
         "username" : 1
     .fetch()
     .filter (user) =>
-      (regex.test user.profile.firstName) or
-      (regex.test user.profile.lastName) or
-      user.schoolClassId in @userSearchClassIds()
+      (regex.test user?.profile?.firstName) or
+      (regex.test user?.profile?.lastName) or
+      user?.schoolClassId in @userSearchClassIds()
   schoolClasses : ->
     SchoolClasses.find {},
       sort :
