@@ -4,12 +4,27 @@ require "./adminPanel.jade"
   sendVerificationEmail, sendTestEmail } = require "/imports/api/users.coffee"
 
 Template.adminPanel.viewmodel
+  userSearchString : ""
+  userSearchClassIds : ->
+    regex = ///#{@userSearchString()}///i
+    SchoolClasses.find()
+    .fetch()
+    .filter (schoolClass) ->
+      regex.test schoolClass.name
+    .map (schoolClass) ->
+      schoolClass._id
   users : ->
+    regex = ///#{@userSearchString()}///i
     Meteor.users.find {},
       sort :
         "profile.lastName" : 1
         "profile.firstName" : 1
         "username" : 1
+    .fetch()
+    .filter (user) =>
+      (regex.test user.profile.firstName) or
+      (regex.test user.profile.lastName) or
+      user.schoolClassId in @userSearchClassIds()
   schoolClasses : ->
     SchoolClasses.find {},
       sort :
@@ -40,7 +55,10 @@ Template.adminUserDisplay.viewmodel
       if confirm "Benutzer #{@username()} wirklich löschen?"
         deleteUser.call id : @_id()
   schoolClassName : ->
-    SchoolClasses.findOne(_id : @schoolClassId())?.name ? "keine"
+    if @schoolClassId?
+      SchoolClasses.findOne(_id : @schoolClassId())?.name ? "keine"
+    else
+      "keine"
   deleteSubmissions : ->
     if confirm "Alle submissions von #{@username()} wirklich löschen?"
       deleteSubmissions.call userId : @_id()

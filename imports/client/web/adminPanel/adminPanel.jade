@@ -14,6 +14,9 @@ template(name="adminPanel")
         .ui.relaxed.divided.list
           each schoolClasses
             +adminSchoolClassDisplay
+      .ui.mini.icon.input(style="float : right")
+        i.search.icon
+        input($b="value : userSearchString" type="text" placeholder="Suchen...")
       h2.header Benutzer
       .ui.segment
         .ui.relaxed.divided.list
