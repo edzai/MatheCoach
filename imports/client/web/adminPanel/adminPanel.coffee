@@ -49,6 +49,7 @@ Template.adminSchoolClassDisplay.viewmodel
 
 Template.adminUserDisplay.viewmodel
   mixin : "timeAgo"
+  emails : []
   deleteUser : ->
     if @username() is "admin"
       alert "admin account kann nicht gelöscht werden"

@@ -78,8 +78,8 @@ ViewModel.mixin
   timeAgo :
     timeAgoReactiveTimer : new ReactiveTimer(10)
     timeAgo : ->
-      @timeAgoReactiveTimer().tick()
-      if @lastActive()?
+      @timeAgoReactiveTimer().tick?()
+      if @lastActive?()?
         date = moment @lastActive()
         "#{date.calendar()} (#{date.fromNow()})"
       else
