@@ -15,6 +15,7 @@ require "/imports/client/web/help/help.coffee"
 require "/imports/client/web/adminPanel/adminPanel.coffee"
 require "/imports/client/web/editUser/editUser.coffee"
 require "/imports/client/web/schoolClassSettings/schoolClassSettings.coffee"
+require "/imports/client/web/checkmarkToggle/checkmarkToggle.coffee"
 require "./layout.coffee"
 
 
@@ -124,3 +125,9 @@ FlowRouter.route "/neue-klasse",
   action : ->
     BlazeLayout.render "web",
       main : "schoolClassSettings"
+
+FlowRouter.route "/test",
+  name : "test"
+  action : ->
+    BlazeLayout.render "web",
+      main : "checkmarkToggleTest"

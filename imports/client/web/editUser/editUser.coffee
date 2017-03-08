@@ -11,7 +11,10 @@ _ = require "lodash"
 Template.editUserPage.viewmodel
   mixin : "rolesForUserId"
   userId : -> FlowRouter.getParam "userId"
-  user : -> Meteor.users.findOne _id : @userId()
+  user : ->
+    user = Meteor.users.findOne _id : @userId()
+    user.userId = @userId()
+    user
   profile : ->
     profile = @user()?.profile or {}
     profile.userId = @userId()

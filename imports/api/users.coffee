@@ -202,6 +202,8 @@ exports.toggleRole = new ValidatedMethod
     if role is "admin" and not
     Roles.userIsInRole @userId, "superAdmin"
       throw new Meteor.Error "not superAdmin"
+    if role is "admin" and userId is @userId
+      throw new Meteor.Error "may not toggle own admin role"
     if Roles.userIsInRole userId, role
       Roles.removeUsersFromRoles userId, role
     else

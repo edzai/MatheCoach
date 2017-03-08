@@ -1,7 +1,7 @@
 template(name="editUserPage")
   if currentUserMayEditProfile
     .ui.text.container
-      with profile
+      with user
         +editUserAdmin
       with user
         +editUserSchoolClass
@@ -22,7 +22,7 @@ template(name="editUserSchoolClass")
     p($b="visible : !isStudent") Nur Schüler haben eine Schulklasse.
     
 template(name="editUserAdmin")
-  h2.header Benutzerdaten für #{profile.firstName} #{profile.lastName} (#{username})
+  h2.header Benutzerdaten für: #{profile.firstName} #{profile.lastName} (#{username})
   //- .ui.clearing.segment
   //-   h3.ui.dividing.header userId
   //-   p #{userId}
@@ -36,10 +36,12 @@ template(name="editUserAdmin")
       button.right.floated.ui.button($b="click : save, enable : enableSaveButton") Speichern
   .ui.clearing.segment
     h3.ui.dividing.header Zugriffsrechte
-    .ui.vertical.buttons
-      button.ui.button($b="click : toggleIsAdmin, class : {positive : isAdmin}") Der Benutzer hat Administratorrechte.
-      button.ui.button($b="click : toggleIsMentor, class : {positive : isMentor}") Der Benutzer ist Lehrer.
-      button.ui.button($b="click : toggleMayNotEditOwnProfile, class : {negative : mayNotEditOwnProfile}") Der Benutzer darf sein eigenes Profil NICHT selbst verwalten.
+    div($b="click : toggleIsAdmin")
+      +checkmarkToggle(checked=isAdmin label="Der Benutzer hat Administratorrechte.")
+    div($b="click : toggleIsMentor")
+      +checkmarkToggle(checked=isMentor label="Der Benutzer ist Lehrer.")
+    div($b="click : toggleMayNotEditOwnProfile")
+      +checkmarkToggle(checked=mayNotEditOwnProfile label="Der Benutzer darf sein eigenes Profil NICHT selbst verwalten.")
         
 template(name="editUserProfile")
   .ui.clearing.segment
