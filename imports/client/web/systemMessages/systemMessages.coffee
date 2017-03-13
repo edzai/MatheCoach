@@ -1,6 +1,6 @@
 require "./systemMessages.jade"
 
-{ pushToStore, removeFromStore, flushStore } =
+{ flushSubmissionStore } =
   require "/imports/client/localStore.coffee"
 
 Template.systemMessages.viewmodel
@@ -25,7 +25,7 @@ Template.systemMessages.viewmodel
             Meteor.clearTimeout @unsyncedSubmissionsWarningTimer()
           @unsyncedSubmissionsWarningPending false
           @unsyncedSubmissionsWarning false
-          submissions = flushStore()
+          submissions = flushSubmissionStore()
           for submissionObject in submissions
             @insertSubmission submissionObject
     # ->

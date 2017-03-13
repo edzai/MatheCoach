@@ -69,5 +69,5 @@ Template.adminUserDisplay.viewmodel
   sendVerificationEmail : ->
     sendVerificationEmail.call userId : @_id()
     sendTestEmail.call text : "tut et dat?"
-  mailLink : -> "mailto:#{@emails()[0].address}"
-  mailVerified : -> @emails()[0].verified
+  mailLink : -> "mailto:#{@emails?()[0].address}"
+  mailVerified : -> @emails?()[0].verified

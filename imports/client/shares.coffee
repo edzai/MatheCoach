@@ -1,7 +1,7 @@
 _ = require "lodash"
 MobileDetect = require "mobile-detect"
 
-{ pushToStore, removeFromStore , flushStore } =
+{ pushSubmissionToStore, removeSubmissionFromStore , flushSubmissionStore } =
   require "./localStore.coffee"
 
 { insertSubmission } = require "/imports/api/submissions.coffee"
@@ -19,11 +19,11 @@ ViewModel.share
       inserted = insertSubmission.call submissionObject,
         (error, result) =>
           unless error
-            removeFromStore submissionObject
+            removeSubmissionFromStore submissionObject
             @unsyncedCount @unsyncedCount() - 1
           else console.log error
       if inserted
-        pushToStore submissionObject
+        pushSubmissionToStore submissionObject
         @unsyncedCount @unsyncedCount() + 1
 
   layout :
