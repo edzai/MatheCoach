@@ -51,13 +51,32 @@ ViewModel.share
         not @forceUseOtherKeyboard()
       else
         @forceUseOtherKeyboard()
-
-
     autorun : [
       ->
         document.getElementsByTagName('html')[0].style['font-size'] =
           "#{@contentSize()*100}%"
     ]
+
+  unsolvedProblems :
+    unsolvedProblems : {}
+    currentLevelForModule : {}
+    rememberUnsolvedProblems : true
+    memorizeProblem : (moduleKey, level, problemObject) ->
+      temp = @unsolvedProblems()
+      temp["#{moduleKey}_#{level}"] = problemObject
+      @unsolvedProblems temp
+      temp = @currentLevelForModule()
+      temp[moduleKey] = level
+      @currentLevelForModule temp
+    recallProblem : (moduleKey, level) ->
+      if @rememberUnsolvedProblems()
+        @unsolvedProblems()?["#{moduleKey}_#{level}"]
+      else
+        undefined
+    forgetProblem : (moduleKey, level) ->
+      @memorizeProblem moduleKey, level, undefined
+    recallLevel : (moduleKey) ->
+      @currentLevelForModule()[moduleKey] or 1
 
 ViewModel.mixin
   rolesForUserId :
