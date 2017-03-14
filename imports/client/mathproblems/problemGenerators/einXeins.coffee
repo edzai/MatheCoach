@@ -14,9 +14,9 @@ exports.einXeinsGenerator = einXeinsGenerator =
   multiplikation : (level = 1) ->
     switch level
       when 1
-        [a, b] = rnd.intsMin 1, 10
+        [a, b] = rnd.ints2Plus 9
       when 2
-        a = rnd.int2Plus(9)
+        a = rnd.int2Plus 9
         b = rnd.intMin 11, 20
         if rnd.bool() then [a, b] = [b, a]
       else
@@ -29,9 +29,9 @@ exports.einXeinsGenerator = einXeinsGenerator =
   division : (level = 1) ->
     switch level
       when 1
-        [a, b] = rnd.intsMin 1, 10
+        [a, b] = rnd.ints2Plus 9
       when 2
-        a = rnd.int2Plus(9)
+        a = rnd.int2Plus 9
         b = rnd.intMin 11, 20
         if rnd.bool() then [a, b] = [b, a]
       else
