@@ -21,7 +21,8 @@ _ = require "lodash"
 Template.inputKey.viewmodel
 
 Template.problem.viewmodel
-  share : ["reactiveTimer", "unsyncedSubmissions", "layout"]
+  share : ["reactiveTimer", "unsyncedSubmissions",
+    "layout", "unsolvedProblems"]
   handleInputKey : (keyValue) ->
     strArray = @answer().split ""
     if keyValue is "backspace"
@@ -97,6 +98,7 @@ Template.problem.viewmodel
         moduleKey : @moduleKey()
 
   checkAnswer : ->
+    @forgetProblem @moduleKey(), @currentLevel()
     if @answered()
       @newProblem()
     else
@@ -149,12 +151,17 @@ Template.problem.viewmodel
     @passTextsOptional.reset()
     @failTextsRequired.reset()
     @failTextsOptional.reset()
-    @problem new Problem(@moduleKey(), @newLevel())
+    if oldProblem = @recallProblem @moduleKey(), @newLevel()
+      @problem oldProblem
+    else
+      newProblem = new Problem(@moduleKey(), @newLevel())
+      @memorizeProblem @moduleKey(), @newLevel(), newProblem
+      @problem newProblem
     @newLevel @currentLevel()
   gotoModulesList : -> FlowRouter.go "/"
   onCreated : ->
-    @problem new Problem(@moduleKey(), @newLevel())
-    @newLevel @currentLevel()
+    @newLevel @recallLevel(@moduleKey())
+    @newProblem()
   harder : ->
     @newLevel @currentLevel() + 1
     @newProblem()
