@@ -11,6 +11,9 @@ template(name="mobile")
     +Template.dynamic(template=main)
 
 template(name="web")
+  if loading
+    .ui.active.page.dimmer
+      .ui.text.loader Lade Benutzerprofil
   .site
     +navbar
     .sitecontent($b="style : {padding-top : paddingTop}")

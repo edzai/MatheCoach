@@ -56,10 +56,3 @@ exports.removeAllStudentsFromClass = new ValidatedMethod
     Meteor.users.update "schoolClassId" : id,
       $unset :
         "schoolClassId" : ""
-
-if Meteor.isServer
-  Meteor.publish "schoolClasses", ->
-    SchoolClasses.find()
-
-if Meteor.isClient
-  Meteor.subscribe "schoolClasses"

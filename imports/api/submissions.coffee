@@ -1,6 +1,5 @@
 { Mongo } = require "meteor/mongo"
 { Meteor } = require "meteor/meteor"
-{ SchoolClasses} = require "/imports/api/schoolClasses.coffee"
 
 require "./users.coffee"
 
@@ -69,55 +68,3 @@ exports.insertSubmission = new ValidatedMethod
       $set :
         lastActive : now
     return true
-
-
-if Meteor.isServer
-  Meteor.publish "userSubmissions", ->
-    unless @userId
-      @ready()
-    else
-      Submissions.find userId : @userId
-
-  Meteor.publishComposite "studentSubmissions", ->
-    find : ->
-      Meteor.users.find
-        _id : @userId
-      ,
-        fields :
-          username : 1
-          profile : 1
-          emails : 1
-          useKaTeX : 1
-          navbarSize : 1
-          contentSize : 1
-          keypadSize : 1
-          schoolClassId : 1
-    children : [
-      find : (teacher) ->
-        SchoolClasses.find
-          teacherId : teacher._id
-        ,
-          fields :
-            name : 1
-            teacherId : 1
-      children : [
-        find : (schoolClass) ->
-          Meteor.users.find
-            "schoolClassId" : schoolClass._id
-          ,
-            fields :
-              username : 1
-              profile : 1
-              emails : 1
-              schoolClassId : 1
-              lastActive : 1
-        children : [
-          find : (student) ->
-            Submissions.find userId : student._id
-        ]
-      ]
-    ]
-
-if Meteor.isClient
-  Meteor.subscribe "userSubmissions"
-  Meteor.subscribe "studentSubmissions"

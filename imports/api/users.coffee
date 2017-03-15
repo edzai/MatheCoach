@@ -99,6 +99,7 @@ exports.userSchema = userSchema = new SimpleSchema
     optional : true
 Meteor.users.attachSchema userSchema
 
+#TODO: weed out collection helpers id:4
 Meteor.users.helpers
   fullName : ->
     "#{@profile.firstName} #{@profile.lastName}"
@@ -209,7 +210,6 @@ exports.toggleRole = new ValidatedMethod
     else
       Roles.addUsersToRoles userId, role
 
-
 exports.setUserSchoolClass = new ValidatedMethod
   name : "setUserSchoolClass"
   validate :
@@ -281,7 +281,6 @@ exports.updateTeXSetting = new ValidatedMethod
       $set :
         useKaTeX : useKaTeX
 
-
 exports.deleteUser = new ValidatedMethod
   name : "deleteUser"
   validate :
@@ -317,18 +316,4 @@ exports.deleteSubmissions = new ValidatedMethod
     if Meteor.isServer
       console.log "delete all submissions for user: #{userId}"
       console.log "#{submissionsRemoved} submissions removed."
-
-if Meteor.isServer
-  Meteor.publish "mentorData", ->
-    Roles.getUsersInRole("mentor")
-
-  Meteor.publishComposite "allUserData", ->
-    find : ->
-      if Roles.userIsInRole @userId, "admin"
-        Meteor.users.find()
-
-if Meteor.isClient
-  Meteor.subscribe "mentorData"
-  Tracker.autorun ->
-    if Roles.userIsInRole @Meteor.userId(), "admin"
-      Meteor.subscribe "allUserData"
+  
