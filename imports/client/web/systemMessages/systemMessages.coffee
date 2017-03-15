@@ -28,10 +28,4 @@ Template.systemMessages.viewmodel
           submissions = flushSubmissionStore()
           for submissionObject in submissions
             @insertSubmission submissionObject
-    # ->
-    #   console.log "unsyncedCount", @unsyncedCount()
-    # ->
-    #   console.log  "unsyncedSubmissionsWarning", @unsyncedSubmissionsWarning()
-    # ->
-    #   console.log "unsyncedSubmissionsWarningPending", @unsyncedSubmissionsWarningPending()
   ]
