@@ -10,7 +10,6 @@ Template.web.viewmodel
   paddingTop : -> "#{@navbarSize() * 20}px"
   autorun : [
     -> @templateInstance.subscribe "userData"
-    -> console.log "loading", @loading()
   ]
 
 Template.mobile.viewmodel
