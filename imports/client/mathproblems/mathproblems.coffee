@@ -42,6 +42,7 @@ class Problem
       @problem, @problemTeX,
       @solution, @solutionTeX,
       @description, @hint
+      @customTemplateName, @customTemplateData, @templateReturnsAnswer
       @checks
       @answerPreprocessor
       @isSystemOfLinearEquations

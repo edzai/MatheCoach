@@ -15,7 +15,11 @@ template(name="problem")
             +moduleScoreDisplay(moduleKey=moduleKey userId=userId)
       .ui.segment
         h4.header($b="text : description")
-        +teXDisplay(teX=problemTeX)
+        if customTemplateName
+          +mathjax
+            +Template.dynamic(template=customTemplateName data=customTemplateData)
+        else
+          +teXDisplay(teX=problemTeX)
         p($b="text : hint")
       .ui.segment
         .ui.grid

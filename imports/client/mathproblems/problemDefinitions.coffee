@@ -22,6 +22,8 @@
   require "./problemGenerators/integration.coffee"
 { binomischeFormeln } =
   require "./problemGenerators/binomischeFormeln.coffee"
+{ templateTest } =
+  require "./problemGenerators/templateTest.coffee"
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
 
@@ -43,6 +45,7 @@ exports.modules = [
   "polynomialDivision"
   "differentiation"
   "integration"
+  "templateTest"
   # "someModule"
 ]
 
@@ -65,6 +68,7 @@ exports.problemDefinitions =
   polynomialDivision : polynomialDivision
   differentiation : differentiation
   integration : integration
+  templateTest : templateTest
   # test :
   #   title : "Test"
   #   description : "Testbereich für den Aufgabengenerator, \

@@ -15,7 +15,11 @@ template(name="submissionDisplay")
         .description($b="text : timeAgo")
         .ui.segment
           h4.ui.header #{description}
-          +teXDisplay(teX=problem)
+          unless customTemplateName
+            +teXDisplay(teX=problem)
+          else
+            +mathjax
+              +Template.dynamic(template=customTemplateName data=customTemplateData)
           //- +mathjax
           //-   div $$#{problem}$$
         .ui.center.aligned.segment($b="class : answerSegmentClass") #{answer}

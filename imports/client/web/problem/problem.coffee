@@ -72,6 +72,8 @@ Template.problem.viewmodel
   newLevel : 1
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
+  customTemplateName : -> @problem()?.customTemplateName ? ""
+  customTemplateData : -> @problem()?.customTemplateData ? {}
   passTextsRequired : []
   passTextsOptional : []
   failTextsRequired : []
@@ -120,6 +122,8 @@ Template.problem.viewmodel
           problem : @problemTeX()
           answer : @answer()
           date : new Date()
+          customTemplateName : @customTemplateName()
+          customTemplateData : @customTemplateData()
 
   currentPerc :  ->
     @levelTally().rightPercent() *
@@ -170,3 +174,9 @@ Template.problem.viewmodel
     @newProblem()
   style : ->
     "font-size" : "#{@keypadSize()}em"
+
+  # autorun : [
+  #   -> console.log "problem", @problem()
+  #   -> console.log "customTemplateName", @customTemplateName()
+  #   -> console.log "customTemplateData", @customTemplateData()
+  # ]

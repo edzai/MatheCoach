@@ -22,6 +22,13 @@ Submissions.schema = new SimpleSchema
   answer :
     type : String
     optional : true
+  customTemplateName :
+    type : String
+    optional : true
+  customTemplateData :
+    type : Object
+    optional : true
+    blackbox : true
 Submissions.attachSchema Submissions.schema
 exports.Submissions = Submissions
 
@@ -57,6 +64,13 @@ exports.insertSubmission = new ValidatedMethod
         type : String
       date :
         type : Date
+      customTemplateName :
+        type : String
+        optional : true
+      customTemplateData :
+        type : Object
+        optional : true
+        blackbox : true
     .validator()
   run : ( objectToInsert )->
     unless @userId
