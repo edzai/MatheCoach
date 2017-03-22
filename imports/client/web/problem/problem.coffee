@@ -34,7 +34,7 @@ Template.problem.viewmodel
     numberKeys = [0..9].map (i) ->
       text : "#{i}"
       value : "#{i}"
-    operatorKeys = "+-*/^=()".split("").map (e) ->
+    operatorKeys = "+-*/^=().,".split("").map (e) ->
       text : e
       value : e
     .concat [
