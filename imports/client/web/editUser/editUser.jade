@@ -54,28 +54,28 @@ template(name="editUserProfile")
             input($b="value : firstName" type="text" placeholder="Vorname")
           .field($b="class : { error : lastName.invalid }")
             input($b="value : lastName, attr : { title : lastName.message}" type="text" placeholder="Nachname")
-      .field($b="class : { error : dateOfBirth.invalid }")
-        label Geburtsdatum
-          .field
-            .ui.left.icon.input
-              i.calendar.icon
-              input($b="value : dateOfBirth, attr : { title : dateOfBirth.message}, ref : dateField")
-      .field($b="class : { error : street.invalid }")
-        label Straße/Hausnummer
-        input($b="value : street, attr : { title : street.message}", type="text" placeholder="Musterstraße 123")
-      .field
-        label Plz/Ort
-        .two.fields
-          .field($b="class : { error : plz.invalid }")
-            input($b="value : plz, attr : { title : plz.message}" type="text" placeholder="Plz")
-          .field($b="class : { error : city.invalid }")
-            input($b="value : city, attr : { title : city.message}" type="text" placeholder="Ort")
-      .field($b="class : { error : phone.invalid }")
-        label Telefon (Festnetz)
-        input($b="value : phone, attr : { title : phone.message}" type="text" placeholder="Telefonnummer")
-      .field($b="class : { error : mobile.invalid }")
-        label Telefon (Mobil)
-        input($b="value : mobile, attr : { title : mobile.message}" type="text" placeholder="Handynummer")
+      //- .field($b="class : { error : dateOfBirth.invalid }")
+      //-   label Geburtsdatum
+      //-     .field
+      //-       .ui.left.icon.input
+      //-         i.calendar.icon
+      //-         input($b="value : dateOfBirth, attr : { title : dateOfBirth.message}, ref : dateField")
+      //- .field($b="class : { error : street.invalid }")
+      //-   label Straße/Hausnummer
+      //-   input($b="value : street, attr : { title : street.message}", type="text" placeholder="Musterstraße 123")
+      //- .field
+      //-   label Plz/Ort
+      //-   .two.fields
+      //-     .field($b="class : { error : plz.invalid }")
+      //-       input($b="value : plz, attr : { title : plz.message}" type="text" placeholder="Plz")
+      //-     .field($b="class : { error : city.invalid }")
+      //-       input($b="value : city, attr : { title : city.message}" type="text" placeholder="Ort")
+      //- .field($b="class : { error : phone.invalid }")
+      //-   label Telefon (Festnetz)
+      //-   input($b="value : phone, attr : { title : phone.message}" type="text" placeholder="Telefonnummer")
+      //- .field($b="class : { error : mobile.invalid }")
+      //-   label Telefon (Mobil)
+      //-   input($b="value : mobile, attr : { title : mobile.message}" type="text" placeholder="Handynummer")
       
       if currentUserMayEditProfile
         button.right.floated.ui.button($b="click : save, enable : enableSaveButton") Speichern
