@@ -19,7 +19,11 @@ Template.schoolClassEditForm.viewmodel
     Roles.getUsersInRole "mentor"
       .fetch().map (e)->
         id : e._id
-        name : "#{e.profile.lastName}, #{e.profile.firstName}"
+        name :
+          if e?.profile?.lastName? and e?.profile?.firstName?
+            "#{e.profile.lastName}, #{e.profile.firstName}"
+          else
+            e?.username ? "Fehler. Kein Name oder Username."
   save : ->
     event.preventDefault()
     objToSave =
