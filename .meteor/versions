@@ -58,7 +58,7 @@ localstorage@1.0.12
 logging@1.1.17
 manuel:isdev@1.0.0
 manuel:reactivearray@1.0.5
-manuel:viewmodel@4.1.9
+manuel:viewmodel@6.2.1
 manuel:viewmodel-debug@2.7.1
 markdown@1.0.11
 mdg:validated-method@1.1.0

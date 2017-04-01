@@ -16,8 +16,7 @@ template(name="problem")
       .ui.segment
         h4.header($b="text : description")
         if customTemplateName
-          +mathjax
-            +Template.dynamic(template=customTemplateName data=customTemplateData)
+          +Template.dynamic(template=customTemplateName data=customTemplateData)
         else
           +teXDisplay(teX=problemTeX)
         p($b="text : hint")

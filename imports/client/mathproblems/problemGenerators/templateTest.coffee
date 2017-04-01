@@ -6,18 +6,20 @@ rnd = new Rnd()
 nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
 require "/imports/modules/nerdamer/Solve.js"
 
-require "./templates/templateTestTemplate/templateTestTemplate.coffee"
+# require "./templates/templateTestTemplate/templateTestTemplate.coffee"
+require "./templates/raphaelTestTemplate/raphaelTestTemplate.coffee"
 
 generators =
   oneGenerator : (level = 1) ->
-    [la, lb] = rnd.intsMin 60, 175
+    [la, lb] = rnd.intsMin 80, 140
+    phi = rnd.intMin 0, 359
     unit = "cm"
     #returns
     problem : "not used"
     solution : ((la**2 + lb**2)**.5).toFixed 1
     description : "Satz des Pythagoras"
-    customTemplateName : "templateTestOneGeneratorTemplate"
-    customTemplateData : { la, lb, unit }
+    customTemplateName : "raphaelTestTemplate"
+    customTemplateData : { la, lb, unit , phi}
 
 exports.templateTest =
   title : "Test: Custom Blaze Templates in Aufgaben"
