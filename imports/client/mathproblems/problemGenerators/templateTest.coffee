@@ -6,6 +6,8 @@ rnd = new Rnd()
 nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
 require "/imports/modules/nerdamer/Solve.js"
 
+{ Point } = require "/imports/client/geoDraw.coffee"
+
 # require "./templates/templateTestTemplate/templateTestTemplate.coffee"
 require "./templates/raphaelTestTemplate/raphaelTestTemplate.coffee"
 
@@ -19,7 +21,7 @@ generators =
     solution : ((la**2 + lb**2)**.5).toFixed 1
     description : "Satz des Pythagoras"
     customTemplateName : "raphaelTestTemplate"
-    customTemplateData : { la, lb, unit , phi}
+    customTemplateData : { la, lb, unit , phi }
 
 exports.templateTest =
   title : "Test: Custom Blaze Templates in Aufgaben"

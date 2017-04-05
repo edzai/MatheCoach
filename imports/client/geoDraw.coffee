@@ -118,7 +118,6 @@ class GeoDraw
     for line, i in arr
       prevLine = if i is 0 then arr[-1..][0] else arr[i-1]
       nextLine = if i < arr.length-1 then arr[i+1] else arr[0]
-      console.log prevLine, line, nextLine
       @labeledLine line.startPoint, nextLine.startPoint,
         line.lineLabelText
       @labeledAngle line.startPoint,
