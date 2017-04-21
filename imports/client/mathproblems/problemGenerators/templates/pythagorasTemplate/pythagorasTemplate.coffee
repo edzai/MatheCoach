@@ -1,25 +1,25 @@
-require "./raphaelTestTemplate.jade"
+require "./svgTestTemplate.jade"
 { Random } = require "meteor/random"
 { Point } = require "/imports/client/geoDraw.coffee"
 require "../polygonSVG/polygonSVG.coffee"
 
-Template.raphaelTestTemplate.viewmodel
+Template.svgTestTemplate.viewmodel
   svgData : ->
     componentId = Random.id()
     polygonLineArray = [
         startPoint : new Point 0, 0
         pointLabelText : "B"
-        angleLabelText : "β"
+        # angleLabelText : "β"
         lineLabelText : "a = #{@la()}#{@unit()}"
       ,
         startPoint : new Point 0, @la()
         pointLabelText : "C"
-        angleLabelText : "ɣ"
+        # angleLabelText : "⋅"
         lineLabelText : "b = #{@lb()}#{@unit()}"
       ,
         startPoint : new Point @lb(), @la()
         pointLabelText : "A"
-        angleLabelText : "α"
+        # angleLabelText : "α"
         lineLabelText : "c = ?"
       ]
     polygonLineArray.forEach (e) =>

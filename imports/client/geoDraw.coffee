@@ -21,6 +21,11 @@ class Point
     if otherPoint?
       Math.abs((otherPoint.angle origin) - @angle origin)
     else
+      Math.atan2((@y-origin.y),(@x-origin.x))*180/Math.PI
+  angle1 : (origin, otherPoint) ->
+    if otherPoint?
+      Math.abs((otherPoint.angle origin) - @angle origin)
+    else
       Math.atan((@y-origin.y)/(@x-origin.x))*180/Math.PI
   translate : (v) ->
     @x += v.x
@@ -60,7 +65,7 @@ class GeoDraw
       .attr "font-size", 11
       .attr "transform" , "translate(0 #{yOffset})"
     label.attr "transform",
-      "rotate(#{p1.angle p2} #{midX} #{midY})"
+      "rotate(#{p1.angle1 p2} #{midX} #{midY})"
 
   labeledAngle : (fulcrum, prevPoint, nextPoint,
     pointLabelText, angleLabelText) ->
