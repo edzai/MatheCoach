@@ -18,8 +18,7 @@ template(name="submissionDisplay")
           unless customTemplateName
             +teXDisplay(teX=problem)
           else
-            +mathjax
-              +Template.dynamic(template=customTemplateName data=customTemplateData)
+            +Template.dynamic(template=customTemplateName data=customTemplateData)
           //- +mathjax
           //-   div $$#{problem}$$
         .ui.center.aligned.segment($b="class : answerSegmentClass") #{answer}
