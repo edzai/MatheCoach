@@ -133,12 +133,13 @@ Template.problem.viewmodel
           SVGData : @SVGData()
           customTemplateName : @customTemplateName()
           customTemplateData : @customTemplateData()
-        if Meteor.isDevelopment
-          console.log "submission insertion without buffering"
-          insertSubmission.call submissionData
-        else
-          console.log "submission insertion with buffering"
-          @insertSubmission submissionData
+        insertSubmission.call submissionData
+        # if Meteor.isDevelopment
+        #   console.log "submission insertion without buffering"
+        #   insertSubmission.call submissionData
+        # else
+        #   console.log "submission insertion with buffering"
+        #   @insertSubmission submissionData
 
   currentPerc :  ->
     @levelTally().rightPercent() *
