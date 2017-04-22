@@ -42,6 +42,8 @@ class Problem
       @problem, @problemTeX,
       @solution, @solutionTeX,
       @description, @hint
+      @skipExpression,
+      @geometryDrawData,
       @customTemplateName, @customTemplateData, @templateReturnsAnswer
       @checks
       @answerPreprocessor

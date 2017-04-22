@@ -12,6 +12,7 @@ Template.submissionDisplay.viewmodel
     date = moment(@date())
     "#{date.calendar()} (#{date.fromNow()})"
   moduleTitle : -> problemDefinitions[@moduleKey()].title
+  drawSVG : -> @SVGData?
   answerSegmentClass : ->
     if @answerCorrect() then "green" else "red"
   onRendered : ->

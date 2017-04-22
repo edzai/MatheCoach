@@ -2,8 +2,10 @@
 require "/imports/client/web/mustBeLoggedIn/mustBeLoggedIn.coffee"
 require "./problem.jade"
 require "/imports/client/web/moduleScoreDisplay/moduleScoreDisplay.coffee"
+require "/imports/client/web/renderSVG/renderSVG.coffee"
 
 _ = require "lodash"
+{ Random } = require "meteor/random"
 
 { Problem } =
   require "/imports/client/mathproblems/mathproblems.coffee"
@@ -13,7 +15,6 @@ _ = require "lodash"
 
 { Tally } =
   require "/imports/modules/tally.coffee"
-
 
 { Submissions, resetSubmissions, insertSubmission } =
   require "/imports/api/submissions.coffee"
@@ -72,8 +73,14 @@ Template.problem.viewmodel
   newLevel : 1
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
-  customTemplateName : -> @problem()?.customTemplateName ? ""
-  customTemplateData : -> @problem()?.customTemplateData ? {}
+  drawSVG : -> @problem()?.geometryDrawData?
+  SVGData : ->
+    if @drawSVG()
+      SVGId : "a#{Random.id()}"
+      geometryDrawData : @problem().geometryDrawData
+  skipExpression : -> @problem()?.skipExpression
+  customTemplateName : -> @problem()?.customTemplateName
+  customTemplateData : -> @problem()?.customTemplateData
   passTextsRequired : []
   passTextsOptional : []
   failTextsRequired : []
@@ -114,7 +121,7 @@ Template.problem.viewmodel
       @failTextsRequired failTextsRequired
       @failTextsOptional failTextsOptional
       if Meteor.userId()
-        @insertSubmission
+        submissionData =
           moduleKey : @moduleKey()
           level : @currentLevel()
           answerCorrect : @answerCorrect()
@@ -122,8 +129,16 @@ Template.problem.viewmodel
           problem : @problemTeX()
           answer : @answer()
           date : new Date()
+          skipExpression : @skipExpression()
+          SVGData : @SVGData()
           customTemplateName : @customTemplateName()
           customTemplateData : @customTemplateData()
+        if Meteor.isDevelopment
+          console.log "submission insertion without buffering"
+          insertSubmission.call submissionData
+        else
+          console.log "submission insertion with buffering"
+          @insertSubmission submissionData
 
   currentPerc :  ->
     @levelTally().rightPercent() *

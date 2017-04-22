@@ -16,7 +16,11 @@ template(name="submissionDisplay")
         .ui.segment
           h4.ui.header #{description}
           unless customTemplateName
-            +teXDisplay(teX=problem)
+            unless skipExpression
+              +teXDisplay(teX=problem)
+            if drawSVG
+              with SVGData
+                +renderSVG 
           else
             +Template.dynamic(template=customTemplateName data=customTemplateData)
           //- +mathjax

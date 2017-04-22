@@ -1,7 +1,7 @@
 require "./svgTestTemplate.jade"
 { Random } = require "meteor/random"
 { Point } = require "/imports/client/geometryDraw.coffee"
-require "../renderSVG/renderSVG.coffee"
+require "/imports/client/web/renderSVG/renderSVG.coffee"
 
 Template.svgTestTemplate.viewmodel
   svgData : ->
@@ -22,9 +22,8 @@ Template.svgTestTemplate.viewmodel
         # angleLabelText : "α"
         lineLabelText : "c = ?"
       ]
-    polygonLineArray.map (e) =>
+    polygonLineArray.forEach (e) =>
       e.startPoint = e.startPoint
         .add(new Point 100-@lb()/2, 100-@la()/2)
         .rotate @phi(), (new Point 100, 100)
-      e
     { componentId, polygonLineArray }

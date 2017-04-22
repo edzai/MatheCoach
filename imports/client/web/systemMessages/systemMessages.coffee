@@ -27,5 +27,6 @@ Template.systemMessages.viewmodel
           @unsyncedSubmissionsWarning false
           submissions = flushSubmissionStore()
           for submissionObject in submissions
+            console.log "inserting submission from localStore"
             @insertSubmission submissionObject
   ]

@@ -1,5 +1,8 @@
 Snap = require "snapsvg-cjs"
 
+#turn point data into Point object when it comes from the DB
+resurrectPoint = ({x,y}) -> new Point x, y
+
 class Point
   constructor : (@x, @y) ->
 
@@ -170,5 +173,14 @@ class GeometryDraw
       @labeledAngle prevLine.startPoint, nextLine.startPoint,
         line.startPoint,
         line.pointLabelText, line.angleLabelText
+
+  draw : (dataArray) ->
+    for e in dataArray
+      switch e.type
+        when "polygon"
+          for line in e.lines
+            line.startPoint = resurrectPoint line.startPoint
+          @labeledPolygon e.lines
+        else console.log "unknown type of geometryDraw object"
 
 exports.GeometryDraw = GeometryDraw

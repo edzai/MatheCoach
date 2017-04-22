@@ -18,7 +18,11 @@ template(name="problem")
         if customTemplateName
           +Template.dynamic(template=customTemplateName data=customTemplateData)
         else
-          +teXDisplay(teX=problemTeX)
+          unless skipExpression
+            +teXDisplay(teX=problemTeX)
+          if drawSVG
+            with SVGData
+              +renderSVG 
         p($b="text : hint")
       .ui.segment
         .ui.grid

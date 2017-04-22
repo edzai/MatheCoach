@@ -22,6 +22,13 @@ Submissions.schema = new SimpleSchema
   answer :
     type : String
     optional : true
+  skipExpression :
+    type : Boolean
+    optional : true
+  SVGData :
+    type : Object
+    optional : true
+    blackbox : true
   customTemplateName :
     type : String
     optional : true
@@ -64,6 +71,13 @@ exports.insertSubmission = new ValidatedMethod
         type : String
       date :
         type : Date
+      skipExpression :
+        type : Boolean
+        optional : true
+      SVGData :
+        type : Object
+        optional : true
+        blackbox : true
       customTemplateName :
         type : String
         optional : true

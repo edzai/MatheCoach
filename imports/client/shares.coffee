@@ -13,6 +13,7 @@ ViewModel.share
   FlowRouterAuth :
     permissionGranted : ->
       FlowRouter.Auth.permissionGranted()
+
   unsyncedSubmissions :
     unsyncedCount : 0
     insertSubmission : (submissionObject) ->
