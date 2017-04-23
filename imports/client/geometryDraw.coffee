@@ -1,10 +1,13 @@
 Snap = require "snapsvg-cjs"
 
-#turn point data into Point object when it comes from the DB
-resurrectPoint = ({x,y}) -> new Point x, y
-
 class Point
-  constructor : (@x, @y) ->
+  constructor : (arg1, arg2) ->
+    if typeof arg1 is "number"
+      @x = arg1
+      @y = arg2
+    else
+      @x = arg1.x
+      @y = arg1.y
 
   copy : -> new Point @x, @y
 
@@ -120,14 +123,15 @@ class GeometryDraw
       else .5
     angleLabelAnchor =fulcrum.add labelOffsetVector.multiply(radius*adjust)
     pointLabelAnchor= fulcrum.subtract labelOffsetVector.multiply(radius*.5)
-    @paper.path "M#{(arcEndPoint p1).x} #{(arcEndPoint p1).y}\
-      A #{radius}, #{radius} 0 #{largeArcFlag},1 \
-      #{(arcEndPoint p2).x},#{(arcEndPoint p2).y}"
-      .attr "stroke" : "#000", "stroke-width" : 1, "fill" : "none"
-    @paper.text  angleLabelAnchor.x, angleLabelAnchor.y+4, angleLabelText
-      .attr
-        "font-size" : 9
-        "text-anchor" : "middle"
+    unless angleLabelText is ""
+      @paper.path "M#{(arcEndPoint p1).x} #{(arcEndPoint p1).y}\
+        A #{radius}, #{radius} 0 #{largeArcFlag},1 \
+        #{(arcEndPoint p2).x},#{(arcEndPoint p2).y}"
+        .attr "stroke" : "#000", "stroke-width" : 1, "fill" : "none"
+      @paper.text  angleLabelAnchor.x, angleLabelAnchor.y+4, angleLabelText
+        .attr
+          "font-size" : 9
+          "text-anchor" : "middle"
     if pointLabelText?
       @paper.text pointLabelAnchor.x, pointLabelAnchor.y+5, pointLabelText
         .attr
@@ -171,16 +175,21 @@ class GeometryDraw
       @labeledLine line.startPoint, nextLine.startPoint,
         line.lineLabelText
       @labeledAngle prevLine.startPoint, nextLine.startPoint,
-        line.startPoint,
-        line.pointLabelText, line.angleLabelText
+        line.startPoint, line.pointLabelText, line.angleLabelText
+
 
   draw : (dataArray) ->
     for e in dataArray
       switch e.type
         when "polygon"
           for line in e.lines
-            line.startPoint = resurrectPoint line.startPoint
+            line.startPoint = new Point line.startPoint
           @labeledPolygon e.lines
+        when "normals"
+          for line in e.lines
+            for key in ["startPoint", "endPoint", "p"]
+              line[key] = new Point line[key]
+            @normal line.startPoint, line.endPoint, line.p, line.text
         else console.log "unknown type of geometryDraw object"
 
 exports.GeometryDraw = GeometryDraw

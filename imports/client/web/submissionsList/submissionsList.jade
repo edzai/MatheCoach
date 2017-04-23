@@ -19,8 +19,9 @@ template(name="submissionDisplay")
             unless skipExpression
               +teXDisplay(teX=problem)
             if drawSVG
-              with SVGData
-                +renderSVG 
+              .ui.center.aligned.container
+                with SVGData
+                  +renderSVG 
           else
             +Template.dynamic(template=customTemplateName data=customTemplateData)
           //- +mathjax
