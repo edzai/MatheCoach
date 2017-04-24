@@ -7,14 +7,11 @@ Template.renderSVG.viewmodel
   geometryDrawData : {}
   # width : 200
   # height : 200
-  initDrawing : ->
-
   onRendered : ->
-    unless @drawing().paper?
-      @drawing(new GeometryDraw @SVGId())
-      @drawing().draw @geometryDrawData()
-
+    @drawing(new GeometryDraw @SVGId())
+    @drawing().draw @geometryDrawData()
   autorun : ->
-    if @drawing().paper?
-      @drawing().paper.clear()
-      @drawing().draw @geometryDrawData()
+    if @drawing.value.paper?
+      @drawing.value.paper.clear()
+    @drawing(new GeometryDraw @SVGId())
+    @drawing.value.draw @geometryDrawData()

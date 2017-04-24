@@ -21,8 +21,9 @@ template(name="problem")
           unless skipExpression
             +teXDisplay(teX=problemTeX)
           if drawSVG
-            with SVGData
-              +renderSVG 
+            .ui.center.aligned.container
+              with SVGData
+                +renderSVG 
         p($b="text : hint")
       .ui.segment
         .ui.grid
