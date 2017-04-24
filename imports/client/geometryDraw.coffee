@@ -74,6 +74,7 @@ exports.Line = Line
 class GeometryDraw
   constructor : (id) ->
     @paper = Snap "##{id}"
+    @g = @paper.g()
 
   lineLabel : (p1, p2, labelText) ->
     mid = p1.add(p2).multiply(.5)
@@ -91,6 +92,7 @@ class GeometryDraw
     labelGroup = @paper.g text
     labelGroup.attr
       transform : "rotate(#{angle} #{mid.x} #{mid.y})"
+    @g.add labelGroup
     { text }
 
   labeledLine : (p1, p2, text) ->
@@ -100,6 +102,7 @@ class GeometryDraw
         stroke : "black"
         strokeWidth : 1
     lineLabel = @lineLabel p1, p2, text
+    @g.add line
     { line, lineLabel }
 
   labeledAngle : (p1, p2, fulcrum, pointLabelText, angleLabelText) ->
@@ -124,19 +127,20 @@ class GeometryDraw
     angleLabelAnchor =fulcrum.add labelOffsetVector.multiply(radius*adjust)
     pointLabelAnchor= fulcrum.subtract labelOffsetVector.multiply(radius*.5)
     unless angleLabelText is ""
-      @paper.path "M#{(arcEndPoint p1).x} #{(arcEndPoint p1).y}\
+      arc = @paper.path "M#{(arcEndPoint p1).x} #{(arcEndPoint p1).y}\
         A #{radius}, #{radius} 0 #{largeArcFlag},1 \
         #{(arcEndPoint p2).x},#{(arcEndPoint p2).y}"
-        .attr "stroke" : "#000", "stroke-width" : 1, "fill" : "none"
-      @paper.text  angleLabelAnchor.x, angleLabelAnchor.y+4, angleLabelText
-        .attr
-          "font-size" : 9
-          "text-anchor" : "middle"
+      .attr "stroke" : "#000", "stroke-width" : 1, "fill" : "none"
+      angleLabel =  @paper.text  angleLabelAnchor.x, angleLabelAnchor.y+4,
+        angleLabelText
+      .attr "font-size" : 9, "text-anchor" : "middle"
+      @g.add arc, angleLabel
     if pointLabelText?
-      @paper.text pointLabelAnchor.x, pointLabelAnchor.y+5, pointLabelText
-        .attr
-          "font-size" : 14
-          "text-anchor" : "middle"
+      pointLabel = @paper.text pointLabelAnchor.x, pointLabelAnchor.y+5,
+        pointLabelText
+      .attr "font-size" : 14, "text-anchor" : "middle"
+      @g.add pointLabel
+    { arc, angleLabel, pointLabel }
 
   normal : (lStart, lEnd, p, text) ->
     line = new Line lStart, lEnd
@@ -177,7 +181,6 @@ class GeometryDraw
       @labeledAngle prevLine.startPoint, nextLine.startPoint,
         line.startPoint, line.pointLabelText, line.angleLabelText
 
-
   draw : (dataArray) ->
     for e in dataArray
       switch e.type
@@ -191,5 +194,10 @@ class GeometryDraw
               line[key] = new Point line[key]
             @normal line.startPoint, line.endPoint, line.p, line.text
         else console.log "unknown type of geometryDraw object"
+    bounds = @g.getBBox()
+    if bounds.x < 0 or bounds.y < 0 or bounds.x2 > 200 or bounds.y2 > 200
+      @paper.attr viewBox : bounds.vb
+    else
+      @paper.attr viewBox : "0 0 200 200"
 
 exports.GeometryDraw = GeometryDraw

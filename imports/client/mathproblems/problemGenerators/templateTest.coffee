@@ -22,6 +22,7 @@ generators =
     description : "Satz des Pythagoras"
     customTemplateName : "svgTestTemplate"
     customTemplateData : { la, lb, unit , phi }
+
   pythagoras2 : (level = 1) ->
     [la, lb] = rnd.intsMin 80, 140
     phi = rnd.intMin 0, 359
@@ -56,6 +57,7 @@ generators =
       eine Stelle hinter dem Komma."
     geometryDrawData : [triangle]
     skipExpression : true
+
   areaTriangle : (level = 1) ->
     [g, h] = rnd.intsMin 70, 150
     cx = rnd.intMin 20, g-20
@@ -103,6 +105,7 @@ generators =
     hint : "Runde das Ergebnis auf eine Stelle hinter dem Komma"
     geometryDrawData : [triangle, heights]
     skipExpression : true
+
   areaTrapez : (level = 1) ->
     [g1, h] = rnd.intsMin 70, 150
     g2 = rnd.intMin 50, g1-20
