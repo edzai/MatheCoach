@@ -188,11 +188,8 @@ class GeometryDraw
           for line in e.lines
             line.startPoint = new Point line.startPoint
           @labeledPolygon e.lines
-        when "normals"
-          for line in e.lines
-            for key in ["startPoint", "endPoint", "p"]
-              line[key] = new Point line[key]
-            @normal line.startPoint, line.endPoint, line.p, line.text
+        when "normal"
+          @normal e.line.startPoint, e.line.endPoint, e.line.p, e.line.text
         else console.log "unknown type of geometryDraw object"
     bounds = @g.getBBox()
     if bounds.x < 0 or bounds.y < 0 or bounds.x2 > 200 or bounds.y2 > 200
