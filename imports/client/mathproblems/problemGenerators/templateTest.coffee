@@ -90,20 +90,19 @@ generators =
         angleLabelText : ""
         lineLabelText : "b"
       ]
-    heights =
-      type : "normals"
-      lines : [
+    height =
+      type : "normal"
+      line :
         startPoint : A
         endPoint : B
         p : C
         text : "h=#{h}#{unit}"
-      ]
     #returns
     problem : "not used"
     solution : (g*h/2).toFixed 1
     description : "Bestimme die Fläche des Dreiecks"
     hint : "Runde das Ergebnis auf eine Stelle hinter dem Komma"
-    geometryDrawData : [triangle, heights]
+    geometryDrawData : [triangle, height]
     skipExpression : true
 
   areaTrapez : (level = 1) ->
@@ -126,20 +125,19 @@ generators =
         pointLabelText : ["A", "B", "C", "D"][i]
         angleLabelText : ""
         lineLabelText : ["a=#{g1}#{unit}", "b", "c=#{g2}#{unit}", "d"][i]
-    heights =
-      type : "normals"
-      lines : [
+    height =
+      type : "normal"
+      line :
         startPoint : A
         endPoint : B
         p : C.add(D).multiply(.5)
         text : "h=#{h}#{unit}"
-      ]
     #return
     problem : "not used"
     solution : ((g1+g2)*h/2).toFixed 1
     description : "Bestimme die Fläche des Trapez"
     hint : "Runde das Ergebnis auf eine Stelle hinter dem Komma"
-    geometryDrawData : [trapez, heights]
+    geometryDrawData : [trapez, height]
     skipExpression : true
 
 exports.templateTest =
