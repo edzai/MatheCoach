@@ -18,6 +18,7 @@ if((typeof module) !== 'undefined') {
     var core = nerdamer.getCore(),
         _ = core.PARSER,
         N = core.groups.N,
+        P = core.groups.P,
         S = core.groups.S,
         EX = core.groups.EX,
         FN = core.groups.FN,
@@ -1736,6 +1737,11 @@ if((typeof module) !== 'undefined') {
             factor: function(symbol, factors) {
                 if(symbol.group === S) 
                     return symbol; //absolutely nothing to do
+                
+                if(symbol.isConstant()) {
+                    return core.Math2.factor(symbol);
+                }
+                
                 var p = symbol.power.clone();
                 if(isInt(p)) { 
                     symbol.toLinear();
@@ -2066,6 +2072,17 @@ if((typeof module) !== 'undefined') {
             return status;
         },
         gcd: function(a, b) { 
+            if(a.group === FN || a.group === P)
+                a = core.Utils.block('PARSE2NUMBER', function() {
+                   return _.parse(a); 
+                });
+            if(b.group === FN)
+                b = core.Utils.block('PARSE2NUMBER', function() {
+                   return _.parse(b); 
+                });
+            if(a.isConstant() && b.isConstant()) { 
+                return core.Math2.QGCD(new Frac(+a), new Frac(+b));
+            }
             if(a.length < b.length) { //swap'm
                 var t = a; a = b; b = t;
             }
@@ -2418,4 +2435,5 @@ if((typeof module) !== 'undefined') {
             build: function() { return __.div; }
         }
     ]);
+    nerdamer.api();
 })();

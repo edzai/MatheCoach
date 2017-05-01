@@ -6,7 +6,7 @@
   require "./problemGenerators/linearEquations.coffee"
 { powers } =
   require "./problemGenerators/powers.coffee"
-{ expressions } =
+{ expressions, ausklammern } =
   require "./problemGenerators/expressions.coffee"
 { einXeins } =
   require "./problemGenerators/einXeins.coffee"
@@ -36,6 +36,7 @@ exports.modules = [
   "bruch4"
   "proportionality"
   "terme1"
+  "ausklammern"
   "potenz1"
   "lineareGleichung1"
   "lineareGleichung2"
@@ -59,6 +60,7 @@ exports.problemDefinitions =
   bruch4 : fractions.bruch4
   proportionality : proportionality
   terme1 : expressions
+  ausklammern : ausklammern
   lineareGleichung1 : linearEquations.lineareGleichung1
   lineareGleichung2 : linearEquations.lineareGleichung2
   binomischeFormeln : binomischeFormeln

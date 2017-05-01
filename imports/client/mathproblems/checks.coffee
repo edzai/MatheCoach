@@ -5,6 +5,9 @@ require "/imports/modules/nerdamer/Solve.js"
 
 math = require "mathjs"
 
+isEquivalent = (a, b) ->
+  expand = (str) -> nerdamer("expand(#{str})").text "fractions"
+  nerdamer("(#{expand a}) - (#{expand b})").text() is "0"
 
 sortSum = (str) ->
   result = str.split("")
@@ -42,7 +45,7 @@ exports.Check =
   equivalent :
     pass : (answer, solution) ->
       answer isnt "" and
-      nerdamer("(#{answer}) - (#{solution})").text() is "0"
+      isEquivalent answer, solution
     required : true
     passText : "Das Ergebnis ist zur Lösung äquivalent."
     failText : "Das Ergebnis ist nicht zur Lösung äquivalent."
@@ -121,3 +124,31 @@ exports.Check =
     passText : undefined
     failText :
       "Das Ergebnis muss eine einzelne Potenz oder eine einzelne Zahl sein."
+
+  firstFactorEquivalent :
+    pass : (answer, solution) ->
+      getFirstFactor = (str) ->
+        ///
+          ^
+          (
+            \d*
+            (?:
+              (?:\*\w+)
+            |
+              (?:\w*)
+            )
+          )
+          (?:
+            \s*\**\(
+          )
+        ///.exec(str)?[1]
+      answerFactor = getFirstFactor answer
+      solutionFactor = getFirstFactor solution
+      answerFactor? and solutionFactor? and
+        answerFactor isnt "" and
+        solutionFactor isnt "" and
+        isEquivalent answerFactor, solutionFactor
+    required : true
+    passText : undefined
+    failText :
+      "Der auszuklammernde Faktor steht nicht vor der Klammer"
