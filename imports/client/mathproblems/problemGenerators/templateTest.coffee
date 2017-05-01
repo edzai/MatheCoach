@@ -135,7 +135,7 @@ generators =
     #return
     problem : "not used"
     solution : ((g1+g2)*h/2).toFixed 1
-    description : "Bestimme die Fläche des Trapez"
+    description : "Bestimme die Fläche des Trapezes"
     hint : "Runde das Ergebnis auf eine Stelle hinter dem Komma"
     geometryDrawData : [trapez, height]
     skipExpression : true

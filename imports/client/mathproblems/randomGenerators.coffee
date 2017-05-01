@@ -8,8 +8,8 @@ isPrime = (n) ->
   result
 
 #dropped some letters because they look weird in TeX output
-#or have a special meaning in nerdamer (like i)
-alphabet = "abcdehjkmnpqrstuvwxyz".split ""
+#or have a special meaning in nerdamer (like i or e)
+alphabet = "abcdhjkmnpqrstuvwxyz".split ""
 
 namesOfThings = [
   sg : "Dings"
@@ -79,8 +79,6 @@ numerusFunction = (word) ->
   (amount = 1) ->
     if amount in [0,1] then word.sg else word.pl
 
-
-
 class Rnd
   constructor : () ->
 
@@ -142,7 +140,7 @@ class Rnd
   uniqueLetters : -> _.sampleSize alphabet, 10
 
   lengthUnit : -> _.sample ["mm", "cm", "m", "km", "ly"]
-  
+
   #random names for things
   #returns a function that returns the sg or pl form of the name
 
