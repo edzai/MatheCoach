@@ -79,19 +79,13 @@ exports.Check =
   isSingleFraction :
     pass : (answer, solution) ->
       re = ///
-        (
-          ^
+        (^
           [-]?\s?\d+\s?\*?\s?[a-z]*\s?
           \/
           \s?\d+\s?\*?\s?[a-z]*
-          $
-        )
-        |
-        (
-          ^
+        $)|(^
           [-]?\d+
-          $
-        )
+        $)
       ///
       re.test answer
     required : true
@@ -102,8 +96,7 @@ exports.Check =
   isSinglePower :
     pass : (answer, solution) ->
       re = ///
-        ^
-        (
+        ^(
           ([-]?\d+)
           |
           (
@@ -116,8 +109,7 @@ exports.Check =
               ([-]?\([^\(\)]+\))
             )
           )
-        )
-        $
+        )$
       ///
       re.test answer
     required : true
@@ -152,3 +144,19 @@ exports.Check =
     passText : undefined
     failText :
       "Der auszuklammernde Faktor steht nicht vor der Klammer"
+
+  scheitelpunktForm :
+    pass : (answer, solution) ->
+      ///
+        ^
+        (([+-]?\d+\*?)|\-)?
+        \(x
+        ([+-]\d+)?
+        \)\^2
+        ([+-]\d+)?
+        $
+      ///.test answer
+    required : true
+    passText : "Die Form des Ergebnisses entspricht der Scheitelpunktform"
+    failText :
+      "Das Ergebnis hat nicht die korrekte Scheitelpunktform"
