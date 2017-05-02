@@ -14,6 +14,8 @@
   require "./problemGenerators/polynomialDivision.coffee"
 { quadratischeGleichung } =
   require "./problemGenerators/quadraticEquations.coffee"
+{ scheitelpunkt } =
+  require "./problemGenerators/scheitelpunkt.coffee"
 { nullstellen } =
   require "./problemGenerators/nullstellen.coffee"
 { differentiation } =
@@ -27,6 +29,7 @@
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
 
+#TODO This is Stupid, I really need to change this.
 exports.modules = [
   "einXeins"
   "bruch0"
@@ -42,6 +45,7 @@ exports.modules = [
   "lineareGleichung2"
   "binomischeFormeln"
   "quadratischeGleichung"
+  "scheitelpunkt"
   "nullStellen"
   "polynomialDivision"
   "differentiation"
@@ -67,6 +71,7 @@ exports.problemDefinitions =
   quadratischeGleichung : quadratischeGleichung
   potenz1 : powers.potenz1
   nullStellen : nullstellen
+  scheitelpunkt : scheitelpunkt
   polynomialDivision : polynomialDivision
   differentiation : differentiation
   integration : integration
