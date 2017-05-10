@@ -31,27 +31,53 @@
 
 #TODO This is Stupid, I really need to change this.
 exports.modules = [
-  "einXeins"
-  "bruch0"
-  "bruch1"
-  "bruch2"
-  "bruch3"
-  "bruch4"
-  "proportionality"
-  "terme1"
-  "ausklammern"
-  "potenz1"
-  "lineareGleichung1"
-  "lineareGleichung2"
-  "binomischeFormeln"
-  "quadratischeGleichung"
-  "scheitelpunkt"
-  "nullStellen"
-  "polynomialDivision"
-  "differentiation"
-  "integration"
-  "templateTest"
-  # "someModule"
+  title : "Aufgaben nach Themen"
+  kindred : [
+    title : "Grundrechenarten"
+    description : "Die Grundlagen, die einfach sitzen müssen."
+    kindred : [
+      "einXeins"
+      "bruch0"
+      "bruch1"
+      "bruch2"
+      "bruch3"
+      "bruch4"
+      "potenz1"
+      "proportionality"
+    ]
+  ,
+    title : "Terme umformen"
+    description : "Terme zusammenfassen, Umgang mit Klammern"
+    kindred : [
+      "terme1"
+      "ausklammern"
+      "binomischeFormeln"
+    ]
+  ,
+    title : "Gleichungen"
+    description : "Lineare und Quadratische Gleichungen Lösen"
+    kindred : [
+      "lineareGleichung1"
+      "lineareGleichung2"
+      "quadratischeGleichung"
+      "scheitelpunkt"
+      "nullStellen"
+    ]
+  ,
+    title : "Calculus"
+    description : "Differential/Integralrechnung"
+    kindred :[
+      "differentiation"
+      "integration"
+    ]
+  ,
+    title : "Vermischtes"
+    description : "Aufgaben die nicht in die anderen Kategorien passen wollen."
+    kindred : [
+      "polynomialDivision"
+      "templateTest"
+    ]
+  ]
 ]
 
 exports.problemDefinitions =

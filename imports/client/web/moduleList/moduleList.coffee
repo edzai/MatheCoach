@@ -6,9 +6,16 @@ require "/imports/client/web/moduleScoreDisplay/moduleScoreDisplay.coffee"
 
 Template.moduleList.viewmodel
   modules : getModulesList()
-  #showScores : false
+
+Template.moduleSubList.viewmodel
+  modules : {}
 
 Template.moduleListItem.viewmodel
   gotoModule : ->
-    FlowRouter.go "/modul/#{@key()}"
+    FlowRouter.go "/modul/#{@moduleKey()}"
   userId : -> Meteor.userId()
+  listType : ->
+    if @kindred()?[0]?.moduleKey?
+      "ui relaxed ordered selection list"
+    else
+      "ui relaxed ordered celled list"
