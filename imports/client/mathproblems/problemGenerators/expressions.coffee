@@ -124,7 +124,7 @@ exports.expressionGenerator = expressionGenerator =
 
 exports.expressions =
   title : "Terme vereinfachen"
-  description : "Terme zusammenfassen, Ausklammern und Ausmultiplizieren"
+  description : "Terme zusammenfassen und Klammern ausmultiplizieren"
   problems : [
     levels : [1..3]
     generator : expressionGenerator.summeZusFass
