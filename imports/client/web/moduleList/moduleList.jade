@@ -2,14 +2,26 @@ template(name="moduleList")
   .ui.text.container
     h3.header Module
     .ui.segment
-      .ui.relaxed.selection.list
-        each modules
-          +moduleListItem
+      .ui.relaxed.list
+        +moduleSubList(modules=modules)
+          
+template(name="moduleSubList")
+  each modules
+    +moduleListItem
       
 template(name="moduleListItem")
-  .item($b="click : gotoModule")
-    +moduleScoreDisplay(moduleKey=key userId=userId)
-    .content
-      .header #{title}
-      .description #{description}
+  if moduleKey  
+    .item($b="click : gotoModule")
+      +moduleScoreDisplay(moduleKey=moduleKey userId=userId)
+      .content
+        .header #{title}
+        .description #{description}
+  else
+    .item
+      .content
+        .header.center.aligned #{title}
+        .description.center.aligned #{description}
+      if kindred
+        div($b="class : listType")
+          +moduleSubList(modules=kindred)
       
