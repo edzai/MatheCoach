@@ -26,6 +26,9 @@
   require "./problemGenerators/binomischeFormeln.coffee"
 { templateTest } =
   require "./problemGenerators/templateTest.coffee"
+{ functionPlotTest } =
+  require "./problemGenerators/functionPlotTest.coffee"
+
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
 
@@ -76,6 +79,7 @@ exports.modules = [
     kindred : [
       "polynomialDivision"
       "templateTest"
+      "functionPlotTest"
     ]
   ]
 ]
@@ -102,6 +106,7 @@ exports.problemDefinitions =
   differentiation : differentiation
   integration : integration
   templateTest : templateTest
+  functionPlotTest : functionPlotTest
   # test :
   #   title : "Test"
   #   description : "Testbereich für den Aufgabengenerator, \

@@ -44,6 +44,7 @@ class Problem
       @description, @hint
       @skipExpression,
       @geometryDrawData,
+      @functionPlotData,
       @customTemplateName, @customTemplateData, @templateReturnsAnswer
       @checks
       @answerPreprocessor

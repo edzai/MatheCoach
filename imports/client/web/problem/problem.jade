@@ -23,7 +23,11 @@ template(name="problem")
           if drawSVG
             .ui.center.aligned.container
               with SVGData
-                +renderSVG 
+                +renderSVG
+          if drawFunctionPlot
+            .ui.center.aligned.container
+              with functionData
+                +renderFunctionTemplate
         p($b="text : hint")
       .ui.segment
         .ui.grid

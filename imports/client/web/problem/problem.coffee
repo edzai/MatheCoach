@@ -3,6 +3,8 @@ require "/imports/client/web/mustBeLoggedIn/mustBeLoggedIn.coffee"
 require "./problem.jade"
 require "/imports/client/web/moduleScoreDisplay/moduleScoreDisplay.coffee"
 require "/imports/client/web/renderSVG/renderSVG.coffee"
+require "/imports/client/web/renderFunctionTemplate/\
+  renderFunctionTemplate.coffee"
 
 _ = require "lodash"
 { Random } = require "meteor/random"
@@ -78,6 +80,11 @@ Template.problem.viewmodel
     if @drawSVG()
       SVGId : "a#{Random.id()}"
       geometryDrawData : @problem().geometryDrawData
+  drawFunctionPlot : -> @problem()?.functionPlotData?
+  functionData : ->
+    console.log @problem()?.functionPlotData
+    functionId : "a#{Random.id()}"
+    functionPlotData : @problem()?.functionPlotData
   skipExpression : -> @problem()?.skipExpression
   customTemplateName : -> @problem()?.customTemplateName
   customTemplateData : -> @problem()?.customTemplateData
