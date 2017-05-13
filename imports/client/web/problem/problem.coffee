@@ -82,7 +82,6 @@ Template.problem.viewmodel
       geometryDrawData : @problem().geometryDrawData
   drawFunctionPlot : -> @problem()?.functionPlotData?
   functionData : ->
-    console.log @problem()?.functionPlotData
     functionId : "a#{Random.id()}"
     functionPlotData : @problem()?.functionPlotData
   skipExpression : -> @problem()?.skipExpression
