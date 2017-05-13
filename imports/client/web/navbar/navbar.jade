@@ -17,10 +17,10 @@ template(name="navbar")
         if hasTeacher
           a.item(class=isActiveRoute('mentorChat')
           $b="attr : {href : chatUrl}")
-            i.large.comments.outline.icon($b="class : {red : hasUnreadMessages}")
+            i.large.comments.outline.icon($b="class : shaking")
         if isMentor
           a.item(class=isActiveRoute('mentorOverview') href="/mentor/overview")
-            i.large.student.icon($b="class : {red : hasUnreadMessages}")
+            i.large.student.icon($b="class : shaking")
           //- a.item(class=isActiveRoute('calculator') href="/rechner")
           //-   i.large.calculator.icon
       a.item(class=isActiveRoute('help') href="/help")

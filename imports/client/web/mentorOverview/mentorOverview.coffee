@@ -4,6 +4,7 @@
 { Submissions } = require "/imports/api/submissions.coffee"
 { ChatMessages } = require "/imports/api/chatMessages.coffee"
 
+require "animate.css"
 require "/imports/client/web/mustBeMentor/mustBeMentor.coffee"
 require "./mentorOverview.jade"
 
@@ -45,6 +46,7 @@ Template.studentListDisplay.viewmodel
       senderId : @_id()
       read : false
     .count() isnt 0
+  shaking : -> if @hasUnreadMessagesFromStudent() then "animated infinite tada" else ""
   gotoStudentPage : -> FlowRouter.go "/mentor/student/#{@_id()}"
   gotoStudentChat : -> FlowRouter.go "/chat/#{@_id()}"
   mailLink : -> "mailto:#{@emails()[0].address}"

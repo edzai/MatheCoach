@@ -2,6 +2,7 @@
 { ChatMessages } = require "/imports/api/chatMessages.coffee"
 require "../navbarUserField/navbarUserField.coffee"
 require "/imports/client/web/setLayout/setLayout.coffee"
+require "animate.css"
 require "./navbar.jade"
 
 Template.navbar.viewmodel
@@ -20,5 +21,6 @@ Template.navbar.viewmodel
       query.senderId = Meteor.user().schoolClass().teacherId
     ChatMessages.find(query).count()
   hasUnreadMessages : -> @unreadMessagesCount() isnt 0
+  shaking : -> if @hasUnreadMessages() then "animated infinite tada" else ""
   style : ->
     "font-size" : "#{@navbarSize()}em"
