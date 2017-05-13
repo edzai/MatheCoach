@@ -28,7 +28,8 @@
   require "./problemGenerators/templateTest.coffee"
 { functionPlotTest } =
   require "./problemGenerators/functionPlotTest.coffee"
-
+{ linearFunctions} =
+  require "./problemGenerators/linearFunctions.coffee"
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
 
@@ -63,6 +64,12 @@ exports.modules = [
       "lineareGleichung1"
       "lineareGleichung2"
       "quadratischeGleichung"
+    ]
+  ,
+    title : "Funktionen"
+    description : "Funktionen, Graphen, Funktionsgleichungen"
+    kindred : [
+      "linearFunctions"
       "scheitelpunkt"
       "nullStellen"
     ]
@@ -107,6 +114,7 @@ exports.problemDefinitions =
   integration : integration
   templateTest : templateTest
   functionPlotTest : functionPlotTest
+  linearFunctions : linearFunctions
   # test :
   #   title : "Test"
   #   description : "Testbereich für den Aufgabengenerator, \
