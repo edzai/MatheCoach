@@ -21,7 +21,11 @@ template(name="submissionDisplay")
             if drawSVG
               .ui.center.aligned.container
                 with SVGData
-                  +renderSVG 
+                  +renderSVG
+            if drawFunctionPlot
+              .ui.center.aligned.container
+                with functionData
+                  +renderFunctionTemplate
           else
             +Template.dynamic(template=customTemplateName data=customTemplateData)
           //- +mathjax

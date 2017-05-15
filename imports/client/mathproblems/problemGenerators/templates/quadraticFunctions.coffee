@@ -1,34 +1,24 @@
 { Rnd } = require "../randomGenerators.coffee"
 rnd = new Rnd()
 
+_ = require "lodash"
+
 { Check } = require "../checks.coffee"
 
 nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
 require "/imports/modules/nerdamer/Solve.js"
 
-exports.fitGraph = fitGraph = (xmin, xmax, ymin, ymax) ->
-  range = Math.max Math.abs(xmax-xmin), Math.abs(ymax-ymin)
-  scaleAxis = (min, max) ->
-    middle = (min+max)/2
-    [middle-range/2, middle+range/2]
-  [xminR, xmaxR] = scaleAxis xmin, xmax
-  [yminR, ymaxR] = scaleAxis ymin, ymax
-  [xminR, xmaxR, yminR, ymaxR]
+{fitGraph} = require "./linearFunctions.coffee"
 
 generators =
   formulaFromGraph : (level = 1) ->
-    b = rnd.intMin -5, 5
-    [num, denom] = rnd.intsMin 1, 5
-    #make m=1 less likely
-    if num is denom then [num, denom] = rnd.intsMin 1, 5
-    signStr = rnd.opMinus()
-    signNum = if signStr is "-" then -1 else 1
-    m = "#{signStr}#{num}/#{denom}"
-    xmax = denom + 1
-    xmin = if ymax < 4 then -ymax else -1
+    a = _.
     f = (x) -> signNum*num/denom*x+b
     ymax = f(xmax)
     ymin = f(xmin)
+    xRange = Math.abs xmax-xmin
+    yRange = Math.abs ymax-ymin
+    range = Math.max xRange, yRange
     [xmin, xmax, ymin, ymax] = fitGraph xmin, xmax, ymin, ymax
     problem = "#{m}x+#{b}"
     #return
@@ -53,5 +43,5 @@ exports.linearFunctions =
   description : "Funktionen deren Graph eine Gerade ist."
   problems : [
     levels : [1]
-    generator : generators.formulaFromGraph
+    generator : generators.standardparabel
   ]

@@ -82,8 +82,9 @@ Template.problem.viewmodel
       geometryDrawData : @problem().geometryDrawData
   drawFunctionPlot : -> @problem()?.functionPlotData?
   functionData : ->
-    functionId : "a#{Random.id()}"
-    functionPlotData : @problem()?.functionPlotData
+    if @drawFunctionPlot()
+      functionId : "a#{Random.id()}"
+      functionPlotData : _.cloneDeep @problem()?.functionPlotData
   skipExpression : -> @problem()?.skipExpression
   customTemplateName : -> @problem()?.customTemplateName
   customTemplateData : -> @problem()?.customTemplateData
@@ -137,6 +138,7 @@ Template.problem.viewmodel
           date : new Date()
           skipExpression : @skipExpression()
           SVGData : @SVGData()
+          functionData : @functionData()
           customTemplateName : @customTemplateName()
           customTemplateData : @customTemplateData()
         insertSubmission.call submissionData

@@ -29,6 +29,10 @@ Submissions.schema = new SimpleSchema
     type : Object
     optional : true
     blackbox : true
+  functionData :
+    type : Object
+    optional : true
+    blackbox : true
   customTemplateName :
     type : String
     optional : true
@@ -75,6 +79,10 @@ exports.insertSubmission = new ValidatedMethod
         type : Boolean
         optional : true
       SVGData :
+        type : Object
+        optional : true
+        blackbox : true
+      functionData :
         type : Object
         optional : true
         blackbox : true
