@@ -12,15 +12,25 @@ require "/imports/modules/nerdamer/Solve.js"
 
 generators =
   formulaFromGraph : (level = 1) ->
-    a = _.
-    f = (x) -> signNum*num/denom*x+b
-    ymax = f(xmax)
-    ymin = f(xmin)
-    xRange = Math.abs xmax-xmin
-    yRange = Math.abs ymax-ymin
-    range = Math.max xRange, yRange
+    aDenomRoot = rnd.intPlus 3
+    aDenom = aDenomRoot**2
+    aEnum = rnd.intPlus aDenom
+    aSign = rnd.opMinus()
+    a = "#{aSign}#{aEnum}/#{aDenom}"
+    aSignNum = if aSign is "-" then -1 else 1
+    [xs, ys] = rnd.intsMin -3, 3
+    problem = "#{a}*(x-#{xs})^2 +#{ys}"
+    xmin = xs + aDenomRoot + 1
+    xmax = xs - aDenomRoot - 1
+    f = (x) -> aSignNum*aEnum/aDenom*(x-xs)**2+ys
+    if aSign is "-"
+      ymax = ys+1
+      ymin = f(xmin)-1
+    else
+      ymin = ys-1
+      ymax = f(xmin)+1
     [xmin, xmax, ymin, ymax] = fitGraph xmin, xmax, ymin, ymax
-    problem = "#{m}x+#{b}"
+
     #return
     problem : problem
     solutionTeX : "f(x)=#{nerdamer(problem).toTeX()}"
@@ -28,7 +38,7 @@ generators =
     description : "Gib die Funktionsgleichung für den abgebildeten Graphen an"
     functionPlotData :
       data : [
-        fn : "#{m}*x+#{b}"
+        fn : problem
       ]
       xAxis :
         label : "x"
@@ -38,10 +48,10 @@ generators =
         domain : [ymin, ymax]
       grid : true
 
-exports.linearFunctions =
-  title : "Lineare Funktionen"
-  description : "Funktionen deren Graph eine Gerade ist."
+exports.quadraticFunctions =
+  title : "Quadratische Funktionen"
+  description : "Noch nicht ganz fertig. Die Werte lassen sich nicht immer gut ablesen."
   problems : [
     levels : [1]
-    generator : generators.standardparabel
+    generator : generators.formulaFromGraph
   ]

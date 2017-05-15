@@ -30,6 +30,8 @@
   require "./problemGenerators/functionPlotTest.coffee"
 { linearFunctions} =
   require "./problemGenerators/linearFunctions.coffee"
+{ quadraticFunctions } =
+  require "./problemGenerators/quadraticFunctions.coffee"
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
 
@@ -86,7 +88,7 @@ exports.modules = [
     kindred : [
       "polynomialDivision"
       "templateTest"
-      "functionPlotTest"
+      "quadraticFunctions"
     ]
   ]
 ]
@@ -115,6 +117,7 @@ exports.problemDefinitions =
   templateTest : templateTest
   functionPlotTest : functionPlotTest
   linearFunctions : linearFunctions
+  quadraticFunctions : quadraticFunctions
   # test :
   #   title : "Test"
   #   description : "Testbereich für den Aufgabengenerator, \
