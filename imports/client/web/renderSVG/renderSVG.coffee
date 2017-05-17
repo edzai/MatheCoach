@@ -2,6 +2,12 @@ require "./renderSVG.jade"
 { GeometryDraw } = require "/imports/client/geometryDraw.coffee"
 
 Template.renderSVG.viewmodel
+  debug : false
+  style : ->
+    unless @debug()
+      ""
+    else
+      "border : 1px solid pink"
   drawing : {}
   SVGId : ""
   geometryDrawData : {}

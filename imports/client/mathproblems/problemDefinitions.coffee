@@ -32,6 +32,8 @@
   require "./problemGenerators/linearFunctions.coffee"
 { quadraticFunctions } =
   require "./problemGenerators/quadraticFunctions.coffee"
+{ strahlensatz } =
+  require "./problemGenerators/strahlensatz.coffee"
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
 
@@ -89,6 +91,7 @@ exports.modules = [
       "polynomialDivision"
       "templateTest"
       "quadraticFunctions"
+      "strahlensatz"
     ]
   ]
 ]
@@ -118,6 +121,7 @@ exports.problemDefinitions =
   functionPlotTest : functionPlotTest
   linearFunctions : linearFunctions
   quadraticFunctions : quadraticFunctions
+  strahlensatz : strahlensatz
   # test :
   #   title : "Test"
   #   description : "Testbereich für den Aufgabengenerator, \
