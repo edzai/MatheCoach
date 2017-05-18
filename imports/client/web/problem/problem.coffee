@@ -141,12 +141,10 @@ Template.problem.viewmodel
           functionData : @functionData()
           customTemplateName : @customTemplateName()
           customTemplateData : @customTemplateData()
-        # insertSubmission.call submissionData
-        if Meteor.isDevelopment
-          console.log "submission insertion without buffering"
+        #buffering method call in localstorage does not work since meteor update
+        if true #Meteor.isDevelopment
           insertSubmission.call submissionData
         else
-          console.log "submission insertion with buffering"
           @insertSubmission submissionData
 
   currentPerc :  ->
