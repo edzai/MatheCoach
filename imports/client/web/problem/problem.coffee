@@ -95,7 +95,7 @@ Template.problem.viewmodel
   problemTeX : -> @problem()?.problemTeX
   solutionTeX : -> @problem()?.solutionTeX
   loggedIn : -> Meteor.userId() isnt null
-  autoLevelOn : false
+  autoLevelOn : true
   answer : ""
   answered : false
   answerCorrect : false
@@ -179,7 +179,8 @@ Template.problem.viewmodel
     @passTextsOptional.reset()
     @failTextsRequired.reset()
     @failTextsOptional.reset()
-    if oldProblem = @recallProblem @moduleKey(), @newLevel()
+    if (oldProblem = @recallProblem @moduleKey(), @newLevel()) and
+    not @autoLevelOn()
       @problem oldProblem
     else
       newProblem = new Problem(@moduleKey(), @newLevel())
