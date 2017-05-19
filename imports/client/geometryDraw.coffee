@@ -25,9 +25,7 @@ class Point
     Snap.angle @x, @y, p.x, p.y, fulcrum?.x, fulcrum?.y
 
   innerAngle : (p, fulcrum) ->
-    innerAngle = (Math.round 180+(fulcrum.angle p)-(@angle fulcrum))%%360
-    innerAngle
-    # if innerAngle > 0 then innerAngle else innerAngle + 360
+    (180+(fulcrum.angle p)-(@angle fulcrum))%%360
 
   rotate : (phi, fulcrum) ->
     matrix = (new Snap.Matrix()).rotate(phi, fulcrum.x, fulcrum.y)
@@ -106,9 +104,9 @@ class GeometryDraw
     { line, lineLabel }
 
   labeledAngle : (p1, p2, fulcrum, pointLabelText, angleLabelText) ->
-    radius = 30
+    radius = 40
     angle = p1.angle p2, fulcrum
-    innerAngle = p1.innerAngle p2, fulcrum
+    innerAngle = Math.round(p1.innerAngle p2, fulcrum)
     angleLabelText ?= "#{innerAngle}°"
     largeArcFlag = if (innerAngle) < 180 then 0 else 1
     arcEndPoint = (p) ->
