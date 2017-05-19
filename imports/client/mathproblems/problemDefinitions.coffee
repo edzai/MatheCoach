@@ -34,6 +34,8 @@
   require "./problemGenerators/quadraticFunctions.coffee"
 { strahlensatz } =
   require "./problemGenerators/strahlensatz.coffee"
+{ sinussatz } =
+  require "./problemGenerators/sinussatz.coffee"
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
 
@@ -92,6 +94,7 @@ exports.modules = [
       "templateTest"
       "quadraticFunctions"
       "strahlensatz"
+      "sinussatz"
     ]
   ]
 ]
@@ -122,6 +125,7 @@ exports.problemDefinitions =
   linearFunctions : linearFunctions
   quadraticFunctions : quadraticFunctions
   strahlensatz : strahlensatz
+  sinussatz : sinussatz
   # test :
   #   title : "Test"
   #   description : "Testbereich für den Aufgabengenerator, \
