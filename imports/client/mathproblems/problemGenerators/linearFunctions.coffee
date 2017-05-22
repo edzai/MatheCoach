@@ -32,7 +32,7 @@ generators =
     [xmin, xmax, ymin, ymax] = fitGraph xmin, xmax, ymin, ymax
     problem = "#{m}x+#{b}"
     #return
-    problem : problem
+    problem : "f(x)=#{problem}"
     solutionTeX : "f(x)=#{nerdamer(problem).toTeX()}"
     skipExpression : true
     description : "Gib die Funktionsgleichung für den abgebildeten Graphen an"
