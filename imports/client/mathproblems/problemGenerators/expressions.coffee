@@ -67,7 +67,7 @@ exports.expressionGenerator = expressionGenerator =
     #return
     problem : problem
     solution : nerdamer("expand(#{problem})").text "fractions"
-    description : "Multipliziere die Klammer aus:"
+    description : "Multipliziere die Klammer aus und vereinfache:"
     checks : defaultExpressionCheck
 
   expandKlammerKlammer : (level = 1) ->
@@ -80,7 +80,7 @@ exports.expressionGenerator = expressionGenerator =
     #return
     problem : problem
     solution : nerdamer("expand(#{problem})").text "fractions"
-    description : "Multipliziere die Klammer aus:"
+    description : "Multipliziere die Klammer aus und vereinfache:"
     checks : defaultExpressionCheck
 
   ausklammern : (level = 1) ->

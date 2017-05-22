@@ -67,7 +67,7 @@ exports.Check =
       sortSum(answer) is sortSum solution
     required : true
     passText : undefined
-    failText : "Der Term ist nicht richtig vereinfacht."
+    failText : "Der Term ist nicht vereinfacht."
 
   isWholePositiveNumber :
     pass : (answer, solution) ->
