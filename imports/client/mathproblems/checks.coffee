@@ -36,6 +36,15 @@ noReducableFractions = (answer, solution) ->
   not reducableFractions
 
 exports.Check =
+  leftSideExactFit :
+    pass :
+      (answerRight, solutionRight, answerLeft, solutionLeft) ->
+        console.log "leftSideExactFit", answerLeft, solutionLeft
+        answerLeft is solutionLeft
+    required : true
+    failText : "Die linke Seite der Gleichung deiner Lösung muss mit der \
+      linken Seite der Gleichung der Musterlösung exakt übereinstimmen."
+
   exactFit :
     pass : (answer, solution) -> answer is solution
     required : true
