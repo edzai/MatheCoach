@@ -53,7 +53,11 @@ class Problem
     @problemTeX ?= teXifyAM @problem
     @solution ?= nerdamer(@problem).text "fractions"
     @solutionTeX ?= teXifyAM @solution
-    @checks ?= [Check.equivalent, Check.noReducableFractionsOptional]
+    @checks ?= [
+      Check.equivalent
+      Check.noReducableFractionsOptional
+      #Check.leftSideOptionalExactFit
+    ]
     @answerPreprocessor ?= defaultAnswerPreprocessor
 
   checkAnswer : (answerString) ->
