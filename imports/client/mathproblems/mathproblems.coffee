@@ -53,7 +53,11 @@ class Problem
     @problemTeX ?= teXifyAM @problem
     @solution ?= nerdamer(@problem).text "fractions"
     @solutionTeX ?= teXifyAM @solution
-    @checks ?= [Check.equivalent, Check.noReducableFractionsOptional]
+    @checks ?= [
+      Check.equivalent
+      Check.noReducableFractionsOptional
+      #Check.leftSideOptionalExactFit
+    ]
     @answerPreprocessor ?= defaultAnswerPreprocessor
 
   checkAnswer : (answerString) ->
@@ -63,16 +67,17 @@ class Problem
       .map (str) ->
         unless "=" in str.split("")
           sortString : nerdamer(str).text "fractions"
-          answerString : str
+          leftSide : undefined
+          rightSide : str
         else
           [leftSide, rightSide] = str.split "="
           sortString : nerdamer(leftSide).text "fractions"
-          answerString : rightSide
+          leftSide : leftSide
+          rightSide : rightSide
       .sort (a,b) ->
         if a.sortString < b.sortString then -1 else 1
-      .map (obj) -> obj.answerString
     answers = arrayify @answerPreprocessor(answerString)
-    solutions = arrayify @solution
+    solutions = arrayify @answerPreprocessor(@solution)
     pass = true
     passTextsRequired = []
     passTextsOptional = []
@@ -83,12 +88,11 @@ class Problem
       failTextsRequired = ["Die Anzahl der Lösungen stimmt nicht."]
     else
       for solution, i in solutions
-        if "=" in solution.split ""
-          solution = solution.split("=")[1]
-        if "=" in answers[i].split ""
-          answers[i] = answers[i].split("=")[1]
         for check in @checks
-          if check.pass answers[i], solution
+          if check.pass(
+            answers[i].rightSide, solution.rightSide,
+            answers[i].leftSide, solution.leftSide
+          )
             if check.required
               if check.passText?
                 passTextsRequired.push check.passText
