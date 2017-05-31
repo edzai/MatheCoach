@@ -47,3 +47,5 @@ Template.schoolClassActivityGraph.viewmodel
       horizontalBars : true,
       axisX :
         onlyInteger : true
+      axisY :
+        offset : 80
