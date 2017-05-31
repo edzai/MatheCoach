@@ -7,7 +7,8 @@ template(name="mentorOverview")
         +schoolClassListDisplay
 
 template(name="schoolClassListDisplay")
-  h3.header($b="text : name")        
+  h3.header($b="text : name")
+  +schoolClassActivityGraph  
   .ui.segment
     .ui.relaxed.list
       each students

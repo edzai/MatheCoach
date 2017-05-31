@@ -7,6 +7,8 @@
 require "animate.css"
 require "/imports/client/web/mustBeMentor/mustBeMentor.coffee"
 require "./mentorOverview.jade"
+require "/imports/client/web/schoolClassActivityGraph/\
+  schoolClassActivityGraph.coffee"
 
 Template.mentorOverview.viewmodel
   schoolClasses : ->
