@@ -32,11 +32,11 @@ Template.studentListDisplay.viewmodel
   #has properties of Meteor.users
   share : "reactiveTimer"
   mixin : "timeAgo"
-  name : -> "#{@profile().firstName} #{@profile().lastName}"
+  name : -> "#{@profile?().firstName} #{@profile?().lastName}"
   userColor : ->
     @tick()
     moreThanDaysAgo = (days) =>
-      moment(@lastActive()).isBefore moment().subtract(days, "days")
+      moment(@lastActive?() ? moment()).isBefore moment().subtract(days, "days")
     switch
       when moreThanDaysAgo 7 then "red"
       when moreThanDaysAgo 3 then "orange"

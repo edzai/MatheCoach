@@ -27,8 +27,8 @@ Template.schoolClassActivityGraph.viewmodel
     series1 = []
     series2 = []
     for student in students
-      labels.push "#{student.profile.firstName} \
-        #{student.profile.lastName}"
+      labels.push "#{student.profile?.firstName} \
+        #{student.profile?.lastName}"
       studentSubmissions =
         _(submissions)
         .filter userId : student._id
