@@ -53,6 +53,9 @@ exports.moduleKeys = [
   "terme1"
   "ausklammern"
   "binomischeFormeln"
+  "lineareGleichung1"
+  "lineareGleichung2"
+  "quadratischeGleichung"
   "linearFunctions"
   "scheitelpunkt"
   "nullStellen"
@@ -93,9 +96,9 @@ exports.modules = [
     title : "Gleichungen"
     description : "Lineare und Quadratische Gleichungen Lösen"
     kindred : [
-      "terme1"
-      "ausklammern"
-      "binomischeFormeln"
+      "lineareGleichung1"
+      "lineareGleichung2"
+      "quadratischeGleichung"
     ]
   ,
     title : "Funktionen"
