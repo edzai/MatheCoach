@@ -1,4 +1,4 @@
-{ problemDefinitions, modules } = require "./problemDefinitions.coffee"
+{ problemDefinitions, modules, moduleKeys } = require "./problemDefinitions.coffee"
 
 buildModulesList = (modules) ->
   (
@@ -15,5 +15,8 @@ buildModulesList = (modules) ->
 
 exports.getModulesList = -> buildModulesList modules
 
-exports.getModuleTitle = (key) ->
-  problemDefinitions[key].title
+exports.getModuleTitle = (key) -> problemDefinitions[key].title
+
+exports.moduleFilterList = moduleKeys.map (key) ->
+  key : key
+  title : exports.getModuleTitle key
