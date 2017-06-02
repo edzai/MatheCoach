@@ -1,10 +1,18 @@
 require "chartist/dist/chartist.css"
 require "./schoolClassActivityGraph.jade"
-{ Submissions } = require "/imports/api/submissions.coffee"
+{moduleFilterList} = require "/imports/client/mathproblems/getModulesList.coffee"
+{Submissions} = require "/imports/api/submissions.coffee"
 Chartist = require "chartist"
 _ = require "lodash"
 
 Template.schoolClassActivityGraph.viewmodel
+  modules : moduleFilterList
+  selectedModules : moduleFilterList.map (e) -> e.key
+  selectAll : ->
+    allModules = moduleFilterList.map (e) -> e.key
+    @modulesSelect.dropdown "set selected", allModules
+  selectNone : ->
+    @modulesSelect.dropdown "clear"
   graphId : -> "graph-#{@_id()}"
   students : ->
     Meteor.users.find
@@ -20,6 +28,7 @@ Template.schoolClassActivityGraph.viewmodel
         $in : studentIds
   chartData : ->
     daysAgo = 7
+    selectedModules = @selectedModules()
     submissions = @submissions().fetch()
     students = @students().fetch()
     startDate = moment().subtract(daysAgo, "days")
@@ -34,6 +43,9 @@ Template.schoolClassActivityGraph.viewmodel
         .filter userId : student._id
         .filter (submission) ->
           moment(submission.date).isAfter startDate
+        .filter (submission) ->
+          console.log submission.moduleKey
+          submission.moduleKey in selectedModules
         .countBy (submission) -> submission.answerCorrect
         .value()
       series1.push studentSubmissions[true] ? 0
@@ -41,11 +53,16 @@ Template.schoolClassActivityGraph.viewmodel
     #return
     labels : labels
     series : [series1, series2]
-  autorun : ->
-    new Chartist.Bar "##{@graphId()}", @chartData(),
-      stackBars : true
-      horizontalBars : true,
-      axisX :
-        onlyInteger : true
-      axisY :
-        offset : 80
+  autorun : [
+    ->
+      new Chartist.Bar "##{@graphId()}", @chartData(),
+        stackBars : true
+        horizontalBars : true,
+        axisX :
+          onlyInteger : true
+        axisY :
+          offset : 80
+    ->
+      @modulesSelect.dropdown "set selected", @selectedModules()
+    -> console.log @selectedModules()
+]

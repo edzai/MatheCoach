@@ -1,4 +1,15 @@
 template(name="schoolClassActivityGraph")
-  .ui.segment
-    h3.header Aktivität in den letzten 7 Tagen:
-    .ct-chart.ct-perfect-fourth(id=graphId)
+  .ui.segments
+    .ui.segment
+      h3.header Aktivität in den letzten 7 Tagen
+      .ui.grid
+        .thirteen.wide.column
+          select.fluid(multiple="" $b="options : modules, optionsValue : key, optionsText : title, value : selectedModules, ref : modulesSelect")
+        .three.wide.column
+          button.ui.right.floated.icon.button($b="click : selectNone")
+            i.remove.icon
+          button.ui.right.floated.icon.button($b="click : selectAll")
+            i.world.icon
+      //- .ui.hidden.divider
+    .ui.segment
+      .ct-chart.ct-perfect-fourth(id=graphId)

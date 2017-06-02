@@ -41,7 +41,31 @@
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
 
-#TODO This is Stupid, I really need to change this.
+exports.moduleKeys = [
+  "einXeins"
+  "bruch0"
+  "bruch1"
+  "bruch2"
+  "bruch3"
+  "bruch4"
+  "potenz1"
+  "proportionality"
+  "terme1"
+  "ausklammern"
+  "binomischeFormeln"
+  "linearFunctions"
+  "scheitelpunkt"
+  "nullStellen"
+  "differentiation"
+  "integration"
+  "polynomialDivision"
+  "templateTest"
+  "quadraticFunctions"
+  "strahlensatz"
+  "sinussatz"
+  "linGlSys"
+]
+
 exports.modules = [
   title : "Aufgaben nach Themen"
   kindred : [
@@ -69,9 +93,9 @@ exports.modules = [
     title : "Gleichungen"
     description : "Lineare und Quadratische Gleichungen Lösen"
     kindred : [
-      "lineareGleichung1"
-      "lineareGleichung2"
-      "quadratischeGleichung"
+      "terme1"
+      "ausklammern"
+      "binomischeFormeln"
     ]
   ,
     title : "Funktionen"
