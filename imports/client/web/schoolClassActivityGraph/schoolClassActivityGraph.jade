@@ -1,15 +1,39 @@
+template(name="moduleFilterListItem")
+  
+
 template(name="schoolClassActivityGraph")
-  .ui.segments
-    .ui.segment
-      h3.header Aktivität in den letzten 7 Tagen
-      .ui.grid
-        .thirteen.wide.column
-          select.fluid(multiple="" $b="options : modules, optionsValue : key, optionsText : title, value : selectedModules, ref : modulesSelect")
-        .three.wide.column
-          button.ui.right.floated.icon.button($b="click : selectNone")
-            i.remove.icon
-          button.ui.right.floated.icon.button($b="click : selectAll")
-            i.world.icon
+  .ui.segment
+    .ui.grid
+      .fourteen.wide.column
+        h3.header($b="text : graphTitle")
+        p($b="text : graphDescription")
+      .two.wide.column
+        .ui.right.floated.basic.circular.icon.button
+          i.icons($b="toggle : hideSettings")
+            i.setting.icon
+            if hideSettings
+              i.corner.caret.left.icon
+            else
+              i.corner.caret.down.icon
+    .ui.segment($b="unless: hideSettings")
+      .ui.form
+        h4.ui.dividing.header Anzahl der Tage:
+        .ui.basic.buttons
+          button.ui.icon.button($b="click : incDays")
+            i.plus.icon
+          button.ui.button($b="text : days")
+          button.ui.icon.button($b="click : decDays")
+            i.minus.icon
+        h4.ui.dividing.header Module in Plot anzeigen:
+        .ui.small.basic.buttons
+          button.ui.button($b="click : selectAll") alle
+          button.ui.button($b="click : selectNone") keins
+        .ui.hidden.divider
+        each modules
+          .inline.field
+            .ui.checkbox
+              input(type="checkbox" value=this.key
+                $b="group : selectedModules")
+              label($b="text : this.title")
       //- .ui.hidden.divider
-    .ui.segment
-      .ct-chart.ct-perfect-fourth(id=graphId)
+    .ct-chart.ct-perfect-fourth(id=graphId)

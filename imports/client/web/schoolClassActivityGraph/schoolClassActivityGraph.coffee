@@ -6,13 +6,31 @@ Chartist = require "chartist"
 _ = require "lodash"
 
 Template.schoolClassActivityGraph.viewmodel
+  hideSettings : true
   modules : moduleFilterList
   selectedModules : moduleFilterList.map (e) -> e.key
   selectAll : ->
-    allModules = moduleFilterList.map (e) -> e.key
-    @modulesSelect.dropdown "set selected", allModules
+    @selectedModules(moduleFilterList.map (e) -> e.key)
   selectNone : ->
-    @modulesSelect.dropdown "clear"
+    @selectedModules []
+  days : 7
+  incDays : -> @days @days()+1
+  decDays : ->
+    if @days() > 1 then @days @days()-1
+  graphTitle : ->
+    if @days() is 1
+      "Aktivität heute"
+    else
+      "Aktivität in den letzten #{@days()} Tagen"
+  graphDescription : ->
+    if @selectedModules().length is @modules().length
+      "Alle Module"
+    else
+      moduleList = _(@modules())
+      .filter (module) => module.key in @selectedModules()
+      .map (module) -> module.title
+      .value().join(", ")
+      "Module : #{moduleList}"
   graphId : -> "graph-#{@_id()}"
   students : ->
     Meteor.users.find
@@ -27,7 +45,7 @@ Template.schoolClassActivityGraph.viewmodel
       userId :
         $in : studentIds
   chartData : ->
-    daysAgo = 7
+    daysAgo = @days()
     selectedModules = @selectedModules()
     submissions = @submissions().fetch()
     students = @students().fetch()
@@ -44,7 +62,6 @@ Template.schoolClassActivityGraph.viewmodel
         .filter (submission) ->
           moment(submission.date).isAfter startDate
         .filter (submission) ->
-          console.log submission.moduleKey
           submission.moduleKey in selectedModules
         .countBy (submission) -> submission.answerCorrect
         .value()
@@ -53,6 +70,8 @@ Template.schoolClassActivityGraph.viewmodel
     #return
     labels : labels
     series : [series1, series2]
+  onRendered : ->
+    $(".ui.accordion").accordion()
   autorun : [
     ->
       new Chartist.Bar "##{@graphId()}", @chartData(),
@@ -62,7 +81,4 @@ Template.schoolClassActivityGraph.viewmodel
           onlyInteger : true
         axisY :
           offset : 80
-    ->
-      @modulesSelect.dropdown "set selected", @selectedModules()
-    -> console.log @selectedModules()
-]
+    ]
