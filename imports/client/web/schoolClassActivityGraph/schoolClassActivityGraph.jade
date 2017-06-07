@@ -8,8 +8,8 @@ template(name="schoolClassActivityGraph")
         h3.header($b="text : graphTitle")
         p($b="text : graphDescription")
       .two.wide.column
-        .ui.right.floated.basic.circular.icon.button
-          i.icons($b="toggle : hideSettings")
+        .ui.right.floated.basic.circular.icon.button($b="toggle : hideSettings")
+          i.icons
             i.setting.icon
             if hideSettings
               i.corner.caret.left.icon
