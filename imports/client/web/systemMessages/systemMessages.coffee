@@ -6,7 +6,17 @@ require "./systemMessages.jade"
 Template.systemMessages.viewmodel
   share : "unsyncedSubmissions"
   profileIncomplete : ->
-    Meteor.userId() and not Meteor.user()?.profile?.firstName? and
+    Meteor.userId() and not
+    (
+      (
+        Meteor.user()?.profile?.firstName? and
+        Meteor.user()?.profile?.lastName?
+      ) and
+      (
+        Meteor.user()?.schoolClassId? or
+        Roles.userIsInRole Meteor.userId(), "mentor"
+      )
+    ) and
     FlowRouter.getRouteName() isnt "userSettings"
 
   unsyncedSubmissionsWarningPending : false
