@@ -1,9 +1,11 @@
 require "chartist/dist/chartist.css"
 require "./schoolClassActivityGraph.jade"
-{moduleFilterList} = require "/imports/client/mathproblems/getModulesList.coffee"
+{moduleFilterList} =
+  require "/imports/client/mathproblems/getModulesList.coffee"
 {Submissions} = require "/imports/api/submissions.coffee"
 Chartist = require "chartist"
 _ = require "lodash"
+{ EJSON } = require "meteor/ejson"
 
 Template.schoolClassActivityGraph.viewmodel
   hideSettings : true
@@ -71,8 +73,17 @@ Template.schoolClassActivityGraph.viewmodel
     labels : labels
     series : [series1, series2]
   onRendered : ->
-    $(".ui.accordion").accordion()
+    if settingsJSON = window.localStorage.getItem "#{@_id()}-graphSetting"
+      settings = EJSON.parse settingsJSON
+      @selectedModules settings.selectedModules
+      @days settings.days
   autorun : [
+    ->
+      settings = {}
+      settings.selectedModules = @selectedModules().array()
+      settings.days = @days()
+      settingsJSON = EJSON.stringify settings
+      window.localStorage.setItem "#{@_id()}-graphSetting", settingsJSON
     ->
       new Chartist.Bar "##{@graphId()}", @chartData(),
         stackBars : true
