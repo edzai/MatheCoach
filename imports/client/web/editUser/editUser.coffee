@@ -127,5 +127,5 @@ Template.editUserProfile.viewmodel
       userId : @userId()
   onRendered : ->
     picker = new Pikaday
-      field : @dateField[0]
+      field : @dateField?[0]
       format : "D.M.Y"
