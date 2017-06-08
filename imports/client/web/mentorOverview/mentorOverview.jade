@@ -7,12 +7,17 @@ template(name="mentorOverview")
         +schoolClassListDisplay
 
 template(name="schoolClassListDisplay")
-  h3.header($b="text : name")
-  +schoolClassActivityGraph  
+  button.ui.right.floated.icon.button($b="click : newGraph")
+    i.bar.chart.icon
+    |Grafik hinzufügen
+  h2.header($b="text : name")
+  each activityGraphs
+    +schoolClassActivityGraph  
   .ui.segment
     .ui.relaxed.list
       each students
         +studentListDisplay
+  .ui.hidden.divider
 
 template(name="studentListDisplay")
   .item

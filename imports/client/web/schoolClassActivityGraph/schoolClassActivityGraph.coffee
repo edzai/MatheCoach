@@ -3,32 +3,69 @@ require "./schoolClassActivityGraph.jade"
 {moduleFilterList} =
   require "/imports/client/mathproblems/getModulesList.coffee"
 {Submissions} = require "/imports/api/submissions.coffee"
+{ ActivityGraphs, updateActivityGraph, removeActivityGraph} =
+  require "/imports/api/activityGraphs.coffee"
 Chartist = require "chartist"
 _ = require "lodash"
 { EJSON } = require "meteor/ejson"
 
+Template.schoolClassActivityGraphSettings.viewmodel
+  modules : ->
+    if @selectedModules?()?
+      moduleFilterList.map (e) =>
+        e.selected = (e.key in @selectedModules().array())
+        e
+  selectAll : ->
+    updateActivityGraph.call
+      id : @_id()
+      selectedModules : moduleFilterList.map (e) -> e.key
+  selectNone : ->
+    updateActivityGraph.call
+      id : @_id()
+      selectedModules : []
+  toggleModule : (key) ->
+    selectedModules = @selectedModules?()?.array()
+    updateActivityGraph.call
+      id : @_id()
+      selectedModules :
+        if key in selectedModules
+          _.filter selectedModules, (e) -> e isnt key
+        else
+          selectedModules.concat key
+  incDays : ->
+    updateActivityGraph.call
+      id : @_id()
+      days : @days()+1
+  decDays : ->
+    if @days() > 1
+      updateActivityGraph.call
+        id : @_id()
+        days : @days()-1
+  removePlot : ->
+    $(".ui.basic.modal##{@_id()}")
+    .modal
+      onApprove : =>
+        removeActivityGraph.call id : @_id()
+    .modal("show")
+  days : 7
+
 Template.schoolClassActivityGraph.viewmodel
   hideSettings : true
-  modules : moduleFilterList
-  selectedModules : moduleFilterList.map (e) -> e.key
-  selectAll : ->
-    @selectedModules(moduleFilterList.map (e) -> e.key)
-  selectNone : ->
-    @selectedModules []
-  days : 7
-  incDays : -> @days @days()+1
-  decDays : ->
-    if @days() > 1 then @days @days()-1
+  #selectedModules : moduleFilterList.map (e) -> e.key
+  settings : ->
+    _id : @_id()
+    selectedModules : @selectedModules()
+    days : @days()
   graphTitle : ->
     if @days() is 1
       "Aktivität heute"
     else
       "Aktivität in den letzten #{@days()} Tagen"
   graphDescription : ->
-    if @selectedModules().length is @modules().length
+    if @selectedModules().length is moduleFilterList.length
       "Alle Module"
     else
-      moduleList = _(@modules())
+      moduleList = _(moduleFilterList)
       .filter (module) => module.key in @selectedModules()
       .map (module) -> module.title
       .value().join(", ")
@@ -36,7 +73,7 @@ Template.schoolClassActivityGraph.viewmodel
   graphId : -> "graph-#{@_id()}"
   students : ->
     Meteor.users.find
-      "schoolClassId" : @_id()
+      "schoolClassId" : @schoolClassId()
     ,
       sort :
         "profile.lastName" : 1
@@ -72,18 +109,7 @@ Template.schoolClassActivityGraph.viewmodel
     #return
     labels : labels
     series : [series1, series2]
-  onRendered : ->
-    if settingsJSON = window.localStorage.getItem "#{@_id()}-graphSetting"
-      settings = EJSON.parse settingsJSON
-      @selectedModules settings.selectedModules
-      @days settings.days
   autorun : [
-    ->
-      settings = {}
-      settings.selectedModules = @selectedModules().array()
-      settings.days = @days()
-      settingsJSON = EJSON.stringify settings
-      window.localStorage.setItem "#{@_id()}-graphSetting", settingsJSON
     ->
       new Chartist.Bar "##{@graphId()}", @chartData(),
         stackBars : true

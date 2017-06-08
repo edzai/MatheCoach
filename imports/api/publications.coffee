@@ -1,6 +1,7 @@
 { Submissions } = require "/imports/api/submissions.coffee"
 { SchoolClasses } = require "/imports/api/schoolClasses.coffee"
 { ChatMessages } = require "/imports/api/chatMessages.coffee"
+{ ActivityGraphs } = require "/imports/api/activityGraphs.coffee"
 
 if Meteor.isServer
   #TODO: add publication for current user data
@@ -28,6 +29,19 @@ if Meteor.isServer
       @ready()
     else
       Submissions.find userId : @userId
+
+  Meteor.publishComposite "schoolClassActivityGraphs", ->
+    find : ->
+      Meteor.users.find
+        _id : @userId
+    children : [
+      find : (teacher) ->
+        SchoolClasses.find teacherId : teacher._id
+      children : [
+        find : (schoolClass) ->
+          ActivityGraphs.find schoolClassId : schoolClass._id
+      ]
+    ]
 
   Meteor.publishComposite "studentSubmissions", ->
     find : ->
@@ -86,6 +100,7 @@ if Meteor.isClient
   Tracker.autorun ->
     if Roles.userIsInRole @Meteor.userId(), "mentor"
       Meteor.subscribe "studentSubmissions"
+      Meteor.subscribe "schoolClassActivityGraphs"
   Tracker.autorun ->
     if Roles.userIsInRole @Meteor.userId(), "admin"
       Meteor.subscribe "allUserData"

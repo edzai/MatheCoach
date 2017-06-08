@@ -1,9 +1,54 @@
+template(name="moduleListElement")
+  .item($b="click : parent.toggleModule(key)")
+    if selected
+      i.plus.icon
+    else
+      i.minus.icon
+    .content
+      .header($b="text : title")
+
+template(name="schoolClassActivityGraphSettings")
+  .ui.basic.modal(id=_id)
+    .ui.icon.header
+      i.remove.icon
+      |Grafik löschen
+    .content
+      | Soll Die Grafik wirklich gelöscht werden (kann nicht rückgängig gemacht werden)?
+    .actions
+      .ui.red.basic.cancel.inverted.button Nicht löschen
+      .ui.green.ok.inverted.button Ja, löschen
+  .ui.segment
+    h3.header Einstellungen für Aktivitätsgrafik:
+    .ui.form
+      h4.ui.dividing.header Anzahl der Tage:
+      .ui.basic.buttons
+        button.ui.icon.button($b="click : incDays")
+          i.plus.icon
+        button.ui.button($b="text : days")
+        button.ui.icon.button($b="click : decDays")
+          i.minus.icon
+      h4.ui.dividing.header Module in Plot anzeigen:
+      .ui.small.basic.buttons
+        button.ui.button($b="click : selectAll") alle
+        button.ui.button($b="click : selectNone") keins
+      //- .ui.hidden.divider
+      .ui.small.celled.middle.aligned.selection.list
+        each modules
+          +moduleListElement
+      
+      h4.ui.dividing.header Aktivitätsgrafik löschen:
+      button.red.ui.button($b="click : removePlot") Grafik löschen
+          
 template(name="schoolClassActivityGraph")
   .ui.segment
     .ui.grid
       .fourteen.wide.column
-        h3.header($b="text : graphTitle")
-        p($b="text : graphDescription")
+        if hideSettings
+          h3.header($b="text : graphTitle")
+          p($b="text : graphDescription")
+        else
+          with settings
+            +schoolClassActivityGraphSettings
       .two.wide.column
         .ui.right.floated.basic.circular.icon.button($b="toggle : hideSettings")
           i.icons
@@ -12,25 +57,5 @@ template(name="schoolClassActivityGraph")
               i.corner.caret.left.icon
             else
               i.corner.caret.down.icon
-    .ui.segment($b="unless: hideSettings")
-      .ui.form
-        h4.ui.dividing.header Anzahl der Tage:
-        .ui.basic.buttons
-          button.ui.icon.button($b="click : incDays")
-            i.plus.icon
-          button.ui.button($b="text : days")
-          button.ui.icon.button($b="click : decDays")
-            i.minus.icon
-        h4.ui.dividing.header Module in Plot anzeigen:
-        .ui.small.basic.buttons
-          button.ui.button($b="click : selectAll") alle
-          button.ui.button($b="click : selectNone") keins
-        .ui.hidden.divider
-        each modules
-          .inline.field
-            .ui.checkbox
-              input(type="checkbox" value=this.key
-                $b="group : selectedModules")
-              label($b="text : this.title")
       //- .ui.hidden.divider
     .ct-chart.ct-perfect-fourth(id=graphId)

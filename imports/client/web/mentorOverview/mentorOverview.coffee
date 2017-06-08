@@ -3,7 +3,7 @@
 { SchoolClasses } = require "/imports/api/schoolClasses.coffee"
 { Submissions } = require "/imports/api/submissions.coffee"
 { ChatMessages } = require "/imports/api/chatMessages.coffee"
-
+{ ActivityGraphs, insertActivityGraph } = require "/imports/api/activityGraphs.coffee"
 require "animate.css"
 require "/imports/client/web/mustBeMentor/mustBeMentor.coffee"
 require "./mentorOverview.jade"
@@ -20,6 +20,14 @@ Template.mentorOverview.viewmodel
 
 
 Template.schoolClassListDisplay.viewmodel
+  newGraph : ->
+    insertActivityGraph.call
+      schoolClassId : @_id()
+      days : 7
+      selectedModules : []
+  activityGraphs : ->
+    ActivityGraphs.find
+      "schoolClassId" : @_id()
   students : ->
     Meteor.users.find
       "schoolClassId" : @_id()
