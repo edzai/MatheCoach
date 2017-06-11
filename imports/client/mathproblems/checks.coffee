@@ -94,6 +94,13 @@ exports.Check =
     required : true
     failText : "Das Ergebnis muss eine positive ganze Zahl sein."
 
+  isWholeNumber :
+    pass : (answer, solution) ->
+      re = /^[+-]?\s?\d+\s?$/g
+      re.test answer
+    required : true
+    failText : "Das Ergebnis uss eine ganze Zahl sein."
+
   isSingleFraction :
     pass : (answer, solution) ->
       re = ///

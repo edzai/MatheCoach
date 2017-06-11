@@ -1,3 +1,6 @@
+
+{ strichrechnungGanzzahlig, strichrechnungRational } =
+  require "./problemGenerators/addition.coffee"
 { fractions } =
   require "./problemGenerators/fractions.coffee"
 { proportionality } =
@@ -42,6 +45,8 @@
 #   require "./problemGenerators/some.coffee"
 
 exports.moduleKeys = [
+  "strichrechnungGanzzahlig"
+  "strichrechnungRational"
   "einXeins"
   "bruch0"
   "bruch1"
@@ -75,6 +80,8 @@ exports.modules = [
     title : "Grundrechenarten"
     description : "Die Grundlagen, die einfach sitzen müssen."
     kindred : [
+      "strichrechnungGanzzahlig"
+      "strichrechnungRational"
       "einXeins"
       "bruch0"
       "bruch1"
@@ -131,6 +138,8 @@ exports.modules = [
 
 exports.problemDefinitions =
   # someModule : someModule
+  strichrechnungGanzzahlig : strichrechnungGanzzahlig
+  strichrechnungRational : strichrechnungRational
   einXeins : einXeins
   bruch0 : fractions.bruch0
   bruch1 : fractions.bruch1
