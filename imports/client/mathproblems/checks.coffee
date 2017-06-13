@@ -9,6 +9,18 @@ isEquivalent = (a, b) ->
   expand = (str) -> nerdamer("expand(#{str})").text "fractions"
   nerdamer("(#{expand a}) - (#{expand b})").text() is "0"
 
+getPrecision = (x) ->
+  for i in [1..100]
+    if Number(x.toPrecision()) is Number(x.toPrecision(i))
+      return i
+
+isRounded = (roundedNum, preciseNum, minPrecision = 1) ->
+  maxPrecision = getPrecision preciseNum
+  for i in [minPrecision..maxPrecision]
+    if Number(roundedNum.toPrecision()) is Number(preciseNum.toPrecision(i))
+      return true
+  false
+
 sortSum = (str) ->
   result = str.split("")
   .map (c) ->
@@ -185,3 +197,40 @@ exports.Check =
     passText : "Die Form des Ergebnisses entspricht der Scheitelpunktform"
     failText :
       "Das Ergebnis hat nicht die korrekte Scheitelpunktform"
+
+  roundedValueWithUnit : (decimals, unit) ->
+    pass : (answer, solution) ->
+      answerUnit = math.unit answer
+      solutionUnit = math.unit solution
+      unit ?= solutionUnit.toJSON().unit
+      answerNumber = answerUnit.toNumber unit
+      solutionNumber = solutionUnit.toNumber unit
+      if decimals? and unit?
+        roundedSolution =
+          math.chain solutionUnit
+          .toNumber unit
+          .round decimals
+          .done()
+        minPrecision = getPrecision roundedSolution
+      isRounded answerNumber, solutionNumber, minPrecision
+    required : true
+    failText : "Das Ergebnis entspricht nicht der Lösung."
+
+
+  exactValueWithUnit :
+    pass : (answer, solution) ->
+      answerUnit = math.unit answer
+      solutionUnit = math.unit solution
+      answerUnit.equals solutionUnit
+    required : true
+    passText : "Das Ergebnis ist mit der Lösung äquivalent"
+    failText : "Das Ergebnis ist nicht mit der Lösung äquivalent."
+
+  answerEndsWith : (str) ->
+    pass : (answer, solution) ->
+      ///
+        #{str}
+        $
+      ///.test answer
+    required : true
+    failText : "Am Ende des Ergebnisses muss '#{str}' stehen."

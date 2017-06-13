@@ -41,6 +41,8 @@
   require "./problemGenerators/sinussatz.coffee"
 { linGlSys } =
   require "./problemGenerators/linGlSys.coffee"
+{ prismen } =
+  require "./problemGenerators/prismen.coffee"
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
 
@@ -72,6 +74,7 @@ exports.moduleKeys = [
   "strahlensatz"
   "sinussatz"
   "linGlSys"
+  "prismen"
 ]
 
 exports.modules = [
@@ -124,7 +127,8 @@ exports.modules = [
     ]
   ,
     title : "Vermischtes"
-    description : "Aufgaben die nicht in die anderen Kategorien passen wollen."
+    description : "Aufgaben die noch nicht in die anderen Kategorien \
+      passen wollen oder noch nicht so ganz fertig sind."
     kindred : [
       "polynomialDivision"
       "templateTest"
@@ -132,6 +136,7 @@ exports.modules = [
       "strahlensatz"
       "sinussatz"
       "linGlSys"
+      "prismen"
     ]
   ]
 ]
@@ -166,6 +171,7 @@ exports.problemDefinitions =
   strahlensatz : strahlensatz
   sinussatz : sinussatz
   linGlSys : linGlSys
+  prismen : prismen
   # test :
   #   title : "Test"
   #   description : "Testbereich für den Aufgabengenerator, \

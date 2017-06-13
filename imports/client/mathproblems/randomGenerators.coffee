@@ -139,7 +139,7 @@ class Rnd
   letters : -> (@letter() for i in [1..10])
   uniqueLetters : -> _.sampleSize alphabet, 10
 
-  lengthUnit : -> _.sample ["mm", "cm", "m", "km", "ly"]
+  lengthUnit : -> _.sample ["mm", "cm", "m", "km"]
 
   #random names for things
   #returns a function that returns the sg or pl form of the name
