@@ -20,7 +20,7 @@ exports.prismenGenerator = generator =
       "Radius r = #{scope.r}"
     else
       "Durchmesser d = #{scope.d}"
-    volume = math.eval "2 * pi * r^2 * h", scope
+    volume = math.eval "pi * r^2 * h", scope
     # roundedVolumeNumber =
     #   math.round volume.toNumber("#{unit}^3"), 1
     skipExpression : true
