@@ -3,6 +3,8 @@
   require "./problemGenerators/addition.coffee"
 { fractions } =
   require "./problemGenerators/fractions.coffee"
+{ decimals } =
+  require "./problemGenerators/decimals.coffee"
 { proportionality } =
   require "./problemGenerators/proportionality.coffee"
 { linearEquations } =
@@ -55,6 +57,7 @@ exports.moduleKeys = [
   "bruch2"
   "bruch3"
   "bruch4"
+  "decimals1"
   "potenz1"
   "proportionality"
   "terme1"
@@ -91,6 +94,10 @@ exports.modules = [
       "bruch2"
       "bruch3"
       "bruch4"
+      "decimals1"
+      "decimals2"
+      "decimals3"
+      "decimals"
       "potenz1"
       "proportionality"
     ]
@@ -151,6 +158,10 @@ exports.problemDefinitions =
   bruch2 : fractions.bruch2
   bruch3 : fractions.bruch3
   bruch4 : fractions.bruch4
+  decimals1 : decimals.decimals1
+  decimals2 : decimals.decimals2
+  decimals3 : decimals.decimals3
+  decimals : decimals.decimals
   proportionality : proportionality
   terme1 : expressions
   ausklammern : ausklammern
