@@ -5,6 +5,8 @@
   require "./problemGenerators/fractions.coffee"
 { decimals } =
   require "./problemGenerators/decimals.coffee"
+{ units } =
+  require "./problemGenerators/units.coffee"
 { proportionality } =
   require "./problemGenerators/proportionality.coffee"
 { linearEquations } =
@@ -61,6 +63,10 @@ exports.moduleKeys = [
   "decimals2"
   "decimals3"
   "decimals"
+  "lengthUnits"
+  "areaUnits"
+  "volumeUnits"
+  "mixedUnits"
   "potenz1"
   "proportionality"
   "terme1"
@@ -101,6 +107,10 @@ exports.modules = [
       "decimals2"
       "decimals3"
       "decimals"
+      "lengthUnits"
+      "areaUnits"
+      "volumeUnits"
+      "mixedUnits"
       "potenz1"
       "proportionality"
     ]
@@ -165,6 +175,10 @@ exports.problemDefinitions =
   decimals2 : decimals.decimals2
   decimals3 : decimals.decimals3
   decimals : decimals.decimals
+  lengthUnits : units.length
+  areaUnits : units.area
+  volumeUnits : units.volume
+  mixedUnits : units.mix
   proportionality : proportionality
   terme1 : expressions
   ausklammern : ausklammern

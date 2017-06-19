@@ -139,7 +139,20 @@ class Rnd
   letters : -> (@letter() for i in [1..10])
   uniqueLetters : -> _.sampleSize alphabet, 10
 
-  lengthUnit : -> _.sample ["mm", "cm", "m", "km"]
+  lengthUnitNames = ["mm", "cm", "dm", "m", "km"]
+  lengthUnit : -> _.sample lengthUnitNames
+  lengthUnits : -> (@lengthUnit() for i in [1..10])
+  uniqueLengthUnits : -> _.sampleSize lengthUnitNames, 5
+
+  areaUnitNames = ["mm^2", "cm^2", "dm^2", "m^2", "km^2"]
+  areaUnit : -> _.sample areaUnitNames
+  areaUnits : -> (@areaUnit() for i in [1..10])
+  uniqueAreaUnits : -> _.sampleSize areaUnitNames, 5
+
+  volumeUnitNames = ["mm^3", "cm^3", "dm^3", "m^3", "km^3", "l"]
+  volumeUnit : -> _.sample volumeUnitNames
+  volumeUnits : -> (@volumeUnit() for i in [1..10])
+  uniqueVolumeUnits : -> _.sampleSize volumeUnitNames, 5
 
   #random names for things
   #returns a function that returns the sg or pl form of the name

@@ -226,6 +226,12 @@ exports.Check =
     passText : "Das Ergebnis ist mit der Lösung äquivalent"
     failText : "Das Ergebnis ist nicht mit der Lösung äquivalent."
 
+  unitIs : (unit) ->
+    pass : (answer, solution) ->
+      math.unit(answer).toJSON().unit is unit
+    required : true
+    failText : "Die geforderte Einheit wurde nicht angegeben."
+
   answerEndsWith : (str) ->
     pass : (answer, solution) ->
       ///
