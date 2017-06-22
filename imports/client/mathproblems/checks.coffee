@@ -198,6 +198,14 @@ exports.Check =
     failText :
       "Das Ergebnis hat nicht die korrekte Scheitelpunktform"
 
+  roundedValue : (decimals) ->
+    pass : (answer, solution) ->
+      if decimals?
+        minPrecision = getPrecision math.round(Number(solution), decimals)
+      isRounded Number(answer), Number(solution), minPrecision
+    required : true
+    failText : "Das Ergebnis entspricht nicht der Lösung"
+    
   roundedValueWithUnit : (decimals, unit) ->
     pass : (answer, solution) ->
       answerUnit = math.unit answer
