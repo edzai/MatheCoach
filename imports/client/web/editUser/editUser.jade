@@ -18,7 +18,7 @@ template(name="editUserSchoolClass")
       .field
         label Klasse
         select.ui.search.dropdown($b="options : schoolClasses, optionsValue : id, optionsText : name, value : schoolClassId, ref : schoolClassSelect")
-      button.right.floated.ui.button($b="click : save") Speichern
+      button.right.floated.ui.button($b="click : save, enable : enableSaveButton") Speichern
     p($b="visible : !isStudent") Nur Schüler haben eine Schulklasse.
     
 template(name="editUserAdmin")

@@ -23,6 +23,7 @@ Template.editUserPage.viewmodel
 Template.editUserSchoolClass.viewmodel
   mixin : "rolesForUserId"
   schoolClassId : ViewModel.property.string
+  oldSchoolClassId : ViewModel.property.string
   schoolClasses : ->
     SchoolClasses.find {},
       sort :
@@ -30,11 +31,16 @@ Template.editUserSchoolClass.viewmodel
     .fetch().map (e) ->
       id : e._id
       name : e.name
+  enableSaveButton : ->
+    @schoolClassId() isnt @oldSchoolClassId()
   save : ->
     event.preventDefault()
+    @oldSchoolClassId @schoolClassId()
     setUserSchoolClass.call
       userId : @_id()
       schoolClassId : @schoolClassId()
+  onRendered : ->
+    @oldSchoolClassId @schoolClassId()
   autorun : ->
     @schoolClassSelect.dropdown "set selected", @schoolClassId()
     @schoolClassSelect.dropdown "set text",
