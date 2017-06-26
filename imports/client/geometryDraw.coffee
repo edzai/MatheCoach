@@ -27,7 +27,7 @@ class Point
   innerAngle : (p, fulcrum) ->
     (180+(fulcrum.angle p)-(@angle fulcrum))%%360
 
-  rotate : (phi, fulcrum) ->
+  rotate : (phi, fulcrum = (new Point 0, 0)) ->
     matrix = (new Snap.Matrix()).rotate(phi, fulcrum.x, fulcrum.y)
     new Point matrix.x(@x, @y), matrix.y(@x, @y)
 
@@ -102,6 +102,17 @@ class GeometryDraw
     lineLabel = @lineLabel p1, p2, text
     @g.add line
     { line, lineLabel }
+
+  labeledPoint : (p, labelText, labelOffset, drawMark = true) ->
+    if drawMark
+      mark = @paper
+        .circle p.x, p.y, 3
+    labelOffset ?= (new Point 12, 0).rotate(45).add(new Point 0, 4)
+    labelTextAnchor = p.add labelOffset
+    if labelText?
+      pointLabel = @paper
+        .text labelTextAnchor.x, labelTextAnchor.y, labelText
+        .attr "font-size" : 14, "text-anchor" : "middle"
 
   labeledAngle : (p1, p2, fulcrum, pointLabelText, angleLabelText) ->
     radius = 40
@@ -179,6 +190,29 @@ class GeometryDraw
       @labeledAngle prevLine.startPoint, nextLine.startPoint,
         line.startPoint, line.pointLabelText, line.angleLabelText
 
+  labeledCircle :
+    (center, radius, phi = -45
+    drawCenter = true, drawRadius = false
+    centerLabelText, radiusLabelText) ->
+      circle = @paper
+        .circle center.x, center.y, radius
+        .attr
+          stroke : "black"
+          strokeWidth : 1
+          fill : "none"
+      if drawCenter or centerLabelText?
+        if drawRadius
+          centerLabelTextOffset =
+            (new Point 12, 0).rotate(phi+180).add(new Point 0, 4)
+        @labeledPoint center, centerLabelText, centerLabelTextOffset
+      if drawRadius
+        radiusEndPoint =
+          new Point radius, 0
+          .rotate phi
+          .add center
+        @labeledLine center, radiusEndPoint, radiusLabelText
+
+
   draw : (dataArray) ->
     for e in dataArray
       switch e.type
@@ -190,6 +224,12 @@ class GeometryDraw
           for key in ["startPoint", "endPoint", "p"]
             e.line[key] = new Point e.line[key]
           @normal e.line.startPoint, e.line.endPoint, e.line.p, e.line.text
+        when "circle"
+          e.center = new Point e.center
+          @labeledCircle e.center, e.radius, e.phi,
+            e.drawCenter, e. drawRadius,
+            e.centerLabelText, e.radiusLabelText,
+            e.radiusEndLabelText
         else console.log "unknown type of geometryDraw object"
     bounds = @g.getBBox()
     if bounds.x < 0 or bounds.y < 0 or bounds.x2 > 200 or bounds.y2 > 200

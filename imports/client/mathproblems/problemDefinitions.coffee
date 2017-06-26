@@ -47,6 +47,8 @@
   require "./problemGenerators/linGlSys.coffee"
 { prismen } =
   require "./problemGenerators/prismen.coffee"
+{ circleTest } =
+  require "./problemGenerators/circleTest.coffee"
 # { someModule } =
 #   require "./problemGenerators/some.coffee"
 
@@ -157,6 +159,7 @@ exports.modules = [
       "sinussatz"
       "linGlSys"
       "prismen"
+      "circleTest"
     ]
   ]
 ]
@@ -200,6 +203,7 @@ exports.problemDefinitions =
   sinussatz : sinussatz
   linGlSys : linGlSys
   prismen : prismen
+  circleTest : circleTest
   # test :
   #   title : "Test"
   #   description : "Testbereich für den Aufgabengenerator, \
