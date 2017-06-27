@@ -70,6 +70,7 @@ exports.moduleKeys = [
   "volumeUnits"
   "mixedUnits"
   "potenz1"
+  "potenz2"
   "proportionality"
   "terme1"
   "ausklammern"
@@ -114,6 +115,7 @@ exports.modules = [
       "volumeUnits"
       "mixedUnits"
       "potenz1"
+      "potenz2"
       "proportionality"
     ]
   ,
@@ -190,6 +192,7 @@ exports.problemDefinitions =
   binomischeFormeln : binomischeFormeln
   quadratischeGleichung : quadratischeGleichung
   potenz1 : powers.potenz1
+  potenz2 : powers.potenz2
   nullStellen : nullstellen
   scheitelpunkt : scheitelpunkt
   polynomialDivision : polynomialDivision

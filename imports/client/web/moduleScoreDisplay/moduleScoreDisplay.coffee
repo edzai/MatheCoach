@@ -5,7 +5,7 @@ require "./moduleScoreDisplay.jade"
 
 Template.moduleScoreDisplay.viewmodel
   share : "reactiveTimer"
-  twoWeeksAgo : ->
+  eightWeeksAgo : ->
     @tick()
     moment().subtract(14, "days").toDate()
   tally : ->
@@ -13,5 +13,5 @@ Template.moduleScoreDisplay.viewmodel
       userId : @userId() ? Meteor.userId()
       moduleKey : @moduleKey()
       date :
-        $gt : @twoWeeksAgo()
+        $gt : @eightWeeksAgo()
   score : -> @tally().score()
