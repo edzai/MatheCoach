@@ -205,7 +205,7 @@ exports.Check =
       isRounded Number(answer), Number(solution), minPrecision
     required : true
     failText : "Das Ergebnis entspricht nicht der Lösung"
-    
+
   roundedValueWithUnit : (decimals, unit) ->
     pass : (answer, solution) ->
       answerUnit = math.unit answer
@@ -248,3 +248,8 @@ exports.Check =
       ///.test answer
     required : true
     failText : "Am Ende des Ergebnisses muss '#{str}' stehen."
+
+  noPowerOfBracket :
+    pass : (answer, solution) -> not /\)\^/.test answer
+    required : true
+    failText : "Das Ergebnis enthält die Potenz eines Klammertermes."

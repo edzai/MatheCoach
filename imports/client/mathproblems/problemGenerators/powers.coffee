@@ -107,10 +107,39 @@ exports.powersGenerator = powersGenerator =
     description : "Wende das 1. Potenzgesetz an und \
       schreibe das Ergebnis als Potenz:"
 
+  exp2Num : (level = 1) ->
+    exp = rnd.int2Plus 5
+    [na, nb] = rnd.uniqueIntsPlus 9-exp
+    [va, vb] = rnd.uniqueLetters()
+    op = rnd.opPunkt()
+    drop1 = (n) -> if n is 1 then "" else "#{n}"
+    switch level
+      when 1
+        na = rnd.int2Plus 9-exp #make sure there is something to simplify
+        problem = "(#{drop1 na}#{va})^#{exp}"
+      else
+        problem = "((#{drop1 na}#{va})#{op}(#{drop1 nb}#{vb}))^#{exp}"
+        #make a pretty solution (nerdamer's is ugly):
+        if op is "/"
+          bruch = math.fraction na, nb
+          solution = "#{drop1 bruch.n**exp} #{va}^#{exp}/\
+            (#{drop1 bruch.d**exp} #{vb}^#{exp})"
+        else
+          [v1, v2] = [va, vb].sort()
+          solution = "#{(na*nb)**exp} #{v1}^#{exp} #{v1}^#{exp}"
+    #return
+    problem : problem
+    solution : solution
+    description : "Vereinfache den Term."
+    hint : "In der Lösung darf keine Potenz eines \
+      Klammerterms mehr vorkommen."
+    checks : [Check.equivalent, Check.noPowerOfBracket]
+
+
 exports.powers =
   potenz1 :
     title : "Potenzen und Wurzeln 1"
-    description : "Aufgaben zum 1. Potenzgesetz"
+    description : "Aufgaben zum 1. Potenzgesetz (gleiche Basis)."
     problems : [
       levels : [1..3]
       generator : powersGenerator.exp1Num
@@ -128,4 +157,11 @@ exports.powers =
     ,
       levels : [4..5]
       generator : powersGenerator.sqrt1Num
+    ]
+  potenz2 :
+    title : "Potenzen und Wurzlen 2"
+    description : "Aufgaben zum 2. Potenzgesetz (gleicher Exponent)."
+    problems : [
+      levels : [1..2]
+      generator : powersGenerator.exp2Num
     ]
