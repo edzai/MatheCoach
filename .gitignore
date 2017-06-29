@@ -2,4 +2,6 @@ node_modules/
 .DS_Store
 imports/modules/nerdamer/
 imports/modules/playground.coffee
+imports/modules/data.coffee
 settings.json
+.imdone

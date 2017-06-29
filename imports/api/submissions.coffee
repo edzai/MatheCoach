@@ -1,6 +1,5 @@
 { Mongo } = require "meteor/mongo"
 { Meteor } = require "meteor/meteor"
-{ SchoolClasses} = require "/imports/api/schoolClasses.coffee"
 
 require "./users.coffee"
 
@@ -23,6 +22,24 @@ Submissions.schema = new SimpleSchema
   answer :
     type : String
     optional : true
+  skipExpression :
+    type : Boolean
+    optional : true
+  SVGData :
+    type : Object
+    optional : true
+    blackbox : true
+  functionData :
+    type : Object
+    optional : true
+    blackbox : true
+  customTemplateName :
+    type : String
+    optional : true
+  customTemplateData :
+    type : Object
+    optional : true
+    blackbox : true
 Submissions.attachSchema Submissions.schema
 exports.Submissions = Submissions
 
@@ -58,6 +75,24 @@ exports.insertSubmission = new ValidatedMethod
         type : String
       date :
         type : Date
+      skipExpression :
+        type : Boolean
+        optional : true
+      SVGData :
+        type : Object
+        optional : true
+        blackbox : true
+      functionData :
+        type : Object
+        optional : true
+        blackbox : true
+      customTemplateName :
+        type : String
+        optional : true
+      customTemplateData :
+        type : Object
+        optional : true
+        blackbox : true
     .validator()
   run : ( objectToInsert )->
     unless @userId
@@ -67,50 +102,5 @@ exports.insertSubmission = new ValidatedMethod
     Submissions.insert objectToInsert
     Meteor.users.update @userId,
       $set :
-        "profile.lastActive" : now
+        lastActive : now
     return true
-
-
-if Meteor.isServer
-  Meteor.publish "userSubmissions", ->
-    unless @userId
-      @ready()
-    else
-      Submissions.find userId : @userId
-
-  Meteor.publishComposite "studentSubmissions", ->
-    find : ->
-      Meteor.users.find
-        _id : @userId
-      ,
-        fields :
-          username : 1
-          profile : 1
-          emails : 1
-    children : [
-      find : (teacher) ->
-        SchoolClasses.find
-          teacherId : teacher._id
-        ,
-          fields :
-            name : 1
-            teacherId : 1
-      children : [
-        find : (schoolClass) ->
-          Meteor.users.find
-            "profile.schoolClassId" : schoolClass._id
-          ,
-            fields :
-              username : 1
-              profile : 1
-              emails : 1
-        children : [
-          find : (student) ->
-            Submissions.find userId : student._id
-        ]
-      ]
-    ]
-
-if Meteor.isClient
-  Meteor.subscribe "userSubmissions"
-  Meteor.subscribe "studentSubmissions"

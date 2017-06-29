@@ -79,18 +79,3 @@ exports.removeMessage = new ValidatedMethod
       Roles.userIsInRole @userId, "admin"
         throw new Meteor.Error "user is not authorized"
     ChatMessages.remove _id : id
-
-if Meteor.isServer
-  Meteor.publishComposite "chatMessages", ->
-    find : ->
-      if @userId?
-        ChatMessages.find
-          $or :
-            [
-              receiverId : @userId
-            ,
-              senderId : @userId
-            ]
-
-if Meteor.isClient
-  Meteor.subscribe "chatMessages"

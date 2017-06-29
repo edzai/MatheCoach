@@ -15,7 +15,19 @@ template(name="problem")
             +moduleScoreDisplay(moduleKey=moduleKey userId=userId)
       .ui.segment
         h4.header($b="text : description")
-        +teXDisplay(teX=problemTeX)
+        if customTemplateName
+          +Template.dynamic(template=customTemplateName data=customTemplateData)
+        else
+          unless skipExpression
+            +teXDisplay(teX=problemTeX)
+          if drawSVG
+            .ui.center.aligned.container
+              with SVGData
+                +renderSVG
+          if drawFunctionPlot
+            .ui.center.aligned.container
+              with functionData
+                +renderFunctionTemplate
         p($b="text : hint")
       .ui.segment
         .ui.grid
@@ -61,7 +73,7 @@ template(name="problem")
           h4.header Lösung:
           +teXDisplay(teX=solutionTeX)
       div    
-        button.ui.left.floated.grey.inverse.icon.button($b="toggle : forceUseKeyboard")
+        button.ui.left.floated.grey.inverse.icon.button($b="toggle : forceUseOtherKeyboard")
           i.keyboard.icon
         .ui.blue.icon.buttons
           button.ui.icon.button($b="click : easier, disable : autoLevelOn" title="Level verringern")

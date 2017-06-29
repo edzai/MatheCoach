@@ -1,0 +1,11 @@
+
+template(name="svgTestTemplate")
+  div
+    +mathjax
+      p Berechne die Länge der Hypothenuse c des Dreiecks mit den Katheten $a={{la}}{{unitTex}}$ und $b={{lb}}{{unitTex}}$. Benutze dabei den Satz des Pythagoras: $a^2+b^2=c^2$.
+    .ui.center.aligned.container
+      with svgData
+        +renderSVG
+    p Runde das Ergebnis auf eine Stelle hinter dem Komma.
+    
+    

@@ -1,12 +1,22 @@
 require "./systemMessages.jade"
 
-{ pushToStore, removeFromStore, flushStore } =
+{ flushSubmissionStore } =
   require "/imports/client/localStore.coffee"
 
 Template.systemMessages.viewmodel
   share : "unsyncedSubmissions"
   profileIncomplete : ->
-    Meteor.userId() and not Meteor.user()?.profile?.firstName? and
+    Meteor.userId() and not
+    (
+      (
+        Meteor.user()?.profile?.firstName? and
+        Meteor.user()?.profile?.lastName?
+      ) and
+      (
+        Meteor.user()?.schoolClassId? or
+        Roles.userIsInRole Meteor.userId(), "mentor"
+      )
+    ) and
     FlowRouter.getRouteName() isnt "userSettings"
 
   unsyncedSubmissionsWarningPending : false
@@ -25,13 +35,8 @@ Template.systemMessages.viewmodel
             Meteor.clearTimeout @unsyncedSubmissionsWarningTimer()
           @unsyncedSubmissionsWarningPending false
           @unsyncedSubmissionsWarning false
-          submissions = flushStore()
+          submissions = flushSubmissionStore()
           for submissionObject in submissions
+            console.log "inserting submission from localStore"
             @insertSubmission submissionObject
-    # ->
-    #   console.log "unsyncedCount", @unsyncedCount()
-    # ->
-    #   console.log  "unsyncedSubmissionsWarning", @unsyncedSubmissionsWarning()
-    # ->
-    #   console.log "unsyncedSubmissionsWarningPending", @unsyncedSubmissionsWarningPending()
   ]

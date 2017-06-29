@@ -1,20 +1,16 @@
 require "./setLayout.jade"
+{ setLayout } = require "/imports/api/users.coffee"
 
 Template.setLayout.viewmodel
   share : "layout"
-  adjust : (item, op) ->
-    prop = switch item
-      when "navbar" then @navbarSize
-      when "content" then @contentSize
-      else @keypadSize
-    switch op
-      when "+" then prop prop() * 1.1
-      when "-" then prop prop() / 1.1
-      when "reset" then prop 1
+  adjust : (property, operation) ->
+    setLayout.call { property, operation }
   autorun : ->
     if @layoutEditorToggle()
       @layoutEditor.modal
         closeable : true
+        dimmerSettings :
+          opacity : 0.6
         onHide : =>
           @layoutEditorToggle(false)
           true

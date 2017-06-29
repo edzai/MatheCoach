@@ -1,13 +1,22 @@
-{ problemDefinitions, modules } = require "./problemDefinitions.coffee"
+{ problemDefinitions, modules, moduleKeys } = require "./problemDefinitions.coffee"
 
-exports.getModulesList = ->
-  result = []
-  for module in modules
-    result.push
-      key : module
-      title : problemDefinitions[module].title
-      description : problemDefinitions[module].description
-  result
+buildModulesList = (modules) ->
+  (
+    for module in modules
+      if typeof module is "string"
+        moduleKey : module
+        title : problemDefinitions[module].title
+        description : problemDefinitions[module].description
+      else
+        title : module.title
+        description : module.description
+        kindred : buildModulesList(module.kindred)
+  )
 
-exports.getModuleTitle = (key) ->
-  problemDefinitions[key].title
+exports.getModulesList = -> buildModulesList modules
+
+exports.getModuleTitle = (key) -> problemDefinitions[key].title
+
+exports.moduleFilterList = moduleKeys.map (key) ->
+  key : key
+  title : exports.getModuleTitle key

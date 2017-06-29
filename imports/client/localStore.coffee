@@ -21,18 +21,18 @@ setSubmissions = (submissions) ->
   submissionsJSON = EJSON.stringify submissions
   window.localStorage.setItem "submissions", submissionsJSON
 
-exports.flushStore = ->
+exports.flushSubmissionStore = ->
   submissions = getSubmissions()
   setSubmissions []
   submissions
 
-exports.pushToStore = (submissionObject) ->
+exports.pushSubmissionToStore = (submissionObject) ->
   if localStorageAvailable()
     submissions = getSubmissions()
     submissions.push submissionObject
     setSubmissions submissions
 
-exports.removeFromStore = (submissionObject) ->
+exports.removeSubmissionFromStore = (submissionObject) ->
   if localStorageAvailable()
     submissions = getSubmissions()
     _.remove submissions, (e) -> _.isEqual e, submissionObject

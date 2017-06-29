@@ -1,4 +1,4 @@
-{ updateUserProfile, userProfileSchema } = require "/imports/api/users.coffee"
+{ updateTeXSetting, userSchema } = require "/imports/api/users.coffee"
 { Meteor } = require "meteor/meteor"
 _ = require "lodash"
 require "/imports/client/web/editUser/editUser.coffee"
@@ -8,6 +8,7 @@ require "./userSettings.jade"
 Template.userSettingsPage.viewmodel
   mixin : "rolesForUserId"
   userId : -> Meteor.userId()
+  user : -> Meteor.user()
   profile : ->
     profile = Meteor.user()?.profile or {}
     profile.userId = @userId()
@@ -22,12 +23,8 @@ Template.userLogout.viewmodel
         FlowRouter.go "/sign-in"
 
 Template.userSettings.viewmodel
-  mixin : ["docHandler", "rolesForUserId"]
-  docHandlerSchema : userProfileSchema
-  docHandlerDoc : ->
-    (Meteor.users.findOne _id : @userId())?.profile
-  save : ->
+  useKaTeX : -> Meteor.user()?.useKaTeX
+  toggle : ->
     event.preventDefault()
-    updateUserProfile.call
-      profile : @docHandlerVMDoc()
-      userId : @userId()
+    updateTeXSetting.call
+      useKaTeX : not @useKaTeX()

@@ -3,9 +3,12 @@
 { SchoolClasses } = require "/imports/api/schoolClasses.coffee"
 { Submissions } = require "/imports/api/submissions.coffee"
 { ChatMessages } = require "/imports/api/chatMessages.coffee"
-
+{ ActivityGraphs, insertActivityGraph } = require "/imports/api/activityGraphs.coffee"
+require "animate.css"
 require "/imports/client/web/mustBeMentor/mustBeMentor.coffee"
 require "./mentorOverview.jade"
+require "/imports/client/web/schoolClassActivityGraph/\
+  schoolClassActivityGraph.coffee"
 
 Template.mentorOverview.viewmodel
   schoolClasses : ->
@@ -17,9 +20,17 @@ Template.mentorOverview.viewmodel
 
 
 Template.schoolClassListDisplay.viewmodel
+  newGraph : ->
+    insertActivityGraph.call
+      schoolClassId : @_id()
+      days : 7
+      selectedModules : []
+  activityGraphs : ->
+    ActivityGraphs.find
+      "schoolClassId" : @_id()
   students : ->
     Meteor.users.find
-      "profile.schoolClassId" : @_id()
+      "schoolClassId" : @_id()
     ,
       sort :
         "profile.lastName" : 1
@@ -29,11 +40,11 @@ Template.studentListDisplay.viewmodel
   #has properties of Meteor.users
   share : "reactiveTimer"
   mixin : "timeAgo"
-  name : -> "#{@profile().firstName} #{@profile().lastName}"
+  name : -> "#{@profile?().firstName} #{@profile?().lastName}"
   userColor : ->
     @tick()
     moreThanDaysAgo = (days) =>
-      moment(@profile().lastActive).isBefore moment().subtract(days, "days")
+      moment(@lastActive?() ? moment()).isBefore moment().subtract(days, "days")
     switch
       when moreThanDaysAgo 7 then "red"
       when moreThanDaysAgo 3 then "orange"
@@ -45,6 +56,7 @@ Template.studentListDisplay.viewmodel
       senderId : @_id()
       read : false
     .count() isnt 0
+  shaking : -> if @hasUnreadMessagesFromStudent() then "animated infinite tada" else ""
   gotoStudentPage : -> FlowRouter.go "/mentor/student/#{@_id()}"
   gotoStudentChat : -> FlowRouter.go "/chat/#{@_id()}"
   mailLink : -> "mailto:#{@emails()[0].address}"

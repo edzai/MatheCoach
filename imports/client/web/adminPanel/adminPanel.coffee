@@ -1,15 +1,31 @@
 require "./adminPanel.jade"
-{ SchoolClasses, saveSchoolClass, deleteSchoolClass } = require "/imports/api/schoolClasses.coffee"
+{ SchoolClasses, saveSchoolClass, deleteSchoolClass } =
+  require "/imports/api/schoolClasses.coffee"
 { deleteUser, deleteSubmissions,
   sendVerificationEmail, sendTestEmail } = require "/imports/api/users.coffee"
 
 Template.adminPanel.viewmodel
+  userSearchString : ""
+  userSearchClassIds : ->
+    regex = ///#{@userSearchString()}///i
+    SchoolClasses.find()
+    .fetch()
+    .filter (schoolClass) ->
+      regex.test schoolClass?.name
+    .map (schoolClass) ->
+      schoolClass?._id
   users : ->
+    regex = ///#{@userSearchString()}///i
     Meteor.users.find {},
       sort :
         "profile.lastName" : 1
         "profile.firstName" : 1
         "username" : 1
+    .fetch()
+    .filter (user) =>
+      (regex.test user?.profile?.firstName) or
+      (regex.test user?.profile?.lastName) or
+      user?.schoolClassId in @userSearchClassIds()
   schoolClasses : ->
     SchoolClasses.find {},
       sort :
@@ -33,6 +49,7 @@ Template.adminSchoolClassDisplay.viewmodel
 
 Template.adminUserDisplay.viewmodel
   mixin : "timeAgo"
+  emails : []
   deleteUser : ->
     if @username() is "admin"
       alert "admin account kann nicht gelöscht werden"
@@ -40,7 +57,10 @@ Template.adminUserDisplay.viewmodel
       if confirm "Benutzer #{@username()} wirklich löschen?"
         deleteUser.call id : @_id()
   schoolClassName : ->
-    SchoolClasses.findOne(_id : @profile()?.schoolClassId)?.name ? "keine"
+    if @schoolClassId?
+      SchoolClasses.findOne(_id : @schoolClassId())?.name ? "keine"
+    else
+      "keine"
   deleteSubmissions : ->
     if confirm "Alle submissions von #{@username()} wirklich löschen?"
       deleteSubmissions.call userId : @_id()
@@ -49,5 +69,5 @@ Template.adminUserDisplay.viewmodel
   sendVerificationEmail : ->
     sendVerificationEmail.call userId : @_id()
     sendTestEmail.call text : "tut et dat?"
-  mailLink : -> "mailto:#{@emails()[0].address}"
-  mailVerified : -> @emails()[0].verified
+  mailLink : -> "mailto:#{@emails?()[0].address}"
+  mailVerified : -> @emails?()[0].verified

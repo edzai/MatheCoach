@@ -1,9 +1,11 @@
 template(name="navbar")
   +setLayout
   .ui.fixed.transparent.main.menu($b="style : style")
+    if useMobile
+      a.item($b="toggle : layoutEditorToggle")
+        i.large.expand.icon
     a.item(href="/")
       i.large.info.circle.icon
-    
     //- a.item(class=isActiveRoute('info') href="/info")
     //-   i.large.info.icon
     .right.menu
@@ -15,10 +17,10 @@ template(name="navbar")
         if hasTeacher
           a.item(class=isActiveRoute('mentorChat')
           $b="attr : {href : chatUrl}")
-            i.large.comments.outline.icon($b="class : {red : hasUnreadMessages}")
+            i.large.comments.outline.icon($b="class : shaking")
         if isMentor
           a.item(class=isActiveRoute('mentorOverview') href="/mentor/overview")
-            i.large.student.icon($b="class : {red : hasUnreadMessages}")
+            i.large.student.icon($b="class : shaking")
           //- a.item(class=isActiveRoute('calculator') href="/rechner")
           //-   i.large.calculator.icon
       a.item(class=isActiveRoute('help') href="/help")
@@ -29,6 +31,3 @@ template(name="navbar")
           a.item(class=isActiveRoute('adminPanel')
             href="/admin-panel")
             i.large.red.settings.icon
-      if useMobile
-        a.item($b="toggle : layoutEditorToggle")
-          i.large.expand.icon

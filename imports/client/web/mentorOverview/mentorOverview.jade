@@ -7,11 +7,17 @@ template(name="mentorOverview")
         +schoolClassListDisplay
 
 template(name="schoolClassListDisplay")
-  h3.header($b="text : name")        
+  button.ui.right.floated.icon.button($b="click : newGraph")
+    i.bar.chart.icon
+    |Grafik hinzufügen
+  h2.header($b="text : name")
+  each activityGraphs
+    +schoolClassActivityGraph  
   .ui.segment
     .ui.relaxed.list
       each students
         +studentListDisplay
+  .ui.hidden.divider
 
 template(name="studentListDisplay")
   .item
@@ -24,7 +30,7 @@ template(name="studentListDisplay")
       .ui.circular.icon.button($b="click : gotoStudentPage")
         i.bar.graph.icon
       .ui.circular.icon.button($b="click : gotoStudentChat, class : {red : hasUnreadMessagesFromStudent}")
-        i.comments.outline.icon
+        i.comments.outline.icon($b="class : shaking")
     i.large.middle.aligned.user.icon($b="class : userColor")
     .content
       .header($b="text : name")

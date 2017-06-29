@@ -2,8 +2,12 @@
 require "/imports/client/web/mustBeLoggedIn/mustBeLoggedIn.coffee"
 require "./problem.jade"
 require "/imports/client/web/moduleScoreDisplay/moduleScoreDisplay.coffee"
+require "/imports/client/web/renderSVG/renderSVG.coffee"
+require "/imports/client/web/renderFunctionTemplate/\
+  renderFunctionTemplate.coffee"
 
 _ = require "lodash"
+{ Random } = require "meteor/random"
 
 { Problem } =
   require "/imports/client/mathproblems/mathproblems.coffee"
@@ -14,14 +18,14 @@ _ = require "lodash"
 { Tally } =
   require "/imports/modules/tally.coffee"
 
-
 { Submissions, resetSubmissions, insertSubmission } =
   require "/imports/api/submissions.coffee"
 
 Template.inputKey.viewmodel
 
 Template.problem.viewmodel
-  share : ["reactiveTimer", "unsyncedSubmissions", "layout"]
+  share : ["reactiveTimer", "unsyncedSubmissions",
+    "layout", "unsolvedProblems"]
   handleInputKey : (keyValue) ->
     strArray = @answer().split ""
     if keyValue is "backspace"
@@ -33,7 +37,7 @@ Template.problem.viewmodel
     numberKeys = [0..9].map (i) ->
       text : "#{i}"
       value : "#{i}"
-    operatorKeys = "+-*/^=()".split("").map (e) ->
+    operatorKeys = "+-*/^=().,".split("").map (e) ->
       text : e
       value : e
     .concat [
@@ -71,6 +75,19 @@ Template.problem.viewmodel
   newLevel : 1
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
+  drawSVG : -> @problem()?.geometryDrawData?
+  SVGData : ->
+    if @drawSVG()
+      SVGId : "a#{Random.id()}"
+      geometryDrawData : @problem().geometryDrawData
+  drawFunctionPlot : -> @problem()?.functionPlotData?
+  functionData : ->
+    if @drawFunctionPlot()
+      functionId : "a#{Random.id()}"
+      functionPlotData : _.cloneDeep @problem()?.functionPlotData
+  skipExpression : -> @problem()?.skipExpression
+  customTemplateName : -> @problem()?.customTemplateName
+  customTemplateData : -> @problem()?.customTemplateData
   passTextsRequired : []
   passTextsOptional : []
   failTextsRequired : []
@@ -78,7 +95,7 @@ Template.problem.viewmodel
   problemTeX : -> @problem()?.problemTeX
   solutionTeX : -> @problem()?.solutionTeX
   loggedIn : -> Meteor.userId() isnt null
-  autoLevelOn : false
+  autoLevelOn : true
   answer : ""
   answered : false
   answerCorrect : false
@@ -97,6 +114,7 @@ Template.problem.viewmodel
         moduleKey : @moduleKey()
 
   checkAnswer : ->
+    @forgetProblem @moduleKey(), @currentLevel()
     if @answered()
       @newProblem()
     else
@@ -110,7 +128,7 @@ Template.problem.viewmodel
       @failTextsRequired failTextsRequired
       @failTextsOptional failTextsOptional
       if Meteor.userId()
-        @insertSubmission
+        submissionData =
           moduleKey : @moduleKey()
           level : @currentLevel()
           answerCorrect : @answerCorrect()
@@ -118,6 +136,16 @@ Template.problem.viewmodel
           problem : @problemTeX()
           answer : @answer()
           date : new Date()
+          skipExpression : @skipExpression()
+          SVGData : @SVGData()
+          functionData : @functionData()
+          customTemplateName : @customTemplateName()
+          customTemplateData : @customTemplateData()
+        #buffering method call in localstorage does not work since meteor update
+        if true #Meteor.isDevelopment
+          insertSubmission.call submissionData
+        else
+          @insertSubmission submissionData
 
   currentPerc :  ->
     @levelTally().rightPercent() *
@@ -149,12 +177,18 @@ Template.problem.viewmodel
     @passTextsOptional.reset()
     @failTextsRequired.reset()
     @failTextsOptional.reset()
-    @problem new Problem(@moduleKey(), @newLevel())
+    if (oldProblem = @recallProblem @moduleKey(), @newLevel()) and
+    not @autoLevelOn()
+      @problem oldProblem
+    else
+      newProblem = new Problem(@moduleKey(), @newLevel())
+      @memorizeProblem @moduleKey(), @newLevel(), newProblem
+      @problem newProblem
     @newLevel @currentLevel()
   gotoModulesList : -> FlowRouter.go "/"
   onCreated : ->
-    @problem new Problem(@moduleKey(), @newLevel())
-    @newLevel @currentLevel()
+    @newLevel @recallLevel(@moduleKey())
+    @newProblem()
   harder : ->
     @newLevel @currentLevel() + 1
     @newProblem()
@@ -163,3 +197,9 @@ Template.problem.viewmodel
     @newProblem()
   style : ->
     "font-size" : "#{@keypadSize()}em"
+
+  # autorun : [
+  #   -> console.log "problem", @problem()
+  #   -> console.log "customTemplateName", @customTemplateName()
+  #   -> console.log "customTemplateData", @customTemplateData()
+  # ]

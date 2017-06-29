@@ -5,6 +5,21 @@ require "/imports/modules/nerdamer/Solve.js"
 
 math = require "mathjs"
 
+isEquivalent = (a, b) ->
+  expand = (str) -> nerdamer("expand(#{str})").text "fractions"
+  nerdamer("(#{expand a}) - (#{expand b})").text() is "0"
+
+getPrecision = (x) ->
+  for i in [1..100]
+    if Number(x.toPrecision()) is Number(x.toPrecision(i))
+      return i
+
+isRounded = (roundedNum, preciseNum, minPrecision = 1) ->
+  maxPrecision = getPrecision preciseNum
+  for i in [minPrecision..maxPrecision]
+    if Number(roundedNum.toPrecision()) is Number(preciseNum.toPrecision(i))
+      return true
+  false
 
 sortSum = (str) ->
   result = str.split("")
@@ -33,6 +48,24 @@ noReducableFractions = (answer, solution) ->
   not reducableFractions
 
 exports.Check =
+  leftSideExactFit :
+    pass :
+      (answerRight, solutionRight, answerLeft, solutionLeft) ->
+        answerLeft is solutionLeft
+    required : true
+    failText : "Die linke Seite der Gleichung deiner Lösung muss mit der \
+      linken Seite der Gleichung der Musterlösung exakt übereinstimmen."
+
+  leftSideOptionalExactFit :
+    pass :
+      (answerRight, solutionRight, answerLeft, solutionLeft) ->
+        console.log "leftSideOptionalExactFit", answerLeft, solutionLeft
+        if answerLeft = undefined then true
+        else unless answerLeft is solutionLeft then false
+    required : true
+    failText : "Wenn du deine Lösung als Gleichung schreibst, \
+      muss die linke Seite mit der Lösung übereinstimmen."
+
   exactFit :
     pass : (answer, solution) -> answer is solution
     required : true
@@ -42,10 +75,10 @@ exports.Check =
   equivalent :
     pass : (answer, solution) ->
       answer isnt "" and
-      nerdamer("(#{answer}) - (#{solution})").text() is "0"
+      isEquivalent answer, solution
     required : true
-    passText : "Das Ergebnis ist zur Lösung equivalent."
-    failText : "Das Ergebnis is nicht zur Lösung equivalent."
+    passText : "Das Ergebnis ist zur Lösung äquivalent."
+    failText : "Das Ergebnis ist nicht zur Lösung äquivalent."
 
   noReducableFractionsOptional :
     pass : noReducableFractions
@@ -64,43 +97,43 @@ exports.Check =
       sortSum(answer) is sortSum solution
     required : true
     passText : undefined
-    failText : "Der Term ist nicht richtig Vereinfacht."
+    failText : "Der Term ist nicht vereinfacht."
 
   isWholePositiveNumber :
     pass : (answer, solution) ->
       re = /^\+?\s?\d+\s?$/g
       re.test answer
     required : true
-    failText : "Das Ergebnis muss eine positive Ganze Zahl sein."
+    failText : "Das Ergebnis muss eine positive ganze Zahl sein."
+
+  isWholeNumber :
+    pass : (answer, solution) ->
+      re = /^[+-]?\s?\d+\s?$/g
+      re.test answer
+    required : true
+    failText : "Das Ergebnis uss eine ganze Zahl sein."
 
   isSingleFraction :
     pass : (answer, solution) ->
       re = ///
-        (
-          ^
+        (^
           [-]?\s?\d+\s?\*?\s?[a-z]*\s?
           \/
           \s?\d+\s?\*?\s?[a-z]*
-          $
-        )
-        |
-        (
-          ^
+        $)|(^
           [-]?\d+
-          $
-        )
+        $)
       ///
       re.test answer
     required : true
     passText : undefined
     failText : "Das Ergebnis muss ein einzelner Bruch \
-      oder eine einzelne Ganze Zahl sein."
+      oder eine einzelne ganze Zahl sein."
 
   isSinglePower :
     pass : (answer, solution) ->
       re = ///
-        ^
-        (
+        ^(
           ([-]?\d+)
           |
           (
@@ -113,11 +146,110 @@ exports.Check =
               ([-]?\([^\(\)]+\))
             )
           )
-        )
-        $
+        )$
       ///
       re.test answer
     required : true
     passText : undefined
     failText :
       "Das Ergebnis muss eine einzelne Potenz oder eine einzelne Zahl sein."
+
+  firstFactorEquivalent :
+    pass : (answer, solution) ->
+      getFirstFactor = (str) ->
+        ///
+          ^
+          (
+            \d*
+            (?:
+              (?:\*\w+)
+            |
+              (?:\w*)
+            )
+          )
+          (?:
+            \s*\**\(
+          )
+        ///.exec(str)?[1]
+      answerFactor = getFirstFactor answer
+      solutionFactor = getFirstFactor solution
+      answerFactor? and solutionFactor? and
+        answerFactor isnt "" and
+        solutionFactor isnt "" and
+        isEquivalent answerFactor, solutionFactor
+    required : true
+    passText : undefined
+    failText :
+      "Der auszuklammernde Faktor steht nicht vor der Klammer"
+
+  scheitelpunktForm :
+    pass : (answer, solution) ->
+      ///
+        ^
+        (([+-]?\d+\*?)|\-)?
+        \(x
+        ([+-]\d+)?
+        \)\^2
+        ([+-]\d+)?
+        $
+      ///.test answer
+    required : true
+    passText : "Die Form des Ergebnisses entspricht der Scheitelpunktform"
+    failText :
+      "Das Ergebnis hat nicht die korrekte Scheitelpunktform"
+
+  roundedValue : (decimals) ->
+    pass : (answer, solution) ->
+      if decimals?
+        minPrecision = getPrecision math.round(Number(solution), decimals)
+      isRounded Number(answer), Number(solution), minPrecision
+    required : true
+    failText : "Das Ergebnis entspricht nicht der Lösung"
+
+  roundedValueWithUnit : (decimals, unit) ->
+    pass : (answer, solution) ->
+      answerUnit = math.unit answer
+      solutionUnit = math.unit solution
+      unit ?= solutionUnit.toJSON().unit
+      answerNumber = answerUnit.toNumber unit
+      solutionNumber = solutionUnit.toNumber unit
+      if decimals? and unit?
+        roundedSolution =
+          math.chain solutionUnit
+          .toNumber unit
+          .round decimals
+          .done()
+        minPrecision = getPrecision roundedSolution
+      isRounded answerNumber, solutionNumber, minPrecision
+    required : true
+    failText : "Das Ergebnis entspricht nicht der Lösung."
+
+
+  exactValueWithUnit :
+    pass : (answer, solution) ->
+      answerUnit = math.unit answer
+      solutionUnit = math.unit solution
+      answerUnit.equals solutionUnit
+    required : true
+    passText : "Das Ergebnis ist mit der Lösung äquivalent"
+    failText : "Das Ergebnis ist nicht mit der Lösung äquivalent."
+
+  unitIs : (unit) ->
+    pass : (answer, solution) ->
+      math.unit(answer).toJSON().unit is unit
+    required : true
+    failText : "Die geforderte Einheit wurde nicht angegeben."
+
+  answerEndsWith : (str) ->
+    pass : (answer, solution) ->
+      ///
+        #{str}
+        $
+      ///.test answer
+    required : true
+    failText : "Am Ende des Ergebnisses muss '#{str}' stehen."
+
+  noPowerOfBracket :
+    pass : (answer, solution) -> not /\)\^/.test answer
+    required : true
+    failText : "Das Ergebnis enthält die Potenz eines Klammertermes."

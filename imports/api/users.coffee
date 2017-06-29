@@ -36,30 +36,9 @@ userProfileSchema = new SimpleSchema
   referenceNumber :
     type : String
     optional : true
-  schoolClassId :
-    type : String
-    optional : true
-  lastActive :
-    type : Date
-    optional : true
-  useKaTeX :
-    type : Boolean
-    optional : true
-  navbarSize :
-    type : Number
-    optional : true
-  contentSize :
-    type : Number
-    optional : true
-  keypadSize :
-    type : Number
-    optional : true
-  showViewportSize :
-    type : Boolean
-    optional : true
 exports.userProfileSchema = userProfileSchema
 
-userSchema = new SimpleSchema
+exports.userSchema = userSchema = new SimpleSchema
   username :
     type : String
     optional : true
@@ -88,8 +67,39 @@ userSchema = new SimpleSchema
   heartbeat :
     type : Date
     optional : true
+  #DONE Move schoolClassId out of profile
+  schoolClassId :
+    type : String
+    optional : true
+  #DONE Move lastActive out of profile
+  lastActive :
+    type : Date
+    optional : true
+  #DONE Move useKaTeX out of profile
+  useKaTeX :
+    type : Boolean
+    optional : true
+  navbarSize :
+    type : Number
+    decimal : true
+    min : .3
+    max : 3
+    optional : true
+  contentSize :
+    type : Number
+    decimal : true
+    min : .3
+    max : 3
+    optional : true
+  keypadSize :
+    type : Number
+    decimal : true
+    min : .3
+    max : 3
+    optional : true
 Meteor.users.attachSchema userSchema
 
+#TODO: weed out collection helpers id:4
 Meteor.users.helpers
   fullName : ->
     "#{@profile.firstName} #{@profile.lastName}"
@@ -117,12 +127,36 @@ Meteor.users.helpers
       limit : 10*page
   schoolClass : ->
     SchoolClasses.findOne
-      _id : @profile.schoolClassId
+      _id : @schoolClassId
   isMentor : ->
     Roles.userIsInRole @_id(), "mentor"
   isAdmin : ->
     Roles.userIsInRole @_id(), "admin"
   hasTeacher : -> @schoolClass?.teacher?
+
+
+exports.setLayout = new ValidatedMethod
+  name : "setLayout"
+  validate :
+    new SimpleSchema
+      property :
+        type : String
+        allowedValues : ["navbarSize", "contentSize", "keypadSize"]
+      operation :
+        type : String
+        allowedValues : ["+", "-", "reset"]
+    .validator()
+  run : ({ property, operation })   ->
+    unless @userId
+      throw new Meteor.Error "not logged-in"
+    if operation is "reset"
+      Meteor.users.update @userId,
+        $set :
+          "#{property}" : 1
+    else
+      Meteor.users.update @userId,
+        $inc :
+          "#{property}" : if operation is "+" then .05 else -0.05
 
 exports.sendVerificationEmail = new ValidatedMethod
   name : "sendVerificationEmail"
@@ -169,10 +203,30 @@ exports.toggleRole = new ValidatedMethod
     if role is "admin" and not
     Roles.userIsInRole @userId, "superAdmin"
       throw new Meteor.Error "not superAdmin"
+    if role is "admin" and userId is @userId
+      throw new Meteor.Error "may not toggle own admin role"
     if Roles.userIsInRole userId, role
       Roles.removeUsersFromRoles userId, role
     else
       Roles.addUsersToRoles userId, role
+
+exports.setUserSchoolClass = new ValidatedMethod
+  name : "setUserSchoolClass"
+  validate :
+    new SimpleSchema
+      userId :
+        type : String
+      schoolClassId :
+        type : String
+    .validator()
+  run : ({ userId, schoolClassId }) ->
+    unless @userId
+      throw new Meteor.Error "not logged-in"
+    unless (Roles.userIsInRole @userId, "admin") or (userId is @userId)
+      throw new Meteor.Error "not admin or user"
+    Meteor.users.update _id : userId,
+      $set :
+        "schoolClassId" : schoolClassId
 
 exports.removeUserFromClass = new ValidatedMethod
   name : "removeUserFromClass"
@@ -188,7 +242,7 @@ exports.removeUserFromClass = new ValidatedMethod
       throw new Meteor.Error "not admin"
     Meteor.users.update _id : id,
       $unset :
-        "profile.schoolClassId" : ""
+        "schoolClassId" : ""
 
 exports.updateUserProfile = new ValidatedMethod
   name : "updateUserProfile"
@@ -212,6 +266,20 @@ exports.updateUserProfile = new ValidatedMethod
     Meteor.users.update userId,
       $set :
         profile : profile
+
+exports.updateTeXSetting = new ValidatedMethod
+  name : "updateTeXSetting"
+  validate :
+    new SimpleSchema
+      useKaTeX :
+        type : Boolean
+    .validator()
+  run : ({ useKaTeX }) ->
+    unless @userId
+      throw new Meteor.Error "not logged-in"
+    Meteor.users.update @userId,
+      $set :
+        useKaTeX : useKaTeX
 
 exports.deleteUser = new ValidatedMethod
   name : "deleteUser"
@@ -248,18 +316,4 @@ exports.deleteSubmissions = new ValidatedMethod
     if Meteor.isServer
       console.log "delete all submissions for user: #{userId}"
       console.log "#{submissionsRemoved} submissions removed."
-
-if Meteor.isServer
-  Meteor.publish "mentorData", ->
-    Roles.getUsersInRole "mentor"
-
-  Meteor.publishComposite "allUserData", ->
-    find : ->
-      if Roles.userIsInRole @userId, "admin"
-        Meteor.users.find()
-
-if Meteor.isClient
-  Meteor.subscribe "mentorData"
-  Tracker.autorun ->
-    if Roles.userIsInRole @Meteor.userId(), "admin"
-      Meteor.subscribe "allUserData"
+  

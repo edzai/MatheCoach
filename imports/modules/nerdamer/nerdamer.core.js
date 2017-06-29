@@ -4,15 +4,12 @@
  * Email : martin.r.donk@gmail.com
  * Source : https://github.com/jiggzson/nerdamer
  */
-/*
- * TODO
- * simplify ratio of sqrt
- */
 
 var nerdamer = (function(imports) { 
     "use strict";
 
-    var version = '0.6.6',
+    var version = '0.7.11',
+
         _ = new Parser(), //nerdamer's parser
         //import bigInt
         bigInt = imports.bigInt,
@@ -42,6 +39,12 @@ var nerdamer = (function(imports) {
             SAFE: false,
             //the symbol to use for imaginary symbols
             IMAGINARY: 'i',
+            //the modules used to link numeric function holders
+            FUNCTION_MODULES: [Math],
+            //Allow certain characters
+            ALLOW_CHARS: ['π'],
+            //Allow changing of power operator
+            POWER_OPERATOR: '^'
         },
 
         //Add the groups. These have been reorganized as of v0.5.1 to make CP the highest group
@@ -69,7 +72,9 @@ var nerdamer = (function(imports) {
         
         ABS = Settings.ABS = 'abs',
         
-        FACTORIAL = Settings.FACTORIAL = 'fact',
+        FACTORIAL = Settings.FACTORIAL = 'factorial',
+        
+        DOUBLEFACTORIAL = Settings.DOUBLEFACTORIAL = 'dfactorial',
 
         //the storage container "memory" for parsed expressions
         EXPRESSIONS = [],
@@ -78,7 +83,7 @@ var nerdamer = (function(imports) {
         VARS = {},
         
         //the container used to store all the reserved functions
-        RESERVED = [],
+        RESERVED = ['__u__'],
 
 
         WARNINGS = '',
@@ -91,7 +96,7 @@ var nerdamer = (function(imports) {
         isReserved = Utils.isReserved = function(value) { 
             return RESERVED.indexOf(value) !== -1;
         },
-        
+
         /**
          * Use this when errors are suppressible
          * @param {String} msg
@@ -117,6 +122,8 @@ var nerdamer = (function(imports) {
          */
         validateName = Utils.validateName = function(name, typ) {
             typ = typ || 'variable';
+            if(Settings.ALLOW_CHARS.indexOf(name) !== -1)
+                return;
             var regex = /^[a-z_][a-z\d\_]*$/gi;
             if(!(regex.test( name)) ) {
                 throw new Error(name+' is not a valid '+typ+' name');
@@ -150,6 +157,28 @@ var nerdamer = (function(imports) {
             }
             return c;
         },
+        //convert number from scientific format to decimal format
+        scientificToDecimal = Utils.scientificToDecimal = function(num) {
+            //if the number is in scientific notation remove it
+            if(/\d+\.?\d*e[\+\-]*\d+/i.test(num)) {
+                var zero = '0',
+                    parts = String(num).toLowerCase().split('e'), //split into coeff and exponent
+                    e = parts.pop(),//store the exponential part
+                    l = Math.abs(e), //get the number of zeros
+                    sign = e/l,
+                    coeff_array = parts[0].split('.');
+                if(sign === -1) {
+                    num = zero + '.' + new Array(l).join(zero) + coeff_array.join('');
+                }
+                else {
+                    var dec = coeff_array[1];
+                    if(dec) l = l - dec.length;
+                    num = coeff_array.join('') + new Array(l+1).join(zero);
+                }
+            }
+
+            return num;
+        },
         /**
          * Checks if number is a prime number
          * @param {Number} n - the number to be checked
@@ -177,6 +206,14 @@ var nerdamer = (function(imports) {
          */
         isSymbol = Utils.isSymbol = function(obj) {
             return (obj instanceof Symbol);
+        },
+        
+        /**
+         * Checks to see if the object provided is an Expression
+         * @param {Object} obj
+         */
+        isExpression = Utils.isExpression = function(obj) {
+            return (obj instanceof Expression);
         },
         
         /**
@@ -533,6 +570,35 @@ var nerdamer = (function(imports) {
             return [].slice.call(obj);
         },
         
+        getCoeffs = Utils.getCoeffs = function(symbol, wrt) {
+            var coeffs = [];
+            //we loop through the symbols and stick them in their respective 
+            //containers e.g. y*x^2 goes to index 2
+            symbol.each(function(term) {
+                if(term.contains(wrt)) {
+                    //we want only the coefficient which in this case will be everything but the variable
+                    //e.g. a*b*x -> a*b if the variable to solve for is x
+                    var coeff = term.stripVar(wrt),
+                        x = _.divide(term.clone(), coeff.clone()),
+                        p = x.power.toDecimal();
+                }
+                else {
+                    coeff = term;
+                    p = 0;
+                }
+                var e = coeffs[p];
+                //if it exists just add it to it
+                coeffs[p] = e ? _.add(e, coeff) : coeff;
+                
+            }, true);
+            
+            for(var i=0; i<coeffs.length; i++)
+                if(!coeffs[i])
+                    coeffs[i] = new Symbol(0);
+            //fill the holes
+            return coeffs;
+        },
+        
         /**
          * Using a regex to get between brackets can be a bit tricky. This functions makes it more abstract 
          * to fetch between brackets within a string from any given index. If the starting index is a bracket 
@@ -589,29 +655,29 @@ var nerdamer = (function(imports) {
             csc: function(x) { return 1/Math.sin(x); },
             sec: function(x) { return 1/Math.cos(x); },
             cot: function(x) { return 1/Math.tan(x); },
-            //https://github.com/AndreasMadsen/mathfn/blob/master/functions/erf.js
-            erf: function(x){
-                var ERF_A = [
-                    0.254829592,
-                    -0.284496736,
-                    1.421413741,
-                    -1.453152027,
-                    1.061405429
-                  ];
-                  var ERF_P = 0.3275911;
-
-                  function erf(x) {
-                    var sign = 1;
-                    if (x < 0) sign = -1;
-
-                    x = Math.abs(x);
-
-                    var t = 1.0/(1.0 + ERF_P*x);
-                    var y = 1.0 - (((((ERF_A[4]*t + ERF_A[3])*t) + ERF_A[2])*t + ERF_A[1])*t + ERF_A[0])*t*Math.exp(-x*x);
-
-                    return sign * y;
-                  }
-                  return erf(x);
+            // https://gist.github.com/jiggzson/df0e9ae8b3b06ff3d8dc2aa062853bd8
+            erf: function(x) {
+                var t = 1/(1+0.5*Math.abs(x));
+                var result = 1-t*Math.exp( -x*x -  1.26551223 +
+                        t * ( 1.00002368 +
+                        t * ( 0.37409196 +
+                        t * ( 0.09678418 +
+                        t * (-0.18628806 +
+                        t * ( 0.27886807 +
+                        t * (-1.13520398 +
+                        t * ( 1.48851587 +
+                        t * (-0.82215223 +
+                        t * ( 0.17087277)))))))))
+                    );
+                return x >= 0 ? result : -result;
+            },
+            bigpow: function(n, p) {
+                n = Frac.simple(n);
+                var r = n.clone();
+                for(var i=0; i<p-1; i++) {
+                    r = r.multiply(n);
+                }
+                return r;
             },
             //http://stackoverflow.com/questions/15454183/how-to-make-a-function-that-computes-the-factorial-for-numbers-with-decimals
             gamma: function(z) {
@@ -640,10 +706,37 @@ var nerdamer = (function(imports) {
                     return Math.sqrt(2 * Math.PI) * Math.pow(t, (z + 0.5)) * Math.exp(-t) * x;
                 }
             },
-            fact: function(x) {
+            //factorial
+            bigfactorial: function(x) {
+                var retval = new Frac(1);
+                for (var i = 2; i <= x; i++) 
+                    retval = retval.multiply(new Frac(i));
+                return retval;
+            },
+            //the factorial function but using the big library instead
+            factorial: function(x) {
+                if(x < 0)
+                    throw new Error('factorial not defined for negative numbers');
                 var retval=1;
                 for (var i = 2; i <= x; i++) retval = retval * i;
                 return retval;
+            },
+            //double factorial
+            dfactorial: function(x) {
+                var even = x % 2 === 0;
+                // If x = even then n = x/2 else n = (x-1)/2
+                var n = even ? x/2 : (x+1)/2; 
+                //the return value
+                var r = new Frac(1);
+                //start the loop
+                if(even)
+                    for(var i=1; i<=n; i++)
+                        r = r.multiply(new Frac(2).multiply(new Frac(i)));
+                else
+                    for(var i=1; i<=n; i++)
+                        r = r.multiply(new Frac(2).multiply(new Frac(i)).subtract(new Frac(1)));
+                //done
+                return r;
             },
             GCD: function() {
                 var args = arrayUnique([].slice.call(arguments)
@@ -691,8 +784,23 @@ var nerdamer = (function(imports) {
                 }
                 return Math.pow(b, e);
             },
+            factor: function(n) {
+                var ifactors = Math2.ifactor(n);
+                var factors = new Symbol();
+                factors.symbols = {};
+                factors.group = CB;
+                for(var x in ifactors) {
+                    var factor = new Symbol(1);
+                    factor.group = P; //cheat a little
+                    factor.value = x;
+                    factor.power = new Symbol(ifactors[x]);
+                    factors.symbols[x] = factor;
+                }
+                factors.updateHash();
+                return factors;
+            },
             //uses trial division to get factors
-            ifactor: function(n, factors) {
+            ifactor: function(n, factors) { 
                 factors = factors || {};
                 var r = Math.floor(Math.sqrt(n));
                 var lcprime = PRIMES[PRIMES.length-1];
@@ -742,6 +850,32 @@ var nerdamer = (function(imports) {
             mod: function(x, y) {
                 return x % y;
             },
+            /**
+             * 
+             * @param {Function} f - the function being integrated
+             * @param {Number} l - lower bound
+             * @param {Number} u - upper bound
+             * @param {Number} dx - step width
+             * @returns {Number}
+             */
+            num_integrate: function(f, l, u, dx) {
+                dx = dx || 0.001; //default width of dx
+                var n, sum, x0, x1, a, la, chg;
+                n = (u-l)/dx;// number of trapezoids
+                sum = 0; //area
+                chg = 0; //track the change
+                a = 0;
+                for (var i=1; i<=n; i++) {
+                    //the x locations of the left and right side of each trapezpoid
+                    x0 = l + (i-1)*dx;
+                    x1 = l + i*dx;
+                    a = dx * (f(x0) + f(x1))/ 2; //the area
+                    sum += a;
+                } 
+                //avoid errors with numbers around -1e-14;
+                sum = round(sum, 13);
+                return sum;
+            },
             //https://en.wikipedia.org/wiki/Trigonometric_integral
             //CosineIntegral
             Ci: function(x) {
@@ -750,7 +884,7 @@ var nerdamer = (function(imports) {
                     sum = 0;
                 for(var i=1; i<n; i++) {
                     var n2 = 2*i; //cache 2n
-                    sum += (Math.pow(-1, i)*Math.pow(x, n2))/(n2*Math2.fact(n2));
+                    sum += (Math.pow(-1, i)*Math.pow(x, n2))/(n2*Math2.factorial(n2));
                 }
                 return Math.log(x) + g + sum;
             },
@@ -760,15 +894,118 @@ var nerdamer = (function(imports) {
                     sum = 0;
                 for(var i=0; i<n; i++) {
                     var n2 = 2*i;
-                    sum += (Math.pow(-1, i)*Math.pow(x, n2+1))/((n2+1)*Math2.fact(n2+1));
+                    sum += (Math.pow(-1, i)*Math.pow(x, n2+1))/((n2+1)*Math2.factorial(n2+1));
                 }
                 return sum;
+            },
+            //ExponentialIntegral
+            Ei: function(x) { 
+                if(x.equals(0))
+                    return -Infinity;
+                var n =30,
+                    g = 0.5772156649015328606, //roughly Euler–Mascheroni
+                    sum = 0;
+                for(var i=1; i<n; i++) {
+                    sum += Math.pow(x, i)/(i*Math2.factorial(i));
+                }
+                return g+Math.abs(Math.log(x))+sum;
+            },
+            //Hyperbolic Sine Integral
+            //http://mathworld.wolfram.com/Shi.html
+            Shi: function(x) {
+                var n = 30,
+                    sum = 0,
+                    k, t;
+                for(var i=0; i<n; i++) {
+                    k = 2*i; 
+                    t = k+1;
+                    sum += Math.pow(x, t)/(t*t*Math2.factorial(k));
+                }
+                return sum;
+            },
+            //the cosine integral function
+            Chi: function(x) {
+                var dx, g, f;
+                dx = 0.001;
+                g = 0.5772156649015328606;
+                f = function(t) {
+                    return (Math.cosh(t)-1)/t;
+                };
+                return Math.log(x)+g+Math2.num_integrate(f, 0.002, x, dx);
+            },
+            //the gamma incomplete function
+            gamma_incomplete: function(n, x) {
+                var t = n-1,
+                    sum = 0,
+                    x = x || 0;
+                for(var i=0; i<t; i++) {
+                    sum += Math.pow(x, i)/Math2.factorial(i);
+                }
+                return Math2.factorial(t)*Math.exp(-x)*sum;
+            },
+            /*
+            * Heaviside step function - Moved from Special.js (originally contributed by Brosnan Yuen)
+            * Specification : http://mathworld.wolfram.com/HeavisideStepFunction.html
+            * if x > 0 then 1
+            * if x == 0 then 1/2
+            * if x < 0 then 0
+            */
+            step: function(x) {
+                if(x > 0)
+                    return 1;
+                if(x < 0)
+                    return 0;
+                return 0.5;
+            },
+            /*
+            * Rectangle function - Moved from Special.js (originally contributed by Brosnan Yuen)
+            * Specification : http://mathworld.wolfram.com/RectangleFunction.html
+            * if |x| > 1/2 then 0
+            * if |x| == 1/2 then 1/2
+            * if |x| < 1/2 then 1
+            */
+            rect: function(x) {
+                var x = Math.abs(x);
+                if(x === 0.5)
+                    return x;
+                if(x > 0.5)
+                    return 0;
+                return 1;
+            },
+            /*
+            * Sinc function - Moved from Special.js (originally contributed by Brosnan Yuen)
+            * Specification : http://mathworld.wolfram.com/SincFunction.html
+            * if x == 0 then 1
+            * otherwise sin(x)/x
+            */
+            sinc: function(x) {
+                if(x.equals(0))
+                    return 1;
+                return Math.sin(x)/x;
+            },
+            /*
+            * Triangle function - Moved from Special.js (originally contributed by Brosnan Yuen)
+            * Specification : http://mathworld.wolfram.com/TriangleFunction.html
+            * if |x| >= 1 then 0
+            * if |x| < then 1-|x|
+            */
+            tri: function(x) {
+                x = Math.abs(x);
+                if(x >= 1)
+                    return 0;
+                return 1-x;
             }
         };
 
+        //link the Math2 object to Settings.FUNCTION_MODULES
+        Settings.FUNCTION_MODULES.push(Math2);
+        
+        //Make Math2 visible to the parser
+        Settings.FUNCTION_MODULES.push(Math2);
+
         //polyfills
         //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/
-        Math.sign = Math.sign || function(x) {
+        Math.sign = Math.sign || function(x) { 
             x = +x; // convert to a number
             if (x === 0 || isNaN(x)) {
                 return x;
@@ -829,7 +1066,7 @@ var nerdamer = (function(imports) {
      */
     function text(obj, option, useGroup) { 
         var asHash = option === 'hash',
-            asDecimal = option === 'decimals',
+            asDecimal = option === 'decimals' || option === 'decimal',
             opt = asHash ? undefined : option;
         //if the object is a symbol
         if(isSymbol(obj)) { 
@@ -900,11 +1137,12 @@ var nerdamer = (function(imports) {
                     break;
             }
             
-            if(group === FN && asDecimal) {
+            if(group === FN && asDecimal) { 
                 value = obj.fname+inBrackets(obj.args.map(function(symbol) {
                     return text(symbol, opt);
                 }).join(','));
             }
+
             //wrap the power since / is less than ^
             //TODO: introduce method call isSimple
             if(power && !isInt(power) && group !== EX && !asDecimal) { power = inBrackets(power); }
@@ -924,7 +1162,7 @@ var nerdamer = (function(imports) {
             
             if(power < 0) power = inBrackets(power);
             if(multiplier) c = c + '*';
-            if(power) power = '^' + power;
+            if(power) power = Settings.POWER_OPERATOR + power;
 
             //this needs serious rethinking. Must fix
             if(group === EX && value.charAt(0) === '-') value = inBrackets(value);
@@ -966,15 +1204,6 @@ var nerdamer = (function(imports) {
         };
     }
     
-    /**
-     * Wraps a function name in this object
-     * @param {String} fn_name
-     * @returns {Func}
-     */
-    function Func(fn_name) {
-        this.name = fn_name;
-    }
-    
     /** 
      * This is what nerdamer returns. It's sort of a wrapper around the symbol class and 
      * provides the user with some useful functions. If you want to provide the user with extra
@@ -983,11 +1212,13 @@ var nerdamer = (function(imports) {
      * @returns {Expression} wraps around the Symbol class
      */
     function Expression(symbol) {
+        //we don't want arrays wrapped
         this.symbol = symbol;
     }
     
     /**
      * Returns stored expression at index. For first index use 1 not 0.
+     * @param {bool} asType  
      * @param {Integer} expression_number 
      */
     Expression.getExpression = function(expression_number, asType) {
@@ -1002,17 +1233,23 @@ var nerdamer = (function(imports) {
     Expression.prototype = {
         /**
          * Returns the text representation of the expression
+         * @param {String} opt - option of formatting numbers
          * @returns {String}
          */
         text: function(opt) { 
             opt = opt || 'decimals';
+            if(this.symbol.text_)
+                return this.symbol.text_(opt);
             return text(this.symbol, opt);
         },
         /**
          * Returns the latex representation of the expression
+         * @param {String} option - option for formatting numbers
          * @returns {String}
          */
         latex: function(option) {
+            if(this.symbol.latex_)
+                return this.symbol.latex_(option);
             return LaTeX.latex(this.symbol, option);
         },
         valueOf: function() { 
@@ -1039,12 +1276,8 @@ var nerdamer = (function(imports) {
             
             var subs = arguments[idx] || {};
             
-            //link pi and e
-            subs.e = _.constants.E;
-            subs.pi = _.constants.PI;
-
             return new Expression(block('PARSE2NUMBER', function() {
-                return _.parse(expression, format_subs(subs));
+                return _.parse(expression, subs);
             }, true));
         },
         /**
@@ -1084,21 +1317,80 @@ var nerdamer = (function(imports) {
             }
             catch(e) { return ''; }
         },
-        
+        //forces the symbol to be returned as a decimal
         toDecimal: function() {
             return this.symbol.toDecimal();
         },
-        
+        //checks to see if the expression is a fraction
         isFraction: function() {
             return isFraction(this.symbol);
         },
-        
+        //checks to see if the symbol is a multivariate polynomial
         isPolynomial: function() {
             return this.symbol.isPoly();
         }, 
-        
+        //performs a substitution
         sub: function(symbol, for_symbol) {
             return new Expression(this.symbol.sub(_.parse(symbol), _.parse(for_symbol)));
+        },
+        operation: function(otype, symbol) {
+            if(isExpression(symbol))
+                symbol = symbol.symbol;
+            else if(!isSymbol(symbol))
+                symbol = _.parse(symbol);
+            return new Expression(_[otype](this.symbol.clone(), symbol.clone()));
+        },
+        add: function(symbol) {
+            return this.operation('add', symbol);
+        },
+        subtract: function(symbol) {
+            return this.operation('subtract', symbol);
+        },
+        multiply: function(symbol) {
+            return this.operation('multiply', symbol);
+        },
+        divide: function(symbol) {
+            return this.operation('divide', symbol);
+        },
+        pow: function(symbol) {
+            return this.operation('pow', symbol);
+        },
+        expand: function() {
+            return new Expression(_.expand(this.symbol));
+        },
+        each: function(callback, i) {
+            if(this.symbol.each)
+                this.symbol.each(callback, i);
+            else if(isArray(this.symbol)) { 
+                for(var i=0; i<this.symbol.length; i++)
+                    callback.call(this.symbol, this.symbol[i], i);
+            }
+            else
+                callback.call(this.symbol);
+        },
+        eq: function(value) {
+            value = _.parse(value);
+            if(this.symbol.isConstant() && value.isConstant())
+                return this.symbol.equals(_.parse(value));
+            return false;
+        },
+        lt: function(value) {
+            value = _.parse(value);
+            if(this.symbol.isConstant() && value.isConstant())
+                return this.symbol.lessThan(_.parse(value));
+            return false;
+        },
+        gt: function(value) {
+            value = _.parse(value);
+            if(this.symbol.isConstant() && value.isConstant())
+                return this.symbol.greaterThan(_.parse(value));
+            return false;
+        },
+        gte: function(value) {
+            return this.greaterThan(value) || this.equals(value);
+        },
+        lte: function(value) {
+            return this.lessThan(value) || this.equals(value);
         }
     };
     //Aliases
@@ -1107,7 +1399,7 @@ var nerdamer = (function(imports) {
     function Frac(n) { 
         if(n instanceof Frac) return n;
         if(n === undefined) return this;
-        if(isInt(n)) {
+        if(isInt(n)) { 
             this.num = bigInt(n);
             this.den = bigInt(1);
         }
@@ -1127,6 +1419,18 @@ var nerdamer = (function(imports) {
         frac.num = new bigInt(n);
         frac.den = new bigInt(d);
         return frac;
+    };
+    
+    Frac.simple =  function(n) {
+        var nstr = String(n),
+            m_dc = nstr.split('.'),
+            num = m_dc.join(''),
+            den = 1,
+            l = (m_dc[1] || '').length;
+        for(var i=0; i<l; i++)
+            den += '0';
+        var frac = Frac.quick(num, den);
+        return frac.simplify();
     };
     
     Frac.prototype = {
@@ -1197,7 +1501,7 @@ var nerdamer = (function(imports) {
             //you probably have bigger concerns
             return this.num/this.den;
         },
-        qcompare: function(n) {
+        qcompare: function(n) { 
             return [this.num.multiply(n.den), n.num.multiply(this.den)];
         },
         equals: function(n) {
@@ -1243,7 +1547,7 @@ var nerdamer = (function(imports) {
         isOne: function() {
             return this.num.equals(1) && this.den.equals(1);
         },
-        sign: function() {
+        sign: function() { 
             return this.num.isNegative() ? -1 : 1;
         },
         abs: function() { 
@@ -1254,7 +1558,7 @@ var nerdamer = (function(imports) {
             return Frac.quick(bigInt.gcd(f.num, this.num), bigInt.lcm(f.den, this.den));
         },
         toString: function() {
-            return !this.den.equals(1) ? this.num+'/'+this.den : String(this.num);
+            return !this.den.equals(1) ? this.num.toString()+'/'+this.den.toString() : this.num.toString();
         },
         valueOf: function() {
             return this.num/this.den;
@@ -1263,7 +1567,6 @@ var nerdamer = (function(imports) {
             return this.toDecimal() < 0;
         }
     };
-    
     
     /**
      * All symbols e.g. x, y, z, etc or functions are wrapped in this class. All symbols have a multiplier and a group. 
@@ -1276,7 +1579,7 @@ var nerdamer = (function(imports) {
         //this enables the class to be instantiated without the new operator
         if(!(this instanceof Symbol)) { return new Symbol(obj); };
         //define numeric symbols
-        if(!isNaN(obj)) { 
+        if(!isNaN(obj) && obj !== 'Infinity') { 
             this.group = N;
             this.value = CONST_HASH; 
             this.multiplier = new Frac(obj);
@@ -1331,8 +1634,35 @@ var nerdamer = (function(imports) {
          * Checks to see if two functions are of equal value
          */
         equals: function(symbol) { 
-            if(!isSymbol(symbol)) symbol = new Symbol(symbol);
+            if(!isSymbol(symbol)) 
+                symbol = new Symbol(symbol);
             return this.value === symbol.value && this.power.equals(symbol.power) && this.multiplier.equals(symbol.multiplier);
+        },
+        // Greater than
+        gt: function(symbol) { 
+            if(!isSymbol(symbol)) 
+                symbol = new Symbol(symbol);
+            return this.isConstant() && symbol.isConstant() && this.multiplier.greaterThan(symbol.multiplier);
+        },
+        // Greater than
+        gte: function(symbol) { 
+            if(!isSymbol(symbol)) 
+                symbol = new Symbol(symbol);
+            return this.equals(symbol) ||
+                    this.isConstant() && symbol.isConstant() && this.multiplier.greaterThan(symbol.multiplier);
+        },
+        // Less than
+        lt: function(symbol) { 
+            if(!isSymbol(symbol)) 
+                symbol = new Symbol(symbol);
+            return this.isConstant() && symbol.isConstant() && this.multiplier.lessThan(symbol.multiplier);
+        },
+        // Less than
+        lte: function(symbol) { 
+            if(!isSymbol(symbol)) 
+                symbol = new Symbol(symbol);
+            return this.equals(symbol) ||
+                    this.isConstant() && symbol.isConstant() && this.multiplier.lessThan(symbol.multiplier);
         },
         /**
          * Because nerdamer doesn't group symbols by polynomials but 
@@ -1369,7 +1699,7 @@ var nerdamer = (function(imports) {
             var retval;
             if((this.group === PL || this.group === S) && this.value === x) 
                 retval = new Symbol(this.multiplier);
-            else if(this.group === CB && this.isLinear()) {
+            else if(this.group === CB && this.isLinear()) { 
                 retval = new Symbol(1);
                 this.each(function(s) { 
                     if(!s.contains(x, true)) 
@@ -1389,6 +1719,12 @@ var nerdamer = (function(imports) {
                         retval = _.add(retval, t);
                     } 
                 });
+                //BIG TODO!!! It doesn't make much sense
+                if(retval.equals(0))
+                    retval = new Symbol(this.multiplier);
+            }
+            else if(this.group === EX && this.power.contains(x, true)) {
+                retval = new Symbol(this.multiplier);
             }
             else if(this.group === FN && this.contains(x)) {
                 retval = new Symbol(this.multiplier);
@@ -1408,8 +1744,9 @@ var nerdamer = (function(imports) {
             };
             var g = this.group;
             
-            if(g === S && this.contains(v)) 
+            if(g === S && this.contains(v)) { 
                 arr.add(new Symbol(this.multiplier), this.power);
+            }
             else if(g === CB){
                 var a = this.stripVar(v),
                     x = _.divide(this.clone(), a.clone());
@@ -1442,70 +1779,88 @@ var nerdamer = (function(imports) {
             return arr;
         },
         //checks to see if a symbol contans a function
-        hasFunc: function() {
-            if(this.group === FN || this.group === EX) return true;
+        hasFunc: function(v) {
+            var fn_group = this.group === FN || this.group === EX;
+            if( fn_group && !v || fn_group && this.contains(v) )
+                return true;
             if(this.symbols) {
                 for(var x in this.symbols) {
-                    if(this.symbols[x].hasFunc()) return true;
+                    if(this.symbols[x].hasFunc(v)) return true;
                 }
             }
             return false;
         },
-        //this method substitutes one symbol for another
-        sub: function(symbol, for_symbol) {
-            var g1 = this.group,
-                g2 = symbol.group;       
-            if(g1 === g2 && this.equals(symbol)) { 
-                //the simplest subsitution we can make
-                return for_symbol.clone();
-            }
-            else {
-                var retval;
-                if(g1 === g2 & g1 === S && symbol.isLinear() && this.value === symbol.value) { 
-                    //e.g. x^2+1, x=u : x is linear so it matches all x's
-                    retval = for_symbol.clone();
-                    retval.multiplier = this.multiplier.clone();
-                    retval.power = this.power.clone();
-                    retval = _.parse(retval);
-                }
-                else if(text(this, 'hash') === text(symbol, 'hash')) { 
-                    var p = _.divide(_.parse(this.power), _.parse(symbol.power));
-                    if(isInt(p)) {
-                        retval = for_symbol.clone();
-                        retval = _.pow(retval, _.parse(p));
-                        retval.multiplier = retval.multiplier.multiply(this.multiplier);
-                    } 
-                }
-                //loop through all the symbols
-                else if(this.symbols) {
-                    retval = this.clone();
-                    var f = this.isComposite() ? 'attach' : 'combine';
-                    retval.symbols = {};
-                    this.each(function(x) {
-                        var sub = x.sub(symbol, for_symbol);
-                        retval[f](sub);
-                    });
-                    retval.updateHash();
-                }
-                //check the arguments of the function
-                else if(g1 === FN) {
-                    retval = this.clone();
-                    retval.args = [];
-                    for(var i=0; i<this.args.length; i++) {
-                        retval.args[i] = this.args[i].sub(symbol, for_symbol);
+        sub: function(a, b) { 
+            a = !isSymbol(a) ? _.parse(a) : a.clone();
+            b = !isSymbol(b) ? _.parse(b) : b.clone();
+            if(a.group === N || a.group === P)
+                err('Cannot substitute a number. Must be a variable');
+            var same_pow = false,
+                a_is_unit_multiplier = a.multiplier.equals(1),
+                m = this.multiplier.clone(),
+                retval;
+            /* 
+             * In order to make the substitution the bases have to first match take
+             * (x+1)^x -> (x+1)=y || x^2 -> x=y^6
+             * In both cases the first condition is that the bases match so we begin there
+             * Either both are PL or both are not PL but we cannot have PL and a non-PL group match
+             */
+            if(this.value === a.value && (this.group !== PL && a.group !== PL || this.group === PL && a.group === PL)) { 
+                //we cleared the first hurdle but a subsitution may not be possible just yet
+                if(a_is_unit_multiplier || a.multiplier.equals(this.multiplier)) {
+                    if(a.isLinear()) { 
+                        retval = b; 
                     }
-                    retval.updateHash();
+                    else if(a.power.equals(this.power)) {
+                        retval = b;
+                        same_pow = true;
+                    }
+                    if(a.multiplier.equals(this.multiplier))
+                        m = new Frac(1);
                 }
-                if(this.group === EX) {
-                    retval = retval || this.clone();
-                    retval.power = retval.power.sub(symbol, for_symbol);
-                    //it easer to just reparse the whole thing
-                    retval = _.parse(retval);
+            }
+            //the next thing is to handle CB
+            else if(this.group === CB || this.previousGroup === CB) {
+                retval = new Symbol(1);
+                this.each(function(x) { 
+                    retval = _.multiply(retval, x.sub(a, b));
+                });
+            }
+            else if(this.isComposite()) {
+                retval = new Symbol(0);
+                this.each(function(x) { 
+                    retval = _.add(retval, x.sub(a, b));
+                });
+            }
+            else if(this.group === EX) {
+                // the parsed value could be a function so parse and sub
+                retval = _.parse(this.value).sub(a, b);
+            }
+            else if(this.group === FN) { 
+                var nargs = [];
+                for(var i=0; i<this.args.length; i++) {
+                    var arg = this.args[i];
+                    if(!isSymbol(arg))
+                        arg = _.parse(arg);
+                    nargs.push(arg.sub(a, b));
                 }
-                if(!retval) return this.clone();
+                retval = _.symfunction(this.fname, nargs);
+            }
+            //if we did manage a substitution
+            if(retval) {
+                if(!same_pow) {
+                    //substitute the power
+                    var p = this.group === EX ? this.power.sub(a, b) : _.parse(this.power);
+                    //now raise the symbol to that power
+                    retval = _.pow(retval, p); 
+                }
+
+                //transfer the multiplier
+                retval.multiplier = retval.multiplier.multiply(m);
+                //done
                 return retval;
             }
-            
+            //if all else fails
             return this.clone();
         },
         isMonomial: function() {
@@ -1558,6 +1913,19 @@ var nerdamer = (function(imports) {
                 return false;  
             }
             else return this.power.equals(1);
+        },
+        containsFunction: function(names) {
+            if(typeof names === 'string')
+                names = [names];
+            if(this.group === FN && names.indexOf(this.fname) !== -1) 
+                return true;
+            if(this.symbols) {
+                for(var x in this.symbols) {
+                    if(this.symbols[x].hasIntegral(names))
+                        return true;
+                }
+            }
+            return false;
         },
         multiplyPower: function(p2) {
             //leave out 1
@@ -1664,13 +2032,20 @@ var nerdamer = (function(imports) {
             this.setPower(new Frac(1));
             return this;
         },
-        each: function(fn) {
+        each: function(fn, deep) {
             if(!this.symbols) {
                 fn.call(this, this, this.value);
             }
             else {
                 for(var x in this.symbols) {
-                    fn.call(this, this.symbols[x], x);
+                    var sym = this.symbols[x];
+                    if(sym.group === PL && deep) {
+                        for(var y in sym.symbols) {
+                            fn.call(x, sym.symbols[y], y);
+                        }
+                    }
+                    else
+                        fn.call(this, sym, x);
                 }
             }
         },
@@ -1681,7 +2056,8 @@ var nerdamer = (function(imports) {
          * @returns {String|Number}
          */
         valueOf: function() {
-            if(this.group === N) { return this.multiplier; }
+            if(this.group === N) 
+                return this.multiplier.valueOf(); 
             else if(this.power === 0){ return 1; }
             else if(this.multiplier === 0) { return 0; }
             else { return text(this, 'decimals'); }
@@ -1696,16 +2072,25 @@ var nerdamer = (function(imports) {
          */
         contains: function(variable, all) { 
             var g = this.group; 
-            if(this.symbols && g !== EX) {
-                for(var x in this.symbols) { if(this.symbols[x].contains(variable, all)) return true; }
+            if(this.value === variable)
+                return true;
+            if(this.symbols) {
+                for(var x in this.symbols) { 
+                    if(this.symbols[x].contains(variable, all)) return true; 
+                }
             }
-            else if(g === FN || this.previousGroup === FN) {
-                for(var i=0; i<this.args.length; i++) { if(this.args[i].contains(variable, all)) return true; }
+            if(g === FN || this.previousGroup === FN) {
+                for(var i=0; i<this.args.length; i++) { 
+                    if(this.args[i].contains(variable, all)) return true; 
+                }
             }
-            else if(g === EX) { 
+            
+            if(g === EX) { 
                 //exit only if it does
                 if(all && this.power.contains(variable, all)) { return true; }
-                return this.value === variable;
+                if(this.value === variable)
+                    return true;
+                
             }
             
             return this.value === variable;
@@ -1743,8 +2128,9 @@ var nerdamer = (function(imports) {
          * This method distributes the multiplier over the entire symbol
          * @returns {Symbol}
          */
-        distributeMultiplier: function() {
-            if(this.symbols && this.power.equals(1) && this.group !== CB && !this.multiplier.equals(1)) {
+        distributeMultiplier: function(all) { 
+            var is_one = all ? this.power.absEquals(1) : this.power.equals(1);
+            if(this.symbols && is_one && this.group !== CB && !this.multiplier.equals(1)) {
                 for(var x in this.symbols) {
                     var s = this.symbols[x];
                     s.multiplier = s.multiplier.multiply(this.multiplier);
@@ -1839,7 +2225,6 @@ var nerdamer = (function(imports) {
                 new Symbol(this.group === P ? m*Math.pow(this.value, this.power) : m).clone(this);
             }
             else if(group === P && this.group === N) { 
-                if(this.multiplier.den.toString() !== '1') err('Attempting conversion of group N with non-unit denominator!');
                 this.value = imaginary ? this.multiplier.num.toString() : Math.abs(this.multiplier.num.toString());
                 this.toUnitMultiplier(!imaginary);
                 this.group = P;
@@ -2001,7 +2386,7 @@ var nerdamer = (function(imports) {
                 if(group === CB) key = text(this, 'hash');
                 else if(group === CP) { 
                     if(this.power.equals(1)) key = this.value;
-                    else key = inBrackets(text(this, 'hash'))+'^'+this.power.toDecimal();
+                    else key = inBrackets(text(this, 'hash'))+Settings.POWER_OPERATOR+this.power.toDecimal();
                 }
                 else if(group === PL) key = this.power.toString();
                 else key = this.value;
@@ -2051,15 +2436,15 @@ var nerdamer = (function(imports) {
          * Returns the latex representation of the symbol
          * @returns {String}
          */
-        latex: function() {
-            return LaTeX.latex(this);
+        latex: function(option) {
+            return LaTeX.latex(this, option);
         },
         /**
          * Returns the text representation of a symbol
          * @returns {String}
          */
-        text: function() {
-            return text(this);
+        text: function(option) {
+            return text(this, option);
         },
         /**
          * Checks if the function evaluates to 1. e.g. x^0 or 1 :)
@@ -2081,6 +2466,9 @@ var nerdamer = (function(imports) {
         },
         lessThan: function(n) {
             return this.multiplier.lessThan(n);
+        },
+        greaterThan: function(n) {
+            return this.multiplier.greaterThan(n);
         },
         /**
          * Get's the denominator of the symbol if the symbol is of class CB (multiplication)
@@ -2142,48 +2530,59 @@ var nerdamer = (function(imports) {
      * @param {Integer} precedence - The precedence of the operator
      * @param {boolean} left_assoc - Is the operator left or right associative
      * @param {boolean} is_prefix - Is the operator a prefix operator
-     * @param {boolean} is_postfix - Is the operator a postfix operator (for future releases)
+     * @param {boolean} is_postfix - Is the operator a postfix operator
+     * @param {boolean} operation - The prefix or postfix operation the operator preforms if its either
      * @returns {Operator}
      */
-    function Operator(val, fn, precedence, left_assoc, is_prefix, is_postfix) {
+    function Operator(val, fn, precedence, left_assoc, is_prefix, is_postfix, operation) {
         this.val = val;
         this.fn = fn;
         this.precedence = precedence;
         this.left_assoc = left_assoc;
         this.is_prefix = is_prefix;
         this.is_postfix = is_postfix || false;
+        this.operation = operation;
+        this.is_operator = true;
     }
     
     Operator.prototype.toString = function() {
         return this.val;
     };
-
-    /**
-     * 
-     * @param {char} val - The operator
-     * @returns {Prefix}
-     */
-    function Prefix(val) {
+    
+    function Bracket(val, bracket_id, is_open, fn, typ) {
         this.val = val;
+        this.bracket_id = bracket_id;
+        this.open = !!is_open;
+        this.fn = fn;
+        this.type = typ;
     }
     
-    Prefix.prototype = {
-        /**
-         * This function resolves the prefix. It will correct the sign of the symbol by changing the sign of
-         * the multiplier. If the multiplier is negative it will make it positive etc..
-         * @returns {Symbol}
-         */
-        resolve: function(obj) {
-            if(this.val === '-') {
-                return obj.negate();
-            }
-            return obj;
-        },
-        toString: function() {
-            return this.val;
-        }
+    Bracket.prototype.toString = function() {
+        return this.val;
     };
-
+    
+    function Prefix(operator) {
+        this.operation = operator.operation;
+        this.val = operator.val;
+        this.is_prefix_operator = true;
+    }
+    
+    Prefix.prototype.toString = function() {
+        return '`'+this.val;
+    };
+    
+    //custom errors
+    //thrown if trying to divide by zero
+    function DivisionByZero(msg){
+        this.message = msg || "";
+    }
+    DivisionByZero.prototype = new Error();
+    //thrown in parser 
+    function ParseError(msg){
+        this.message = msg || "";
+    }
+    ParseError.prototype = new Error();
+    
     //Uses modified Shunting-yard algorithm. http://en.wikipedia.org/wiki/Shunting-yard_algorithm
     function Parser(){
         //we want the underscore to point to this parser not the global nerdamer parser.
@@ -2192,87 +2591,136 @@ var nerdamer = (function(imports) {
             constants = this.constants = {
                 PI: Math.PI,
                 E:  Math.E
+            },
+            subs = {
+                e:  Math.E,
+                pi: Math.PI
             };
         //list all the supported operators
         var operators = this.operators = {
-                '!' : new Operator('!', 'factorial', 5, false, false, true),
-                '^' : new Operator('^', 'pow', 4, false, false),
-                '*' : new Operator('*', 'multiply', 3, true, false),
-                '/' : new Operator('/', 'divide', 3, true, false),
-                '+' : new Operator('+', 'add', 2, true, true),
-                '-' : new Operator('-', 'subtract', 2, true, true),
-                ',' : new Operator(',', 'comma', 1, true, false)
+                '^' : new Operator('^', 'pow', 6, false, false),
+                '**' : new Operator('**', 'pow', 6, false, false),
+                '!!' : new Operator('!!', 'dfactorial', 5, false, false, true, function(e) {
+                    return _.symfunction(DOUBLEFACTORIAL, [e]); //wrap it in a factorial function
+                }),
+                '!' : new Operator('!', 'factorial', 5, false, false, true, function(e) {
+                    return _.symfunction(FACTORIAL, [e]); //wrap it in a factorial function
+                }),
+                //begin crazy fix ... :( TODO!!! revisit
+                '!+' : new Operator('!+', 'factadd', 3, true, true, false),
+                '!!+' : new Operator('!!+', 'dfactadd', 3, true, true, false),
+                '!-' : new Operator('!-', 'factsub', 3, true, true, false),
+                '!!-' : new Operator('!!-', 'dfactsub', 3, true, true, false),
+                //done with crazy fix
+                '*' : new Operator('*', 'multiply', 4, true, false),
+                '/' : new Operator('/', 'divide', 4, true, false),
+                '+' : new Operator('+', 'add', 3, true, true, false, function(e) {
+                    return e;
+                }),
+                '-' : new Operator('-', 'subtract', 3, true, true, false, function(e) {
+                    return e.negate();
+                }),
+                '=' : new Operator('=', 'equals', 2, false, false),
+                '==' : new Operator('==', 'eq', 1, false, false),
+                '<' : new Operator('<', 'lt', 1, false, false),
+                '<=' : new Operator('<=', 'lte', 1, false, false),
+                '>' : new Operator('>', 'gt', 1, false, false),
+                '>=' : new Operator('>=', 'gte', 1, false, false),
+                ',' : new Operator(',', 'comma', 0, true, false)
             },
-
+            //list of supported brackets
+            brackets = {
+                '(': new Bracket('(', 0, true, null, 'round'),
+                ')': new Bracket(')', 0, false, null, 'round'),
+                '[': new Bracket('[', 1, true, function() {
+                    var f = new Symbol('vector');
+                    f.is_function = true;
+                    return f;
+                }, 'square'),
+                ']': new Bracket(']', 1, false, null, 'square')
+            },
             // Supported functions.
             // Format: function_name: [mapped_function, number_of_parameters]
             functions = this.functions = {
-                'cos'       : [ cos, 1],
-                'sin'       : [ sin, 1],
-                'tan'       : [ tan, 1],
-                'sec'       : [ sec, 1],
-                'csc'       : [ csc, 1],
-                'cot'       : [ cot, 1],
-                'acos'      : [ , 1],
-                'asin'      : [ , 1],
-                'atan'      : [ , 1],
-                'sinh'      : [ , 1],
-                'cosh'      : [ , 1],
-                'tanh'      : [ , 1],
-                'asinh'     : [ , 1],
-                'acosh'     : [ , 1],
-                'atanh'     : [ , 1],
-                'log10'     : [ , 1],
-                'exp'       : [ , 1],
-                'min'       : [ , -1],
-                'max'       : [ ,-1],
-                'erf'       : [ , 1],
-                'floor'     : [ ,1],
-                'ceil'      : [ ,1],
-                'Si'        : [ ,1],
-                'Ci'        : [ ,1],
-                'fib'        : [ ,1],
-                'fact'      : [factorial, 1],
-                'factorial' : [factorial, 1],
-                'round'     : [ , 1],
-                'mod'       : [mod, 2],
-                'pfactor'   : [pfactor , 1],
-                'vector'    : [vector, -1],
-                'matrix'    : [matrix, -1],
-                'parens'    : [parens, -1],
-                'sqrt'      : [sqrt, 1],
-                'log'       : [log , 1],
-                'expand'    : [expand , 1],
-                'abs'       : [abs , 1],
-                'invert'    : [invert, 1],
-                'transpose' : [transpose, 1],
-                'dot'       : [dot, 2],
-                'cross'     : [cross, 2],
-                'vecget'    : [vecget, 2],
-                'vecset'    : [vecset, 3],
-                'matget'    : [matget, 3],
-                'matset'    : [matset, 4],
-                'imatrix'   : [imatrix, 1]
+                'cos'               : [ cos, 1],
+                'sin'               : [ sin, 1],
+                'tan'               : [ tan, 1],
+                'sec'               : [ sec, 1],
+                'csc'               : [ csc, 1],
+                'cot'               : [ cot, 1],
+                'acos'              : [ , 1],
+                'asin'              : [ , 1],
+                'atan'              : [ , 1],
+                'sinh'              : [ , 1],
+                'cosh'              : [ , 1],
+                'tanh'              : [ , 1],
+                'asinh'             : [ , 1],
+                'acosh'             : [ , 1],
+                'atanh'             : [ , 1],
+                'log10'             : [ , 1],
+                'exp'               : [ , 1],
+                'min'               : [ ,-1],
+                'max'               : [ ,-1],
+                'erf'               : [ , 1],
+                'floor'             : [ , 1],
+                'ceil'              : [ , 1],
+                'Si'                : [ , 1],
+                'step'              : [ , 1],
+                'rect'              : [ , 1],
+                'sinc'              : [ , 1],
+                'tri'               : [ , 1],
+                'sign'              : [ , 1],
+                'Ci'                : [ , 1],
+                'Ei'                : [ , 1],
+                'Shi'               : [ , 1],
+                'Chi'               : [ , 1],
+                'fib'               : [ , 1],
+                'fact'              : [factorial, 1],
+                'factorial'         : [factorial, 1],
+                'dfactorial'        : [ , 1],
+                'gamma_incomplete'  : [ , [1, 2]],
+                'round'             : [ , 1],
+                'mod'               : [ mod, 2],
+                'pfactor'           : [ pfactor , 1],
+                'vector'            : [ vector, -1],
+                'matrix'            : [ matrix, -1],
+                'parens'            : [ parens, -1],
+                'sqrt'              : [ sqrt, 1],
+                'log'               : [ log , 1],
+                'expand'            : [ expand , 1],
+                'abs'               : [ abs , 1],
+                'invert'            : [ invert, 1],
+                'transpose'         : [ transpose, 1],
+                'dot'               : [ dot, 2],
+                'cross'             : [ cross, 2],
+                'vecget'            : [ vecget, 2],
+                'vecset'            : [ vecset, 3],
+                'matget'            : [ matget, 3],
+                'matset'            : [ matset, 4],
+                'imatrix'           : [ imatrix, 1], 
+                'IF'                : [ IF, 3]
             };
-        
-        var brackets = {}, //the storage container for the brackets
-
-            last_item_on = function(stack) {
-                return stack[stack.length-1];
-            };
-        
-        var LEFT_PAREN = '(',
-            RIGHT_PAREN = ')',
-            LEFT_SQUARE_BRACKET = '[',
-            RIGHT_SQUARE_BRACKET = ']',
-            scientific_numbers = [];
-                
-            brackets[LEFT_PAREN] = LEFT_PAREN,
-            brackets[RIGHT_PAREN] = RIGHT_PAREN,
-            brackets[LEFT_SQUARE_BRACKET] = LEFT_SQUARE_BRACKET,
-            brackets[RIGHT_SQUARE_BRACKET] = RIGHT_SQUARE_BRACKET;
 
         this.error = err;
+        
+        //this function is used to comb through the function modules and find a function given its name
+        var findFunction = function(fname) {
+            var fmodules = Settings.FUNCTION_MODULES,
+                l = fmodules.length;
+            for(var i=0; i<l; i++) {
+                var fmodule = fmodules[i];
+                if(fname in fmodule)
+                    return fmodule[fname];
+            }
+            err('The function '+fname+' is undefined!');
+        };
+        
+        var allNumbers = function(args) {
+            for(var i=0; i<args.length; i++)
+                if(args[i].group !== N)
+                    return false;
+            return true;
+        };
         
         /**
          * This method gives the ability to override operators with new methods.
@@ -2324,8 +2772,8 @@ var nerdamer = (function(imports) {
             //call the proper function and return the result;
             var f = new Symbol(fn_name);
             f.group = FN;
-            if(typeof params === 'object') params = [].slice.call(params);//ensure an array
-            
+            if(typeof params === 'object')
+                params = [].slice.call(params);//ensure an array
             f.args = params;
             f.fname = fn_name === PARENTHESIS ? '' : fn_name;
             f.updateHash();
@@ -2343,13 +2791,16 @@ var nerdamer = (function(imports) {
         this.callfunction = function(fn_name, args) { 
             var fn_settings = functions[fn_name];
             
-            if(!fn_settings) throw new Error(fn_name+' is not a supported function.');
+            if(!fn_settings) 
+                err('Nerdamer currently does not support the function '+fn_name);
             
-            var num_allowed_args = fn_settings[1],
-                fn = fn_settings[0],
+            var num_allowed_args = fn_settings[1] || allowed_args, //get the number of allowed arguments
+                fn = fn_settings[0], //get the mapped function
                 retval;
-
-            if(!(args instanceof Array)) args = args !== undefined ?  [args] : [];
+            //We want to be able to call apply on the arguments or create a symfunction. Both require
+            //an array so make sure to wrap the argument in an array.
+            if(!(args instanceof Array)) 
+                args = args !== undefined ?  [args] : [];
 
             if(num_allowed_args !== -1) {
                 var is_array = isArray(num_allowed_args),
@@ -2362,29 +2813,98 @@ var nerdamer = (function(imports) {
                 if(num_args < min_args) err(format(error_msg, 'minimum', min_args, num_args));
                 if(num_args > max_args) err(format(error_msg, 'maximum', max_args, num_args));
             }
-            
-            if(fn) { retval = fn.apply(fn_settings[2] || this, args); }
-            else {
-                if(Settings.PARSE2NUMBER) {
-                    try { 
-                        args = args.map(function(symbol) { 
-                            if(symbol.group === N) return symbol.multiplier.toDecimal();
-                            else err('Symbol must be of group N.');
-                        });
-                        var f = fn_name in Math ? Math[fn_name] : Math2[fn_name];
-                        retval = new Symbol(f.apply(undefined, args));
-                    }
-                    catch(e){ 
-                        retval = this.symfunction(fn_name, args); 
-                    }
-                }
-                else {
-                    retval = this.symfunction(fn_name, args);
-                }
+
+            /*
+             * The following are very important to the how nerdamer constructs functions!
+             * Assumption 1 - if fn is undefined then handling of the function is purely numeric. This
+             *     enables us to reuse Math, Math2, ..., any function from Settings.FUNCTIONS_MODULES entry
+             * Assumption 2 - if fn is defined then that function takes care of EVERYTHING including symbolics
+             * Assumption 3 - if the user calls symbolics on a function that returns a numeric value then
+             *     they are expecting a symbolic output.
+             */
+            if(!fn) { 
+                //Remember assumption 1. No function defined so it MUST be numeric in nature
+                fn = findFunction(fn_name); 
+                if(Settings.PARSE2NUMBER && allNumbers(args)) 
+                    retval = bigConvert(fn.apply(fn, args));
+                else
+                    retval = _.symfunction(fn_name, args);
             }
+            else { 
+                //Remember assumption 2. The function is defined so it MUST handle all aspects including numeric values
+                retval = fn.apply(fn_settings[2], args);
+            }
+
             return retval;
         };
-
+        /**
+         * Build a regex based on the operators currently loaded. These operators are to be ignored when 
+         * substituting spaces for multiplication
+         */
+        this.operator_filter_regex = (function() {
+            //we only want the operators which are singular since those are the ones
+            //that nerdamer uses anyway
+            var ostr = '^\\'+Object.keys(operators).filter(function(x) {
+                if(x.length === 1)
+                    return x;
+            }).join('\\');
+            //create a regex which captures all spaces between characters except those
+            //have an operator on one end
+            return new RegExp('(['+ostr+'])\\s+(['+ostr+'])');
+        })();
+        
+        /*
+         * This method parses the tree
+         * @param {String[]} rpn
+         * @returns {Symbol}
+         */
+        this.parseTree = function(rpn) { 
+            var q = []; // The container for parsed values
+            var l = rpn.length;
+            // begin parsing
+            for(var i=0; i<l; i++) {
+                var e = rpn[i];
+                if(e.is_prefix_operator || e.is_postfix) { 
+                    q.push(e.operation(q.pop()));
+                    continue;
+                }
+                if(e.is_operator) {
+                    var b = q.pop(),
+                        a = q.pop();
+                    if(isArray(b)) //misread function
+                        _.error('Unrecognized function "'+a.value+'"');
+                    q.push(this[e.fn](a, b));
+                }
+                else if(e.value in functions) { 
+                    q.push(_.callfunction(e.value, q.pop()));
+                }
+                else { 
+                    // Blank denotes a beginning of a scope with a prefix operator so all we have to do is 
+                    // convert it to a zero
+                    if(e === '') {
+                        q.push(new Symbol(0));
+                    }
+                    else {
+                        var unsubbed = e;
+                        // make substitutions
+                        //constants take higher priority
+                        if(e in constants)
+                            e = new Symbol(constants[e]);
+                        //next subs
+                        else if(e in subs)
+                            e = subs[e].clone();
+                        else if(e in VARS) {
+                            e = VARS[e].clone();
+                        }
+                        e.unsubbed = unsubbed;
+                        q.push(e);
+                    }
+                }
+            }
+            
+            return q[0] || new Symbol(0);
+        };
+        
         /**
          * This is the method that triggers the parsing of the string. It generates a parse tree but processes 
          * it right away. The operator functions are called when their respective operators are reached. For instance
@@ -2396,278 +2916,533 @@ var nerdamer = (function(imports) {
          * @param {Object} substitutions
          * @returns {Symbol}
          */
-        this.parse = function(expression_string, substitutions) {  
+        this.parse = function(expression_string, substitutions, tree) { 
+            //prepare the substitutions
+            if(substitutions) {
+                for(var x in substitutions)
+                    substitutions[x] = _.parse(substitutions[x]);
+                subs = substitutions;
+            }
+            else
+                subs = {};
+            
+            //link e and pi
+            if(Settings.PARSE2NUMBER) {
+                subs.e = new Symbol(Math.E);
+                subs.pi = new Symbol(Math.PI);
+            }
+
             /*
              * Since variables cannot start with a number, the assumption is made that when this occurs the
              * user intents for this to be a coefficient. The multiplication symbol in then added. The same goes for 
              * a side-by-side close and open parenthesis
              */
-            expression_string = String(expression_string).split(' ').join('')//strip empty spaces
-                    .replace(/\d*\.*\d+e[\+\-]*\d+/gi, function(match, start, str) {
-                        if(/[a-z_]/.test(str.charAt(start-1))) return match;
-                        scientific_numbers.push(match);
-                        return '&';
-                    })
-                    //allow omission of multiplication after coefficients
-                    .replace(/([\+\-\/\*]*[0-9]+)([a-z_]+[\+\-\/\*]*)/gi, function() {
-                        var str = arguments[4],
-                            group1 = arguments[1],
-                            group2 = arguments[2],
-                            start = arguments[3],
-                            first = str.charAt(start),
-                            before = '',
-                            d = '*';
-                        if(!first.match(/[\+\-\/\*]/)) before = str.charAt(start-1);
-                        if(before.match(/[a-z]/i)) d = '';
-                        return group1+d+group2;
-                    })
-                    //allow omission of multiplication sign between brackets
-                    .replace( /\)\(/g, ')*(' ) || '0';
-
-            var subs = substitutions || {},
-                stack = [], //the operator stack
-                output = [], //the values stack
-                len = expression_string.length,
-                pos = 0,
-                last_opr_pos, //where the last operator was found
-                last_operator, //the lst operator that was found
-                last_char,
-                EOT = false, //was the end of the string reached?
-                func_on_stack = false,
-                curpos = 0, //the current position on the string
-                                
-                evaluate = function(operator) { 
-                    if(!operator) {
-                        operator = stack.pop();
-                    }
-
-                    var symbol2 = output.pop(),
-                        symbol1 = output.pop();
-
-                    if(!operator && !symbol1 && symbol2) { 
-                        insert(symbol2);
-                    }
-                    else if(operator === LEFT_PAREN) { 
-                        if(EOT) err('Unmatched open parenthesis!');
-                        stack.push(operator);
-                        insert(symbol1);
-                        insert(symbol2);
-                    }
-                    else {
-                        var ofn = operator.fn, result;
-                        
-                        //first we assume that it's the first operator in which case it's the first symbol and negative
-                        if(!ofn) {
-                            
-                            result = operator.resolve(symbol2);
-                            //let's just do a down and dirty reduction of the prefixes by looping through one at a time 
-                            //and eliminating them
-                            while(symbol1 && last_item_on(stack) instanceof Prefix) {
-                                result = stack.pop().resolve(result);
-                            }
-                            //if we didn't have a first symbol then we're dealing with a pure prefix operator
-                            //otherwise we need to place symbol1 back on the stack for reconsideration
-                            if(symbol1) insert(symbol1);
-                        }
-                        else {
-                            result = _[ofn].call(_, symbol1, symbol2);
-                        }
-
-                        insert(result);
-                    }    
-                },
-                /**
-                 * This method inserts the token into the output stack. Here it will attempt to detect if a prefix is 
-                 * on the stack and will try to resolve it. Additonally it checks if the item is a scientific number
-                 * and if so places the correct number on the output stack. 
-                 * @param token
-                 */
-                insert = function(token) {
-                    //if the number is a scientifc number then use that instead
-                    if(/&/.test(token)) {
-                        token = scientific_numbers.shift();
-                    }
-                    
-                    //when two operators are close to each other then the token will be empty or when we've gone
-                    //out of range inside of the output or stack. We have to make sure the token even exists 
-                    //before entering.
-                    if(token !== '' && token !== undefined) { 
-                        //this could be function parameters or a vector
-                        if(!(token instanceof Array)) { 
-                            //TODO: possible redundant check. Needs investigation
-                            if(!(token instanceof Symbol) && !(customType(token))) {
-                                var sub = subs[token] || VARS[token]; //handle substitutions
-                                token = sub ? sub.clone() : new Symbol(token);
-                            }
-                        }
-                        
-                        //resolve prefixes
-                        while(last_item_on(stack) instanceof Prefix) {
-                            //if there's a function on the output stack then check the next operator 
-                            if(func_on_stack) {
-                                //check the next operator to come
-                                var next_operator = operators[expression_string.charAt(curpos+1)];
-                                if(next_operator && !next_operator.left_assoc) break;
-                            }
-                            if(operator && !operator.left_assoc) break; //don't touch pow
-                            var prefix = stack.pop();
-                            token = prefix.resolve(token);
-                        }
-                        
-                        output.push(token);
-                        
-                        func_on_stack = false;//thank you for your service
-                    } 
-                };
-                
-            if(!subs['~']) {   
-                //collect the substitutions
-                for(var x in constants) subs[x] = new Symbol(constants[x]);
+            var e = String(expression_string), match;
+            //add support for spaces between variables
+            while(true) {
+                match = this.operator_filter_regex.exec(e);
+                if(!match)
+                    break;
+                e = e.replace(match[0], match[1]+'*'+match[2]);
             }
 
-            for(curpos=0; curpos<len; curpos++) { 
-                var cur_char = expression_string.charAt(curpos);
-                var operator = cur_char in operators ? operators[cur_char] : undefined, //a possible operator
-                    bracket = cur_char in brackets ? brackets[cur_char] : undefined; //a possible bracket
-                //if the character is a bracket or an operator but not a scientific number
-                if(operator || bracket) { 
-                    //if an operator is found then we assume that the preceeding is a variable.
-                    //the token has to be from the last position up to the current position
-                    var token = expression_string.substring(pos,curpos),
-                        isSquareBracket = bracket === LEFT_SQUARE_BRACKET;
-                
-                    // support for compound operators
-                    var next_char = expression_string.charAt(curpos + 1);
-                    var also_operator = next_char in operators ? operators[next_char] : undefined;
-                    if(also_operator) {
-                        var combined = cur_char+next_char;
-                        var compound_operator = combined in operators ? operators[combined] : undefined;
-                        if(compound_operator) { 
-                            operator = compound_operator;
-                            curpos++;
+            e = e.split(' ').join('')//strip empty spaces
+            //replace scientific numbers
+            .replace(/\d+\.*\d*e\+?\-?\d+/gi, function(x) {
+                return scientificToDecimal(x);
+            })
+            //allow omission of multiplication after coefficients
+            .replace(/([\+\-\/\*]*[0-9]+)([a-z_]+[\+\-\/\*]*)/gi, function() {
+                var str = arguments[4],
+                    group1 = arguments[1],
+                    group2 = arguments[2],
+                    start = arguments[3],
+                    first = str.charAt(start),
+                    before = '',
+                    d = '*';
+                if(!first.match(/[\+\-\/\*]/)) before = str.charAt(start-1);
+                if(before.match(/[a-z]/i)) d = '';
+                return group1+d+group2;
+            })
+            .replace(/([a-z0-9_]+)(\()|(\))([a-z0-9]+)/gi, function(match, a, b, c, d) {
+                var g1 = a || c,
+                    g2 = b || d;
+                if(g1 in functions) //create a passthrough for functions
+                    return g1+g2;
+                return g1+'*'+g2;
+            })
+            //allow omission of multiplication sign between brackets
+            .replace( /\)\(/g, ')*(' ) || '0';
+
+            var l = e.length, //the length of the string
+                output = [], //the output array. This is what's returned
+                stack = [], //the operator stack
+                last_pos = 0, //the location of last operator encountered
+                open_brackets = [0, 0], //a counter for the open brackets
+                prefix_cache = [],
+                new_scope = true; //signal if we're in a new scope or not
+            // This method gets and inserts the token on output as the name implies
+            var get_and_insert_token = function(to_pos) {
+                if(to_pos !== last_pos) { 
+                    token = new Symbol(e.substring(last_pos, to_pos)); 
+                    output.push(token);
+                    //once we find out first token we are no longer in a new scope so flip
+                    //the flag
+                    new_scope = false; 
+                }
+            };  
+            
+            var verify_prefix_operator = function(operator) {
+                if(!operator.is_prefix)
+                    err(operator+' is not a valid prefix operator');
+            };
+            
+            var resolve_prefix = function(prefix1, prefix2) {
+                if(!prefix2)
+                    return prefix1;
+                if(prefix1.val === prefix2.val)
+                    return new Prefix(operators['+']);
+                return new Prefix(operators['-']);
+            };
+            
+            var insert_prefix = function(prefix) {
+                var sl = stack.length;
+                if(sl && stack[sl-1].is_prefix_operator) 
+                    stack.push(resolve_prefix(prefix, stack.pop()));
+                stack.push(prefix);   
+            };
+            
+            var collapse_prefix_cache = function(to_output) {
+                if(prefix_cache.length) {
+                    var prefix = prefix_cache.pop();
+                    while(prefix_cache.length)
+                        prefix = resolve_prefix(prefix, prefix_cache.pop());
+                    if(to_output)
+                        output.push(prefix);
+                    else
+                        stack.push(prefix);
+                }
+            };
+            
+            /*
+             * We define the operator as anything that performs any form of operation. A bracket as any object that defines
+             * a scope and a token as anything in between two operators. This enables us to have variables of more than one letter.
+             * This function is a modified version of the Shunting-Yard algorithm to enable variable names, and compound operators.
+             * operators are defined in the operator object. We walk the string and check every character. If an operator is encountered
+             * then we mark it's location. We find the next operator and get the token between. 
+             */
+            var token, operator, start = 0, i=0;
+            // start the generation of the tree
+            for(var i=start; i<l; i++) {
+                //the character
+                var ch = e.charAt(i); 
+                if(ch in operators) { 
+                    // We previously defined the token to be the anything between two operators and since we an operator
+                    //we can grab the token
+                    get_and_insert_token(i); 
+                    //mark the current position
+                    var c = i; 
+                    /*
+                     * In order to support compound operators we assume that the following might be operator as well. We keep walking the string
+                     * until we encounter a character which is no longer an operator. We define that entire sub-string an operator
+                     */
+                    while(e.charAt(i+1) in operators)
+                        i++;
+
+                    var end_operator = i+1;
+                    //the probable operator will be the difference between c and i;
+                    var pr_operator = e.substring(c, end_operator); 
+                    /* 
+                     * We now have to see if this operator is actually an operator or a combination of an operator and prefix operators 
+                     * e.g. 3*-+-8 or x^-3. To determine this we knock off an operator one at a time until we find the matching operator.
+                     * For instance if we have an operator -= and we get -=-- we knock of a minus from the back until we reach -= which will 
+                     * register as a defined operator since we defined it as such
+                     */
+                    while(!(pr_operator in operators)) { 
+                        var l2 = pr_operator.length,
+                            end = l2-1,
+                            prefix = operators[pr_operator.charAt(end)];
+                        pr_operator = pr_operator.substring(0, end);
+                        //make sure it's not a postfix operator that we're dealing with
+                        try {
+                            //verify that it's not a prefix operator
+                            verify_prefix_operator(prefix);
+                            //add the prefix to the stack
+                            prefix_cache.push(new Prefix(prefix)); 
                         }
-                    }
-                    
-                    if(bracket === LEFT_PAREN && token || isSquareBracket) { 
-                        //make sure you insert the variables
-                        if(isSquareBracket && token) insert(token);
-                        
-                        var f = isSquareBracket ? VECTOR : token;
-                        stack.push(new Func(f), LEFT_PAREN);
-
-                        pos = curpos+1;
-                        last_opr_pos = curpos; 
-                        continue;
-                    }
-
-                    //place the token on the output stack. 
-                    //This may be empty if we're at a unary or bracket so skip those.
-                    insert(token);
-
-                    //if the preceding token is a operator
-                    if(!bracket && (curpos-last_opr_pos === 1 || curpos === 0)) { 
-                        if(operator.is_prefix) {
-                            stack.push(new Prefix(operator.val));
-                            pos = curpos+1;
-                            last_opr_pos = curpos;
-                            continue;
-                        }
-                        err(operator.val+' is not a valid prefix operator!:'+pos); 
-                    }
-                    //note that open brackets count as operators in this case
-                    if(cur_char !== RIGHT_PAREN) last_opr_pos = curpos; 
-
-                    if(operator && !operator.left_assoc && operator.is_postfix) { 
-                        //resolve the postfix operator
-                        output.push(_[operator.fn](output.pop()));
-
-                        operator = operators[expression_string.charAt(++curpos)]; //move to the next operator
-                        if(!operator) {
-                            if(curpos === len) break;//we've reached the end of the string and it's a postfix
-                            curpos--; //adjust the current position
-                        } 
-                    }
-
-                    if(operator) { 
-                        //we may be at the first operator, in which case the last operator may be undefined
-                        //If this is the case then do nothing other than record the last operator and 
-                        //place the operator on the stack.
-                        if(last_operator) { 
-                            if(operator.left_assoc && operator.precedence <= last_operator.precedence ||
-                                    !operator.left_assoc && (operator.precedence < last_operator.precedence)) {
-                                var done = false;
-                                do {
-                                    evaluate(); 
-                                    var last = last_item_on(stack); 
-                                    //stop when you see a parethesis
-                                    if(last === LEFT_PAREN) break;
-                                    
-                                    done = last ? last.left_assoc && last.precedence < operator.precedence: true;
-                                }
-                                while(!done);  
+                        catch(e) {
+                            //check if we're dealing with postfix operators. 
+                            //Rule: compound postfix operators must be a composition of postfix operators
+                            var prl = pr_operator.length, o;
+                            for(var j=0; j<prl; j++) {
+                                o = operators[pr_operator.charAt(j)];
+                                if(!o|| o && !o.is_postfix)
+                                    err(e.message);
                             }
+
+                            //at this point we know that we have only postfix operators but they are parsed left to right
+                            var rem = '';
+                            do {
+                                if(pr_operator === '')
+                                    break; //we're done since the entire operator has been consumed
+                                if(pr_operator in operators) {
+                                    output.push(operators[pr_operator]);
+                                    pr_operator = rem;
+                                    rem = '';
+                                }
+                                else {
+                                    var end = pr_operator.length-1;
+                                    rem += pr_operator.charAt(end);
+                                    pr_operator = pr_operator.substring(0, end);
+                                } 
+                            }
+                            while(true)
+                            //the actual operator is now the one we assumed to be a prefix earlier. I need to really
+                            //pick better variable names :-/
+                            pr_operator = prefix.val;
+                            break;
                         }
-                        stack.push(operator);
-                        last_operator = last_item_on(stack);
+                    }
+                    // we now have the operator
+                    operator = operators[pr_operator];
+                    
+                    // we mark where we find the last operator so we know where the next token begins
+                    last_pos = end_operator; 
+                    while(true) { 
+                        var sl = stack.length,
+                            los = stack[sl-1];
+                        //skip prefix 
+                        while(los !== undefined && los.is_prefix_operator)  {
+                            los = stack[--sl-1];
+                        }
+                            
+                        if(sl === 0 || !(operator.left_assoc && operator.precedence <= los.precedence 
+                            || !operator.left_assoc && operator.precedence < los.precedence))
+                            break; //nothing to do
+                        output.push(stack.pop());
+                    }
+
+                    // If we're in a new scope then we're dealing with a prefix operator
+                    if(new_scope) { 
+                        /*
+                         * There is literally no way to differentiate between a malformed expression and a properly formed one if there is no gap left 
+                         * at the beginning of the scope. This is best illustrated. Take the expression 3+7- in RPN it becomes 3,7,+,-
+                         * Take the expression -3+7 in RPN this become 3,7,+,- as well. The difference is that we tag the minus as
+                         * a prefix in the properly formed expression. Problem solved! But wait. Imagine we have no gaps at the beginning
+                         * of the scope let's say -(3+7). With no gaps this again becomes 3,7,+,- with no way to differentiate
+                         * between -3+7 and -(3+7) unless the second one is written as 3,7,+, ,- where the gap denotes the end of the scope
+                         */ 
+                        verify_prefix_operator(operator);
+                        var prefix = new Prefix(operator); 
+                        //collapse the prefix cache
+                        while(prefix_cache.length)
+                            prefix = resolve_prefix(prefix, prefix_cache.pop());
+                        insert_prefix(prefix);
                     }
                     else { 
-                        if(cur_char === LEFT_PAREN) {
-                            stack.push(bracket);
-                        }
-                        //we found a closing bracket
-                        else if(cur_char === RIGHT_PAREN || cur_char === RIGHT_SQUARE_BRACKET) { 
-                            last_opr_pos = null;
-                            var found_matching = false;
-                            while(!found_matching) {
-                                var popped = stack.pop();
-                                if(popped === undefined) err('Unmatched close bracket or parenthesis!');
-                                
-                                if(popped === LEFT_PAREN) {
-                                    found_matching = true;
-                                }
-                                else evaluate(popped);
-                                //TODO: fix bracket parity checking.
-                                if(popped === LEFT_PAREN && cur_char === RIGHT_SQUARE_BRACKET) { 
-                                    var lsi = last_item_on(stack);
-                                    if(!lsi || lsi.name !== VECTOR) err('Unmatched parenthesis!');
-                                }
-                            }
-                            
-                            var last_stack_item = last_item_on(stack);
+                        //if there's already a prefix on the stack then bring it down
+                        var sl = stack.length;
+                        if(sl && stack[sl-1].is_prefix_operator && operator.left_assoc) 
+                            //it's safe to move the prefix to output since it's at the beginning of a scope
+                            output.push(stack.pop());
 
-                            if(last_stack_item instanceof Func) { 
-                                //TODO: fix bracket parity checking
-                                if(last_stack_item.name === VECTOR && !(cur_char === RIGHT_SQUARE_BRACKET || cur_char === RIGHT_PAREN))
-                                    err('Unmatched bracket!');
-                                var v = _.callfunction(stack.pop().name, output.pop()); 
-                                func_on_stack = true;
-                                insert(v);//go directly to output as this will cause the prefix to prematurely be evaluated
-                            }
+                        stack.push(operator);
+                        //resolve the prefixes
+                        collapse_prefix_cache();
+                    }
+                        
+                }
+                else if(ch in brackets) {
+                    var bracket = brackets[ch]; 
+                    if(bracket.open) { 
+                        //mark a bracket as being opened
+                        open_brackets[bracket.bracket_id]++;
+                        //check if we're dealing with a function
+                        if(last_pos !== i) {
+                            var f = new Symbol(e.substring(last_pos, i));
+                            // assume it's a function. Since a string is just an object, why not use it
+                            f.is_function = true;
+                            stack.push(f);
+                        }   
+                        if(bracket.fn)
+                            stack.push(bracket.fn());
+                        // We're in a new scope so signal so
+                        new_scope = true;
+                        stack.push(bracket);
+                        //get all the prefixes at the beginning of the scope
+                        last_pos = i+1; //move past the bracket
+                    }
+                    else {
+                        //close the open bracket
+                        open_brackets[bracket.bracket_id]--;
+                        // We proceed to pop the entire stack to output this this signals the end of a scope. The first thing is to get the 
+                        // the prefixes and then the token at the end of this scope.
+                        // get the token
+                        get_and_insert_token(i);
+                        // And then keep popping the stack until we reach a bracket
+                        while(true) {
+                            var entry = stack.pop();
+                            if(entry === undefined)
+                                err("Unmatched open bracket for bracket '"+bracket+"'!");
+                            //we found the matching bracket so our search is over
+                            if(entry.bracket_id === bracket.bracket_id)
+                                break; // We discard the closing bracket
+                            else 
+                                output.push(entry);
                         }
-                        last_operator = last_item_on(stack);
-                    } 
-                    
-                    pos = curpos+1; //move along
+                        
+                        var sl = stack.length;
+                        //move the function to output
+                        if(sl && stack[sl-1].is_function)
+                            output.push(stack.pop());
+                        
+                        last_pos = i+1; //move past the bracket
+                    }
                 }
-                else if(curpos === len-1) { 
-                    insert(expression_string.substring(pos, curpos+1));
-                }
-                last_char = cur_char;
             }
             
-            EOT = true; //end of tokens/stack reached
+            //get the last token at the end of the string
+            get_and_insert_token(l);
+            //collapse the stack to output
+            while(stack.length)
+                output.push(stack.pop());
+
+            //check parity
+            for(var i=0; i<open_brackets.length; i++) 
+                if(open_brackets[i] > 0) {
+                    var brkt;
+                    for(bracket in brackets)
+                        if(brackets[bracket].bracket_id === i && !brackets[bracket].open)
+                            brkt = brackets[bracket];
+                    err('Unmatched close bracket for bracket '+brkt+'!');
+                }
+                   
+            if(tree)
+                return output;
             
-            while(stack.length > 0) { 
-                evaluate();
+            return this.parseTree(output);
+
+        };
+        
+        /**
+         * Reads a string into an array of Symbols and operators
+         * @param {Symbol} symbol
+         * @returns {Array}
+         */
+        this.toObject = function(expression_string) {
+            var output = [[]], //the first one is the parent
+                e = expression_string.split(' ').join(''), //remove spaces
+                func_stack = [],
+                lp = 0,
+                target = output[0],
+                token;
+            var push = function(token) {
+                if(token !== '')
+                    target.push(new Symbol(token));
+            };
+            //start the conversion
+            for(var i=0, l=e.length; i<l; i++) {
+                var ch = e.charAt(i);
+                if(ch in operators) {
+                    token = e.substring(lp, i);
+                    push(token);
+                    target.push(ch);
+                    lp = i+1;
+                }
+                else if(ch in brackets) { 
+                    var bracket = brackets[ch];
+                    if(bracket.open) {
+                        //we may be dealing with a function so make 
+                        func_stack.push(e.substring(lp, i));
+                        target = []; //start a new scope
+                        output.push(target); //add it to the chain
+                        lp = i+1;    
+                    }
+                    else {
+                        //we have a close bracket
+                        token = e.substring(lp, i); //grab the token
+                        push(token);
+                        var o = output.pop(), //close the scope
+                            f = func_stack.pop(), //grab the matching function
+                            r;
+                        //is it a function?
+                        if(f in functions) 
+                            r = _.symfunction(f, o); 
+                        else if(f === '') {
+                            r = o;
+                            r.type = bracket.type;
+                        }
+                        else 
+                            r = f;
+                        //point to the correct target
+                        target = output[output.length-1];
+                        target.push(r);
+                        lp = i+1; 
+                    }
+                }
             }
+            
+            push(e.substring(lp, i)); //insert the last token
 
             return output[0];
         };
+        
+        var getDx = function(arr) {
+            var dx = [], e;
+            for(var i=0, l=arr.length; i<l; i++) {
+                e = arr.pop();
+                if(e === ',')
+                    return dx;
+                dx.push(e);
+            }
+        };
 
-        //FUNCTIONS
-        //although parens is not a "real" function it is important in some cases when the 
-        //symbol must carry parenthesis. Once set you don't have to worry about it anymore
-        //as the parser will get rid of it at the first opportunity
+        var chunkAtCommas = function(arr){
+            var j, k = 0, chunks = [[]];
+            for (var j = 0, l=arr.length; j<l; j++){
+                if (arr[j] === ',') {
+                    k++;
+                    chunks[k] = [];
+                } else {
+                    chunks[k].push(arr[j]);
+                }
+            }
+            return chunks;
+        }
+        
+        var rem_brackets = function(str) {
+            return str.replace(/^\\left\((.+)\\right\)$/g, function(str, a) {
+                if(a) return a;
+                return str;
+            });
+        };
+        
+        this.toTeX = function(expression_or_obj) { 
+            var obj = typeof expression_or_obj === 'string' ? this.toObject(expression_or_obj) : expression_or_obj,
+                TeX = [];
+            
+            if(isArray(obj)) { 
+                var nobj = [], a, b, c;
+                //first handle ^
+                for(var i=0; i<obj.length; i++) {
+                    a = obj[i];
+                    
+                    if(obj[i+1] === '^') {
+                        b = obj[i+2];
+                        nobj.push(LaTeX.braces(this.toTeX([a]))+'^'+LaTeX.braces(this.toTeX([b])));
+                        i+=2;
+                    }
+                    else
+                        nobj.push(a);
+                }
+                obj = nobj;
+            }
+
+            
+            for(var i=0, l=obj.length; i<l; i++) {
+                var e = obj[i];
+                //convert * to cdot
+                if(e === '*')
+                    e = '\\cdot';
+                
+                if(isSymbol(e)) {
+                    if(e.group === FN) {
+                        var fname = e.fname, f;
+
+                        if(fname === SQRT) 
+                            f = '\\sqrt'+LaTeX.braces(this.toTeX(e.args));
+                        else if(fname === ABS) 
+                            f = LaTeX.brackets(this.toTeX(e.args), 'abs');
+                        else if(fname === PARENTHESIS) 
+                            f = LaTeX.brackets(this.toTeX(e.args), 'parens');
+                        else if (fname === 'log10')
+                            f = '\\log_{10}\\left( ' + this.toTeX(e.args) + '\\right)';
+                        else if(fname === 'integrate') {
+                            /* Retrive [Expression, x] */
+                            var chunks = chunkAtCommas(e.args);
+                            /* Build TeX */
+                            var expr = LaTeX.braces(this.toTeX(chunks[0])),
+                                dx = this.toTeX(chunks[1]);
+                            f = '\\int ' + expr + '\\, d' + dx;
+                        }
+                        else if (fname === 'defint') {
+                            var chunks = chunkAtCommas(e.args),
+                                expr = LaTeX.braces(this.toTeX(chunks[0])),
+                                dx = this.toTeX(chunks[1]),
+                                lb = this.toTeX(chunks[2]),
+                                ub = this.toTeX(chunks[3]);
+                            f = '\\int\\limits_{'+lb+'}^{'+ub+'} '+expr+'\\, d'+dx;
+
+                        }
+                        else if(fname === 'diff') {
+                            var chunks = chunkAtCommas(e.args);
+                            var dx = '', expr = LaTeX.braces(this.toTeX(chunks[0]));
+                            /* Handle cases: one argument provided, we need to guess the variable, and assume n = 1 */
+                            if (chunks.length == 1){
+                                var vars = [];
+                                for (j = 0; j < chunks[0].length; j++){
+                                    if (chunks[0][j].group === 3) {
+                                        vars.push(chunks[0][j].value);
+                                    }
+                                }
+                                vars = vars.sort();
+                                dx = vars.length > 0 ? ('\\frac{d}{d ' + vars[0] + '}') : '\\frac{d}{d x}';
+                            }
+                            /* If two arguments, we have expression and variable, we assume n = 1 */ 
+                            else if (chunks.length == 2){
+                                dx = '\\frac{d}{d ' + chunks[1] + '}';
+                            }
+                            /* If we have more than 2 arguments, we assume we've got everything */
+                            else {
+                                dx = '\\frac{d^{' + chunks[2] + '}}{d ' + this.toTeX(chunks[1]) + '^{' + chunks[2] + '}}';
+                            }
+
+                            f = dx + '\\left(' + expr + '\\right)';
+
+                        }
+                        else if (fname === 'sum' || fname === 'product') {
+                            // Split e.args into 4 parts based on locations of , symbols.
+                            var argSplit = [[], [], [], []], j = 0, i;
+                            for (i = 0; i < e.args.length; i++){
+                                if (e.args[i] === ','){
+                                    j++;
+                                    continue;
+                                } 
+                                argSplit[j].push(e.args[i]);
+                            }
+                            // Then build TeX string.
+                            f = (fname==='sum'?'\\sum_':'\\prod_')+LaTeX.braces(this.toTeX(argSplit[1])+' = '+this.toTeX(argSplit[2]));
+                            f += '^'+LaTeX.braces(this.toTeX(argSplit[3])) + LaTeX.braces(this.toTeX(argSplit[0]));
+                        }
+                        else if(fname === FACTORIAL || fname === DOUBLEFACTORIAL) 
+                            f = this.toTeX(e.args) + (fname === FACTORIAL ? '!' : '!!');
+                        else  {
+                            f = '\\mathrm'+LaTeX.braces(fname) + LaTeX.brackets(this.toTeX(e.args), 'parens');
+                        }
+                            
+                        TeX.push(f);
+                    } 
+                    else
+                        TeX.push(LaTeX.latex(e));
+                }
+                else if(isArray(e)) { 
+                    TeX.push(LaTeX.brackets(this.toTeX(e)));
+                }
+                else {
+                    if(e === '/') 
+                        TeX.push(LaTeX.frac(rem_brackets(TeX.pop()), rem_brackets(this.toTeX([obj[++i]]))));
+                    else
+                        TeX.push(e);
+                }
+            }
+            return TeX.join(' ');
+        };
+
+        /////////// ********** FUNCTIONS ********** ///////////
+        /* Although parens is not a "real" function it is important in some cases when the 
+         * symbol must carry parenthesis. Once set you don't have to worry about it anymore
+         * as the parser will get rid of it at the first opportunity
+         */
         function parens(symbol) {
             if(Settings.PARSE2NUMBER) {
                 return symbol;
@@ -2699,9 +3474,14 @@ var nerdamer = (function(imports) {
          * @return {Symbol)
          */
         function factorial(symbol) {
+            var retval;
             if(Settings.PARSE2NUMBER && symbol.isConstant()) {
-                if(isInt(symbol)) return Math2.fact(symbol);
-                return Math2.gamma(symbol.multiplier.toDecimal()+1);
+                if(isInt(symbol)) 
+                    retval = Math2.bigfactorial(symbol);
+                else
+                    retval = Math2.gamma(symbol.multiplier.toDecimal()+1);
+                
+                return bigConvert(retval);
             }
             return _.symfunction(FACTORIAL, [symbol]);
         };
@@ -2720,11 +3500,29 @@ var nerdamer = (function(imports) {
             return _.symfunction('mod', [symbol1, symbol2]);
         }
         /**
+         * A branghing function
+         * @param {Boolean} condition
+         * @param {Symbol} a
+         * @param {Symbol} b
+         * @returns {Symbol}
+         */
+        function IF(condition, a, b) { 
+            if(typeof condition !== 'boolean')
+                if(isNumericSymbol(condition))
+                    condition = !!Number(condition);
+            if(condition) 
+                return a;
+            return b;
+        }
+        /**
          * The square root function
          * @param {Symbol} symbol
          * @returns {Symbol}
          */
         function sqrt(symbol) { 
+            if(symbol.fname === '' && symbol.power.equals(1))
+                symbol = symbol.args[0];
+            
             if(Settings.PARSE2NUMBER && symbol.isConstant() && !symbol.multiplier.lessThan(0)) 
                 return new Symbol(Math.sqrt(symbol.multiplier.toDecimal()));
             
@@ -2759,14 +3557,14 @@ var nerdamer = (function(imports) {
                     img = Symbol.imaginary();
                     symbol.multiplier = symbol.multiplier.abs();
                 }
-                
+
                 var q = symbol.multiplier.toDecimal(),
                     qa = Math.abs(q),
                     t = Math.sqrt(qa);
 
                 var m;
                 //it's a perfect square so take the square
-                if(isInt(t)) {
+                if(isInt(t)) { 
                     m = new Symbol(t);
                 }
                 else if(isInt(q)) { 
@@ -2826,7 +3624,7 @@ var nerdamer = (function(imports) {
                     var factors = Math2.ifactor(m);
                     for(var factor in factors) {
                         var p = factors[factor];
-                        retval = _.multiply(retval, _.symfunction('parens', [new Symbol(factor).setPower(p)]))
+                        retval = _.multiply(retval, _.symfunction('parens', [new Symbol(factor).setPower(new Frac(p))]))
                     }
                 }
                 else {
@@ -2844,7 +3642,7 @@ var nerdamer = (function(imports) {
                 err('log(0) is undefined!');
             }
 
-            if(symbol.group === EX && symbol.power.multiplier.lessThan(0) || symbol.power == -1) {
+            if(symbol.group === EX && symbol.power.multiplier.lessThan(0) || symbol.power.toString() === '-1') {
                 symbol.power.negate();
                 //move the negative outside but keep the positive inside :)
                 retval = log(symbol).negate();
@@ -2892,6 +3690,27 @@ var nerdamer = (function(imports) {
             else quadrant = 4;
             return quadrant;
         }
+        
+        /*
+         * Serves as a bridge between numbers and bigNumbers
+         * @param {Frac|Number} n
+         * @returns {Symbol} 
+         */
+        function bigConvert(n) { 
+            if(!isFinite(n)){
+                var sign = Math.sign(n);
+                var r = new Symbol(String(Math.abs(n)));
+                r.multiplier = r.multiplier.multiply(new Frac(sign));
+                return r;
+            }
+            if(isSymbol(n))
+                return n;
+            if(typeof n === 'number')
+                n = Frac.simple(n);
+            var symbol = new Symbol(0);
+            symbol.multiplier = n;
+            return symbol;
+        };
         
         function cos(symbol) {
             if(Settings.PARSE2NUMBER && symbol.isConstant()) {
@@ -3132,6 +3951,66 @@ var nerdamer = (function(imports) {
             return retval;
         };
         
+        function clean(symbol) {
+            // handle functions with numeric values
+            // handle denominator within denominator
+            // handle trig simplifications
+            var g = symbol.group, retval;
+            //Now let's get to work
+            if(g === CP) {
+                var num = symbol.getNum(),
+                    den = symbol.getDenom() || new Symbol(1),
+                    p = Number(symbol.power),
+                    factor = new Symbol(1);
+                if(Math.abs(p) === 1) {
+                    den.each(function(x) {
+                        if(x.group === CB) {
+                            factor = _.multiply(factor, clean(x.getDenom()));
+                        }
+                        else if(x.power.lessThan(0)) {
+                            factor = _.multiply(factor, clean(x.clone().toUnitMultiplier()));
+                        }
+                    });
+
+                    var new_den = new Symbol(0);
+                    //now divide out the factor and add to new den
+                    den.each(function(x) {
+                        new_den = _.add(_.divide(x, factor.clone()), new_den);
+                    });
+                    
+                    factor.invert(); //invert so it can be added to the top
+                    var new_num;
+                    if(num.isComposite()) { 
+                        new_num = new Symbol(0);
+                        num.each(function(x){
+                            new_num = _.add(_.multiply(clean(x), factor.clone()), new_num);
+                        });
+                    }
+                    else
+                        new_num = _.multiply(factor, num);
+                    
+                    retval = _.divide(new_num, new_den);
+                }
+            }
+            else if(g === CB) { 
+                retval = new Symbol(1);
+                symbol.each(function(x) { 
+                    retval = _.multiply(retval, _.clean(x));
+                });
+            }
+            else if(g === FN) {
+                if(symbol.args.length === 1 && symbol.args[0].isConstant())
+                    retval = block('PARSE2NUMBER', function() {
+                        return _.parse(symbol);
+                    }, true);
+            }
+            
+            if(!retval)
+                retval = symbol;
+            
+            return retval;
+        }
+        
         /**
          * Expands a symbol
          * @param symbol
@@ -3291,6 +4170,7 @@ var nerdamer = (function(imports) {
         
         //link this back to the parser
         this.expand = expand;
+        this.clean = clean;
         
         //the constructor for vectors
         function vector() {
@@ -3335,7 +4215,7 @@ var nerdamer = (function(imports) {
                 var sign = symbol.power.sign();
                 //don't devide the power directly. Notice the use of toString. This makes it possible
                 //to use a bigNumber library in the future
-                return sqrt(symbol.toLinear()).setPower(new Frac(sign));
+                return sqrt(symbol.group === P ? new Symbol(symbol.value) : symbol.toLinear()).setPower(new Frac(sign));
             }
             return symbol;
         }
@@ -3392,6 +4272,10 @@ var nerdamer = (function(imports) {
                 bIsSymbol = isSymbol(b);
             //we're dealing with two symbols
             if(aIsSymbol && bIsSymbol) { 
+                if(a.isComposite() && a.isLinear() && b.isComposite() && b.isLinear()) {
+                    a.distributeMultiplier();
+                    b.distributeMultiplier();
+                }
                 //no need to waste time on zeroes
                 if(a.multiplier.equals(0)) return b;
                 if(b.multiplier.equals(0)) return a;
@@ -3404,13 +4288,14 @@ var nerdamer = (function(imports) {
                     g2 = b.group,
                     ap = a.power.toString(),
                     bp = b.power.toString();
+                
                 //always keep the greater group on the left. 
                 if(g1 < g2 || (g1 === g2 && ap > bp && bp > 0)) return this.add(b, a);
                 
                 /*note to self: Please don't forget about this dilemma ever again. In this model PL and CB goes crazy
                  * because it doesn't know which one to prioritize. */
                 //correction to PL dilemma
-                if(g1 === CB && g2 === PL && a.value === b.value) {
+                if(g1 === CB && g2 === PL && a.value === b.value) { 
                     //swap
                     var t = a; a = b; b = t;
                     g1 = a.group; g2 = b.group; ap = a.power.toString(); bp = b.power.toString();
@@ -3426,7 +4311,7 @@ var nerdamer = (function(imports) {
                 if(aIsComposite) h1 = text(a, 'hash');
                 if(bIsComposite) h2 = text(b, 'hash');
                 
-                if(g1 === CP && g2 === CP && b.isLinear() && !a.isLinear()) {
+                if(g1 === CP && g2 === CP && b.isLinear() && !a.isLinear() && h1 !== h2) {
                     return this.add(a, b);
                 }   
 
@@ -3688,39 +4573,47 @@ var nerdamer = (function(imports) {
                 }
                 
 
-                if((v1 === v2 || ONN) && !(g1 === PL && (g2 === S || g2 === P || g2 === FN)) && !(g1 === PL && g2 === CB)) { 
+                if((v1 === v2 || ONN) && !(g1 === PL && (g2 === S || g2 === P || g2 === FN)) && !(g1 === PL && g2 === CB)) {                     
                     var p1 = a.power,
                         p2 = b.power,
                         isSymbolP1 = isSymbol(p1),
                         isSymbolP2 = isSymbol(p2),
                         toEX = (isSymbolP1 || isSymbolP2);
-
-                    //add the powers
-                    result.power = toEX ? _.add(
-                        !(isSymbol(p1)) ? new Symbol(p1) : p1, 
-                        !(isSymbol(p2)) ? new Symbol(p2) : p2
-                    ): (g1 === N /*don't add powers for N*/? p1 : p1.add(p2));
-
-                    //eliminate zero power values and convert them to numbers
-                    if(result.power.equals(0)) result = result.convert(N);
-
-                    //properly convert to EX
-                    if(toEX) result.convert(EX);
-
-                    //take care of imaginaries
-                    if(a.imaginary && b.imaginary) { 
-                        var isEven = even(result.power % 2);
-                        if(isEven) {
-                            result = new Symbol(1);
-                            m.negate();
-                        }
+                    //TODO: this needs cleaning up
+                    if(g1 === PL && g2 !== PL && b.previousGroup !== PL && p1.equals(1)) {
+                        result = new Symbol(0);
+                        a.each(function(x) {
+                            result = _.add(result, _.multiply(x, b.clone()));
+                        }, true);
                     }
-                   
-                    //cleanup: this causes the LaTeX generator to get confused as to how to render the symbol
-                    if(result.group !== EX && result.previousGroup) result.previousGroup = undefined;
-                    //the sign for b is floating around. Remember we are assuming that the odd variable will carry
-                    //the sign but this isn't true if they're equals symbols
-                    result.multiplier = result.multiplier.multiply(b.multiplier);
+                    else {
+                        //add the powers
+                        result.power = toEX ? _.add(
+                            !(isSymbol(p1)) ? new Symbol(p1) : p1, 
+                            !(isSymbol(p2)) ? new Symbol(p2) : p2
+                        ): (g1 === N /*don't add powers for N*/? p1 : p1.add(p2));
+
+                        //eliminate zero power values and convert them to numbers
+                        if(result.power.equals(0)) result = result.convert(N);
+
+                        //properly convert to EX
+                        if(toEX) result.convert(EX);
+
+                        //take care of imaginaries
+                        if(a.imaginary && b.imaginary) { 
+                            var isEven = even(result.power % 2);
+                            if(isEven) {
+                                result = new Symbol(1);
+                                m.negate();
+                            }
+                        }
+
+                        //cleanup: this causes the LaTeX generator to get confused as to how to render the symbol
+                        if(result.group !== EX && result.previousGroup) result.previousGroup = undefined;
+                        //the sign for b is floating around. Remember we are assuming that the odd variable will carry
+                        //the sign but this isn't true if they're equals symbols
+                        result.multiplier = result.multiplier.multiply(b.multiplier);
+                    }
                 }
                 else if(g1 === CB && a.isLinear()){ 
                     if(g2 === CB) b.distributeExponent();
@@ -3742,7 +4635,13 @@ var nerdamer = (function(imports) {
                             result.distributeExponent();
                             result.combine(b);
                         }
-                        else if(!b.isOne()) result = Symbol.shell(CB).combine([result, b]);
+                        else if(!b.isOne()) {
+                            var bm = b.multiplier.clone();
+                            b.toUnitMultiplier();
+                            result = Symbol.shell(CB).combine([result, b]);
+                            //transfer the multiplier to the outside
+                            result.multiplier = result.multiplier.multiply(bm);
+                        }
                     }     
                     else { 
                         result = b.clone().toUnitMultiplier();
@@ -3858,8 +4757,10 @@ var nerdamer = (function(imports) {
         
             if(aIsSymbol && bIsSymbol) {
                 var result;
+                if(b.equals(0)) 
+                    throw new DivisionByZero('Division by zero not allowed!');
+                
                 if(a.isConstant() && b.isConstant()) {
-                    if(b.equals(0)) err('Division by zero not allowed!');
                     result = a.clone();
                     result.multiplier = result.multiplier.divide(b.multiplier);
                 }
@@ -3933,9 +4834,12 @@ var nerdamer = (function(imports) {
         this.pow = function(a, b) { 
             var aIsSymbol = isSymbol(a),
                 bIsSymbol = isSymbol(b);
-            
             if(aIsSymbol && bIsSymbol) {
-                if(a.equals(0) && b.equals(0)) err('0^0 is undefined!');
+                var aIsZero = a.equals(0);
+                if(aIsZero && b.equals(0)) err('0^0 is undefined!');
+                //return 0 right away if possible
+                if(aIsZero && b.isConstant() && b.multiplier.greaterThan(0))
+                    return new Symbol(0);
                 
                 var bIsConstant = b.isConstant(),
                     aIsConstant = a.isConstant(), 
@@ -3953,22 +4857,42 @@ var nerdamer = (function(imports) {
                     result = s; 
                 }
                 else {
+                    var sign = m.sign();
+                    //handle cases such as (-a^3)^(1/4)
+                    if(evenFraction(b) && sign < 0) {
+                        //swaperoo
+                        //first put the sign back on the symbol
+                        result.negate();
+                        //wrap it in brackets
+                        result = _.symfunction(PARENTHESIS, [result]);
+                        //move the sign back the exterior and let nerdamer handle the rest
+                        result.negate();
+                    }
                     result.multiplyPower(b);
                 }
 
-                if(aIsConstant && bIsConstant && Settings.PARSE2NUMBER) {
-                    var base = a.multiplier.toDecimal(), e = b.multiplier.toDecimal();
-
-                    var sign = new Symbol(1);
-                    if(b.multiplier.den.isOdd()) {
-                        var abs_base = Math.abs(base);
-                        sign = new Symbol(base/abs_base);
-                        base = abs_base;
+                if(aIsConstant && bIsConstant && Settings.PARSE2NUMBER) { 
+                    var c;
+                    //remove the sign
+                    if(sign < 0) {
+                        a.negate();
+                        if(b.multiplier.den.equals(2)) 
+                            //we know that the numerator has to be odd and therefore it's i
+                            c = new Symbol(Settings.IMAGINARY);
+                        else if(isInt(b.multiplier)) {
+                            if(even(b.multiplier))
+                                c = new Symbol(1);
+                            else 
+                                c = new Symbol(-1);
+                        }
+                        else
+                            c = _.pow(_.symfunction(PARENTHESIS, [new Symbol(-1)]), b.clone());
                     }
-                    
-                    if(even(e)) sign = new Symbol(1);
-                    
-                    result = _.multiply(new Symbol(Math.pow(base, e)), sign);
+
+                    result = new Symbol(Math.pow(a.multiplier.toDecimal(), b.multiplier.toDecimal()));
+                    //put the back sign
+                    if(c)
+                        result = _.multiply(result, c);
                 }
                 else if(bIsInt && !m.equals(1)) { 
                     var p = b.multiplier.toDecimal(),
@@ -3976,47 +4900,74 @@ var nerdamer = (function(imports) {
                     //multiplying is justified since after mulltiplyPower if it was of group P it will now be of group N
                     result.multiplier = result.multiplier.multiply(multiplier);
                 }
-                else {
-                    //b is a symbol
-                    var sign = Math.sign(m.num),
-                        neg_num = a.group === N && sign < 0,
-                        num = testSQRT(new Symbol(neg_num ? m.num : Math.abs(m.num)).setPower(b.clone())),
-                        den = testSQRT(new Symbol(m.den).setPower(b.clone()).invert());  
-                    //eliminate imaginary if possible
-                    if(a.imaginary) { 
-                        //assume i = sqrt(-1) -> (-1)^(1/2)
-                        var nr = b.multiplier.multiply(Frac.quick(1, 2)),
-                            //the denominator denotes the power so raise to it. It will turn positive it round
-                            tn = Math.pow(-1, nr.num);
-                        result = even(nr.den) ? new Symbol(-1).setPower(nr, true) : new Symbol(tn);
-                    } 
-                    //ensure that the sign is carried by the symbol and not the multiplier
-                    //this enables us to check down the line if the multiplier can indeed be transferred
-                    if(sign < 0 && !neg_num) result.negate();
-
-                    result = _.multiply(result, testPow(_.multiply(num, den)));
-
-                    //retain the absolute value
-                    if(bIsConstant && a.group !== EX) { 
-                        var evenr = even(b.multiplier.den),
-                            evenp = even(a.power),
-                            n = result.power.toDecimal(),
-                            evennp = even(n);
-                        if(evenr && evenp && !evennp) {
-                            if(n === 1 ) result = _.symfunction(ABS, [result]);
-                            else if(!isInt(n)) {
-                                var p = result.power;
-                                result = _.symfunction(ABS, [result.toLinear()]).setPower(p);
+                else { 
+                    var sign = a.sign();
+                    if(b.isConstant() && a.isConstant() && even(b.multiplier.den) && sign < 0 ) { 
+                        //we know the sign is negative so if the denominator for b == 2 then it's i
+                        if(b.multiplier.den.equals(2)) {
+                            var i = new Symbol(Settings.IMAGINARY);
+                            a.negate();//remove the sign
+                            //if the power is negative then i is negative
+                            if(b.lessThan(0)) {
+                                i.negate();
+                                b.negate();//remove the sign from the power
                             }
-                            else {
-                                result = _.multiply(_.symfunction(ABS, [result.clone().toLinear()]), 
-                                    result.clone().setPower(new Frac(n-1)));
-                            }
+                            //pull the power normally and put back the imaginary
+                            result = _.multiply(_.pow(a, b), i);
                         }
+                        else { 
+                            var aa = a.clone();
+                            aa.multiplier.negate();
+                            result = _.pow(_.symfunction(PARENTHESIS, [new Symbol(-1)]), b.clone()); 
+                            var _a = _.pow(new Symbol(aa.multiplier.num), b.clone());
+                            var _b = _.pow(new Symbol(aa.multiplier.den), b.clone());
+                            var r = _.divide(_a, _b);
+                            result = _.multiply(result, r);
+                        }  
+                    }
+                    else { 
+                        //b is a symbol
+                        var neg_num = a.group === N && sign < 0,
+                            num = testSQRT(new Symbol(neg_num ? m.num : Math.abs(m.num)).setPower(b.clone())),
+                            den = testSQRT(new Symbol(m.den).setPower(b.clone()).invert());  
+                    
+                        //eliminate imaginary if possible
+                        if(a.imaginary) { 
+                            //assume i = sqrt(-1) -> (-1)^(1/2)
+                            var nr = b.multiplier.multiply(Frac.quick(1, 2)),
+                                //the denominator denotes the power so raise to it. It will turn positive it round
+                                tn = Math.pow(-1, nr.num);
+                            result = even(nr.den) ? new Symbol(-1).setPower(nr, true) : new Symbol(tn);
+                        } 
+                        //ensure that the sign is carried by the symbol and not the multiplier
+                        //this enables us to check down the line if the multiplier can indeed be transferred
+                        if(sign < 0 && !neg_num) result.negate();
+                        
+                        //retain the absolute value
+                        if(bIsConstant && a.group !== EX) { 
+                            var evenr = even(b.multiplier.den),
+                                evenp = even(a.power),
+                                n = result.power.toDecimal(),
+                                evennp = even(n);
+                            if(evenr && evenp && !evennp) {
+                                if(n === 1 ) result = _.symfunction(ABS, [result]);
+                                else if(!isInt(n)) {
+                                    var p = result.power;
+                                    result = _.symfunction(ABS, [result.toLinear()]).setPower(p);
+                                }
+                                else {
+                                    result = _.multiply(_.symfunction(ABS, [result.clone().toLinear()]), 
+                                        result.clone().setPower(new Frac(n-1)));
+                                }
+                            }
+                        }   
                     }   
                 }
 
                 result = testSQRT(result);
+                //don't multiply until we've tested the remaining symbol
+                if(num && den)
+                    result = _.multiply(result, testPow(_.multiply(num, den)));
 
                 //reduce square root
                 if(result.fname === SQRT) { 
@@ -4037,7 +4988,6 @@ var nerdamer = (function(imports) {
                         m2 = result.power.multiplier; 
                     result = new Symbol(even(m2) ? m1 : m1.negate());
                 }
-
                 return result;
             }
             else {
@@ -4057,13 +5007,63 @@ var nerdamer = (function(imports) {
         
         //gets called when the parser finds the , operator. 
         this.comma = function(a, b) { 
-            if(a instanceof Array) a.push(b);
+            var aIsArray = (a instanceof Array),
+                bIsArray = (b instanceof Array),
+                aHasSubArray = (aIsArray && a[0] instanceof Array);
+
+            if ( (aIsArray && aHasSubArray) || (aIsArray && !bIsArray) ) a.push(b);
             else a = [a,b];
             return a;
+        };
+        
+        //the equality setter
+        this.equals = function(a, b) {
+            //equality can only be set for group S so complain it's not
+            if(a.group !== S && !a.isLinear())
+                err('Cannot set equality for '+a.toString());
+            VARS[a.value] = b.clone();
+            return b;
+        };
+        //check for equality
+        this.eq = function(a, b) {
+            return a.equals(b);
+        };
+        //checks for greater than
+        this.gt = function(a, b) {
+            return a.gt(b);
+        };
+        //checks for greater than equal
+        this.gte = function(a, b) {
+            return a.gte(b);
+        };
+        //checks for less than
+        this.lt = function(a, b) {
+            return a.lt(b);
+        };
+        //checks for less than equal
+        this.lte = function(a, b) {
+            return a.lte(b);
         };
         //wraps the factorial
         this.factorial = function(a) {
             return this.symfunction(FACTORIAL, [a]);
+        };
+        //wraps the double factorial
+        this.dfactorial = function(a) {
+            return this.symfunction(DOUBLEFACTORIAL, [a]);
+        };
+        //wacky fix for factorial with prefixes
+        this.factadd = function(a, b) {
+            return _.add(this.symfunction(FACTORIAL, [a]), b);
+        };
+        this.dfactadd = function(a, b) {
+            return _.add(this.symfunction(DOUBLEFACTORIAL, [a]), b);
+        };
+        this.factsub = function(a, b) {
+            return _.subtract(this.symfunction(FACTORIAL, [a]), b);
+        };
+        this.dfactsub = function(a, b) {
+            return _.subtract(this.symfunction(DOUBLEFACTORIAL, [a]), b);
         };
     };
     
@@ -4166,14 +5166,23 @@ var nerdamer = (function(imports) {
                     var rowTeX = [],
                         e = symbol.elements[i];
                     for(var j=0; j<e.length; j++) {
-                        rowTeX.push(this.latex(e));
+                        rowTeX.push(this.latex(e[j]));
                     }
                     TeX += rowTeX.join(' & ')+'\\\\\n';
                 }
                 TeX += '\\end{pmatrix}';
                 return TeX;
             }
-            
+
+            if (isVector(symbol)) {
+                var TeX = '\\left[';
+                for (var i = 0; i < symbol.elements.length; i++){
+                    TeX += this.latex(symbol.elements[i]) + ' ' + (i!==symbol.elements.length-1 ? ',\\,' : '');
+                }
+                TeX += '\\right]';
+                return TeX;
+            }
+
             symbol = symbol.clone();
             var decimal = option === 'decimal',
                 power = symbol.power,
@@ -4270,7 +5279,7 @@ var nerdamer = (function(imports) {
             var group = symbol.group,
                 previousGroup = symbol.previousGroup,
                 v = ['', ''],
-                index =  inverted ? 1 : 0;;
+                index =  inverted ? 1 : 0;
             /*if(group === N) //do nothing since we want to return top & bottom blank; */
             if(group === S || group === P || previousGroup === S || previousGroup === P || previousGroup === N) { 
                 var value = symbol.value;
@@ -4304,15 +5313,15 @@ var nerdamer = (function(imports) {
                 else if(fname === 'integrate') {
                     v[index] = '\\int'+this.braces(input[0])+this.braces('d'+input[1]);
                 }
-                else if(fname === FACTORIAL) {
+                else if(fname === FACTORIAL || fname === DOUBLEFACTORIAL) {
                     var arg = symbol.args[0];
                     if(arg.power.equals(1) && (arg.isComposite() || arg.isCombination())) {
                         input[0] = this.brackets(input[0]);
                     }
-                    v[index] = input[0]+'!';
+                    v[index] = input[0]+(fname === FACTORIAL ? '!' : '!!');
                 }
                 else { 
-                    var name = '\\mathrm'+this.braces(fname);
+                    var name = fname!=='' ? '\\mathrm'+this.braces(fname) : '';
                     v[index] = name+this.brackets(input.join(','), 'parens');
                 }  
             }
@@ -4557,7 +5566,7 @@ var nerdamer = (function(imports) {
         },
 
         // Calls the iterator for each element of the vector in turn
-        each: function(fn) {
+        each: function(fn) { 
             var n = this.elements.length, k=n, i;
             do { 
                 i = k-n;
@@ -4757,6 +5766,11 @@ var nerdamer = (function(imports) {
     Matrix.prototype = {
         //needs be true to let the parser know not to try to cast it to a symbol
         custom: true, 
+        get: function(row, column) {
+            if(!this.elements[row])
+                return undefined;
+            return this.elements[row][column];
+        },
         set: function(row, column, value) { 
             if(!this.elements[row]) 
                 this.elements[row] = [];
@@ -5043,6 +6057,9 @@ var nerdamer = (function(imports) {
     };
     
     var build = Utils.build = function(symbol, arg_array) { 
+        symbol = block('PARSE2NUMBER', function() {
+            return _.parse(symbol);
+        }, true);
         var args = variables(symbol);
         var supplements = [];
         var ftext = function(symbol, xports) { 
@@ -5054,9 +6071,18 @@ var nerdamer = (function(imports) {
             var ftext_complex = function(group) {
                 var d = group === CB ? '*' : '+',
                     cc = [];
-                for(var x in symbol.symbols) cc.push(ftext(symbol.symbols[x], xports)[0]);
+                
+                for(var x in symbol.symbols) {
+                    var sym = symbol.symbols[x],
+                        ft = ftext(sym, xports)[0];
+                    //wrap it in brackets if it's group PL or CP
+                    if(sym.isComposite())
+                        ft = inBrackets(ft);
+                    cc.push(ft);
+                }
                 var retval = cc.join(d);
-                return retval && !symbol.multiplier.equals(1)? inBrackets(retval) : retval;
+                retval = retval && !symbol.multiplier.equals(1) ? inBrackets(retval) : retval;
+                return retval;
             },
 
             ftext_function = function(bn) { 
@@ -5079,14 +6105,16 @@ var nerdamer = (function(imports) {
             };
 
             //the multiplier
-            if(group === N) c.push(symbol.multiplier.toDecimal());
-            else if(symbol.multiplier.equals(-1)) prefix = '-';
-            else if(!symbol.multiplier.equals(1)) c.push(symbol.multiplier.toDecimal());
+            if(group === N) 
+                c.push(symbol.multiplier.toDecimal());
+            else if(symbol.multiplier.equals(-1)) 
+                prefix = '-';
+            else if(!symbol.multiplier.equals(1)) 
+                c.push(symbol.multiplier.toDecimal());
             //the value
             var value;
             
-
-            if(group === S) value = symbol.value;
+            if(group === S || group === P) value = symbol.value;
             else if(group === FN) { 
                 value = ftext_function(symbol.fname);
             }
@@ -5111,7 +6139,6 @@ var nerdamer = (function(imports) {
             return [c.join('*'), xports.join('').replace(/\n+\s+/g, ' ')];
         };
         if(arg_array) { 
-            if(args.length !== arg_array.length) err('Argument array contains wrong number of arguments');
             for(var i=0; i<args.length; i++) {
                 var arg = args[i];
                 if(arg_array.indexOf(arg) === -1) err(arg+' not found in argument array');
@@ -5129,6 +6156,7 @@ var nerdamer = (function(imports) {
     //This contains all the parts of nerdamer and enables nerdamer's internal functions
     //to be used.
     var C = {};
+    C.exceptions = {};
     C.Operator = Operator;
     C.groups = Groups;
     C.Symbol = Symbol;
@@ -5148,6 +6176,12 @@ var nerdamer = (function(imports) {
     C.VARS = VARS;
     C.err = err;
     C.bigInt = bigInt;
+    //load the exceptions
+    C.exceptions.DivisionByZero = DivisionByZero;
+    C.exceptions.ParseError = ParseError;
+    //TODO: fix 
+    if(!_.error)
+        _.error = err;
     /* END BUILD CORE */
 
     
@@ -5167,27 +6201,14 @@ var nerdamer = (function(imports) {
         //convert any expression passed in to a string
         if(expression instanceof Expression) expression = expression.toString();
         
-        var parts = expression.split('=');
-        //have the expression point to the second part instead
-        if(parts.length > 1) {
-            //Check if parts[0] is a function
-            if (/\w+\((.*)\)/.test(parts[0].replace(/\s/g, ''))) {
-                fn = /\w+(?=\()/.exec(parts[0])[0];
-                args = /\((.*)(?=\))/.exec(parts[0])[1].replace(/\s/g, '').split(',');
-            } else {
-                variable = parts[0];
-            }
-            expression = parts[1];
-        }
-        
         var multi_options = isArray(option),
             expand = 'expand',
             numer = multi_options ? option.indexOf('numer') !== -1 : option === 'numer';
         if((multi_options ? option.indexOf(expand) !== -1 : option === expand)) {
             expression = format('{0}({1})', expand, expression);
         }
-        var e = block('PARSE2NUMBER', function(){
-            return _.parse(expression, format_subs(subs));
+        var e = block('PARSE2NUMBER', function(){ 
+            return _.parse(expression, subs);
         }, numer || Settings.PARSE2NUMBER);
         
         if(location) { EXPRESSIONS[location-1] = e; }
@@ -5199,11 +6220,28 @@ var nerdamer = (function(imports) {
         return new Expression(e);
     };
     
+    libExports.rpn = function(expression) {
+        return _.parse(expression, null, true);
+    };
+    
+    libExports.convertToLaTeX = function(e) {
+        return _.toTeX(e);
+    };
+    
     /**
-     * 
+     * Get the version of nerdamer or a loaded add-on
+     * @param {String} add_on - The add-on being checked
      * @returns {String} returns the version of nerdamer
      */
-    libExports.version = function() {
+    libExports.version = function(add_on) {
+        if(add_on) {
+            try {
+                return C[add_on].version;
+            }
+            catch(e) {
+                return "No module named "+add_on+" found!";
+            }
+        }
         return version;
     };
     
@@ -5392,6 +6430,9 @@ var nerdamer = (function(imports) {
      */
     libExports.setVar = function(v, val) {
         validateName(v);
+        //check if it's not already a constant
+        if(v in _.constants)
+            err('Cannot set value for constant '+v);
         if(val === 'delete') delete VARS[v];
         else {
             VARS[v] = isSymbol(val) ? val : _.parse(val);
@@ -5450,6 +6491,34 @@ var nerdamer = (function(imports) {
         if(disallowed.indexOf(setting) !== -1) err('Cannot modify setting: '+setting);
         Settings[setting] = value;
     };
+    /**
+     * This functions makes internal functions available externally
+     * @param {bool} override Override the functions when calling api if it exists 
+     */
+    libExports.api = function(override) {
+        //Map internal functions to external ones
+        var linker = function(fname) {
+            return function() {
+                var args = [].slice.call(arguments);
+                for(var i=0; i<args.length; i++)
+                    args[i] = _.parse(args[i]);
+                return new Expression(block('PARSE2NUMBER', function() {
+                    return _.callfunction(fname, args);
+                }));
+            };
+        };
+        //perform the mapping
+        for(var x in _.functions) 
+            if(!(x in libExports) || override)
+                libExports[x] = linker(x);
+    };
+    
+    libExports.convert = function(e) {
+        var raw = _.parse(e, null, true);
+        return raw;
+    };
+        
+    libExports.api();
 
     return libExports; //Done
 })({

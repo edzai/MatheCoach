@@ -32,7 +32,7 @@ class Tally
     _(@docs())
     .filter (doc) -> doc.answerCorrect
     .map (doc) ->
-      t = moment().diff(moment(doc.date))/moment.duration(2, "days")
+      t = moment().diff(moment(doc.date))/moment.duration(8, "days")
       _.round doc.level * 100 * 2 ** -t
     .sum()
 

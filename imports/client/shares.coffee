@@ -1,7 +1,7 @@
 _ = require "lodash"
 MobileDetect = require "mobile-detect"
 
-{ pushToStore, removeFromStore , flushStore } =
+{ pushSubmissionToStore, removeSubmissionFromStore , flushSubmissionStore } =
   require "./localStore.coffee"
 
 { insertSubmission } = require "/imports/api/submissions.coffee"
@@ -13,40 +13,71 @@ ViewModel.share
   FlowRouterAuth :
     permissionGranted : ->
       FlowRouter.Auth.permissionGranted()
+
   unsyncedSubmissions :
     unsyncedCount : 0
     insertSubmission : (submissionObject) ->
       inserted = insertSubmission.call submissionObject,
         (error, result) =>
           unless error
-            removeFromStore submissionObject
+            removeSubmissionFromStore submissionObject
             @unsyncedCount @unsyncedCount() - 1
           else console.log error
       if inserted
-        pushToStore submissionObject
+        pushSubmissionToStore submissionObject
         @unsyncedCount @unsyncedCount() + 1
 
   layout :
-    navbarSize : 1#-> Meteor.user()?.profile?.navbarSize or 1
-    contentSize : 1#-> Meteor.user()?.profile?.contentSize or 1
-    keypadSize : 1#-> Meteor.user()?.profile?.keypadSize or 1
-    showViewportSize : -> Meteor.user()?.profile?.showViewportSize or false
+    navbarSize : ->
+      if @useMobile()
+        Meteor.user()?.navbarSize or 1
+      else 1
+    contentSize : ->
+      if @useMobile()
+        Meteor.user()?.contentSize or 1
+      else 1
+    keypadSize : ->
+      if @useMobile()
+        Meteor.user()?.keypadSize or 1
+      else 1
     layoutEditorToggle : false
     isMobile : ->
-      md = new MobileDetect window.navigator.userAgent
-      console.log md
-      console.log "mobile", md.mobile()
-      md.mobile()?
+      (new MobileDetect window.navigator.userAgent).mobile()?
     forceUseMobile : false
     useMobile : ->
       if @forceUseMobile() then true else if @isMobile() then true
-    forceUseKeyboard : false
+    forceUseOtherKeyboard : false
     useKeypad : ->
-      if @forceUseKeyboard() then false else if @useMobile() then true
+      if @useMobile()
+        not @forceUseOtherKeyboard()
+      else
+        @forceUseOtherKeyboard()
     autorun : [
       ->
-        document.body.style.zoom = "#{@contentSize()*100}%"
+        document.getElementsByTagName('html')[0].style['font-size'] =
+          "#{@contentSize()*100}%"
     ]
+
+  unsolvedProblems :
+    unsolvedProblems : {}
+    currentLevelForModule : {}
+    rememberUnsolvedProblems : true
+    memorizeProblem : (moduleKey, level, problemObject) ->
+      temp = @unsolvedProblems()
+      temp["#{moduleKey}_#{level}"] = problemObject
+      @unsolvedProblems temp
+      temp = @currentLevelForModule()
+      temp[moduleKey] = level
+      @currentLevelForModule temp
+    recallProblem : (moduleKey, level) ->
+      if @rememberUnsolvedProblems()
+        @unsolvedProblems()?["#{moduleKey}_#{level}"]
+      else
+        undefined
+    forgetProblem : (moduleKey, level) ->
+      @memorizeProblem moduleKey, level, undefined
+    recallLevel : (moduleKey) ->
+      @currentLevelForModule()[moduleKey] or 1
 
 ViewModel.mixin
   rolesForUserId :
@@ -67,9 +98,9 @@ ViewModel.mixin
   timeAgo :
     timeAgoReactiveTimer : new ReactiveTimer(10)
     timeAgo : ->
-      @timeAgoReactiveTimer().tick()
-      if @profile?().lastActive?
-        date = moment(@profile().lastActive)
+      @timeAgoReactiveTimer().tick?()
+      if @lastActive?()?
+        date = moment @lastActive()
         "#{date.calendar()} (#{date.fromNow()})"
       else
         "(bisher noch nicht aktiv)"
