@@ -1,6 +1,8 @@
 { Mongo } = require "meteor/mongo"
 { Meteor } = require "meteor/meteor"
 
+{ Scores } = require "/imports/api/scores.coffee"
+
 require "./users.coffee"
 
 Submissions = new Mongo.Collection "submissions"
@@ -13,6 +15,8 @@ Submissions.schema = new SimpleSchema
     type : Number
   answerCorrect :
     type : Boolean
+  score :
+    type : Number
   date :
     type : Date
   description :
@@ -67,6 +71,8 @@ exports.insertSubmission = new ValidatedMethod
         type : Number
       answerCorrect :
         type : Boolean
+      score :
+        type : Number
       description :
         type : String
       problem :
@@ -94,13 +100,22 @@ exports.insertSubmission = new ValidatedMethod
         optional : true
         blackbox : true
     .validator()
-  run : ( objectToInsert )->
+  run : ( submission )->
     unless @userId
       throw new Meteor.Error "not logged-in"
     now = new Date()
-    objectToInsert.userId = @userId
-    Submissions.insert objectToInsert
+    submission.userId = @userId
+    unless submission.answerCorrect
+      submission.score = 0
+    Submissions.insert submission
     Meteor.users.update @userId,
       $set :
         lastActive : now
+    if submission.answerCorrect
+      selector =
+        userId : @userId
+        category : submission.moduleKey
+      Scores.update selector,
+        {$inc : {score : submission.score}},
+        {upsert : true}
     return true

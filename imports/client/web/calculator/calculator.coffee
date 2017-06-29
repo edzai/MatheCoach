@@ -1,4 +1,5 @@
 require "./calculator.jade"
+{ Scores, incScore } = require "/imports/api/scores.coffee"
 
 _ = require "lodash"
 
@@ -15,6 +16,12 @@ math = require "mathjs"
 
 Template.calculator.viewmodel
   input : ""
+  score : ->
+    Scores.findOne({userId : Meteor.userId(), category : "test"})?.score
+  incScore : ->
+    incScore.call
+      userId : Meteor.userId()
+      category : "test"
 
   amString : ->
     try
