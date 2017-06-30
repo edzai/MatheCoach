@@ -2,6 +2,7 @@
 { SchoolClasses } = require "/imports/api/schoolClasses.coffee"
 { ChatMessages } = require "/imports/api/chatMessages.coffee"
 { ActivityGraphs } = require "/imports/api/activityGraphs.coffee"
+{ Scores } = require "/imports/api/scores.coffee"
 
 if Meteor.isServer
   #TODO: add publication for current user data
@@ -94,6 +95,13 @@ if Meteor.isServer
               senderId : @userId
             ]
 
+  Meteor.publishComposite "userScores", ->
+    find : ->
+      if @userId?
+        Scores.find userId : @userId
+      else
+        @ready()
+
 if Meteor.isClient
   #userData is subscribed to in layout template
   Meteor.subscribe "userData"
@@ -111,3 +119,4 @@ if Meteor.isClient
       Meteor.subscribe "schoolClasses"
       exports.userSubmissionsSubscription = Meteor.subscribe "userSubmissions"
       exports.chatMessagesSubscription = Meteor.subscribe "chatMessages"
+      Meteor.subscribe "userScores"

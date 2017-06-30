@@ -1,5 +1,6 @@
 template(name="calculator")
   .ui.text.container
+    button.ui.right.floated.button($b="text : score, click : incScore")
     h2.header Rechner
     .ui.segment
       h3.header Input
@@ -11,4 +12,5 @@ template(name="calculator")
     .ui.segment
       h3.header Output
       +teXDisplay(teX=nerdamerTeX)
+  
   

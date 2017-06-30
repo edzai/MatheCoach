@@ -75,6 +75,7 @@ Template.problem.viewmodel
   newLevel : 1
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
+  score : -> @problem()?.score ? 0
   drawSVG : -> @problem()?.geometryDrawData?
   SVGData : ->
     if @drawSVG()
@@ -132,6 +133,7 @@ Template.problem.viewmodel
           moduleKey : @moduleKey()
           level : @currentLevel()
           answerCorrect : @answerCorrect()
+          score : @score()
           description : @description()
           problem : @problemTeX()
           answer : @answer()
