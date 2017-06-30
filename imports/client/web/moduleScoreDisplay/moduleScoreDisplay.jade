@@ -1,4 +1,16 @@
 template(name="moduleScoreDisplay")
-  .ui.right.floated.grey.circular.label
-    i.yellow.star.icon
+  .ui.basic.modal($b="ref : modal")
+    .header Punktestand für Modul 
+      span($b="text : moduleTitle")
+    .content
+      p($b="text : modalLevelText")
+      p($b="text : modalTitleText")
+      p($b="text : modalScoreText")
+      p($b="text : modalNextText")
+    .actions
+      .ui.basic.inverted.cancel.button
+        i.arrow.left.icon
+        | Zurück
+  .ui.right.floated.red.circular.label($b="click : click")
+    //i.star.icon($b="style : {color : starColor}")
     span($b="text : text")
