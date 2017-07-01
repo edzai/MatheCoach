@@ -30,7 +30,7 @@ template(name="studentListDisplay")
       .ui.circular.icon.button($b="click : gotoStudentPage")
         i.bar.graph.icon
       .ui.circular.icon.button($b="click : gotoStudentChat, class : {red : hasUnreadMessagesFromStudent}")
-        i.comments.outline.icon($b="class : shaking")
+        i.comments.outline.icon($b="ref : chatIcon")
     i.large.middle.aligned.user.icon($b="class : userColor")
     .content
       .header($b="text : name")

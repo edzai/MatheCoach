@@ -1,5 +1,7 @@
 require "./moduleScoreDisplay.jade"
 
+{ Howl } = require "howler"
+
 { Scores } = require "/imports/api/scores.coffee"
 
 { getModuleTitle } = require "/imports/client/mathproblems/getModulesList.coffee"
@@ -34,6 +36,7 @@ Template.moduleScoreDisplay.viewmodel
         category : @moduleKey()
       Scores.findOne(selector)?.score ? 0
   level : -> level @score()
+  oldLevel : -1
   #label:
   text : ->
     titleString =
@@ -58,3 +61,25 @@ Template.moduleScoreDisplay.viewmodel
       noch #{@level().nextScore-@score()} Punkte."
     else
       "Du hast den derzeititen Maximallevel erreicht!"
+  sound : new Howl
+    src : ["sounds.m4a", "sounds.mp3"]
+    sprite :
+      right : [930, 2000-930]
+      wrong : [2560, 3530-2560]
+      difficultylUp : [4510, 6110-4510]
+      difficultyDown : [6560, 8260-6560]
+      userLevelUp : [9230, 10880-9230]
+      userLevelDown : [11730, 13120-11730]
+  autorun : ->
+    console.log "level:", @oldLevel(), @level()
+    if @oldLevel() is -1
+      @oldLevel @level().number
+    else
+      if @oldLevel() < @level().number
+        @sound().play "userLevelUp"
+        @label.transition "tada"
+        @oldLevel @level().number
+      else if @oldLevel() > @level().number
+        @oldLevel @level().number
+        @sound().play "userLevelDown"
+        @label.transition "shake"
