@@ -42,6 +42,7 @@ class Problem
       @problem, @problemTeX,
       @solution, @solutionTeX,
       @description, @hint
+      @score
       @skipExpression,
       @geometryDrawData,
       @functionPlotData,
@@ -53,6 +54,7 @@ class Problem
     @problemTeX ?= teXifyAM @problem
     @solution ?= nerdamer(@problem).text "fractions"
     @solutionTeX ?= teXifyAM @solution
+    @score ?= 1
     @checks ?= [
       Check.equivalent
       Check.noReducableFractionsOptional
