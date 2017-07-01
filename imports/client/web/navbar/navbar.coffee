@@ -2,7 +2,6 @@
 { ChatMessages } = require "/imports/api/chatMessages.coffee"
 require "../navbarUserField/navbarUserField.coffee"
 require "/imports/client/web/setLayout/setLayout.coffee"
-require "animate.css"
 require "./navbar.jade"
 
 Template.navbar.viewmodel
@@ -24,3 +23,11 @@ Template.navbar.viewmodel
   shaking : -> if @hasUnreadMessages() then "animated infinite tada" else ""
   style : ->
     "font-size" : "#{@navbarSize()}em"
+  autorun :
+    ->
+      if @hasUnreadMessages()
+        console.log "flash on"
+        @chatIcon?.transition("set looping").transition("flash", "2000ms")
+      else
+        console.log "flash off"
+        @chatIcon?.transition "remove looping"

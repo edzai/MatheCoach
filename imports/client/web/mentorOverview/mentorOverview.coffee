@@ -4,7 +4,6 @@
 { Submissions } = require "/imports/api/submissions.coffee"
 { ChatMessages } = require "/imports/api/chatMessages.coffee"
 { ActivityGraphs, insertActivityGraph } = require "/imports/api/activityGraphs.coffee"
-require "animate.css"
 require "/imports/client/web/mustBeMentor/mustBeMentor.coffee"
 require "./mentorOverview.jade"
 require "/imports/client/web/schoolClassActivityGraph/\
@@ -56,8 +55,12 @@ Template.studentListDisplay.viewmodel
       senderId : @_id()
       read : false
     .count() isnt 0
-  shaking : -> if @hasUnreadMessagesFromStudent() then "animated infinite tada" else ""
   gotoStudentPage : -> FlowRouter.go "/mentor/student/#{@_id()}"
   gotoStudentChat : -> FlowRouter.go "/chat/#{@_id()}"
   mailLink : -> "mailto:#{@emails()[0].address}"
   mailVerified : -> @emails()[0].verified
+  autorun : ->
+    if @hasUnreadMessagesFromStudent()
+      @chatIcon.transition("set looping").transition("flash", "2000ms")
+    else
+      @chatIcon.transition "remove looping"
