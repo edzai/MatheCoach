@@ -38,7 +38,8 @@ Template.moduleScoreDisplay.viewmodel
   level : -> level @score()
   oldLevel : -1
   emoji : -> @level().emoji
-  displayScore : -> "#{@score()-@level().minScore}"
+  levelScore : -> "#{@score()-@level().minScore}"
+  displayScore : ""
   #label:
   starColor : -> @level().color
   click : (e) ->
@@ -58,14 +59,19 @@ Template.moduleScoreDisplay.viewmodel
     else
       "Du hast den derzeitigen Maximallevel erreicht!"
   autorun : ->
-    if @oldLevel() is -1
-      @oldLevel @level().number
-    else
+    unless @oldLevel() is -1
       if @oldLevel() < @level().number
-        @sound().play "userLevelUp"
-        @label.transition "tada"
-        @oldLevel @level().number
+        @label
+          .transition
+            animation : "horizontal flip"
+            duration : "1s"
+            onComplete : =>
+              @sound().play "userLevelUp"
+              @displayScore @levelScore()
+          .transition "fly down"
       else if @oldLevel() > @level().number
-        @oldLevel @level().number
+        @displayScore @level @levelScore()
         @sound().play "userLevelDown"
         @label.transition "shake"
+    @displayScore @levelScore()
+    @oldLevel @level().number
