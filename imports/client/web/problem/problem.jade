@@ -10,7 +10,7 @@ template(name="problem")
         .nine.wide.column
           h3.header($b="text : title")
         .seven.wide.right.aligned.column
-          .ui.blue.circular.label Level #{currentLevel}
+          //.ui.blue.circular.label Level #{currentLevel}
           if currentUser
             +moduleScoreDisplay(moduleKey=moduleKey userId=userId)
       .ui.segment
@@ -80,9 +80,9 @@ template(name="problem")
             i.minus.icon
           button.ui.button($b="click : harder, disable : autoLevelOn" title="Level erhöhen")
             i.plus.icon
-          button.ui.icon.button($b="toggle : autoLevelOn, class : {active : autoLevelOn}, enable : loggedIn" title="Level automatisch anpassen")
-            i.setting.icon
-        
+          button.ui.icon.button($b="toggle : autoLevelOn, enable : loggedIn" title="Level automatisch anpassen")
+            i.setting.icon($b="class : {loading : autoLevelOn}")
+            | Level {{currentLevel}}
         if answered
           button.ui.right.floated.green.icon.button($b="click : newProblem")
             | weiter

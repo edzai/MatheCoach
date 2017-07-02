@@ -1,10 +1,9 @@
 require "./moduleScoreDisplay.jade"
 
-{ Howl } = require "howler"
-
 { Scores } = require "/imports/api/scores.coffee"
 
-{ getModuleTitle } = require "/imports/client/mathproblems/getModulesList.coffee"
+{ getModuleTitle } =
+  require "/imports/client/mathproblems/getModulesList.coffee"
 
 { Tally } =
   require "/imports/modules/tally.coffee"
@@ -27,6 +26,7 @@ level = (score) ->
   result
 
 Template.moduleScoreDisplay.viewmodel
+  share : ["sound"]
   score : ->
     if false
       @tally().score()
@@ -37,13 +37,9 @@ Template.moduleScoreDisplay.viewmodel
       Scores.findOne(selector)?.score ? 0
   level : -> level @score()
   oldLevel : -1
+  emoji : -> @level().emoji
+  displayScore : -> "#{@score()-@level().minScore}"
   #label:
-  text : ->
-    titleString =
-      if @level().title
-        "#{@level().title} - "
-      else ""
-    "#{@level().emoji} #{@score()-@level().minScore}"
   starColor : -> @level().color
   click : (e) ->
     e.stopPropagation()
@@ -60,18 +56,8 @@ Template.moduleScoreDisplay.viewmodel
       "Bis zum nächsten Level brauchst Du \
       noch #{@level().nextScore-@score()} Punkte."
     else
-      "Du hast den derzeititen Maximallevel erreicht!"
-  sound : new Howl
-    src : ["sounds.m4a", "sounds.mp3"]
-    sprite :
-      right : [930, 2000-930]
-      wrong : [2560, 3530-2560]
-      difficultylUp : [4510, 6110-4510]
-      difficultyDown : [6560, 8260-6560]
-      userLevelUp : [9230, 10880-9230]
-      userLevelDown : [11730, 13120-11730]
+      "Du hast den derzeitigen Maximallevel erreicht!"
   autorun : ->
-    console.log "level:", @oldLevel(), @level()
     if @oldLevel() is -1
       @oldLevel @level().number
     else
