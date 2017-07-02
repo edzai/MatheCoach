@@ -26,8 +26,6 @@ Template.navbar.viewmodel
   autorun :
     ->
       if @hasUnreadMessages()
-        console.log "flash on"
         @chatIcon?.transition("set looping").transition("flash", "2000ms")
       else
-        console.log "flash off"
         @chatIcon?.transition "remove looping"

@@ -6,6 +6,8 @@ MobileDetect = require "mobile-detect"
 
 { insertSubmission } = require "/imports/api/submissions.coffee"
 
+{ Howl } = require "howler"
+
 ViewModel.share
   reactiveTimer :
     reactiveTimer : new ReactiveTimer(10)
@@ -13,6 +15,17 @@ ViewModel.share
   FlowRouterAuth :
     permissionGranted : ->
       FlowRouter.Auth.permissionGranted()
+
+  sound :
+    sound : new Howl
+      src : ["/sounds.mp3"]
+      sprite :
+        right : [930, 2000-930]
+        wrong : [2560, 3530-2560]
+        difficultylUp : [4510, 6110-4510]
+        difficultyDown : [6560, 8260-6560]
+        userLevelUp : [9230, 10880-9230]
+        userLevelDown : [11730, 13120-11730]
 
   unsyncedSubmissions :
     unsyncedCount : 0

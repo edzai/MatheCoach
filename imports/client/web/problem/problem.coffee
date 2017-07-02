@@ -24,7 +24,7 @@ _ = require "lodash"
 Template.inputKey.viewmodel
 
 Template.problem.viewmodel
-  share : ["reactiveTimer", "unsyncedSubmissions",
+  share : ["reactiveTimer", "sound", "unsyncedSubmissions",
     "layout", "unsolvedProblems"]
   handleInputKey : (keyValue) ->
     strArray = @answer().split ""
@@ -128,6 +128,7 @@ Template.problem.viewmodel
       @passTextsOptional passTextsOptional
       @failTextsRequired failTextsRequired
       @failTextsOptional failTextsOptional
+      @sound().play(if @answerCorrect() then "right" else "wrong")
       if Meteor.userId()
         submissionData =
           moduleKey : @moduleKey()
@@ -164,10 +165,12 @@ Template.problem.viewmodel
         @answerCorrect()
           if @retryCountdown() < 1
             @newLevel @currentLevel() + 1
+            @sound().play "difficultylUp"
           else
             @retryCountdown @retryCountdown() - 1
         if @levelTally().rightPercent() < 60 and not @answerCorrect()
           @newLevel @currentLevel() - 1
+          @sound().play "difficultyDown"
           @retryCountdown 3
 
   newProblem : ->

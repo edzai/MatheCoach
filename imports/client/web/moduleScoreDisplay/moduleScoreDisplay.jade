@@ -11,6 +11,7 @@ template(name="moduleScoreDisplay")
       .ui.basic.inverted.cancel.button
         i.arrow.left.icon
         | Zurück
-  .ui.right.floated.red.circular.label($b="ref : label, click : click")
-    //i.star.icon($b="style : {color : starColor}")
-    span($b="text : text")
+  .ui.huge.right.floated.circular.label($b="ref : label, click : click")
+    | {{emoji}}
+    .detail
+      | {{displayScore}}
