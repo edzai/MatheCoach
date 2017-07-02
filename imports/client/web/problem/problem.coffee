@@ -165,11 +165,13 @@ Template.problem.viewmodel
         @answerCorrect()
           if @retryCountdown() < 1
             @newLevel @currentLevel() + 1
+            @levelButtons.transition "tada"
             @sound().play "difficultylUp"
           else
             @retryCountdown @retryCountdown() - 1
         if @levelTally().rightPercent() < 60 and not @answerCorrect()
           @newLevel @currentLevel() - 1
+          @levelButtons.transition "shake"
           @sound().play "difficultyDown"
           @retryCountdown 3
 

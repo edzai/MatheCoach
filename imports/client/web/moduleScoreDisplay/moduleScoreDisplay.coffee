@@ -63,12 +63,14 @@ Template.moduleScoreDisplay.viewmodel
       if @oldLevel() < @level().number
         @label
           .transition
-            animation : "horizontal flip"
-            duration : "1s"
+            animation : "tada"
+            duration : "1500ms"
             onComplete : =>
               @sound().play "userLevelUp"
               @displayScore @levelScore()
-          .transition "fly down"
+          .transition "tada"
+          .transition "tada"
+          .transition "tada"
       else if @oldLevel() > @level().number
         @displayScore @level @levelScore()
         @sound().play "userLevelDown"
