@@ -27,6 +27,7 @@ Template.problem.viewmodel
   share : ["reactiveTimer", "sound", "unsyncedSubmissions",
     "layout", "unsolvedProblems"]
   handleInputKey : (keyValue) ->
+    @sound().play "click"
     strArray = @answer().split ""
     if keyValue is "backspace"
       strArray.pop()
@@ -187,11 +188,13 @@ Template.problem.viewmodel
     not @autoLevelOn()
       @problem oldProblem
     else
+      wantToIncLevel = @newLevel() > @currentLevel()
+      wantedLevel = @newLevel()
       newProblem = new Problem(@moduleKey(), @newLevel())
       @memorizeProblem @moduleKey(), @newLevel(), newProblem
       @problem newProblem
-    if @currentLevel() > @newLevel()
-      @levelButtons.transition "tada"
+    if wantToIncLevel and (@currentLevel() is wantedLevel)
+      @levelButtons?.transition "tada"
       @sound().play "difficultylUp"
     @newLevel @currentLevel()
   gotoModulesList : -> FlowRouter.go "/"
