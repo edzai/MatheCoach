@@ -20,12 +20,13 @@ ViewModel.share
     sound : new Howl
       src : ["/sounds.mp3"]
       sprite :
-        right : [930, 2000-930]
-        wrong : [2560, 3530-2560]
-        difficultylUp : [4510, 6110-4510]
-        difficultyDown : [6560, 8260-6560]
-        userLevelUp : [9230, 10880-9230]
-        userLevelDown : [11730, 13120-11730]
+        click : [0, 500]
+        right : [1000, 2000]
+        wrong : [3000, 2000]
+        difficultylUp : [5000, 2000]
+        difficultyDown : [8000, 2000]
+        userLevelUp : [11000, 2000]
+        userLevelDown : [900, 50]
 
   unsyncedSubmissions :
     unsyncedCount : 0

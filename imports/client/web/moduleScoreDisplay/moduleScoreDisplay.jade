@@ -1,17 +1,16 @@
 template(name="moduleScoreDisplay")
   .ui.basic.modal($b="ref : modal")
-    .header Punktestand für Modul 
-      span($b="text : moduleTitle")
+    .header
+      .ui.huge.center.aligned.header($b="text : emoji")
     .content
-      p($b="text : modalLevelText")
-      p($b="text : modalTitleText")
-      p($b="text : modalScoreText")
-      p($b="text : modalNextText")
+      .ui.huge.orange.center.aligned.header($b="text : levelTitle")
+      .ui.large.red.center.aligned.header($b="text : moduleTitle")
+      p.ui.yellow.center.aligned($b="text : modalScoreText")
     .actions
-      .ui.basic.inverted.cancel.button
+      .ui.basic.grey.inverted.cancel.button
         i.arrow.left.icon
         | Zurück
-  .ui.huge.right.floated.circular.label($b="ref : label, click : click")
+  .ui.right.floated.red.circular.label($b="ref : label, click : click, class : {huge : inProblemTemplate}")
     | {{emoji}}
     .detail
       | {{displayScore}}
