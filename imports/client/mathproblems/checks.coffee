@@ -208,37 +208,50 @@ exports.Check =
 
   roundedValueWithUnit : (decimals, unit) ->
     pass : (answer, solution) ->
-      answerUnit = math.unit answer
-      solutionUnit = math.unit solution
-      unit ?= solutionUnit.toJSON().unit
-      answerNumber = answerUnit.toNumber unit
-      solutionNumber = solutionUnit.toNumber unit
-      if decimals? and unit?
-        roundedSolution =
-          math.chain solutionUnit
-          .toNumber unit
-          .round decimals
-          .done()
-        minPrecision = getPrecision roundedSolution
-      isRounded answerNumber, solutionNumber, minPrecision
+      try
+        answerUnit = math.unit answer
+        solutionUnit = math.unit solution
+        unit ?= solutionUnit.toJSON().unit
+        answerNumber = answerUnit.toNumber unit
+        solutionNumber = solutionUnit.toNumber unit
+        if decimals? and unit?
+          roundedSolution =
+            math.chain solutionUnit
+            .toNumber unit
+            .round decimals
+            .done()
+          minPrecision = getPrecision roundedSolution
+        isRounded answerNumber, solutionNumber, minPrecision
+      catch error
+        console.log error
+        false
+
     required : true
     failText : "Das Ergebnis entspricht nicht der Lösung."
 
 
   exactValueWithUnit :
     pass : (answer, solution) ->
-      answerUnit = math.unit answer
-      solutionUnit = math.unit solution
-      answerUnit.equals solutionUnit
+      try
+        answerUnit = math.unit answer
+        solutionUnit = math.unit solution
+        answerUnit.equals solutionUnit
+      catch error
+        console.log error
+        false
     required : true
-    passText : "Das Ergebnis ist mit der Lösung äquivalent"
-    failText : "Das Ergebnis ist nicht mit der Lösung äquivalent."
+    passText : "Das Ergebnis ist zur Lösung äquivalent"
+    failText : "Das Ergebnis ist nicht zur Lösung äquivalent."
 
   unitIs : (unit) ->
     pass : (answer, solution) ->
-      math.unit(answer).toJSON().unit is unit
+      try
+        math.unit(answer).toJSON().unit is unit
+      catch error
+        console.log error
+        false
     required : true
-    failText : "Die geforderte Einheit wurde nicht angegeben."
+    failText : "Die geforderte Einheit #{unit} wurde nicht benutzt."
 
   answerEndsWith : (str) ->
     pass : (answer, solution) ->
