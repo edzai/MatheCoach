@@ -28,7 +28,12 @@ exports.unitsGenerator = generator =
       description : "Rechne die Einheiten um:"
       solution : solution
       answerPreprocessor : (answer) -> answer
-      checks : [Check.exactValueWithUnit, Check.unitIs(solutionUnit)]
+      checks : [
+        Check.isSingleValueWithUnit
+        Check.equivalentWithUnit
+        Check.unitIs(solutionUnit)
+      ]
+      
   addUnit : (unitNamesGenerator) ->
     (level = 1) ->
       math.config
@@ -49,7 +54,7 @@ exports.unitsGenerator = generator =
       description : "Berechne die Summe. Wähle eine passende Einheit."
       solution : solution
       answerPreprocessor : (answer) -> answer
-      checks : [Check.exactValueWithUnit]
+      checks : [Check.isSingleValueWithUnit, Check.equivalentWithUnit]
   multiplyUnit : (unitNamesGenerator) ->
     (level = 1) ->
       math.config
@@ -70,7 +75,7 @@ exports.unitsGenerator = generator =
       description : "Berechne das Produkt. Wähle eine passende Einheit."
       solution : solution
       answerPreprocessor : (answer) -> answer
-      checks : [Check.exactValueWithUnit]
+      checks : [Check.isSingleValueWithUnit, Check.equivalentWithUnit]
 
 exports.units =
   length :

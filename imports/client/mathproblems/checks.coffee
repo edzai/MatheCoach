@@ -230,26 +230,39 @@ exports.Check =
     failText : "Das Ergebnis entspricht nicht der Lösung."
 
 
-  exactValueWithUnit :
+  equivalentWithUnit :
     pass : (answer, solution) ->
       try
-        answerUnit = math.unit answer
-        solutionUnit = math.unit solution
-        answerUnit.equals solutionUnit
+        fixedAnswer = answer.replace /\*10\^/g, "e"
+        math.unit(fixedAnswer).equals math.unit(solution)
+      catch error
+        console.log error
+        false
+
+    required : true
+    passText : "Das Ergebnis ist zur Lösung äquivalent."
+    failText : "Das Ergebnis ist nicht zur Lösung äquivalent."
+
+  isSingleValueWithUnit :
+    pass : (answer, solution) ->
+      try
+        fixedAnswer = answer.replace /\*10\^/g, "e"
+        math.unit(fixedAnswer)?
       catch error
         console.log error
         false
     required : true
-    passText : "Das Ergebnis ist zur Lösung äquivalent"
-    failText : "Das Ergebnis ist nicht zur Lösung äquivalent."
+    failText : "Das Ergebnis muss ein einzelner Zahlenwert mit Einheit sein."
 
+  #schlägt nicht an, wenn isSingleValueWithUnit fehler meldet
   unitIs : (unit) ->
     pass : (answer, solution) ->
       try
-        math.unit(answer).toJSON().unit is unit
+        fixedAnswer = answer.replace /\*10\^/g, "e"
+        math.unit(fixedAnswer).toJSON().unit is unit
       catch error
         console.log error
-        false
+        true
     required : true
     failText : "Die geforderte Einheit #{unit} wurde nicht benutzt."
 
