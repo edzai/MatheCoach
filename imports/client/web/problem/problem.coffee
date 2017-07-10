@@ -76,6 +76,11 @@ Template.problem.viewmodel
   newLevel : 1
   description : -> @problem()?.description ? ""
   hint : -> @problem()?.hint ? ""
+  textBook : -> @problem()?.textBook ? ""
+  hasTextBook : -> @problem()?.textBook?
+  showTextBook : ->
+    @textBookModal
+      .modal "show"
   score : -> @problem()?.score ? 0
   drawSVG : -> @problem()?.geometryDrawData?
   SVGData : ->
