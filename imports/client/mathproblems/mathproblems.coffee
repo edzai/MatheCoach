@@ -41,7 +41,8 @@ class Problem
     {
       @problem, @problemTeX,
       @solution, @solutionTeX,
-      @description, @hint
+      @description, @hint,
+      @textBook,
       @score
       @skipExpression,
       @geometryDrawData,

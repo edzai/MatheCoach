@@ -1,6 +1,8 @@
 { Rnd } = require "../randomGenerators.coffee"
 rnd = new Rnd()
 
+{ circleTestTextBook } = require "./circleTestTextBook.coffee"
+
 { Check } = require "../checks.coffee"
 
 nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
@@ -30,6 +32,7 @@ generators =
     hint : "Das ist keine Aufgabe, das ist nur ein Programmtest."
     geometryDrawData : [circle1, circle2]
     skipExpression : true
+    textBook : circleTestTextBook
 
 exports.circleTest =
   title : "Kreise"

@@ -2,6 +2,16 @@ template(name="inputKey")
   button.input-key($b="click : parent.handleInputKey(value), text : text")
     
 template(name="problem")
+  .ui.modal($b="ref : textBookModal")
+    .header
+      .ui.header Hilfe zur Aufgabe
+    .content
+      +mathjax
+        |{{{textBook}}}
+    .actions
+      .ui.circular.cancel.icon.button
+        i.arrow.left.icon
+        | Zurück zur Aufgabe
   unless currentUser
     +mustBeLoggedIn
   else      
@@ -14,7 +24,10 @@ template(name="problem")
           if currentUser
             +moduleScoreDisplay(moduleKey=moduleKey userId=userId)
       .ui.segment
-        h4.header($b="text : description")
+        h4.ui.left.floated.header($b="text : description")
+        .ui.right.floated.tiny.circular.icon.button($b="enable : hasTextBook, click : showTextBook")
+          i.help.icon
+        .ui.hidden.clearing.divider
         if customTemplateName
           +Template.dynamic(template=customTemplateName data=customTemplateData)
         else
