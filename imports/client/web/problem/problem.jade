@@ -75,7 +75,7 @@ template(name="problem")
       div    
         button.ui.left.floated.grey.inverse.icon.button($b="toggle : forceUseOtherKeyboard")
           i.keyboard.icon
-        .ui.blue.icon.buttons
+        .ui.blue.icon.buttons($b="ref : levelButtons")
           button.ui.icon.button($b="click : easier, disable : autoLevelOn" title="Level verringern")
             i.minus.icon
           button.ui.button($b="click : harder, disable : autoLevelOn" title="Level erhöhen")

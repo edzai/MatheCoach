@@ -208,37 +208,63 @@ exports.Check =
 
   roundedValueWithUnit : (decimals, unit) ->
     pass : (answer, solution) ->
-      answerUnit = math.unit answer
-      solutionUnit = math.unit solution
-      unit ?= solutionUnit.toJSON().unit
-      answerNumber = answerUnit.toNumber unit
-      solutionNumber = solutionUnit.toNumber unit
-      if decimals? and unit?
-        roundedSolution =
-          math.chain solutionUnit
-          .toNumber unit
-          .round decimals
-          .done()
-        minPrecision = getPrecision roundedSolution
-      isRounded answerNumber, solutionNumber, minPrecision
+      try
+        answerUnit = math.unit answer
+        solutionUnit = math.unit solution
+        unit ?= solutionUnit.toJSON().unit
+        answerNumber = answerUnit.toNumber unit
+        solutionNumber = solutionUnit.toNumber unit
+        if decimals? and unit?
+          roundedSolution =
+            math.chain solutionUnit
+            .toNumber unit
+            .round decimals
+            .done()
+          minPrecision = getPrecision roundedSolution
+        isRounded answerNumber, solutionNumber, minPrecision
+      catch error
+        console.log error
+        false
+
     required : true
     failText : "Das Ergebnis entspricht nicht der Lösung."
 
 
-  exactValueWithUnit :
+  equivalentWithUnit :
     pass : (answer, solution) ->
-      answerUnit = math.unit answer
-      solutionUnit = math.unit solution
-      answerUnit.equals solutionUnit
-    required : true
-    passText : "Das Ergebnis ist mit der Lösung äquivalent"
-    failText : "Das Ergebnis ist nicht mit der Lösung äquivalent."
+      try
+        fixedAnswer = answer.replace /\*10\^/g, "e"
+        math.unit(fixedAnswer).equals math.unit(solution)
+      catch error
+        console.log error
+        false
 
+    required : true
+    passText : "Das Ergebnis ist zur Lösung äquivalent."
+    failText : "Das Ergebnis ist nicht zur Lösung äquivalent."
+
+  isSingleValueWithUnit :
+    pass : (answer, solution) ->
+      try
+        fixedAnswer = answer.replace /\*10\^/g, "e"
+        math.unit(fixedAnswer)?
+      catch error
+        console.log error
+        false
+    required : true
+    failText : "Das Ergebnis muss ein einzelner Zahlenwert mit Einheit sein."
+
+  #schlägt nicht an, wenn isSingleValueWithUnit fehler meldet
   unitIs : (unit) ->
     pass : (answer, solution) ->
-      math.unit(answer).toJSON().unit is unit
+      try
+        fixedAnswer = answer.replace /\*10\^/g, "e"
+        math.unit(fixedAnswer).toJSON().unit is unit
+      catch error
+        console.log error
+        true
     required : true
-    failText : "Die geforderte Einheit wurde nicht angegeben."
+    failText : "Die geforderte Einheit #{unit} wurde nicht benutzt."
 
   answerEndsWith : (str) ->
     pass : (answer, solution) ->

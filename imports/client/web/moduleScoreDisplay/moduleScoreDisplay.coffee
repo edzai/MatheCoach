@@ -38,34 +38,42 @@ Template.moduleScoreDisplay.viewmodel
   level : -> level @score()
   oldLevel : -1
   emoji : -> @level().emoji
-  displayScore : -> "#{@score()-@level().minScore}"
+  inProblemTemplate : -> FlowRouter.getRouteName() is "problem"
+  levelScore : -> "#{@score()-@level().minScore}"
+  displayScore : ""
   #label:
   starColor : -> @level().color
   click : (e) ->
     e.stopPropagation()
     @modal.modal "show"
   #modal:
-  moduleTitle : -> getModuleTitle @moduleKey()
-  modalHeaderText : -> "Punkte für #{@moduleTitle()}"
-  modalLevelText : -> "Du hast Level #{@level().number} erreicht."
-  modalTitleText : -> "Dein Titel ist: #{@level().title}."
-  modalScoreText : -> "Insgesamt hast Du #{@score()} Punkte erreicht, \
-    davon #{@score()-@level().minScore} auf diesem Level."
-  modalNextText : ->
+  levelTitle : -> @level().title
+  moduleTitle : -> "#{getModuleTitle @moduleKey()} - Level #{@level().number}"
+  modalNextLevel : ->
     if @level().nextScore?
       "Bis zum nächsten Level brauchst Du \
       noch #{@level().nextScore-@score()} Punkte."
     else
       "Du hast den derzeitigen Maximallevel erreicht!"
+  modalScoreText : -> "Du hast insgesamt #{@score()} Punkte erreicht, \
+    davon #{@score()-@level().minScore} auf diesem Level. #{@modalNextLevel()}"
   autorun : ->
-    if @oldLevel() is -1
-      @oldLevel @level().number
-    else
-      if @oldLevel() < @level().number
-        @sound().play "userLevelUp"
-        @label.transition "tada"
-        @oldLevel @level().number
-      else if @oldLevel() > @level().number
-        @oldLevel @level().number
-        @sound().play "userLevelDown"
-        @label.transition "shake"
+    unless @oldLevel() is -1
+      if @inProblemTemplate()
+        if @oldLevel() < @level().number
+          @label
+            .transition
+              animation : "tada"
+              duration : "1500ms"
+              onComplete : =>
+                @sound().play "userLevelUp"
+                @displayScore @levelScore()
+            .transition "tada"
+            .transition "tada"
+            .transition "tada"
+        else if @oldLevel() > @level().number
+          @displayScore @level @levelScore()
+          @sound().play "userLevelDown"
+          @label.transition "shake"
+    @displayScore @levelScore()
+    @oldLevel @level().number
