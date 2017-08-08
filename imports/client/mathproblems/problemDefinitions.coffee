@@ -101,22 +101,37 @@ exports.modules = [
       "strichrechnungGanzzahlig"
       "strichrechnungRational"
       "einXeins"
+      "decimals1"
+      "decimals2"
+      "decimals3"
+      "decimals"
+      "proportionality"
+    ]
+  ,
+    title : "Bruchrechnen"
+    description : "Bruchrechnen ist euer Freund!"
+    kindred : [
       "bruch0"
       "bruch1"
       "bruch2"
       "bruch3"
       "bruch4"
-      "decimals1"
-      "decimals2"
-      "decimals3"
-      "decimals"
+    ]
+  ,
+    title : "Rechnen mit Einheiten"
+    description : "Einheiten weglassen rächt sich."
+    kindred : [
       "lengthUnits"
       "areaUnits"
       "volumeUnits"
       "mixedUnits"
+    ]
+  ,
+    title : "Potenzrechnung"
+    description : "Rechengesetze für Potenzen und Wurzeln."
+    kindred : [
       "potenz1"
       "potenz2"
-      "proportionality"
     ]
   ,
     title : "Terme umformen"
@@ -125,6 +140,7 @@ exports.modules = [
       "terme1"
       "ausklammern"
       "binomischeFormeln"
+      "polynomialDivision"
     ]
   ,
     title : "Gleichungen"
@@ -133,6 +149,7 @@ exports.modules = [
       "lineareGleichung1"
       "lineareGleichung2"
       "quadratischeGleichung"
+      "linGlSys"
     ]
   ,
     title : "Funktionen"
@@ -141,6 +158,14 @@ exports.modules = [
       "linearFunctions"
       "scheitelpunkt"
       "nullStellen"
+      "quadraticFunctions"
+    ]
+  ,
+    title : "Geometrie"
+    description : "Vermischte Aufgaben"
+    kindred : [
+      "strahlensatz"
+      "prismen"
     ]
   ,
     title : "Calculus"
@@ -150,17 +175,12 @@ exports.modules = [
       "integration"
     ]
   ,
-    title : "Vermischtes"
-    description : "Aufgaben die noch nicht in die anderen Kategorien \
-      passen wollen oder noch nicht so ganz fertig sind."
+    title : "Area 51"
+    description : "Testgebiet für Aufgabengeneratoren \
+      an denen ich noch arbeite. Benutzung auf eigene Gefahr."
     kindred : [
-      "polynomialDivision"
       "templateTest"
-      "quadraticFunctions"
-      "strahlensatz"
       "sinussatz"
-      "linGlSys"
-      "prismen"
       "circleTest"
     ]
   ]

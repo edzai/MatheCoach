@@ -25,7 +25,7 @@ exports.decimalsGenerator = generator =
     #returns
     problem : problem
     solution : math.eval(problem, {a,b}).toString()
-    description : "Addiere die zwei Dezimalzahlen"
+    description : "Addiere die beiden Dezimalzahlen"
   subtraction : (level = 1) ->
     math.config
       number : "BigNumber"
@@ -40,7 +40,7 @@ exports.decimalsGenerator = generator =
     #returns
     problem : problem
     solution : math.eval(problem, {a,b}).toString()
-    description : "Subtrahiere die zwei Dezimalzahlen"
+    description : "Subtrahiere die beiden Dezimalzahlen"
   multiplication : (level = 1) ->
     math.config
       number : "BigNumber"
@@ -55,7 +55,7 @@ exports.decimalsGenerator = generator =
     #returns
     problem : problem
     solution : math.eval(problem, {a,b}).toString()
-    description : "Multipliziere die zwei Dezimalzahlen"
+    description : "Multipliziere die beiden Dezimalzahlen"
   division : (level = 1) ->
     math.config
       number : "BigNumber"
@@ -72,7 +72,7 @@ exports.decimalsGenerator = generator =
     problem : "not Used"
     problemTeX : "#{c} : #{a}"
     solution : "#{b}"
-    description : "Multipliziere die zwei Dezimalzahlen"
+    description : "Dividiere die beiden Dezimalzahlen"
 
 exports.decimals =
   decimals1 :

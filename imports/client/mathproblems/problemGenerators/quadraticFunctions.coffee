@@ -50,7 +50,7 @@ generators =
 
 exports.quadraticFunctions =
   title : "Quadratische Funktionen"
-  description : "Noch nicht ganz fertig. Die Werte lassen sich nicht immer gut ablesen."
+  description : "Funktionsterme vom Graphen ablesen."
   problems : [
     levels : [1]
     generator : generators.formulaFromGraph
