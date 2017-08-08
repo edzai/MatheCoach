@@ -16,7 +16,6 @@ generators =
         matrix
       else
         coeffMatrix d
-    debugger
     dimension = level + 1
     solutions = (rnd.intsMin -9, 9)[1..dimension]
     solutionNames = rnd.uniqueLetters()[1..dimension]
