@@ -16,6 +16,7 @@ generators =
         matrix
       else
         coeffMatrix d
+    debugger
     dimension = level + 1
     solutions = (rnd.intsMin -9, 9)[1..dimension]
     solutionNames = rnd.uniqueLetters()[1..dimension]
@@ -26,8 +27,10 @@ generators =
         leftSide = ""
         for solutionName, j in solutionNames
           coeff = coeffs._data[i][j]
-          leftSide += " + #{coeff}*#{solutionName}"
-        nerdamer("#{leftSide} = #{rightSide}").toTeX()
+          leftSide += " + #{coeff} #{solutionName}"
+        leftSideTeX = nerdamer("#{leftSide}").toTeX()
+        rightSideTeX = nerdamer(" #{rightSide}").toTeX()
+        "#{leftSideTeX} = #{rightSideTeX}"
     )
     problemTeX =
       equations.join("\\\\")
@@ -35,7 +38,10 @@ generators =
       solutionNames.map (name, i) -> "#{name} = #{solutions[i]}"
     solution = solutionArray.join(", ")
     solutionTeX =
-      solutionArray.map (e) -> nerdamer(e).toTeX()
+      solutionArray.map (e) ->
+        e.split "="
+        .map (side) -> nerdamer(side).toTeX()
+        .join "="
       .join("\\\\")
     chars = solutionNames.sort().join(", ").split("")
     if lastCommaPosition = chars.lastIndexOf ","
