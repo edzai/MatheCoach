@@ -41,10 +41,12 @@ class Line
       unless @slope is 0
         @normal = (new Point 1, -1/@slope).toLength 1
       else
-        @normal = new Point 0, 1
+        @normal = new Point 0, if p1.x > p2.x then 1 else -1
     else
       @isVertical = true
       @normal = new Point 1, 0
+    #make the normal always point right looking from p1 to p2
+    @normal = @normal.multiply(-1) if @p1.y < @p2.y
     @length = @p1.distance @p2
     @angle = @p1.angle @p2
     @pathString = "M#{@p1.x} #{@p1.y}L#{@p2.x} #{@p2.y}"
@@ -74,33 +76,38 @@ class GeometryDraw
     @paper = Snap "##{id}"
     @g = @paper.g()
 
-  lineLabel : (p1, p2, labelText) ->
+  lineLabel : (p1, p2, labelText, onLine=false) ->
     mid = p1.add(p2).multiply(.5)
-    yOffset = -3
+    yOffset = unless onLine then -3 else +3
     angle = p1.angle(p2)
     if 90< angle < 270
       angle += 180
-      yOffset = 11
+      yOffset = unless onLine then 10.5 else 4
     text = @paper
       .text(mid.x, mid.y, labelText)
       .attr
         "text-anchor": "middle"
         "font-size" : 11
         transform : "translate(0 #{yOffset})"
-    labelGroup = @paper.g text
+    textBBox = text.getBBox()
+    textBox = @paper
+      .rect textBBox.x, textBBox.y, textBBox.width, textBBox.height
+      .attr fill : if onLine then "white" else "none"
+    labelGroup = @paper.g textBox
+    labelGroup.add text
     labelGroup.attr
       transform : "rotate(#{angle} #{mid.x} #{mid.y})"
     @g.add labelGroup
-    { text }
+    { text, textBox }
 
-  labeledLine : (p1, p2, text) ->
+  labeledLine : (p1, p2, text, labelOnLine=false) ->
     line = @paper
       .line p1.x, p1.y, p2.x, p2.y
       .attr
         stroke : "black"
         strokeWidth : 1
-    lineLabel = @lineLabel p1, p2, text
     @g.add line
+    lineLabel = @lineLabel p1, p2, text, labelOnLine
     { line, lineLabel }
 
   labeledPoint : (p, labelText, labelOffset, drawMark = true) ->
@@ -151,6 +158,26 @@ class GeometryDraw
       @g.add pointLabel
     { arc, angleLabel, pointLabel }
 
+  lineMeasure : (lStart, lEnd, text, level=1) ->
+    levelHeight = 25
+    levelOffset = 4
+    line = new Line lStart, lEnd
+    [start, end] = [lStart, lEnd].map (p) =>
+      p1 = p.add line.normal.multiply levelOffset
+      p2 = p.add line.normal.multiply level*levelHeight
+      #return
+      line :
+        @paper
+          .line p1.x, p1.y, p2.x, p2.y
+          .attr
+            stroke : "grey"
+            strokeWidth : 1
+      levelPoint :
+        p.add line.normal.multiply level*levelHeight-levelOffset
+    labeledLine = @labeledLine start.levelPoint, end.levelPoint, text, true
+    labeledLine.line.attr stroke : "grey"
+    #labeledLine.lineLabel.text.attr stroke : "pink"
+
   normal : (lStart, lEnd, p, text) ->
     line = new Line lStart, lEnd
     normalLine = (new Line p, p.add(line.normal)).extend()
@@ -185,10 +212,21 @@ class GeometryDraw
     for line, i in lines
       prevLine = if i is 0 then lines[-1..][0] else lines[i-1]
       nextLine = if i < lines.length-1 then lines[i+1] else lines[0]
-      @labeledLine line.startPoint, nextLine.startPoint,
-        line.lineLabelText
+      if line.lineLabelInside
+        @labeledLine nextLine.startPoint, line.startPoint,
+          line.lineLabelText
+      else
+        @labeledLine line.startPoint, nextLine.startPoint,
+          line.lineLabelText
       @labeledAngle prevLine.startPoint, nextLine.startPoint,
         line.startPoint, line.pointLabelText, line.angleLabelText
+      if line.measureText?
+        if line.measureInside
+          @lineMeasure nextLine.startPoint, line.startPoint,
+            line.measureText, line.measureLevel
+        else
+          @lineMeasure line.startPoint, nextLine.startPoint,
+            line.measureText, line.measureLevel
 
   labeledCircle :
     (center, radius, phi = -45
@@ -224,6 +262,10 @@ class GeometryDraw
           for key in ["startPoint", "endPoint", "p"]
             e.line[key] = new Point e.line[key]
           @normal e.line.startPoint, e.line.endPoint, e.line.p, e.line.text
+        when "measurement"
+          for key in ["startPoint", "endPoint"]
+            e.line[key] = new Point e.line[key]
+          @lineMeasure e.line.startPoint, e.line.endPoint, e.line.text
         when "circle"
           e.center = new Point e.center
           @labeledCircle e.center, e.radius, e.phi,

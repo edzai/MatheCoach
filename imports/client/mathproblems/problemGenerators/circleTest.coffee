@@ -24,19 +24,43 @@ generators =
       drawRadius : true
       radiusLabelText : "r = 3cm"
       centerLabelText : "c"
-
+    triangle =
+      type : "polygon"
+      lines : ["a","b","c"].map (lineLabelText, i) ->
+        startPoint : (new Point 180, 100).rotate -360/3*i, (new Point 100, 100)
+        lineLabelText : lineLabelText
+        measureText : "123cm"
+    [p1, p2, p3] = triangle.lines.map (line) -> line.startPoint
+    measurement1 =
+      type : "measurement"
+      line :
+        startPoint : p1
+        endPoint : p2
+        text : "123 cm"
+    measurement2 =
+      type : "measurement"
+      line :
+        startPoint : p2
+        endPoint : p3
+        text : "123 cm"
+    measurement3 =
+      type : "measurement"
+      line :
+        startPoint : p3
+        endPoint : p1
+        text : "123 cm"
     #returns
     problem : "not used"
     solution : "1"
-    description : "Test: Beschrifteter Kreis"
+    description : "Test: Bemaßungen"
     hint : "Das ist keine Aufgabe, das ist nur ein Programmtest."
-    geometryDrawData : [circle1, circle2]
+    geometryDrawData : [triangle]
     skipExpression : true
     textBook : circleTestTextBook
 
 exports.circleTest =
-  title : "Kreise"
-  description : "Test: Beschriftete Kreise in Geometrie Zeichnungen"
+  title : "Bemaßungen"
+  description : "Bemaßungen von Strecken mit unterschiedlichen Ebenen"
   problems : [
     levels : [1]
     generator : generators.circle
