@@ -9,6 +9,7 @@
     "babel-runtime": "^6.18.0",
     "bcrypt": "^0.8.7",
     "chartist": "^0.9.8",
+    "core-js": "^2.5.0",
     "d3": "^3.5.17",
     "eve": "^0.4.2",
     "function-plot": "^1.17.3",
