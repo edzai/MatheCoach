@@ -8,7 +8,7 @@ require "/imports/modules/nerdamer/Solve.js"
 
 _ = require "lodash"
 
-{ Point } = require "/imports/client/geometryDraw.coffee"
+{ Point, umkreis } = require "/imports/client/geometryDraw.coffee"
 
 generators =
   strahlensatz1 : (level = 1) ->
@@ -32,20 +32,16 @@ generators =
     C = new Point Cx, Cy
     Cs = C.multiply k
     Bs = B.multiply k
-    #do transforms to fit it nicely into 200x200 viewport
-    triangleMiddle = A.add(B).add(C).multiply(1/3)
-    rmax = _.max [A,B,C].map (p) ->
-      p.distance triangleMiddle
-    [A,B,C,Cs,Bs,triangleMiddle] =
-      [A,B,C,Cs,Bs,triangleMiddle].map (p) -> p.multiply(85/rmax)
-    O = new Point 100, 100
+    #scale it to fit a circle with r=90
+    maxr = umkreis(A,B,C).radius
+    [A,B,C,Cs,Bs] =
+      [A,B,C,Cs,Bs].map (p) ->
+        p.multiply(90/maxr)
     phi = rnd.int 360
     [A,B,C,Cs,Bs] =
       [A,B,C,Cs,Bs].map (p,i) ->
         point :
-          p.add O
-          .subtract triangleMiddle
-          .rotate phi, O
+          p.rotate phi
         name : ["A","B","C","Cs","Bs"][i]
     #turn values into Objects, so we can keep track of stuff
     [a,b,c,as,bs,cs] =
@@ -88,7 +84,10 @@ generators =
       lines :
         #put the labels on the inside
         buildLines [[A,cs],[Bs,as],[Cs,bs]]
-    #console.log {a,b,c,as,bs,cs,k,rmax,A,B,C,Bs,Cs}
+    centerCircle =
+      type : "circle"
+      center : new Point 100, 100
+      radius : 5
     #returns
     problem : "not used"
     solution : solution

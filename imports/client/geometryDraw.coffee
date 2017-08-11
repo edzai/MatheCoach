@@ -71,34 +71,45 @@ class Line
 
 exports.Line = Line
 
+exports.umkreis = (p1, p2, p3) ->
+  d=2*(p1.x*(p2.y-p3.y)+p2.x*(p3.y-p1.y)+p3.x*(p1.y-p2.y))
+  xu=((p1.x**2+p1.y**2)*(p2.y-p3.y)+(p2.x**2+p2.y**2)*(p3.y-p1.y)+
+    (p3.x**2+p3.y**2)*(p1.y-p2.y))/d
+  yu=((p1.x**2+p1.y**2)*(p3.x-p2.x)+(p2.x**2+p2.y**2)*(p1.x-p3.x)+
+    (p3.x**2+p3.y**2)*(p2.x-p1.x))/d
+  center = new Point xu, yu
+  radius = center.distance p1
+  {center, radius}
+
 class GeometryDraw
   constructor : (id) ->
     @paper = Snap "##{id}"
     @g = @paper.g()
 
   lineLabel : (p1, p2, labelText, onLine=false) ->
-    mid = p1.add(p2).multiply(.5)
-    yOffset = unless onLine then -3 else +3
-    angle = p1.angle(p2)
-    if 90< angle < 270
-      angle += 180
-      yOffset = unless onLine then 10.5 else 4
-    text = @paper
-      .text(mid.x, mid.y, labelText)
-      .attr
-        "text-anchor": "middle"
-        "font-size" : 11
-        transform : "translate(0 #{yOffset})"
-    textBBox = text.getBBox()
-    textBox = @paper
-      .rect textBBox.x, textBBox.y, textBBox.width, textBBox.height
-      .attr fill : if onLine then "white" else "none"
-    labelGroup = @paper.g textBox
-    labelGroup.add text
-    labelGroup.attr
-      transform : "rotate(#{angle} #{mid.x} #{mid.y})"
-    @g.add labelGroup
-    { text, textBox }
+    unless labelText is "" or labelText is undefined
+      mid = p1.add(p2).multiply(.5)
+      yOffset = unless onLine then -3 else +3
+      angle = p1.angle(p2)
+      if 90< angle < 270
+        angle += 180
+        yOffset = unless onLine then 10.5 else 4
+      text = @paper
+        .text(mid.x, mid.y, labelText)
+        .attr
+          "text-anchor": "middle"
+          "font-size" : 11
+          transform : "translate(0 #{yOffset})"
+      textBBox = text.getBBox()
+      textBox = @paper
+        .rect textBBox.x, textBBox.y, textBBox.width, textBBox.height
+        .attr fill : if onLine then "white" else "none"
+      labelGroup = @paper.g textBox
+      labelGroup.add text
+      labelGroup.attr
+        transform : "rotate(#{angle} #{mid.x} #{mid.y})"
+      @g.add labelGroup
+      { text, textBox }
 
   labeledLine : (p1, p2, text, labelOnLine=false) ->
     line = @paper
@@ -116,10 +127,11 @@ class GeometryDraw
         .circle p.x, p.y, 3
     labelOffset ?= (new Point 12, 0).rotate(45).add(new Point 0, 4)
     labelTextAnchor = p.add labelOffset
-    if labelText?
+    if labelText? and labelText isnt ""
       pointLabel = @paper
         .text labelTextAnchor.x, labelTextAnchor.y, labelText
         .attr "font-size" : 14, "text-anchor" : "middle"
+      @g.add pointLabel
 
   labeledAngle : (p1, p2, fulcrum, pointLabelText, angleLabelText) ->
     radius = 40
@@ -165,13 +177,14 @@ class GeometryDraw
     [start, end] = [lStart, lEnd].map (p) =>
       p1 = p.add line.normal.multiply levelOffset
       p2 = p.add line.normal.multiply level*levelHeight
+      helperLine = @paper
+        .line p1.x, p1.y, p2.x, p2.y
+        .attr
+          stroke : "grey"
+          strokeWidth : 1
+      @g.add helperLine
       #return
-      line :
-        @paper
-          .line p1.x, p1.y, p2.x, p2.y
-          .attr
-            stroke : "grey"
-            strokeWidth : 1
+      line : helperLine
       levelPoint :
         p.add line.normal.multiply level*levelHeight-levelOffset
     labeledLine = @labeledLine start.levelPoint, end.levelPoint, text, true
@@ -274,9 +287,6 @@ class GeometryDraw
             e.radiusEndLabelText
         else console.log "unknown type of geometryDraw object"
     bounds = @g.getBBox()
-    if bounds.x < 0 or bounds.y < 0 or bounds.x2 > 200 or bounds.y2 > 200
-      @paper.attr viewBox : bounds.vb
-    else
-      @paper.attr viewBox : "0 0 200 200"
+    @paper.attr viewBox : bounds.vb
 
 exports.GeometryDraw = GeometryDraw

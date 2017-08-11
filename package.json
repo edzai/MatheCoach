@@ -6,23 +6,23 @@
   },
   "dependencies": {
     "animate.css": "^3.5.2",
-    "babel-runtime": "^6.18.0",
+    "babel-runtime": "^6.25.0",
     "bcrypt": "^0.8.7",
     "chartist": "^0.9.8",
     "core-js": "^2.5.0",
     "d3": "^3.5.17",
     "eve": "^0.4.2",
-    "function-plot": "^1.17.3",
+    "function-plot": "^1.18.1",
     "howler": "^2.0.4",
     "katex": "^0.7.1",
     "lodash": "^4.14.1",
     "mathjax": "^2.6.1",
-    "mathjs": "^3.3.0",
+    "mathjs": "^3.16.0",
     "md5": "^2.2.1",
-    "meteor-node-stubs": "~0.2.0",
+    "meteor-node-stubs": "^0.2.11",
     "mobile-detect": "^1.3.5",
     "snapsvg-cjs": "0.0.4",
-    "svg.js": "^2.5.1"
+    "svg.js": "^2.6.3"
   },
   "version": "1.0.0",
   "description": "Web App for practicing basic math skills",
@@ -30,9 +30,9 @@
   "author": "Jan Pilgenröder",
   "license": "",
   "devDependencies": {
+    "autoprefixer": "^6.3.1",
     "chai": "^3.5.0",
-    "chai-string": "^1.2.0",
-    "autoprefixer": "^6.3.1"
+    "chai-string": "^1.4.0"
   },
   "postcss": {
     "plugins": {

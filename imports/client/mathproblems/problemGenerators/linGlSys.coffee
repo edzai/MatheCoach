@@ -27,9 +27,7 @@ generators =
         for solutionName, j in solutionNames
           coeff = coeffs._data[i][j]
           leftSide += " + #{coeff} #{solutionName}"
-        leftSideTeX = nerdamer("#{leftSide}").toTeX()
-        rightSideTeX = nerdamer(" #{rightSide}").toTeX()
-        "#{leftSideTeX} = #{rightSideTeX}"
+        nerdamer("#{leftSide} = #{rightSide}").toTeX()
     )
     problemTeX =
       equations.join("\\\\")
@@ -37,10 +35,7 @@ generators =
       solutionNames.map (name, i) -> "#{name} = #{solutions[i]}"
     solution = solutionArray.join(", ")
     solutionTeX =
-      solutionArray.map (e) ->
-        e.split "="
-        .map (side) -> nerdamer(side).toTeX()
-        .join "="
+      solutionArray.map (e) -> nerdamer(e).toTeX()
       .join("\\\\")
     chars = solutionNames.sort().join(", ").split("")
     if lastCommaPosition = chars.lastIndexOf ","
