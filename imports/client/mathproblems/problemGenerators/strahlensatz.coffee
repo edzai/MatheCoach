@@ -13,15 +13,16 @@ _ = require "lodash"
 generators =
   strahlensatz1 : (level = 1) ->
     #construct 2 similar triangles with integer sides lengths
-    minLength = 7
-    maxLength = 19
-    #rollDice = ->
+    [minLength, maxLength, minDenom, maxDenom] = switch level
+      when 1 then [7, 19, 4, 7]
+      when 2 then [7, 23, 5, 9]
+      else [7, 37, 7, 17]
     [ar,br] = rnd.uniqueIntsMin minLength, maxLength
     minBaseLength = Math.abs(ar-br) + minLength
     maxBaseLength = ar + br - minLength
     cr = rnd.intMin minBaseLength, maxBaseLength
-    kd = rnd.intMin 4, 7
-    kn = rnd.intMin 2, kd-2
+    kd = rnd.intMin minDenom, maxDenom
+    kn = rnd.intMin minDenom-2, kd-2
     k = kn/kd
     [as, bs, cs] = [ar, br, cr].map (n) -> n*kn
     [a, b, c] = [ar, br, cr].map (n) -> n*kd
@@ -101,6 +102,6 @@ exports.strahlensatz =
   title : "Strahlensätze"
   description : "Aufgaben zum 1. und 2. Strahlensatz"
   problems : [
-    levels : [1]
+    levels : [1..3]
     generator : generators.strahlensatz1
   ]
