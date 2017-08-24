@@ -21,7 +21,7 @@ Submissions.schema = new SimpleSchema
     type : Date
   description :
     type : String
-  problem :
+  problemTeX :
     type : String
   answer :
     type : String
@@ -75,7 +75,7 @@ exports.insertSubmission = new ValidatedMethod
         type : Number
       description :
         type : String
-      problem :
+      problemTeX :
         type : String
       answer :
         type : String

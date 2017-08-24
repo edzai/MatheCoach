@@ -1,3 +1,5 @@
+import { Submissions } from "./submissions.coffee"
+
 Migrations.add
   version : 1
   up : ->
@@ -31,3 +33,12 @@ Migrations.add
       Meteor.users.update _id : user._id,
         $set :
           useKaTeX : user.profile.useKaTeX
+
+Migrations.add
+  version : 2
+  up : ->
+    Submissions.find()
+    .forEach (submission) ->
+      Submissions.update _id : submission._id,
+        $set :
+          problemTeX : submission.problem

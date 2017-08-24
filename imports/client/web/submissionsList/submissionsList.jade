@@ -17,7 +17,7 @@ template(name="submissionDisplay")
           h4.ui.header #{description}
           unless customTemplateName
             unless skipExpression
-              +teXDisplay(teX=problem)
+              +teXDisplay(teX=problemTeX)
             if drawSVG
               .ui.center.aligned.container
                 with SVGData

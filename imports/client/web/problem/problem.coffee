@@ -142,7 +142,7 @@ Template.problem.viewmodel
           answerCorrect : @answerCorrect()
           score : @score()
           description : @description()
-          problem : @problemTeX()
+          problemTeX : @problemTeX()
           answer : @answer()
           date : new Date()
           skipExpression : @skipExpression()
