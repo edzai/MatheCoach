@@ -8,7 +8,7 @@ require "/imports/modules/nerdamer/Solve.js"
 
 _ = require "lodash"
 
-{ Point, umkreis } = require "/imports/client/geometryDraw.coffee"
+{ Point, umkreis } = require "/imports/client/mathproblems/geometryDraw.coffee"
 
 generators =
   strahlensatz1 : (level = 1) ->

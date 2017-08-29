@@ -6,7 +6,7 @@ rnd = new Rnd()
 nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
 require "/imports/modules/nerdamer/Solve.js"
 
-{ Point } = require "/imports/client/geometryDraw.coffee"
+{ Point } = require "/imports/client/mathproblems/geometryDraw.coffee"
 
 # require "./templates/templateTestTemplate/templateTestTemplate.coffee"
 require "./templates/svgTestTemplate/svgTestTemplate.coffee"

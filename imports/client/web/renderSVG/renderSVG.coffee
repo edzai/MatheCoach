@@ -1,5 +1,5 @@
 require "./renderSVG.jade"
-{ GeometryDraw } = require "/imports/client/geometryDraw.coffee"
+{ GeometryDraw } = require "/imports/client/mathproblems/geometryDraw.coffee"
 
 Template.renderSVG.viewmodel
   debug : false
