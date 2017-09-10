@@ -1,5 +1,6 @@
 { Mongo } = require "meteor/mongo"
 { Meteor } = require "meteor/meteor"
+import SimpleSchema from "simpl-schema"
 _ = require "lodash"
 
 ActivityGraphs = new Mongo.Collection "activityGraphs"
@@ -12,8 +13,7 @@ ActivityGraphs.schema = new SimpleSchema
     optional : true
   days :
     type : Number
-  selectedModules :
-    type : [String]
+  selectedModules : [String]
 ActivityGraphs.attachSchema ActivityGraphs.schema
 exports.ActivityGraphs = ActivityGraphs
 
@@ -44,8 +44,9 @@ exports.updateActivityGraph = new ValidatedMethod
         type : Number
         optional : true
       selectedModules :
-        type : [String]
+        type : Array
         optional : true
+      "selectedModules.$" : String
     .validator()
   run : ( objectToUpdate ) ->
     unless @userId

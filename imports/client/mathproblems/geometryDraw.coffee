@@ -82,8 +82,11 @@ exports.umkreis = (p1, p2, p3) ->
   {center, radius}
 
 class GeometryDraw
-  constructor : (id) ->
-    @paper = Snap "##{id}"
+  constructor : (svg) ->
+    if typeof svg is "string"
+      @paper = Snap "##{svg}"
+    else
+      @paper = Snap svg
     @g = @paper.g()
 
   lineLabel : (p1, p2, labelText, onLine=false) ->

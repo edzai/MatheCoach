@@ -3,6 +3,7 @@
 { ChatMessages } = require "/imports/api/chatMessages.coffee"
 { ActivityGraphs } = require "/imports/api/activityGraphs.coffee"
 { Scores } = require "/imports/api/scores.coffee"
+import SimpleSchema from "simpl-schema"
 
 if Meteor.isServer
   #TODO: add publication for current user data

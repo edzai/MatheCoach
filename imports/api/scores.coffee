@@ -1,5 +1,6 @@
 { Mongo } = require "meteor/mongo"
 { Meteor } = require "meteor/meteor"
+import SimpleSchema from "simpl-schema"
 
 Scores = new Mongo.Collection "scores"
 Scores.schema = new SimpleSchema

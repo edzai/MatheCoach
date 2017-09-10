@@ -5,6 +5,7 @@
 { SchoolClasses } = require "./schoolClasses.coffee"
 { Accounts } = require "meteor/accounts-base"
 { Email } = require "meteor/email"
+import SimpleSchema from "simpl-schema"
 
 md5 = require "md5"
 
@@ -62,8 +63,10 @@ exports.userSchema = userSchema = new SimpleSchema
     optional : true
     blackbox : true
   roles :
-    type : [String]
+    type : Array
     optional : true
+  "roles.$" :
+    type : String
   heartbeat :
     type : Date
     optional : true
@@ -81,19 +84,16 @@ exports.userSchema = userSchema = new SimpleSchema
     optional : true
   navbarSize :
     type : Number
-    decimal : true
     min : .3
     max : 3
     optional : true
   contentSize :
     type : Number
-    decimal : true
     min : .3
     max : 3
     optional : true
   keypadSize :
     type : Number
-    decimal : true
     min : .3
     max : 3
     optional : true
@@ -316,4 +316,3 @@ exports.deleteSubmissions = new ValidatedMethod
     if Meteor.isServer
       console.log "delete all submissions for user: #{userId}"
       console.log "#{submissionsRemoved} submissions removed."
-  

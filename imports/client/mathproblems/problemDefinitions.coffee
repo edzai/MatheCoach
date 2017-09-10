@@ -31,8 +31,8 @@
   require "./problemGenerators/integration.coffee"
 { binomischeFormeln } =
   require "./problemGenerators/binomischeFormeln.coffee"
-{ templateTest } =
-  require "./problemGenerators/templateTest.coffee"
+# { templateTest } =
+#   require "./problemGenerators/templateTest.coffee"
 { functionPlotTest } =
   require "./problemGenerators/functionPlotTest.coffee"
 { linearFunctions} =
@@ -84,7 +84,7 @@ exports.moduleKeys = [
   "differentiation"
   "integration"
   "polynomialDivision"
-  "templateTest"
+  # "templateTest"
   "quadraticFunctions"
   "strahlensatz"
   "sinussatz"
@@ -179,7 +179,7 @@ exports.modules = [
     description : "Testgebiet für Aufgabengeneratoren \
       an denen ich noch arbeite. Benutzung auf eigene Gefahr."
     kindred : [
-      "templateTest"
+      # "templateTest"
       "sinussatz"
       "circleTest"
     ]
@@ -218,7 +218,7 @@ exports.problemDefinitions =
   polynomialDivision : polynomialDivision
   differentiation : differentiation
   integration : integration
-  templateTest : templateTest
+  # templateTest : templateTest
   functionPlotTest : functionPlotTest
   linearFunctions : linearFunctions
   quadraticFunctions : quadraticFunctions

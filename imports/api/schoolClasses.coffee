@@ -1,5 +1,6 @@
 { Mongo } = require "meteor/mongo"
 { Meteor } = require "meteor/meteor"
+import SimpleSchema from "simpl-schema"
 _ = require "lodash"
 
 SchoolClasses = new Mongo.Collection "schoolclasses"
