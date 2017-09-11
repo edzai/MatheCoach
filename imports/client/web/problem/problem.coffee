@@ -87,11 +87,13 @@ Template.problem.viewmodel
     if @drawSVG()
       SVGId : "a#{Random.id()}"
       geometryDrawData : @problem().geometryDrawData
+  geometryDrawData : -> @problem()?.geometryDrawData
   drawFunctionPlot : -> @problem()?.functionPlotData?
   functionData : ->
     if @drawFunctionPlot()
       functionId : "a#{Random.id()}"
-      functionPlotData : _.cloneDeep @problem()?.functionPlotData
+      functionPlotData : @functionPlotData()
+  functionPlotData : -> _.cloneDeep @problem()?.functionPlotData
   skipExpression : -> @problem()?.skipExpression
   customTemplateName : -> @problem()?.customTemplateName
   customTemplateData : -> @problem()?.customTemplateData
@@ -146,8 +148,8 @@ Template.problem.viewmodel
           answer : @answer()
           date : new Date()
           skipExpression : @skipExpression()
-          SVGData : @SVGData()
-          functionData : @functionData()
+          geometryDrawData : @geometryDrawData()
+          functionPlotData : @functionPlotData()
           customTemplateName : @customTemplateName()
           customTemplateData : @customTemplateData()
         #buffering method call in localstorage does not work since meteor update

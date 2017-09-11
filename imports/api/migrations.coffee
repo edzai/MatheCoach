@@ -42,3 +42,21 @@ Migrations.add
       Submissions.update _id : submission._id,
         $set :
           problemTeX : submission.problem
+
+Migrations.add
+  version : 3
+  up : ->
+    changed = 0
+    Submissions.find()
+    .forEach (submission) ->
+      if submission.SVGData?
+        changed += 1
+        Submissions.update _id : submission._id,
+          $set :
+            geometryDrawData : submission.SVGData
+      if submission.functionData?
+        changed += 1
+        Submissions.update _id : submission._id,
+          $set :
+            functionPlotData : submission.functionData
+    console.log "#{changed} entries changed"
