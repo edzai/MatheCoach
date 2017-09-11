@@ -78,6 +78,18 @@ Eine Funktion, die die Zeichenkette mit dem Ergebnis des Schülers bearbeitet, e
 #### laTeXPostProcessor : (String) -> String
 Eine Funktion, die auf problemTeX und solutionTeX angewendet wird (nachdem eventuell die Defaultwerte eingesetzt werden). Optional. Wenn nicht definiert, wird eine Funktion aufgerufen, die "\cdot" zwischen Ziffern und Nicht-Ziffern entfernt.
 
+#### geometryDrawData : [Object]
+Optional. Ein Array mit Objekten, die eine geometrische Skizze beschreiben.
+
+#### functionPlotData : Object
+Optional. Ein Objekt, das die Beschreibung eines Funktionsgrafen enthält.
+
+#### skipExpression : Boolean
+Optional. Wenn True wird problemTeX nicht angezeigt.
+
+#### textBook : String
+Optional. Enthält HTML mit beliebigen zusätzlichen Informationen zur Aufgabe.
+
 ## Module
 Aufgabengeneratoren werden in Modulen zusammengefasst. Ein Modul ist ein einfaches Java-Script Objekt. Beispiel in Coffee-Script:
 ```
