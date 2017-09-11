@@ -14,7 +14,6 @@ Template.renderSVG.viewmodel
   # width : 200
   # height : 200
   onRendered : ->
-    console.log @data()
     @drawing(new GeometryDraw @SVGId())
     @drawing().draw @geometryDrawData()
   autorun : ->

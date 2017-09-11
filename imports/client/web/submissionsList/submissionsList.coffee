@@ -29,7 +29,6 @@ Template.submissionDisplay.viewmodel
   answerSegmentClass : ->
     if @answerCorrect() then "green" else "red"
   onRendered : ->
-    console.log @data()
     unless moment().diff(moment(@date()), "minutes") > 10
       @element
       .transition "hide"
