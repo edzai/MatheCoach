@@ -21,6 +21,12 @@ defaultAnswerPreprocessor = (answer) ->
     .unmarkReserved()
     .value()
 
+defaultLaTeXPostProcessor = (tex) ->
+  str = new AMString tex
+  str
+    .removeCDots()
+    .value()
+
 class Problem
   constructor : (@moduleKey, @level = 1) ->
     @level = Number @level
@@ -50,11 +56,15 @@ class Problem
       @customTemplateName, @customTemplateData, @templateReturnsAnswer
       @checks
       @answerPreprocessor
+      @laTeXPostProcessor
       @isSystemOfLinearEquations
     } = sample?.generator generatorLevel
+    @laTeXPostProcessor ?= defaultLaTeXPostProcessor
     @problemTeX ?= teXifyAM @problem
+    @problemTeX = @laTeXPostProcessor @problemTeX
     @solution ?= nerdamer(@problem).text "fractions"
     @solutionTeX ?= teXifyAM @solution
+    @solutionTeX = @laTeXPostProcessor @solutionTeX
     @score ?= 1
     @checks ?= [
       Check.equivalent

@@ -72,9 +72,11 @@ Optional. Wenn definiert, dann wird anstelle des mathematischen Ausdrucks aus  `
 #### customTemplateData : Object
 Der Datenkontext für das Blaze-Template `customTemplateName`
 
-#### answerPreprocessor : ->
+#### answerPreprocessor : (String) -> String
 Eine Funktion, die die Zeichenkette mit dem Ergebnis des Schülers bearbeitet, ehe sie checks durchläuft. Optional. Wenn nicht definiert, wird eine Funktion aufgerufen, die "abc" in "a * b * c" verwandelt, aber einige Ausdrücke wie "sin", "cos", "sqrt", "alpha", "beta" etc. erhält (die Liste mit Wörtern, die erhalten bleiben muss noch deutlich ausgebaut werden).
 
+#### laTeXPostProcessor : (String) -> String
+Eine Funktion, die auf problemTeX und solutionTeX angewendet wird (nachdem eventuell die Defaultwerte eingesetzt werden). Optional. Wenn nicht definiert, wird eine Funktion aufgerufen, die "\cdot" zwischen Ziffern und Nicht-Ziffern entfernt.
 
 ## Module
 Aufgabengeneratoren werden in Modulen zusammengefasst. Ein Modul ist ein einfaches Java-Script Objekt. Beispiel in Coffee-Script:
