@@ -126,6 +126,8 @@ MatheCoach nutzt u.A. folgende Funktionsbibliotheken:
   * Chartist.js https://gionkunz.github.io/chartist-js/
   * lodash https://lodash.com
 
+## Benötigte Software
+
 Zur Entwicklung weiterer Aufgabengeneratoren benötigt man folgende Softwarepakete:
 
   * Nodejs https://nodejs.org/en/
