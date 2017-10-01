@@ -9,11 +9,11 @@ MatheCoch befindet sich in der Entwicklung und ist noch weit davon entfernt, fer
 Die Web-app kann unter http://mathe-coach-janmp.herokuapp.com getestet werden.
 
 ## Aufgabengeneratoren
-MatheCoach enthält nicht einfach eine Sammlung von Aufgaben, sondern generiert die Aufgaben selbst. Für jeden Aufgabentyp gibt es eigene Aufgabengeneratoren. Das sind Java-Script (bzw. Coffee-Script) funktionen, welche die Aufgaben aus Zufallsdaten zusammensetzen.
+MatheCoach enthält nicht einfach eine Sammlung von Aufgaben, sondern generiert die Aufgaben selbst. Für jeden Aufgabentyp gibt es eigene Aufgabengeneratoren. Das sind Java-Script (bzw. CoffeeScript) funktionen, welche die Aufgaben aus Zufallsdaten zusammensetzen.
 
 Die Aufgabengeneratoren und Moduldefinitionen finden sich im Unterverzeichnis /imports/client/mathproblems/problemGenerators
 
-Ein einfaches Beispiel in Coffee-Script:
+Ein einfaches Beispiel in CoffeeScript:
 
 ```
 grundrechenarten = (level) ->
@@ -91,7 +91,7 @@ Optional. Wenn True wird problemTeX nicht angezeigt.
 Optional. Enthält HTML mit beliebigen zusätzlichen Informationen zur Aufgabe.
 
 ## Module
-Aufgabengeneratoren werden in Modulen zusammengefasst. Ein Modul ist ein einfaches Java-Script Objekt. Beispiel in Coffee-Script:
+Aufgabengeneratoren werden in Modulen zusammengefasst. Ein Modul ist ein einfaches Java-Script Objekt. Beispiel in CoffeeScript:
 ```
 beispielModul =
   title : "Das ist der Titel des Moduls"
@@ -112,11 +112,11 @@ Aufgabengeneratoren können natürlich mehrfach in unterschiedlichen Modulen kom
 
 ## Framework/Funktionsbibliotheken
 
-MatheCoach basiert auf Meteor. Das Front-End ist Blaze (Bestandteil von Meteor) mit Viewmodel. Anstelle von Java-Script und Html verwenden wir Coffee-Script und Jade/Pug.
+MatheCoach basiert auf Meteor. Das Front-End ist Blaze (Bestandteil von Meteor) mit Viewmodel. Anstelle von Java-Script und Html verwenden wir CoffeeScript und Jade/Pug.
 
   * Meteor https://www.meteor.com
   * Viewmodel https://viewmodel.org
-  * Coffee-Script http://coffeescript.org
+  * CoffeeScript http://coffeescript.org
   * Jade/Pug https://pugjs.org/api/getting-started.html (Jade für Meteor/Blaze weicht in einigen Punkten von Pug ab)
 
 MatheCoach nutzt u.A. folgende Funktionsbibliotheken:
@@ -126,5 +126,17 @@ MatheCoach nutzt u.A. folgende Funktionsbibliotheken:
   * Chartist.js https://gionkunz.github.io/chartist-js/
   * lodash https://lodash.com
 
+Zur Entwicklung weiterer Aufgabengeneratoren benötigt man folgende Softwarepakete:
+
+  * Nodejs https://nodejs.org/en/
+  * Meteor https://www.meteor.com
+  * git oder GitHub Desktop https://desktop.github.com
+  * Einen Programmcode Editor wie z.B. Atom https://atom.io
+
+Java-Script wurde ursprünglich als Scriptsprache für Web-Browser entwickelt. Mit Nodejs wird Java-Script auch für die Programmierung des Web-Servers verfügbar. Meteor setzt auf Nodejs auf und ist die Entwicklungsumgebung für MatheCoach. Meteor führt die Programmierung von Web-Browser, Web-Server und Datenbank zusammen. Mithilfe von GitHub wird der Programmcode von MatheCoach verwaltet.
+
+Um mit der Entwicklung von Aufgabengeneratoren beginnen zu können, sollte man sich soweit in Meteor und GitHub eingearbeitet haben, dass man in der Lage ist ein Meteorprojekt von GitHub auf dem eigenen Rechner zu starten, im Texteditor Änderungen vorzunehmen und einen Pullrequest abzuschicken (damit die Änderungen in den Programmcode auf GitHub übernommen werden können).
+
+Es ist nicht notwendig, sich mit der Server-, Datenbank- oder Web-Programmierung unter Meteor auseinanderzusetzen, um Aufgabengeneratoren zu Programmieren. Grundlegende Programmierkentnisse sollten ausreichen, um sich schnell soweit in CoffeeScript einzuarbeiten, dass man mit der Programmierung einfacher Generatoren beginnen kann. Brauchbare Einführungen in CoffeeScript finden sich unter http://coffeescript.org/
 
 Copyright (c) 2016, Jan Pilgenröder
