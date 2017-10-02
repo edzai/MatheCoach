@@ -24,10 +24,11 @@ template(name="problem")
           if currentUser
             +moduleScoreDisplay(moduleKey=moduleKey userId=userId)
       .ui.segment
-        h4.ui.left.floated.header($b="text : description")
-        .ui.right.floated.tiny.circular.icon.button($b="enable : hasTextBook, click : showTextBook")
-          i.help.icon
-        .ui.hidden.clearing.divider
+        .flexContainer(style="{justify-content : space-between}")
+          h4.ui.header($b="text : description")
+          div(style="{margin-left:5px}")
+            .ui.tiny.circular.icon.button($b="enable : hasTextBook, click : showTextBook")
+              i.help.icon
         if customTemplateName
           +Template.dynamic(template=customTemplateName data=customTemplateData)
         else
