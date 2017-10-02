@@ -7,63 +7,41 @@ if Meteor.isClient
   nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
   require "/imports/modules/nerdamer/Solve.js"
 
-  { fractionGenerator } =
-    require "./problemGenerators/fractions.coffee"
-  { linearEquationGenerator } =
-    require "./problemGenerators/linearEquations.coffee"
-  { expressionGenerator } =
-    require "./problemGenerators/expressions.coffee"
-  { powersGenerator } =
-    require "./problemGenerators/powers.coffee"
-  { einXeinsGenerator } =
-    require "./problemGenerators/einXeins.coffee"
-  { polynomialDivisionGenerator } =
-    require "./problemGenerators/polynomialDivision.coffee"
-  { quadraticEquationGenerator } =
-    require "./problemGenerators/quadraticEquations.coffee"
-  { nullStellenGenerator } =
-    require "./problemGenerators/nullstellen.coffee"
-
   { expect, chai } = require "meteor/practicalmeteor:chai"
 
   chai.use require("chai-string")
 
-  generatorLibs =
-    polynomialDivisionGenerator : polynomialDivisionGenerator
-    einXeinsGenerator : einXeinsGenerator
-    powersGenerator : powersGenerator
-    expressionGenerator : expressionGenerator
-    linearEquationGenerator : linearEquationGenerator
-    fractionGenerator : fractionGenerator
-    quadraticEquationGenerator : quadraticEquationGenerator
-    nullStellenGenerator : nullStellenGenerator
+  {problemDefinitions} = require "./problemDefinitions.coffee"
 
+  console.log "start testing"
 
-  for generatorLibKey, generatorLib of generatorLibs
-    for generatorKey, generator of generatorLib
-      describe "#{generatorLibKey}.#{generatorKey}", ->
-        for level in [1..5]
-          describe "on Level #{level}", ->
+  for moduleKey, module of problemDefinitions
+    for problem, index in module.problems
+      levelOffset = problem.levelOffset ? 0
+      levels = problem.levels.map (level) -> level + levelOffset
+      describe "#{moduleKey}[#{index}]", ->
+        for level in levels
+          describe "on effective Level #{level}", ->
             error = null
             try
-              problem = generator(level)
+              problemGenerator = problem.generator(level)
             catch err
               error = err
             it "does not throw an error", ->
               expect(error).to.equal null
             it "returns an object", ->
-              expect(problem).to.be.a "object"
+              expect(problemGenerator).to.be.a "object"
             it "with a string for the problem", ->
-              expect(problem.problem).to.be.a "string"
+              expect(problemGenerator.problem).to.be.a "string"
             it "that doesn't contain NaN, null, undefined or Infinity", ->
-              expect(problem.problem).to.have.entriesCount "NaN", 0
-              expect(problem.problem).to.have.entriesCount "null", 0
-              expect(problem.problem).to.have.entriesCount "undefined", 0
-              expect(problem.problem).to.have.entriesCount "Infinity", 0
+              expect(problemGenerator.problem).to.have.entriesCount "NaN", 0
+              expect(problemGenerator.problem).to.have.entriesCount "null", 0
+              expect(problemGenerator.problem).to.have.entriesCount "undefined", 0
+              expect(problemGenerator.problem).to.have.entriesCount "Infinity", 0
             it "with a string for the description", ->
-              expect(problem.description).to.be.a "string"
+              expect(problemGenerator.description).to.be.a "string"
             it "that doesn't contain NaN, null, undefined or Infinity", ->
-              expect(problem.description).to.have.entriesCount "NaN", 0
-              expect(problem.description).to.have.entriesCount "null", 0
-              expect(problem.description).to.have.entriesCount "undefined", 0
-              expect(problem.description).to.have.entriesCount "Infinity", 0
+              expect(problemGenerator.description).to.have.entriesCount "NaN", 0
+              expect(problemGenerator.description).to.have.entriesCount "null", 0
+              expect(problemGenerator.description).to.have.entriesCount "undefined", 0
+              expect(problemGenerator.description).to.have.entriesCount "Infinity", 0
