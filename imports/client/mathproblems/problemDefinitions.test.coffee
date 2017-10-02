@@ -13,8 +13,6 @@ if Meteor.isClient
 
   {problemDefinitions} = require "./problemDefinitions.coffee"
 
-  console.log "start testing"
-
   for moduleKey, module of problemDefinitions
     for problem, index in module.problems
       levelOffset = problem.levelOffset ? 0
