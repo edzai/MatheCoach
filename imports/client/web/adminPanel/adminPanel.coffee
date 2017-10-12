@@ -42,7 +42,8 @@ Template.adminSchoolClassDisplay.viewmodel
   editSchoolClass : ->
     FlowRouter.go "/klasse/#{@_id()}"
   deleteSchoolClass : ->
-    deleteSchoolClass.call id : @_id()
+    if confirm "Die Klasse #{@name()} wirklich löschen?"
+      deleteSchoolClass.call id : @_id()
   teacherName : ->
     profile = Meteor.users.findOne(_id : @teacherId())?.profile
     "#{profile?.lastName}, #{profile?.firstName}"

@@ -51,7 +51,6 @@ class AMString
     this
 
   removeCDots : ->
-    console.log @str
     re = /(\d\s?)\\cdot(\s?\D)/ig
     doRecursion = (str) ->
       result = str.replace re, "$1~$2"

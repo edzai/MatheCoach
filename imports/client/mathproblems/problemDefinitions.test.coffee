@@ -13,6 +13,8 @@ if Meteor.isClient
 
   {problemDefinitions} = require "./problemDefinitions.coffee"
 
+  passes = 10
+
   for moduleKey, module of problemDefinitions
     for problem, index in module.problems
       levelOffset = problem.levelOffset ? 0
