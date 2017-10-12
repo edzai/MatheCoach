@@ -42,6 +42,5 @@ Template.schoolClassEditForm.viewmodel
       @teacherSelect.dropdown "set text",
         _.chain @teachers()
           .find id : @teacherId()
-          .value()?.name
-    -> console.log "docHandlerVMChanged", @docHandlerVMChanged()
+          .value()?.name ? ""
   ]
