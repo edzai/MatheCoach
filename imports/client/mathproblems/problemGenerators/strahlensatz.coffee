@@ -11,7 +11,7 @@ _ = require "lodash"
 { Point, umkreis } = require "/imports/client/mathproblems/geometryDraw.coffee"
 
 generators =
-  strahlensatz1 : (level = 1) ->
+  strahlensatz1 : (level = 1, language="de") ->
     #construct 2 similar triangles with integer sides lengths
     [minLength, maxLength, minDenom, maxDenom] = switch level
       when 1 then [7, 19, 4, 7]
@@ -99,8 +99,10 @@ generators =
     skipExpression : true
 
 exports.strahlensatz =
-  title : "Strahlensätze"
-  description : "Aufgaben zum 1. und 2. Strahlensatz"
+  title :
+    de : "Strahlensätze"
+  description :
+    de : "Aufgaben zum 1. und 2. Strahlensatz"
   problems : [
     levels : [1..3]
     generator : generators.strahlensatz1

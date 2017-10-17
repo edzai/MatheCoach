@@ -11,7 +11,7 @@ math = require "mathjs"
 {processEquation} = require "./quadraticEquations.coffee"
 
 exports.nullStellenGenerator = nullStellenGenerator =
-  pq : (level = 1) ->
+  pq : (level = 1, language="de") ->
     [a, b, c] = rnd.intsPlus(9)
     x = rnd.letter()
     [op1, op2, op3] = rnd.opsMinus()
@@ -33,7 +33,7 @@ exports.nullStellenGenerator = nullStellenGenerator =
     description : "Finde die Nullstellen:"
     hint : if level < 2 then "Verwende die pq-Formel" else null
 
-  substitution : (level = 1) ->
+  substitution : (level = 1, language="de") ->
     [a, b, c] = rnd.intsPlus(9)
     x = rnd.letter()
     [op1, op2, op3] = rnd.opsMinus()
@@ -55,7 +55,7 @@ exports.nullStellenGenerator = nullStellenGenerator =
     description : "Finde die Nullstellen:"
     hint : if level < 2 then "Substitution hilft." else null
 
-  factorized : (level = 1) ->
+  factorized : (level = 1, language="de") ->
     [a, b, c, d, e] = rnd.intsPlus(9)
     x = rnd.letter()
     [op1, op2, op3, op4, op5] = rnd.opsStrich()
@@ -82,9 +82,10 @@ exports.nullStellenGenerator = nullStellenGenerator =
     hint : if level < 2 then "Substitution hilft." else null
 
 exports.nullstellen =
-  title : "Nullstellen Ganzrationaler Funktionen"
+  title :
+    de : "Nullstellen Ganzrationaler Funktionen"
   description :
-    "pq-Formel, Substitution und teilweise factorisierte Polynome."
+    de : "pq-Formel, Substitution und teilweise factorisierte Polynome."
   problems : [
     levels : [1..4]
     generator : nullStellenGenerator.pq

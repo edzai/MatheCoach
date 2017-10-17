@@ -7,7 +7,7 @@ nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
 require "/imports/modules/nerdamer/Solve.js"
 
 generators =
-  standardparabel : (level = 1) ->
+  standardparabel : (level = 1, language="de") ->
     problem : "f(x)=x^2"
     solution : "1"
     description : "Bestaune den Funktionsplot."
@@ -24,8 +24,10 @@ generators =
     hint : "Gib dem Programmierer eine Note von 1 bis 6"
 
 exports.functionPlotTest =
-  title : "Test: Funktionsplot"
-  description : "Dies ist lediglich ein Test und nicht als Übungsmodul
+  title :
+    de : "Test: Funktionsplot"
+  description :
+    de : "Dies ist lediglich ein Test und nicht als Übungsmodul
     für Schüler gedacht"
   problems : [
     levels : [1]

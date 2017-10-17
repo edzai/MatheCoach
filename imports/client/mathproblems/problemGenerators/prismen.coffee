@@ -11,7 +11,7 @@ math = require "mathjs"
 { teXifyAM } = require "../renderAM.coffee"
 
 exports.prismenGenerator = generator =
-  cylinderVolume : (level = 1) ->
+  cylinderVolume : (level = 1, language="de") ->
     unit = rnd.lengthUnit()
     [r, h] = rnd.ints2Plus(150).map (i) -> math.unit i, unit
     scope = {r,h}
@@ -32,7 +32,7 @@ exports.prismenGenerator = generator =
     checks : [Check.roundedValueWithUnit()]
     answerPreprocessor : (answer) -> answer
 
-  cylinderSurface : (level = 1) ->
+  cylinderSurface : (level = 1, language="de") ->
     unit = rnd.lengthUnit()
     [r, h] = rnd.ints2Plus(150).map (i) -> math.unit i, unit
     scope = {r,h}
@@ -51,7 +51,7 @@ exports.prismenGenerator = generator =
     checks : [Check.roundedValueWithUnit()]
     answerPreprocessor : (answer) -> answer
 
-  cuboidVolume : (level = 1) ->
+  cuboidVolume : (level = 1, language="de") ->
     unit = rnd.lengthUnit()
     [l, b, h] = rnd.ints2Plus(150).map (i) -> math.unit i, unit
     scope = {l, b, h}
@@ -65,7 +65,7 @@ exports.prismenGenerator = generator =
     checks : [Check.roundedValueWithUnit()]
     answerPreprocessor : (answer) -> answer
 
-  cuboidSurface : (level = 1) ->
+  cuboidSurface : (level = 1, language="de") ->
     unit = rnd.lengthUnit()
     [l, b, h] = rnd.ints2Plus(150).map (i) -> math.unit i, unit
     scope = {l, b, h}
@@ -81,8 +81,10 @@ exports.prismenGenerator = generator =
 
 
 exports.prismen =
-  title : "Prismen"
-  description : "Volumen und Oberfläche von Prismen"
+  title :
+    de : "Prismen"
+  description :
+    de : "Volumen und Oberfläche von Prismen"
   problems : [
     levels: [1]
     generator : generator.cuboidVolume

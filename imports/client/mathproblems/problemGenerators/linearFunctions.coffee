@@ -16,7 +16,7 @@ exports.fitGraph = fitGraph = (xmin, xmax, ymin, ymax) ->
   [xminR, xmaxR, yminR, ymaxR]
 
 generators =
-  formulaFromGraph : (level = 1) ->
+  formulaFromGraph : (level = 1, language="de") ->
     b = rnd.intMin -5, 5
     [num, denom] = rnd.intsMin 1, 5
     #make m=1 less likely
@@ -49,8 +49,10 @@ generators =
       grid : true
 
 exports.linearFunctions =
-  title : "Lineare Funktionen"
-  description : "Funktionen deren Graph eine Gerade ist."
+  title :
+    de : "Lineare Funktionen"
+  description :
+    de : "Funktionen deren Graph eine Gerade ist."
   problems : [
     levels : [1]
     generator : generators.formulaFromGraph

@@ -9,7 +9,7 @@ require "/imports/modules/nerdamer/Solve.js"
 math = require "mathjs"
 
 generators =
-  linGlSys : (level = 1) ->
+  linGlSys : (level = 1, language="de") ->
     coeffMatrix = (d) ->
       matrix = math.matrix (rnd.intsMin(-9,9)[1..d]for i in [1..d])
       unless (math.det matrix) is 0
@@ -54,8 +54,10 @@ generators =
       Check.leftSideExactFit
     ]
 exports.linGlSys =
-  title : "Lineare Gleichungssysteme"
-  description : "Mehrere Gleichungen mit mehreren Unbekannten"
+  title :
+    de : "Lineare Gleichungssysteme"
+  description :
+    de : "Mehrere Gleichungen mit mehreren Unbekannten"
   problems : [
     levels : [1..5]
     generator : generators.linGlSys

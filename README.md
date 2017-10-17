@@ -16,7 +16,7 @@ Die Aufgabengeneratoren und Moduldefinitionen finden sich im Unterverzeichnis /i
 Ein einfaches Beispiel in CoffeeScript:
 
 ```
-grundrechenarten = (level) ->
+grundrechenarten = (level, language) ->
   [a, b] = rnd.ints()
   op = switch level
     when 1 then "+"
@@ -31,6 +31,33 @@ grundrechenarten = (level) ->
 
 Der Parameter `level` der Funktion bestimmt den Schwierigkeitsgrad. `level`ist eine Natürliche Zahl. Die Funktion gibt ein Javascriptobjekt zurück. In unserem Beispiel werden zwei Zafallszahlen `a` und `b` generiert und je nach Schwierigkeitsgrad mit `+`, `-`, `*` oder `/` verknüpft.
 
+Der Zweite Parameter `language : String` enthält den Sprachcode nach ISO 639-1 und kann benutzt werden um die Aufgabe in unterschiedlichen Sprachen auszugeben. Bisher sind alle Aufgabengeneratoren lediglich einsprachig. Eine mehrsprachige Version unseres einfachen Beispiels könnte so aussehen:
+
+```
+grundrechenarten = (level, language) ->
+  [a, b] = rnd.ints()
+  op = switch level
+    when 1 then "+"
+    when 2 then "-"
+    when 3 then "*"
+    else "/"
+  #returns
+  problem : "#{a}#{op}#{b}"
+  description : switch language
+    when "de"
+      "Dieser Text kommt vor dem Mathematischen Ausdruck der Aufgabe"
+    when "fr"
+      "Ce texte vient avant l'expression mathématique de la tâche"
+    else
+      "This text is displayed above the mathematical expression of the problem"
+  hint : switch language
+    when "de"
+      "Dieser Text kommt nach der Aufgabe"
+    when "fr"
+      "Ce texte vient après la tâche"
+    else
+      "This text is diplayed at the end of the problem"
+```
 Das Erzeugte Objekt kann folgende Elemente enthalten:
 
 #### problem : String
@@ -94,8 +121,12 @@ Optional. Enthält HTML mit beliebigen zusätzlichen Informationen zur Aufgabe.
 Aufgabengeneratoren werden in Modulen zusammengefasst. Ein Modul ist ein einfaches Java-Script Objekt. Beispiel in CoffeeScript:
 ```
 beispielModul =
-  title : "Das ist der Titel des Moduls"
-  description : "Eine kurze Beschreibung, die nach dem Titel kommt"
+  title :
+    de : "Das ist der Titel des Moduls"
+    en : "This is the module title"
+  description :
+    de : "Eine kurze Beschreibung, die nach dem Titel kommt"
+    en : "A short description following the module title"
   problems : [
     levels : [1..4]
     generator : grundrechenarten #unsere Generatorfunktion von oben

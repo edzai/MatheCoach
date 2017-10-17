@@ -1,22 +1,36 @@
 { problemDefinitions, modules, moduleKeys } = require "./problemDefinitions.coffee"
 
-buildModulesList = (modules) ->
+buildModulesList = (modules, language="de") ->
   (
     for module in modules
+      console.log module
       if typeof module is "string"
         moduleKey : module
-        title : problemDefinitions[module].title
-        description : problemDefinitions[module].description
+        title :
+          problemDefinitions[module]?.title?[language] ?
+          problemDefinitions[module]?.title?.de
+        description :
+          problemDefinitions[module]?.description?[language] ?
+          problemDefinitions[module]?.description?.de
       else
-        title : module.title
-        description : module.description
-        kindred : buildModulesList(module.kindred)
+        title :
+          module.title?[language] ?
+          module.title?.de
+        description :
+          module.description?[language] ?
+          module.description?.de
+        kindred : buildModulesList(module.kindred, language)
   )
 
-exports.getModulesList = -> buildModulesList modules
+exports.getModulesList = (language="de") -> buildModulesList modules, language
 
-exports.getModuleTitle = (key) -> problemDefinitions[key].title
+exports.getModuleTitle = (key, language="de") ->
+  problemDefinitions[key].title[language] ?
+  problemDefinitions[key].title.de
 
-exports.moduleFilterList = moduleKeys.map (key) ->
-  key : key
-  title : exports.getModuleTitle key
+exports.moduleFilterList = (language="de") ->
+  moduleKeys.map (key) ->
+    key : key
+    title :
+      (exports.getModuleTitle key, language) ?
+      exports.getModuleTitle key, "de"

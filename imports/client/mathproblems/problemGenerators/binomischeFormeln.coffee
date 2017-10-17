@@ -14,7 +14,7 @@ math = require "mathjs"
 #actually solved. but the checks should actually say it's equivalent...
 
 exports.binomischeFormelnGenerator = generator =
-  einfach : (level = 1) ->
+  einfach : (level = 1, language="de") ->
     [na, nb] = rnd.intsPlus 9
     [va, vb] = rnd.uniqueLetters()
     [a, b] = ["#{na}#{va}", "#{nb}#{vb}"]
@@ -42,8 +42,10 @@ exports.binomischeFormelnGenerator = generator =
     description : "Wende die entsprechende Binomische Formel an."
 
 exports.binomischeFormeln =
-  title : "Binomische Formeln"
-  description : "Ohne die ist man bei Quadratischen Funktionen aufgeschmissen."
+  title :
+    de : "Binomische Formeln"
+  description :
+    de : "Ohne die ist man bei Quadratischen Funktionen aufgeschmissen."
   problems : [
     levels : [1..2]
     generator : generator.einfach

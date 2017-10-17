@@ -11,7 +11,7 @@ math = require "mathjs"
 { teXifyAM } = require "../renderAM.coffee"
 
 exports.decimalsGenerator = generator =
-  addition : (level = 1) ->
+  addition : (level = 1, language="de") ->
     math.config
       number : "BigNumber"
       precision : 8
@@ -26,7 +26,7 @@ exports.decimalsGenerator = generator =
     problem : problem
     solution : math.eval(problem, {a,b}).toString()
     description : "Addiere die beiden Dezimalzahlen"
-  subtraction : (level = 1) ->
+  subtraction : (level = 1, language="de") ->
     math.config
       number : "BigNumber"
       precision : 8
@@ -41,7 +41,7 @@ exports.decimalsGenerator = generator =
     problem : problem
     solution : math.eval(problem, {a,b}).toString()
     description : "Subtrahiere die beiden Dezimalzahlen"
-  multiplication : (level = 1) ->
+  multiplication : (level = 1, language="de") ->
     math.config
       number : "BigNumber"
       precision : 12
@@ -56,7 +56,7 @@ exports.decimalsGenerator = generator =
     problem : problem
     solution : math.eval(problem, {a,b}).toString()
     description : "Multipliziere die beiden Dezimalzahlen"
-  division : (level = 1) ->
+  division : (level = 1, language="de") ->
     math.config
       number : "BigNumber"
       precision : 12
@@ -76,8 +76,10 @@ exports.decimalsGenerator = generator =
 
 exports.decimals =
   decimals1 :
-    title : "Dezimalzahlen 1"
-    description : "Addition und Subtraktion von Dezimalzahlen"
+    title :
+      de : "Dezimalzahlen 1"
+    description :
+      de : "Addition und Subtraktion von Dezimalzahlen"
     problems : [
       levels : [1..4]
       generator : generator.addition
@@ -86,22 +88,28 @@ exports.decimals =
       generator : generator.subtraction
     ]
   decimals2 :
-    title : "Dezimalzahlen 2"
-    description : "Multiplikation von Dezimalzahlen"
+    title :
+      de : "Dezimalzahlen 2"
+    description :
+      de : "Multiplikation von Dezimalzahlen"
     problems : [
       levels : [1..3]
       generator : generator.multiplication
     ]
   decimals3 :
-    title : "Dezimalzahlen 3"
-    description : "Division mit Dezimalzahlen"
+    title :
+      de : "Dezimalzahlen 3"
+    description :
+      de : "Division mit Dezimalzahlen"
     problems : [
       levels : [1..3]
       generator : generator.division
     ]
   decimals :
-    title : "Dezimalzahlen"
-    description : "Vermische Aufgaben zum Rechnen mit Dezimalzahlen"
+    title :
+      de : "Dezimalzahlen"
+    description :
+      de : "Vermische Aufgaben zum Rechnen mit Dezimalzahlen"
     problems : [
       levels : [1..3]
       generator : generator.addition

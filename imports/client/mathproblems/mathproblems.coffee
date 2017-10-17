@@ -28,7 +28,7 @@ defaultLaTeXPostProcessor = (tex) ->
     .value()
 
 class Problem
-  constructor : (@moduleKey, @level = 1) ->
+  constructor : (@moduleKey, @level = 1, language="de") ->
     @level = Number @level
     problems = problemDefinitions[@moduleKey].problems
     availableLevels = _(problems).map("levels").flatten().uniq().value()
@@ -36,7 +36,9 @@ class Problem
     @minLevel = _.min availableLevels
     unless @level in availableLevels
       @level = if @level > @maxLevel then @maxLevel else @minLevel
-    @title = problemDefinitions[@moduleKey].title
+    @title =
+      problemDefinitions[@moduleKey].title[language] ?
+      problemDefinitions[@moduleKey].title.de
     sample =
       _(problems)
         .filter (elem) => @level in elem.levels

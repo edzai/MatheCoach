@@ -93,10 +93,13 @@ exports.moduleKeys = [
 ]
 
 exports.modules = [
-  title : "Aufgaben nach Themen"
+  title :
+    de : "Aufgaben nach Themen"
   kindred : [
-    title : "Grundrechenarten"
-    description : "Die Grundlagen, die einfach sitzen müssen."
+    title :
+      de : "Grundrechenarten"
+    description :
+      de : "Die Grundlagen, die einfach sitzen müssen."
     kindred : [
       "strichrechnungGanzzahlig"
       "strichrechnungRational"
@@ -108,8 +111,10 @@ exports.modules = [
       "proportionality"
     ]
   ,
-    title : "Bruchrechnen"
-    description : "Bruchrechnen ist euer Freund!"
+    title :
+      de : "Bruchrechnen"
+    description :
+      de : "Bruchrechnen ist euer Freund!"
     kindred : [
       "bruch0"
       "bruch1"
@@ -118,8 +123,10 @@ exports.modules = [
       "bruch4"
     ]
   ,
-    title : "Rechnen mit Einheiten"
-    description : "Einheiten weglassen rächt sich."
+    title :
+      de : "Rechnen mit Einheiten"
+    description :
+      de : "Einheiten weglassen rächt sich."
     kindred : [
       "lengthUnits"
       "areaUnits"
@@ -127,15 +134,19 @@ exports.modules = [
       "mixedUnits"
     ]
   ,
-    title : "Potenzrechnung"
-    description : "Rechengesetze für Potenzen und Wurzeln."
+    title :
+      de : "Potenzrechnung"
+    description :
+      de : "Rechengesetze für Potenzen und Wurzeln."
     kindred : [
       "potenz1"
       "potenz2"
     ]
   ,
-    title : "Terme umformen"
-    description : "Terme zusammenfassen, Umgang mit Klammern"
+    title :
+      de : "Terme umformen"
+    description :
+      de : "Terme zusammenfassen, Umgang mit Klammern"
     kindred : [
       "terme1"
       "ausklammern"
@@ -143,8 +154,10 @@ exports.modules = [
       "polynomialDivision"
     ]
   ,
-    title : "Gleichungen"
-    description : "Lineare und Quadratische Gleichungen Lösen"
+    title :
+      de : "Gleichungen"
+    description :
+      de : "Lineare und Quadratische Gleichungen Lösen"
     kindred : [
       "lineareGleichung1"
       "lineareGleichung2"
@@ -152,8 +165,10 @@ exports.modules = [
       "linGlSys"
     ]
   ,
-    title : "Funktionen"
-    description : "Funktionen, Graphen, Funktionsgleichungen"
+    title :
+      de : "Funktionen"
+    description :
+      de : "Funktionen, Graphen, Funktionsgleichungen"
     kindred : [
       "linearFunctions"
       "scheitelpunkt"
@@ -161,22 +176,28 @@ exports.modules = [
       "quadraticFunctions"
     ]
   ,
-    title : "Geometrie"
-    description : "Vermischte Aufgaben"
+    title :
+      de : "Geometrie"
+    description :
+      de : "Vermischte Aufgaben"
     kindred : [
       "strahlensatz"
       "prismen"
     ]
   ,
-    title : "Calculus"
-    description : "Differential/Integralrechnung"
+    title :
+      de : "Calculus"
+    description :
+      de : "Differential/Integralrechnung"
     kindred :[
       "differentiation"
       "integration"
     ]
   ,
-    title : "Area 51"
-    description : "Testgebiet für Aufgabengeneratoren \
+    title :
+      de : "Area 51"
+    description :
+      de : "Testgebiet für Aufgabengeneratoren \
       an denen ich noch arbeite. Benutzung auf eigene Gefahr."
     kindred : [
       # "templateTest"

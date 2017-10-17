@@ -11,7 +11,7 @@ math = require "mathjs"
 checks = [Check.equivalent, Check.isWholePositiveNumber]
 
 exports.einXeinsGenerator = einXeinsGenerator =
-  multiplikation : (level = 1) ->
+  multiplikation : (level = 1, language="de") ->
     switch level
       when 1
         [a, b] = rnd.ints2Plus 9
@@ -26,7 +26,7 @@ exports.einXeinsGenerator = einXeinsGenerator =
     description : "Multipliziere die zwei Ganzen Zahlen:"
     checks : checks
 
-  division : (level = 1) ->
+  division : (level = 1, language="de") ->
     switch level
       when 1
         [a, b] = rnd.ints2Plus 9
@@ -43,8 +43,10 @@ exports.einXeinsGenerator = einXeinsGenerator =
     checks : checks
 
 exports.einXeins =
-  title : "1 x 1"
-  description : "Multiplikation und Division mit Ganzen Zahlen"
+  title :
+    de : "1 x 1"
+  description :
+    de : "Multiplikation und Division mit Ganzen Zahlen"
   problems : [
     levels : [1..4]
     generator : einXeinsGenerator.multiplikation

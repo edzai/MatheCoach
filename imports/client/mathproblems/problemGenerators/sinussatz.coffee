@@ -11,7 +11,7 @@ require "/imports/modules/nerdamer/Solve.js"
 { Point } = require "/imports/client/mathproblems/geometryDraw.coffee"
 
 generators =
-  sinussatz : (level = 1) ->
+  sinussatz : (level = 1, language="de") ->
     [a,b,c,alpha,beta,gamma] = ({} for n in [1..6])
     [b.value, Bx, By] = rnd.intsMin 100, 170
     phi = rnd.int 360
@@ -66,8 +66,10 @@ generators =
     skipExpression : true
 
 exports.sinussatz =
-  title : "Der Sinussatz"
-  description : "Aufgaben zum Verhältnis von Winkeln zu Seitenlängen in Dreiecken"
+  title :
+    de : "Der Sinussatz"
+  description :
+    de : "Aufgaben zum Verhältnis von Winkeln zu Seitenlängen in Dreiecken"
   problems : [
     levels : [1..3]
     generator : generators.sinussatz

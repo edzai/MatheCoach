@@ -21,7 +21,7 @@ zipper = (arrays) ->
   ).join ""
 
 exports.expressionGenerator = expressionGenerator =
-  summeZusFass : (level = 1) ->
+  summeZusFass : (level = 1, language="de") ->
     n = Math.min 3, level
     v = rnd.uniqueLetters()
     bits = (
@@ -38,7 +38,7 @@ exports.expressionGenerator = expressionGenerator =
     description : "Vereinfache den Term:"
     checks : defaultExpressionCheck
 
-  summeZusFassExp : (level = 1) ->
+  summeZusFassExp : (level = 1, language="de") ->
     n = Math.min 3, level
     e = rnd.uniqueInts2Plus(9)
     x = rnd.letter()
@@ -56,7 +56,7 @@ exports.expressionGenerator = expressionGenerator =
     description : "Vereinfache den Term:"
     checks : defaultExpressionCheck
 
-  expandKlammer : (level = 1) ->
+  expandKlammer : (level = 1, language="de") ->
     a = rnd.int2Plus(9)
     ops = rnd.opsStrich()[0..level]
     if ops[0] is "+" then ops[0] = ""
@@ -70,7 +70,7 @@ exports.expressionGenerator = expressionGenerator =
     description : "Multipliziere die Klammer aus und vereinfache:"
     checks : defaultExpressionCheck
 
-  expandKlammerKlammer : (level = 1) ->
+  expandKlammerKlammer : (level = 1, language="de") ->
     [x, y] = rnd.uniqueLetters()
     [a, b, c, d] = rnd.intsPlus(9)
     [op1, op2 ]= rnd.opsStrich()
@@ -83,7 +83,7 @@ exports.expressionGenerator = expressionGenerator =
     description : "Multipliziere die Klammer aus und vereinfache:"
     checks : defaultExpressionCheck
 
-  ausklammern : (level = 1) ->
+  ausklammern : (level = 1, language="de") ->
     a = rnd.int2Plus(9)
     if level > 1
       if rnd.bool() then a = -a
@@ -103,7 +103,7 @@ exports.expressionGenerator = expressionGenerator =
         Check.firstFactorEquivalent
       ]
 
-  ausklammernMax : (level = 1) ->
+  ausklammernMax : (level = 1, language="de") ->
     a = rnd.int2Plus(9)
     if level > 1
       a = "#{a}#{rnd.letter()}"
@@ -123,8 +123,10 @@ exports.expressionGenerator = expressionGenerator =
       ]
 
 exports.expressions =
-  title : "Terme vereinfachen"
-  description : "Terme zusammenfassen und Klammern ausmultiplizieren"
+  title :
+    de : "Terme vereinfachen"
+  description :
+    de : "Terme zusammenfassen und Klammern ausmultiplizieren"
   problems : [
     levels : [1..3]
     generator : expressionGenerator.summeZusFass
@@ -143,8 +145,10 @@ exports.expressions =
   ]
 
 exports.ausklammern =
-  title : "Faktorisieren von Summen"
-  description : "Oder einfacher ausgedrückt: Ausklammern"
+  title :
+    de : "Faktorisieren von Summen"
+  description :
+    de : "Oder einfacher ausgedrückt: Ausklammern"
   problems : [
     levels : [1..2]
     generator : expressionGenerator.ausklammern

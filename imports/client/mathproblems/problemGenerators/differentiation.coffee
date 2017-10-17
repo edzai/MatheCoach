@@ -9,7 +9,7 @@ require "/imports/modules/nerdamer/Solve.js"
 math = require "mathjs"
 
 exports.differentiationGenerator = differentiationGenerator =
-  polynomial : (level = 1) ->
+  polynomial : (level = 1, language="de") ->
     problem = ""
     for i in [level+1..0]
       [a] = rnd.intsPlus(9)
@@ -23,8 +23,10 @@ exports.differentiationGenerator = differentiationGenerator =
     description : "Berechne die Ableitung des Terms"
 
 exports.differentiation =
-  title : "Differentialrechnung"
-  description : "Ableitung von Funktionen"
+  title :
+    de : "Differentialrechnung"
+  description :
+    de : "Ableitung von Funktionen"
   problems : [
     levels : [1..5]
     generator : differentiationGenerator.polynomial

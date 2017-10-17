@@ -7,7 +7,7 @@ nerdamer = require "/imports/modules/nerdamer/nerdamer.core.js"
 require "/imports/modules/nerdamer/Solve.js"
 
 someGenerators =
-  oneGenerator : (level = 1) ->
+  oneGenerator : (level = 1, language="de") ->
     #set variables a and b to random ints
     #I set up some helpers for bits of random data that I use alot (see the require)
     [a, b] = rnd.ints()
@@ -38,8 +38,10 @@ someGenerators =
 
 #here we put the generators together into a module
 exports.someModule =
-  title : "This is the title of the module"
-  description : "this is a description what the module is about"
+  title :
+    de : "This is the title of the module"
+  description :
+    de : "this is a description what the module is about"
   problems : [
     levels : [1..2] # the levels at wich this type of problem will appear
     generator : someGenerators.oneGenerator

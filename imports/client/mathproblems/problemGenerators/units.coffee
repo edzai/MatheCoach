@@ -10,7 +10,7 @@ math = require "mathjs"
 
 exports.unitsGenerator = generator =
   transformUnit : (unitNamesGenerator) ->
-    (level = 1) ->
+    (level = 1, language="de") ->
       math.config
         number : "BigNumber"
         precision : 8
@@ -33,9 +33,9 @@ exports.unitsGenerator = generator =
         Check.equivalentWithUnit
         Check.unitIs(solutionUnit)
       ]
-      
+
   addUnit : (unitNamesGenerator) ->
-    (level = 1) ->
+    (level = 1, language="de") ->
       math.config
         number : "BigNumber"
         precision : 64
@@ -56,7 +56,7 @@ exports.unitsGenerator = generator =
       answerPreprocessor : (answer) -> answer
       checks : [Check.isSingleValueWithUnit, Check.equivalentWithUnit]
   multiplyUnit : (unitNamesGenerator) ->
-    (level = 1) ->
+    (level = 1, language="de") ->
       math.config
         number : "BigNumber"
         precision : 64
@@ -79,8 +79,10 @@ exports.unitsGenerator = generator =
 
 exports.units =
   length :
-    title : "Länge"
-    description : "Umrechnen von Flächeineinheiten. Summe von Längen."
+    title :
+      de : "Länge"
+    description :
+      de : "Umrechnen von Flächeineinheiten. Summe von Längen."
     problems : [
       levels : [1..2]
       generator : generator.transformUnit rnd.uniqueLengthUnits
@@ -90,8 +92,10 @@ exports.units =
       generator : generator.addUnit rnd.uniqueLengthUnits
     ]
   area :
-    title : "Fläche"
-    description : "Umrechnen von Flächeneinheiten. Produkte von Längen."
+    title :
+      de : "Fläche"
+    description :
+      de : "Umrechnen von Flächeneinheiten. Produkte von Längen."
     problems : [
       levels : [1..2]
       generator : generator.transformUnit rnd.uniqueAreaUnits
@@ -101,15 +105,19 @@ exports.units =
       generator : generator.multiplyUnit rnd.uniqueLengthUnits
     ]
   volume :
-    title : "Volumen"
-    description : "Umrechnen von Volumeneinheiten."
+    title :
+      de : "Volumen"
+    description :
+      de : "Umrechnen von Volumeneinheiten."
     problems : [
       levels : [1..2]
       generator : generator.transformUnit rnd.uniqueVolumeUnits
     ]
   mix :
-    title : "Länge, Fläche und Volumen"
-    description : "Vermischete Aufgben"
+    title :
+      de : "Länge, Fläche und Volumen"
+    description :
+      de : "Vermischete Aufgben"
     problems : [
       levels : [1..2]
       generator : generator.transformUnit rnd.uniqueLengthUnits

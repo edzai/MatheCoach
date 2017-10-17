@@ -14,7 +14,7 @@ defaultPowerCheck = [
 ]
 
 exports.powersGenerator = powersGenerator =
-  exp1Num : (level = 1) ->
+  exp1Num : (level = 1, language="de") ->
     [n, m] = rnd.intsPlus(9)
     switch level
       when 1
@@ -37,7 +37,7 @@ exports.powersGenerator = powersGenerator =
     checks : defaultPowerCheck
     hint : "'a hoch 3b' gibst du so ein: a^(3b)"
 
-  exp1Var : (level = 1) ->
+  exp1Var : (level = 1, language="de") ->
     [n, m] = rnd.ints2Plus(9)
     [x, nx, mx] = rnd.uniqueLetters()
     switch level
@@ -61,7 +61,7 @@ exports.powersGenerator = powersGenerator =
     checks : defaultPowerCheck
     hint : "'a hoch 3b' gibst du so ein: a^(3b)"
 
-  exp1NumQuotient : (level = 1) -> #exp1NumQuotient
+  exp1NumQuotient : (level = 1, language="de") -> #exp1NumQuotient
     switch level
       when 1
         op = "*"
@@ -75,7 +75,7 @@ exports.powersGenerator = powersGenerator =
     checks : defaultPowerCheck
     hint : "'a hoch 3b' gibst du so ein: a^(3b)"
 
-  sqrtAsPower : (level = 1) ->
+  sqrtAsPower : (level = 1, language="de") ->
     x = rnd.letter()
     n = rnd.int2Plus(9)
     magStr = if n is 2 then "" else "[#{n}]"
@@ -84,7 +84,7 @@ exports.powersGenerator = powersGenerator =
     problemTeX : "\\sqrt#{magStr}{#{x}}"
     description : "Schreibe die Wurzel als Potenz:"
 
-  sqrt1Num : (level = 1) ->
+  sqrt1Num : (level = 1, language="de") ->
     x = rnd.letter()
     [n, m] = rnd.ints2Plus(9)
     [magStrN, magStrM] = (
@@ -107,7 +107,7 @@ exports.powersGenerator = powersGenerator =
     description : "Wende das 1. Potenzgesetz an und \
       schreibe das Ergebnis als Potenz:"
 
-  exp2Num : (level = 1) ->
+  exp2Num : (level = 1, language="de") ->
     exp = rnd.int2Plus 5
     [na, nb] = rnd.uniqueIntsPlus 9-exp
     [va, vb] = rnd.uniqueLetters()
@@ -138,8 +138,10 @@ exports.powersGenerator = powersGenerator =
 
 exports.powers =
   potenz1 :
-    title : "Potenzen und Wurzeln 1"
-    description : "Aufgaben zum 1. Potenzgesetz (gleiche Basis)."
+    title :
+      de : "Potenzen und Wurzeln 1"
+    description :
+      de : "Aufgaben zum 1. Potenzgesetz (gleiche Basis)."
     problems : [
       levels : [1..3]
       generator : powersGenerator.exp1Num
@@ -159,8 +161,10 @@ exports.powers =
       generator : powersGenerator.sqrt1Num
     ]
   potenz2 :
-    title : "Potenzen und Wurzlen 2"
-    description : "Aufgaben zum 2. Potenzgesetz (gleicher Exponent)."
+    title :
+      de : "Potenzen und Wurzlen 2"
+    description :
+      de : "Aufgaben zum 2. Potenzgesetz (gleicher Exponent)."
     problems : [
       levels : [1..2]
       generator : powersGenerator.exp2Num

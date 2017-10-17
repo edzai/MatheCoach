@@ -24,7 +24,7 @@ exactFit = [
 ]
 
 exports.fractionGenerator = fractionGenerator =
-  kuerzen : (level = 1) ->
+  kuerzen : (level = 1, language="de") ->
     switch level
       when 1
         maxAB = 9
@@ -42,7 +42,7 @@ exports.fractionGenerator = fractionGenerator =
     checks : mustReduce
     description : "Kürze den Bruch soweit wie möglich."
 
-  erweitern : (level = 1) ->
+  erweitern : (level = 1, language="de") ->
     switch level
       when 1
         maxAB = 9
@@ -61,7 +61,7 @@ exports.fractionGenerator = fractionGenerator =
     solution : "#{a*c}/#{b*c}"
     description : "Erweitere den Bruch mit der Zahl #{c}."
 
-  erweitern2 : (level = 1) ->
+  erweitern2 : (level = 1, language="de") ->
     switch level
       when 1
         maxAB = 9
@@ -86,7 +86,7 @@ exports.fractionGenerator = fractionGenerator =
     solution : "#{solution}"
     description : "Gibt die fehlende Zahl an."
 
-  strichGleichnamig : (level = 1) ->
+  strichGleichnamig : (level = 1, language="de") ->
     [a, b, c] = if level is 1
       rnd.ints2Plus(9)
     else
@@ -103,7 +103,7 @@ exports.fractionGenerator = fractionGenerator =
     description : "#{opStr} die Brüche:"
     hint : "Die Brüche sind schon gleichnamig."
 
-  strichUngleichnamig : (level = 1) ->
+  strichUngleichnamig : (level = 1, language="de") ->
     switch level
       when 1
         [a, b, c, d] = rnd.uniqueInts2Plus 9
@@ -128,7 +128,7 @@ exports.fractionGenerator = fractionGenerator =
     description : "#{opStr} die Brüche:"
     hint : "Mache die Brüche gleichnamig ehe du sie #{opStr2}."
 
-  malGanzeZahl : (level = 1) ->
+  malGanzeZahl : (level = 1, language="de") ->
     switch level
       when 1 then maxN = 9
       when 2 then maxN = 20
@@ -146,7 +146,7 @@ exports.fractionGenerator = fractionGenerator =
     checks : if level > 1 then mustReduce else defaultFractionChecks
     description : "Multipliziere den Bruch mit der Zahl:"
 
-  malBruch : (level = 1) ->
+  malBruch : (level = 1, language="de") ->
     head = rnd.bool()
     switch level
       when 1
@@ -166,7 +166,7 @@ exports.fractionGenerator = fractionGenerator =
     checks : if level > 1 then mustReduce else defaultFractionChecks
     description : "Multipliziere die Brüche:"
 
-  malBruchKuerzbar : (level = 1) ->
+  malBruchKuerzbar : (level = 1, language="de") ->
     switch level
       when 1
         maxN1 = maxN2 = 9
@@ -194,7 +194,7 @@ exports.fractionGenerator = fractionGenerator =
       "Du kannst auf jeden Fall mindestens einen der beiden Brüche \
       kürzen ehe Du die Brüche multiplizierst."
 
-  malKreuzKuerzbar : (level = 1) ->
+  malKreuzKuerzbar : (level = 1, language="de") ->
     switch level
       when 1 then maxN = 9
       when 2 then maxN = 15
@@ -216,7 +216,7 @@ exports.fractionGenerator = fractionGenerator =
       kürzen ehe Du die Brüche multiplizierst. Überkreuz kürzen \
       geht nur bei Mal. Nicht bei Plus oder Minus!"
 
-  zusammenGesetzt : (level = 1) ->
+  zusammenGesetzt : (level = 1, language="de") ->
     head = rnd.bool()
     switch level
       when 1
@@ -276,7 +276,7 @@ exports.fractionGenerator = fractionGenerator =
       "Nebenbei: Der Term ist #{opStr1}, weil man einen Bruch und #{opStr3} \
       von zwei Brüchen #{opStr2}."
 
-  bruchDurchZahl : (level = 1) ->
+  bruchDurchZahl : (level = 1, language="de") ->
     switch level
       when 1
         maxN1 = 5
@@ -296,7 +296,7 @@ exports.fractionGenerator = fractionGenerator =
     description : "Teile den Bruch durch die natürliche Zahl."
     hint: "#{a*n} Äpfel durch #{n} sind..."
 
-  bruchDurchZahl2 : (level = 1) ->
+  bruchDurchZahl2 : (level = 1, language="de") ->
     switch level
       when 1
         maxP = 17
@@ -324,7 +324,7 @@ exports.fractionGenerator = fractionGenerator =
       kannst, multiplizierst Du stattdessen den Nenner mit \
       dieser Zahl."
 
-  bruchDurchBruch : (level = 1) ->
+  bruchDurchBruch : (level = 1, language="de") ->
     maxN = switch level
       when 1 then 9
       when 2 then 20
@@ -339,8 +339,10 @@ exports.fractionGenerator = fractionGenerator =
 
 exports.fractions =
   bruch0 :
-    title : "Bruchrechnen 0"
-    description : "Kürzen und Erweitern von Brüchen"
+    title :
+      de : "Bruchrechnen 0"
+    description :
+      de : "Kürzen und Erweitern von Brüchen"
     problems : [
       levels : [1..4]
       generator : fractionGenerator.kuerzen
@@ -353,8 +355,10 @@ exports.fractions =
       generator : fractionGenerator.erweitern2
     ]
   bruch1 :
-    title : "Bruchrechnen 1"
-    description : "Addition und Subtraktion von Brüchen"
+    title :
+      de : "Bruchrechnen 1"
+    description :
+      de : "Addition und Subtraktion von Brüchen"
     problems : [
       levels : [1..2]
       generator : fractionGenerator.strichGleichnamig
@@ -364,8 +368,10 @@ exports.fractions =
       generator : fractionGenerator.strichUngleichnamig
     ]
   bruch2 :
-    title : "Bruchrechnen 2"
-    description : "Multiplikation von Brüchen"
+    title :
+      de : "Bruchrechnen 2"
+    description :
+      de : "Multiplikation von Brüchen"
     problems : [
       levels : [1]
       generator : fractionGenerator.malGanzeZahl
@@ -378,8 +384,10 @@ exports.fractions =
       generator : fractionGenerator.malKreuzKuerzbar
     ]
   bruch3 :
-    title : "Bruchrechnen 3"
-    description : "Division mit Brüchen"
+    title :
+      de : "Bruchrechnen 3"
+    description :
+      de : "Division mit Brüchen"
     problems : [
       levels : [1..2]
       generator : fractionGenerator.bruchDurchZahl
@@ -393,8 +401,10 @@ exports.fractions =
       generator : fractionGenerator.bruchDurchBruch
   ]
   bruch4 :
-    title : "Bruchrechnen"
-    description : "Vermischte Aufgaben zur Bruchrechnung"
+    title :
+      de : "Bruchrechnen"
+    description :
+      de : "Vermischte Aufgaben zur Bruchrechnung"
     problems : [
       levels : [1..2]
       generator : fractionGenerator.strichGleichnamig

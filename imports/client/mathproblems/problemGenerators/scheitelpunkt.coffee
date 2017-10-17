@@ -9,7 +9,7 @@ require "/imports/modules/nerdamer/Solve.js"
 math = require "mathjs"
 
 exports.scheitelpunktGenerator = generator =
-  form : (level = 1) ->
+  form : (level = 1, language="de") ->
     [xs, ys] = rnd.ints 9
     a = rnd.int2Plus 9
     op1 = rnd.opMinus()
@@ -28,8 +28,10 @@ exports.scheitelpunktGenerator = generator =
     ]
 
 exports.scheitelpunkt =
-  title : "Scheitelpunkt Quadratischer Funktionen"
-  description : "Scheitelpunkt und Scheitelpunktform"
+  title :
+    de : "Scheitelpunkt Quadratischer Funktionen"
+  description :
+    de : "Scheitelpunkt und Scheitelpunktform"
   problems : [
     levels : [1..2]
     generator : generator.form
