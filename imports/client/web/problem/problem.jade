@@ -69,6 +69,7 @@ template(name="problem")
             h2.header($b="text : ü('Richtig')")
         else
           .ui.red.inverted.center.aligned.segment
+            h3.header($b="text : ü('NichtRichtig')")
         each failTextsRequired
           .ui.red.inverted.center.aligned.segment
             h4.header($b="text : this")
@@ -83,13 +84,17 @@ template(name="problem")
             .ui.green.inverted.center.aligned.segment
               h4.header($b="text : this")
         .ui.segment
+          h4.header($b="text : ü('Lösung')")
           +teXDisplay(teX=solutionTeX)
       div    
         button.ui.left.floated.grey.inverse.icon.button($b="toggle : forceUseOtherKeyboard")
           i.keyboard.icon
         .ui.blue.icon.buttons($b="ref : levelButtons")
+          button.ui.icon.button($b="click : easier, disable : autoLevelOn, attr : {title : ü('LevelVerringern')}")
             i.minus.icon
+          button.ui.button($b="click : harder, disable : autoLevelOn, attr : {title : ü('LevelErhöhen')}")
             i.plus.icon
+          button.ui.icon.button($b="toggle : autoLevelOn, enable : loggedIn, attr : {title : ü('LevelAutomatischAnpassen')}")
             i.setting.icon($b="class : {loading : autoLevelOn}")
             | Level {{currentLevel}}
         if answered
