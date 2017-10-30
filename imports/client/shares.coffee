@@ -8,6 +8,8 @@ MobileDetect = require "mobile-detect"
 
 { Howl } = require "howler"
 
+import { setLanguage } from "/imports/api/users.coffee"
+
 import { translations } from "./translations.coffee"
 
 ViewModel.share
@@ -75,12 +77,12 @@ ViewModel.share
     ]
 
   language :
-    language : "de"
+    language : -> Meteor.user()?.language or "de"
     switchLanguage : ->
       if @language() is "de"
-        @language "en"
+        setLanguage.call language : "en"
       else
-        @language "de"
+        setLanguage.call language : "de"
     ü : (key) -> translations[@language()][key] or "[#{key}]"
 
   unsolvedProblems :

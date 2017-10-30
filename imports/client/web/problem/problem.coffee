@@ -204,6 +204,7 @@ Template.problem.viewmodel
       @levelButtons?.transition "tada"
       @sound().play "difficultylUp"
     @newLevel @currentLevel()
+
   gotoModulesList : -> FlowRouter.go "/"
   onCreated : ->
     @newLevel @recallLevel(@moduleKey())
