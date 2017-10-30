@@ -39,13 +39,17 @@ exports.binomischeFormelnGenerator = generator =
     #return
     problem : problem
     solution : solution
-    description : "Wende die entsprechende Binomische Formel an."
+    description : switch language
+      when "de" then "Wende die entsprechende Binomische Formel an."
+      else "Apply the binomial theorem."
 
 exports.binomischeFormeln =
   title :
     de : "Binomische Formeln"
+    en : "Binomial Theorem"
   description :
     de : "Ohne die ist man bei Quadratischen Funktionen aufgeschmissen."
+    en : "You can't deal with quadratic functions without this."
   problems : [
     levels : [1..2]
     generator : generator.einfach

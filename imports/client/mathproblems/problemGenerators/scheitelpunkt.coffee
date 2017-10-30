@@ -8,6 +8,8 @@ require "/imports/modules/nerdamer/Solve.js"
 
 math = require "mathjs"
 
+#TODO: Actually make problem that asks for the vertex
+
 exports.scheitelpunktGenerator = generator =
   form : (level = 1, language="de") ->
     [xs, ys] = rnd.ints 9
@@ -21,7 +23,11 @@ exports.scheitelpunktGenerator = generator =
     problem : "f(x)=#{expanded}"
     problemTeX : "f(x)=#{expanded.toTeX()}"
     solution: "f(x)=#{scheitelpunktForm}"
-    description : "Bringe die Quadratische Funktion in die Scheitelpunktform."
+    description : switch language
+      when "de"
+        "Bringe die Quadratische Funktion in die Scheitelpunktform."
+      else
+        "Transform the quadratic equation into vertex form."
     checks : [
       Check.equivalent
       Check.scheitelpunktForm
@@ -30,8 +36,10 @@ exports.scheitelpunktGenerator = generator =
 exports.scheitelpunkt =
   title :
     de : "Scheitelpunkt Quadratischer Funktionen"
+    en : "Vertex of Quadratic Functions"
   description :
     de : "Scheitelpunkt und Scheitelpunktform"
+    en : "Vertex and Vertex Form"
   problems : [
     levels : [1..2]
     generator : generator.form

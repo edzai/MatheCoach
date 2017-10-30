@@ -10,25 +10,41 @@ math = require "mathjs"
 
 { teXifyAM } = require "../renderAM.coffee"
 
+#TODO: Fix exception thrown by mathjs, bickering about not being able to implicitly convert to bignumber
+
 exports.prismenGenerator = generator =
   cylinderVolume : (level = 1, language="de") ->
     unit = rnd.lengthUnit()
     [r, h] = rnd.ints2Plus(150).map (i) -> math.unit i, unit
     scope = {r,h}
     math.eval "d=2*r", scope
-    rString = if rnd.bool()
-      "Radius r = #{scope.r}"
+    rString =if rnd.bool()
+      switch language
+        when "de" then "Radius r = #{scope.r}"
+        else "radius r = #{scope.r}"
     else
-      "Durchmesser d = #{scope.d}"
+      switch language
+        when "de" then "Durchmesser d = #{scope.d}"
+        else "diameter d = #{scope.d}"
     volume = math.eval "pi * r^2 * h", scope
     # roundedVolumeNumber =
     #   math.round volume.toNumber("#{unit}^3"), 1
     skipExpression : true
     problem : "not used"
     solution : volume.toString() #"#{roundedVolumeNumber} #{unit}^3"
-    description : "Berechne das Volumen eines Zylinders \
-      mit #{rString} und Höhe h = #{h}."
-    hint : "Du kannst das Ergebnis runden, aber vergiss die Einheit nicht."
+    description : switch language
+      when "de"
+        "Berechne das Volumen eines Zylinders \
+        mit #{rString} und Höhe h = #{h}."
+      else
+        "Calculate the volume of a cylinder with #{rString} and \
+        height h = #{{h}}."
+    hint : switch language
+      when "de"
+        "Du kannst das Ergebnis runden, aber vergiss die Einheit nicht."
+      else
+        "You may round the result. Don't forget to include the \
+        unit of measurement."
     checks : [Check.roundedValueWithUnit()]
     answerPreprocessor : (answer) -> answer
 
@@ -38,16 +54,30 @@ exports.prismenGenerator = generator =
     scope = {r,h}
     math.eval "d=2*r", scope
     rString = if rnd.bool()
-      "Radius r = #{scope.r}"
+      switch language
+        when "de" then "Radius r = #{scope.r}"
+        else "radius r = #{scope.r}"
     else
-      "Durchmesser d = #{scope.d}"
+      switch language
+        when "de" then "Durchmesser d = #{scope.d}"
+        else "diameter d = #{scope.d}"
     surface = math.eval "2*pi*r^2+2*pi*r*h", scope
     skipExpression : true
     problem : "not used"
     solution : surface.toString()
-    description : "Berechne die Oberfläche eines Zylinders \
-      mit #{rString} und Höhe h = #{h}."
-    hint : "Du kannst das Ergebnis runden, aber vergiss die Einheit nicht."
+    description : switch language
+      when "de"
+        "Berechne die Oberfläche eines Zylinders \
+        mit #{rString} und Höhe h = #{h}."
+      else
+        "Calculate the surface area of a cylinder with #{rString} and \
+        height h = #{{h}}."
+    hint : switch language
+      when "de"
+        "Du kannst das Ergebnis runden, aber vergiss die Einheit nicht."
+      else
+        "You may round the result. Don't forget to include the \
+        unit of measurement."
     checks : [Check.roundedValueWithUnit()]
     answerPreprocessor : (answer) -> answer
 
@@ -59,9 +89,19 @@ exports.prismenGenerator = generator =
     skipExpression : true
     problem : "not used"
     solution : volume.toString()
-    description : "Berechne das Volumen eines Quaders \
-      mit Länge l = #{l}, Breite b = #{b} und Höhe h = #{h}."
-    hint : "Du kannst das Ergebnis runden, aber vergiss die Einheit nicht."
+    description : switch language
+      when "de"
+        "Berechne das Volumen eines Quaders \
+        mit Länge l = #{l}, Breite b = #{b} und Höhe h = #{h}."
+      else
+        "Calculate the volume of a cuboid with length l = #{l}, \
+        width w= #{b} and height h = #{h}."
+    hint : switch language
+      when "de"
+        "Du kannst das Ergebnis runden, aber vergiss die Einheit nicht."
+      else
+        "You may round the result. Don't forget to include the \
+        unit of measurement."
     checks : [Check.roundedValueWithUnit()]
     answerPreprocessor : (answer) -> answer
 
@@ -73,9 +113,19 @@ exports.prismenGenerator = generator =
     skipExpression : true
     problem : "not used"
     solution : surface.toString()
-    description : "Berechne die Oberfläche eines Quaders \
-      mit Länge l = #{l}, Breite b = #{b} und Höhe h = #{h}."
-    hint : "Du kannst das Ergebnis runden, aber vergiss die Einheit nicht."
+    description : switch language
+      when "de"
+        "Berechne die Oberfläche eines Quaders \
+        mit Länge l = #{l}, Breite b = #{b} und Höhe h = #{h}."
+      else
+        "Calculate the surface area of a cuboid with length l = #{l}, \
+        width w= #{b} and height h = #{h}."
+    hint : switch language
+      when "de"
+        "Du kannst das Ergebnis runden, aber vergiss die Einheit nicht."
+      else
+        "You may round the result. Don't forget to include the \
+        unit of measurement."
     checks : [Check.roundedValueWithUnit()]
     answerPreprocessor : (answer) -> answer
 
@@ -83,8 +133,10 @@ exports.prismenGenerator = generator =
 exports.prismen =
   title :
     de : "Prismen"
+    en : "Prisms and Cylinders"
   description :
     de : "Volumen und Oberfläche von Prismen"
+    en : "Volume and Surface Area"
   problems : [
     levels: [1]
     generator : generator.cuboidVolume

@@ -59,17 +59,29 @@ generators =
     #returns
     problem : "not used"
     solution : solution
-    description : "Bestimme den gesuchten Wert mit Hilfe \
-      des Sinussatzes."
-    hint : "Runde das Ergebnis auf eine ganze Zahl."
+    description : switch language
+      when "de"
+        "Bestimme den gesuchten Wert mit Hilfe \
+        des Sinussatzes."
+      else
+        "Find the missing Value using the law of sines"
+    hint : switch language
+      when "de"
+        "Runde das Ergebnis auf eine ganze Zahl."
+      else
+        "Round the Result to a whole number."
     geometryDrawData : [triangle]
     skipExpression : true
 
 exports.sinussatz =
   title :
     de : "Der Sinussatz"
+    en : "Law of Sines"
   description :
     de : "Aufgaben zum Verhältnis von Winkeln zu Seitenlängen in Dreiecken"
+    en :
+      "Problems about Quotients of Lengths of Sides and Sines of Angles \
+      in Triangles."
   problems : [
     levels : [1..3]
     generator : generators.sinussatz

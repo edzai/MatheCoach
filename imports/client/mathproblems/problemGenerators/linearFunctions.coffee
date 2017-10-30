@@ -35,7 +35,11 @@ generators =
     problem : "f(x)=#{problem}"
     solutionTeX : "f(x)=#{nerdamer(problem).toTeX()}"
     skipExpression : true
-    description : "Gib die Funktionsgleichung für den abgebildeten Graphen an"
+    description : switch language
+      when "de"
+        "Gib die Funktionsgleichung für den abgebildeten Graphen an:"
+      else
+        "Supply the function equation that matches the plot:"
     functionPlotData :
       data : [
         fn : "#{m}*x+#{b}"
@@ -51,8 +55,10 @@ generators =
 exports.linearFunctions =
   title :
     de : "Lineare Funktionen"
+    en : "Linear Functions"
   description :
     de : "Funktionen deren Graph eine Gerade ist."
+    en : "Functions with a straight line for a plot."
   problems : [
     levels : [1]
     generator : generators.formulaFromGraph

@@ -8,6 +8,7 @@ require "/imports/modules/nerdamer/Solve.js"
 
 math = require "mathjs"
 
+#TODO: Broken with KaTeX, figure out what to do with it.
 generators =
   linGlSys : (level = 1, language="de") ->
     coeffMatrix = (d) ->

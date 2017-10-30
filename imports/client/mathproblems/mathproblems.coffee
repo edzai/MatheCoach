@@ -28,7 +28,7 @@ defaultLaTeXPostProcessor = (tex) ->
     .value()
 
 class Problem
-  constructor : (@moduleKey, @level = 1, language="de") ->
+  constructor : (@moduleKey, @level = 1, @language="de") ->
     @level = Number @level
     problems = problemDefinitions[@moduleKey].problems
     availableLevels = _(problems).map("levels").flatten().uniq().value()
@@ -37,7 +37,7 @@ class Problem
     unless @level in availableLevels
       @level = if @level > @maxLevel then @maxLevel else @minLevel
     @title =
-      problemDefinitions[@moduleKey].title[language] ?
+      problemDefinitions[@moduleKey].title[@language] ?
       problemDefinitions[@moduleKey].title.de
     sample =
       _(problems)
@@ -60,7 +60,7 @@ class Problem
       @answerPreprocessor
       @laTeXPostProcessor
       @isSystemOfLinearEquations
-    } = sample?.generator generatorLevel
+    } = sample?.generator generatorLevel, @language
     @laTeXPostProcessor ?= defaultLaTeXPostProcessor
     @problemTeX ?= teXifyAM @problem
     @problemTeX = @laTeXPostProcessor @problemTeX
@@ -100,7 +100,10 @@ class Problem
     failTextsOptional = []
     if answers.length isnt solutions.length
       pass = false
-      failTextsRequired = ["Die Anzahl der Lösungen stimmt nicht."]
+      wrongNumberOfResultsText = switch @language
+        when "de" then "Die Anzahl der Lösungen stimmt nicht."
+        else "The number of solutions is wrong."
+      failTextsRequired = []
     else
       for solution, i in solutions
         for check in @checks
@@ -110,18 +113,21 @@ class Problem
           )
             if check.required
               if check.passText?
-                passTextsRequired.push check.passText
+                passTextsRequired.push (check.passText[@language] ? check.passText.de)
             else
               if check.passText?
-                passTextsOptional.push check.passText
+                passTextsOptional.push (check.passText[@language] ?
+                  check.passText.de)
           else
             if check.required
               pass = false
               if check.failText?
-                failTextsRequired.push check.failText
+                failTextsRequired.push (check.failText[@language] ?
+                  check.failText.de)
             else
               if check.failText?
-                failTextsOptional.push check.failText
+                failTextsOptional.push (check.failText[@language] ?
+                  check.failText.de)
     #return
     pass : pass
     passTextsRequired : passTextsRequired

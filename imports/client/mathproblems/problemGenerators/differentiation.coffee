@@ -20,13 +20,18 @@ exports.differentiationGenerator = differentiationGenerator =
     problemTeX : nerdamer(problem).toTeX() #get rid of superfluous + and x^0
     solution : solution.text "factions"
     solutionTeX : solution.toTeX() #ditto
-    description : "Berechne die Ableitung des Terms"
+    description : switch language
+      when "de" then "Berechne die Ableitung des Terms"
+      else "Find the derivative."
 
 exports.differentiation =
   title :
     de : "Differentialrechnung"
+    en : "Differential Calculus"
   description :
     de : "Ableitung von Funktionen"
+    en : "Differentiate Functions"
+
   problems : [
     levels : [1..5]
     generator : differentiationGenerator.polynomial

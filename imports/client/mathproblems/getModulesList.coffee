@@ -3,7 +3,6 @@
 buildModulesList = (modules, language="de") ->
   (
     for module in modules
-      console.log module
       if typeof module is "string"
         moduleKey : module
         title :

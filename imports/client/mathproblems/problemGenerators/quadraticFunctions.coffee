@@ -35,7 +35,11 @@ generators =
     problem : "f(x)=#{problem}"
     solutionTeX : "f(x)=#{nerdamer(problem).toTeX()}"
     skipExpression : true
-    description : "Gib die Funktionsgleichung für den abgebildeten Graphen an"
+    description : switch language
+      when "de"
+        "Gib die Funktionsgleichung für den abgebildeten Graphen an."
+      else
+        "Find the equation for the displayed function plot."
     functionPlotData :
       data : [
         fn : problem
@@ -51,8 +55,10 @@ generators =
 exports.quadraticFunctions =
   title :
     de : "Quadratische Funktionen"
+    en : "Quadratic Equations"
   description :
-    de : "Funktionsterme vom Graphen ablesen."
+    de : "Funktionsgleichung vom Graphen ablesen."
+    en : "Find the Equation of a Plot."
   problems : [
     levels : [1]
     generator : generators.formulaFromGraph

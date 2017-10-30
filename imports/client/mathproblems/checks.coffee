@@ -53,8 +53,13 @@ exports.Check =
       (answerRight, solutionRight, answerLeft, solutionLeft) ->
         answerLeft is solutionLeft
     required : true
-    failText : "Die linke Seite der Gleichung deiner Lösung muss mit der \
-      linken Seite der Gleichung der Musterlösung exakt übereinstimmen."
+    failText :
+      de :
+        "Die linke Seite der Gleichung deiner Lösung muss mit der linken \
+        Seite der Gleichung der Musterlösung exakt übereinstimmen."
+      en :
+        "The equation's left side  of your answer must exactly match the \
+        equation's left side of the solution."
 
   leftSideOptionalExactFit :
     pass :
@@ -63,55 +68,79 @@ exports.Check =
         if answerLeft = undefined then true
         else unless answerLeft is solutionLeft then false
     required : true
-    failText : "Wenn du deine Lösung als Gleichung schreibst, \
-      muss die linke Seite mit der Lösung übereinstimmen."
+    failText :
+      de :
+        "Wenn du deine Lösung als Gleichung schreibst, \
+        muss die linke Seite mit der Lösung übereinstimmen."
+      en :
+        "If you give an equation for an answer, it's left side must \
+        exactly match the solution."
 
   exactFit :
     pass : (answer, solution) -> answer is solution
     required : true
-    failText : "Das Ergebnis muss bei dieser Aufgabe \
-      exakt mit der Lösung übereinstimmen."
+    failText :
+      de :
+        "Das Ergebnis muss bei dieser Aufgabe \
+        exakt mit der Lösung übereinstimmen."
+      en :
+        "For this problem the answer must exactly match the solution."
 
   equivalent :
     pass : (answer, solution) ->
       answer isnt "" and
       isEquivalent answer, solution
     required : true
-    passText : "Das Ergebnis ist zur Lösung äquivalent."
-    failText : "Das Ergebnis ist nicht zur Lösung äquivalent."
+    passText :
+      de : "Das Ergebnis ist zur Lösung äquivalent."
+      en : "Your answer and the solution are equivalent."
+    failText :
+      de : "Das Ergebnis ist nicht zur Lösung äquivalent."
+      en : "Your answer and the solution are not equivalent."
 
   noReducableFractionsOptional :
     pass : noReducableFractions
     required : false
     passText : undefined
-    failText : "Da kann man noch was kürzen."
+    failText :
+      de : "Da kann man noch was kürzen."
+      en : "There's a fraction that still could be reduced."
 
   noReducableFractionsRequired :
     pass : noReducableFractions
     required : true
     passText : undefined
-    failText : "Der Bruch wurde nicht vollständig gekürzt."
+    failText :
+      de : "Ein Bruch wurde nicht vollständig gekürzt."
+      en : "You have to reduce all the fractions."
 
   summandsEquivalent :
     pass : (answer, solution) ->
       sortSum(answer) is sortSum solution
     required : true
     passText : undefined
-    failText : "Der Term ist nicht vereinfacht."
+    failText :
+      de : "Der Term ist nicht vereinfacht."
+      en : "The expression is not simplified."
 
   isWholePositiveNumber :
     pass : (answer, solution) ->
       re = /^\+?\s?\d+\s?$/g
       re.test answer
     required : true
-    failText : "Das Ergebnis muss eine positive ganze Zahl sein."
+    failText :
+      de : "Das Ergebnis muss eine positive ganze Zahl sein."
+      en : "The result must be a positive integer."
+
 
   isWholeNumber :
     pass : (answer, solution) ->
       re = /^[+-]?\s?\d+\s?$/g
       re.test answer
     required : true
-    failText : "Das Ergebnis uss eine ganze Zahl sein."
+    failText :
+      de : "Das Ergebnis muss eine ganze Zahl sein."
+      en : "The result must be an integer."
 
   isSingleFraction :
     pass : (answer, solution) ->
@@ -127,8 +156,13 @@ exports.Check =
       re.test answer
     required : true
     passText : undefined
-    failText : "Das Ergebnis muss ein einzelner Bruch \
-      oder eine einzelne ganze Zahl sein."
+    failText :
+      de :
+        "Das Ergebnis muss ein einzelner Bruch \
+        oder eine einzelne ganze Zahl sein."
+      en :
+        "The result may just consist of a single fraction or \
+        a single integer."
 
   isSinglePower :
     pass : (answer, solution) ->
@@ -152,7 +186,11 @@ exports.Check =
     required : true
     passText : undefined
     failText :
-      "Das Ergebnis muss eine einzelne Potenz oder eine einzelne Zahl sein."
+      de :
+        "Das Ergebnis muss eine einzelne Potenz oder eine einzelne Zahl sein."
+      en :
+        "The result may only consist of a single exponentiation or a \
+        single number"
 
   firstFactorEquivalent :
     pass : (answer, solution) ->
@@ -180,8 +218,10 @@ exports.Check =
     required : true
     passText : undefined
     failText :
-      "Der auszuklammernde Faktor steht nicht vor der Klammer"
-
+      de :
+        "Der auszuklammernde Faktor steht nicht vor der Klammer"
+      en :
+        "The number to be factored out is not found before the bracket."
   scheitelpunktForm :
     pass : (answer, solution) ->
       ///
@@ -194,9 +234,12 @@ exports.Check =
         $
       ///.test answer
     required : true
-    passText : "Die Form des Ergebnisses entspricht der Scheitelpunktform"
+    passText :
+      de : "Die Form des Ergebnisses entspricht der Scheitelpunktform."
+      en : "Your Answer fits the vertex form of a quadratic equation."
     failText :
-      "Das Ergebnis hat nicht die korrekte Scheitelpunktform"
+      de : "Das Ergebnis hat nicht die korrekte Scheitelpunktform."
+      en : "Your Answer does not fit the vertex form of a quadratic equation."
 
   roundedValue : (decimals) ->
     pass : (answer, solution) ->
@@ -204,7 +247,9 @@ exports.Check =
         minPrecision = getPrecision math.round(Number(solution), decimals)
       isRounded Number(answer), Number(solution), minPrecision
     required : true
-    failText : "Das Ergebnis entspricht nicht der Lösung"
+    failText :
+      de : "Das Ergebnis entspricht nicht der Lösung."
+      en : "Your Answer doesn't match the Solution."
 
   roundedValueWithUnit : (decimals, unit) ->
     pass : (answer, solution) ->
@@ -225,9 +270,10 @@ exports.Check =
       catch error
         console.log error
         false
-
     required : true
-    failText : "Das Ergebnis entspricht nicht der Lösung."
+    failText :
+      de : "Das Ergebnis entspricht nicht der Lösung."
+      en : "Your answer doesn't match the solution."
 
 
   equivalentWithUnit :
@@ -238,10 +284,13 @@ exports.Check =
       catch error
         console.log error
         false
-
     required : true
-    passText : "Das Ergebnis ist zur Lösung äquivalent."
-    failText : "Das Ergebnis ist nicht zur Lösung äquivalent."
+    passText :
+      de : "Das Ergebnis ist zur Lösung äquivalent."
+      en : "Your answer is equivalent to the solution."
+    failText :
+      de : "Das Ergebnis ist nicht zur Lösung äquivalent."
+      en : "Your answer is not equivalent to the solution."
 
   isSingleValueWithUnit :
     pass : (answer, solution) ->
@@ -252,7 +301,9 @@ exports.Check =
         console.log error
         false
     required : true
-    failText : "Das Ergebnis muss ein einzelner Zahlenwert mit Einheit sein."
+    failText :
+      de : "Das Ergebnis muss ein einzelner Zahlenwert mit Einheit sein."
+      en : "The result may only consist of a single number followed by a unit."
 
   #schlägt nicht an, wenn isSingleValueWithUnit fehler meldet
   unitIs : (unit) ->
@@ -264,7 +315,9 @@ exports.Check =
         console.log error
         true
     required : true
-    failText : "Die geforderte Einheit #{unit} wurde nicht benutzt."
+    failText :
+      de : "Die geforderte Einheit '#{unit}' wurde nicht benutzt."
+      en : "You did not use the required unit '#{unit}'"
 
   answerEndsWith : (str) ->
     pass : (answer, solution) ->
@@ -273,9 +326,15 @@ exports.Check =
         $
       ///.test answer
     required : true
-    failText : "Am Ende des Ergebnisses muss '#{str}' stehen."
+    failText :
+      de : "Am Ende des Ergebnisses muss '#{str}' stehen."
+      en : "The result must end with '#{str}'"
 
   noPowerOfBracket :
     pass : (answer, solution) -> not /\)\^/.test answer
     required : true
-    failText : "Das Ergebnis enthält die Potenz eines Klammertermes."
+    failText :
+      de : "Das Ergebnis enthält die Potenz eines Klammertermes."
+      en :
+        "The base of the exponentiation may not be an expression \
+        enclosed in brackets."

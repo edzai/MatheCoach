@@ -92,17 +92,27 @@ generators =
     #returns
     problem : "not used"
     solution : solution
-    description : "Bestimme den gesuchten Wert mit dem \
-      #{strahlensatz}. Strahlensatz"
-    hint : "Bruchrechnen ist dein Freund."
+    description : switch language
+      when "de"
+        "Bestimme den gesuchten Wert mit dem \
+        #{strahlensatz}. Strahlensatz"
+      else
+        "Find the indicated value using the intercept theorem."
+    hint : switch language
+      when "de"
+        "Bruchrechnen ist dein Freund."
+      else
+        "Use fractions to solve this problems."
     geometryDrawData : [triangleBig, triangleSmall]
     skipExpression : true
 
 exports.strahlensatz =
   title :
     de : "Strahlensätze"
+    en : "Intercept Theorems"
   description :
     de : "Aufgaben zum 1. und 2. Strahlensatz"
+    en : "Problems about the first two Inercept Theorems"
   problems : [
     levels : [1..3]
     generator : generators.strahlensatz1

@@ -35,7 +35,9 @@ exports.expressionGenerator = expressionGenerator =
       .split("")[1..].join("")
     #return
     problem : problem
-    description : "Vereinfache den Term:"
+    description : switch language
+      when "de" then "Vereinfache den Term:"
+      else "Simplify the expression:"
     checks : defaultExpressionCheck
 
   summeZusFassExp : (level = 1, language="de") ->
@@ -53,7 +55,9 @@ exports.expressionGenerator = expressionGenerator =
       .split("")[1..].join("")
     #return
     problem : problem
-    description : "Vereinfache den Term:"
+    description : switch language
+      when "de" then "Vereinfache den Term:"
+      else "Simplify the expression:"
     checks : defaultExpressionCheck
 
   expandKlammer : (level = 1, language="de") ->
@@ -67,7 +71,9 @@ exports.expressionGenerator = expressionGenerator =
     #return
     problem : problem
     solution : nerdamer("expand(#{problem})").text "fractions"
-    description : "Multipliziere die Klammer aus und vereinfache:"
+    description : switch language
+      when "de" then "Multipliziere die Klammer aus und vereinfache:"
+      else "Multiply the brackets and simplify:"
     checks : defaultExpressionCheck
 
   expandKlammerKlammer : (level = 1, language="de") ->
@@ -80,7 +86,9 @@ exports.expressionGenerator = expressionGenerator =
     #return
     problem : problem
     solution : nerdamer("expand(#{problem})").text "fractions"
-    description : "Multipliziere die Klammer aus und vereinfache:"
+    description : switch language
+      when "de" then "Multipliziere die Klammer aus und vereinfache:"
+      else "Multiply the brackets and simplify:"
     checks : defaultExpressionCheck
 
   ausklammern : (level = 1, language="de") ->
@@ -97,7 +105,9 @@ exports.expressionGenerator = expressionGenerator =
     #return
     problem : nerdamer("expand(#{solution})").text "fractions"
     solution : solution
-    description : "Klammere #{a} aus."
+    description : switch language
+      when "de" then "Klammere #{a} aus."
+      else "Factor out #{a}."
     checks : [
         Check.equivalent
         Check.firstFactorEquivalent
@@ -116,7 +126,9 @@ exports.expressionGenerator = expressionGenerator =
     #return
     problem : nerdamer("expand(#{solution})").text "fractions"
     solution : solution
-    description : "Klammere so weit wie möglich aus."
+    description : switch language
+      when "de" then "Klammere so weit wie möglich aus."
+      else "Factor out as much as possible."
     checks : [
         Check.equivalent
         Check.firstFactorEquivalent
@@ -125,8 +137,10 @@ exports.expressionGenerator = expressionGenerator =
 exports.expressions =
   title :
     de : "Terme vereinfachen"
+    en : "Simplify expressions"
   description :
     de : "Terme zusammenfassen und Klammern ausmultiplizieren"
+    en : "Simplifying Expressions and Expanding Brackets "
   problems : [
     levels : [1..3]
     generator : expressionGenerator.summeZusFass
@@ -147,8 +161,10 @@ exports.expressions =
 exports.ausklammern =
   title :
     de : "Faktorisieren von Summen"
+    en : "Factoring Sums"
   description :
     de : "Oder einfacher ausgedrückt: Ausklammern"
+    en : "Turning Sums into Products with the Distributive Rule"
   problems : [
     levels : [1..2]
     generator : expressionGenerator.ausklammern

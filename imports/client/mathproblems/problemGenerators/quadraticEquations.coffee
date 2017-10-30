@@ -64,13 +64,17 @@ exports.quadraticEquationGenerator = quadraticEquationGenerator =
     problemTeX : processed.problemTeX
     solution : processed.solution
     solutionTeX : processed.solutionTeX
-    description : "Löse die Quadratische Gleichung für #{x}:"
+    description : switch language
+      when "de" then "Löse die Quadratische Gleichung für #{x}:"
+      else "Solve the Quadratic Equagin for #{x}:"
 
 exports.quadratischeGleichung =
   title :
     de : "Quadratische Gleichungen"
+    en : "Quadratic Equations"
   description :
     de : "Einfache Quadratische Gleichungen Lösen (z.B. mit der pq-Formel)"
+    en : "Solve simple Quadratic Equations (e.g. with the Quadratic Formula)"
   problems : [
     levels : [1..5]
     generator : quadraticEquationGenerator.intsOnly
