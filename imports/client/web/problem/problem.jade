@@ -4,7 +4,7 @@ template(name="inputKey")
 template(name="problem")
   .ui.modal($b="ref : textBookModal")
     .header
-      .ui.header Hilfe zur Aufgabe
+      .ui.header($b="text : ü('HilfeZurAufgabe')")
     .content
       +mathjax
         |{{{textBook}}}
@@ -46,7 +46,7 @@ template(name="problem")
       .ui.segment
         .ui.grid
           .twelve.wide.column
-            h4.header Antwort:
+            h4.header($b="text : ü('Antwort')")
           .four.wide.right.aligned.column
             i.icon($b="toggle : showPreview, class : previewIconClass")
         if showPreview
@@ -56,7 +56,7 @@ template(name="problem")
             span.text-input-span($b="text : answer")
         else
           .ui.fluid.input
-            input($b="value : answer, enter : checkAnswer, focus : focusOnAnswer" placeholder="Deine Antwort (als Bruch oder Term)" type="text")
+            input($b="value : answer, enter : checkAnswer, focus : focusOnAnswer, attr : {placeholder : ü('AntwortPlaceholder')}" type="text")
       if useKeypad
         unless answered
           .ui.grey.inverted.segment.input-pad($b="style : style")
@@ -66,10 +66,9 @@ template(name="problem")
       if answered
         if answerCorrect
           .ui.green.inverted.center.aligned.segment
-            h2.header Richtig!
+            h2.header($b="text : ü('Richtig')")
         else
           .ui.red.inverted.center.aligned.segment
-            h3.header Dein Ergebnis ist leider nicht korrekt.
         each failTextsRequired
           .ui.red.inverted.center.aligned.segment
             h4.header($b="text : this")
@@ -84,17 +83,13 @@ template(name="problem")
             .ui.green.inverted.center.aligned.segment
               h4.header($b="text : this")
         .ui.segment
-          h4.header Lösung:
           +teXDisplay(teX=solutionTeX)
       div    
         button.ui.left.floated.grey.inverse.icon.button($b="toggle : forceUseOtherKeyboard")
           i.keyboard.icon
         .ui.blue.icon.buttons($b="ref : levelButtons")
-          button.ui.icon.button($b="click : easier, disable : autoLevelOn" title="Level verringern")
             i.minus.icon
-          button.ui.button($b="click : harder, disable : autoLevelOn" title="Level erhöhen")
             i.plus.icon
-          button.ui.icon.button($b="toggle : autoLevelOn, enable : loggedIn" title="Level automatisch anpassen")
             i.setting.icon($b="class : {loading : autoLevelOn}")
             | Level {{currentLevel}}
         if answered

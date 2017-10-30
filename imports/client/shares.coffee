@@ -8,6 +8,8 @@ MobileDetect = require "mobile-detect"
 
 { Howl } = require "howler"
 
+import { translations } from "./translations.coffee"
+
 ViewModel.share
   reactiveTimer :
     reactiveTimer : new ReactiveTimer(10)
@@ -72,24 +74,34 @@ ViewModel.share
           "#{@contentSize()*100}%"
     ]
 
+  language :
+    language : "de"
+    switchLanguage : ->
+      if @language() is "de"
+        @language "en"
+      else
+        @language "de"
+    ü : (key) -> translations[@language()][key] or "[#{key}]"
+
   unsolvedProblems :
     unsolvedProblems : {}
     currentLevelForModule : {}
     rememberUnsolvedProblems : true
-    memorizeProblem : (moduleKey, level, problemObject) ->
+    memorizeProblem : (moduleKey, level, problemObject, language="de") ->
       temp = @unsolvedProblems()
-      temp["#{moduleKey}_#{level}"] = problemObject
+      temp["#{moduleKey}_#{level}_#{language}"] = problemObject
       @unsolvedProblems temp
       temp = @currentLevelForModule()
       temp[moduleKey] = level
       @currentLevelForModule temp
-    recallProblem : (moduleKey, level) ->
+    recallProblem : (moduleKey, level, language="de") ->
       if @rememberUnsolvedProblems()
         @unsolvedProblems()?["#{moduleKey}_#{level}"]
       else
         undefined
     forgetProblem : (moduleKey, level) ->
       @memorizeProblem moduleKey, level, undefined
+    forgetAllProblems: -> @unsolvedProblems {}
     recallLevel : (moduleKey) ->
       @currentLevelForModule()[moduleKey] or 1
 

@@ -25,7 +25,7 @@ Template.inputKey.viewmodel
 
 Template.problem.viewmodel
   share : ["reactiveTimer", "sound", "unsyncedSubmissions",
-    "layout", "unsolvedProblems"]
+    "layout", "unsolvedProblems", "language"]
   handleInputKey : (keyValue) ->
     @sound().play "click"
     strArray = @answer().split ""
@@ -191,14 +191,14 @@ Template.problem.viewmodel
     @passTextsOptional.reset()
     @failTextsRequired.reset()
     @failTextsOptional.reset()
-    if (oldProblem = @recallProblem @moduleKey(), @newLevel()) and
+    if (oldProblem = @recallProblem @moduleKey(), @newLevel(), @language()) and
     not @autoLevelOn()
       @problem oldProblem
     else
       wantToIncLevel = @newLevel() > @currentLevel()
       wantedLevel = @newLevel()
-      newProblem = new Problem(@moduleKey(), @newLevel())
-      @memorizeProblem @moduleKey(), @newLevel(), newProblem
+      newProblem = new Problem(@moduleKey(), @newLevel(), @language())
+      @memorizeProblem @moduleKey(), @newLevel(), newProblem, @language()
       @problem newProblem
     if wantToIncLevel and (@currentLevel() is wantedLevel)
       @levelButtons?.transition "tada"

@@ -5,7 +5,8 @@ require "./moduleList.jade"
 require "/imports/client/web/moduleScoreDisplay/moduleScoreDisplay.coffee"
 
 Template.moduleList.viewmodel
-  modules : getModulesList()
+  share : ["language"]
+  modules : -> getModulesList @language()
 
 Template.moduleSubList.viewmodel
   modules : {}
