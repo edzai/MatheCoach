@@ -239,7 +239,7 @@ exports.toggleRole = new ValidatedMethod
     else
       Roles.addUsersToRoles userId, role
 
-#TODO: Add some more security to this
+#TODO: Add some more security to this id:29
 exports.setUserSchoolClass = new ValidatedMethod
   name : "setUserSchoolClass"
   validate :

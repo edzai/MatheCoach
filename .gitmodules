@@ -1,0 +1,3 @@
+[submodule "mathproblems-submodule"]
+	path = imports/client/mathproblems
+	url = https://github.com/JanMP/mathproblems

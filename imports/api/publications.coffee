@@ -6,7 +6,7 @@
 import SimpleSchema from "simpl-schema"
 
 if Meteor.isServer
-  #TODO: add publication for current user data
+  #TODO: add publication for current user data id:26
   Meteor.publish "userData", ->
     if @userId
       Meteor.users.find _id : @userId

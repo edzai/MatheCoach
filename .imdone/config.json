@@ -32,6 +32,14 @@
     {
       "name": "DONE",
       "hidden": false
+    },
+    {
+      "name": "FIXME",
+      "hidden": false
+    },
+    {
+      "name": "PLANNING",
+      "hidden": false
     }
   ],
   "marked": {
