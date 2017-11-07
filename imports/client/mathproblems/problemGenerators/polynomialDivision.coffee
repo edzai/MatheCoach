@@ -9,7 +9,7 @@ require "/imports/modules/nerdamer/Solve.js"
 math = require "mathjs"
 
 exports.polynomialDivisionGenerator = polynomialDivisionGenerator =
-  division : (level = 1) ->
+  division : (level = 1, language="de") ->
     switch level
       when 1
         numDegree = 2
@@ -41,11 +41,17 @@ exports.polynomialDivisionGenerator = polynomialDivisionGenerator =
     problemTeX : "\\frac{#{numeratorTeX}}{#{denominatorTeX}}"
     solution : solution
     solutionTeX : nerdamer(solution).toTeX()
-    description : "Dividiere die Polynome:"
+    description : switch language
+      when "de" then "Kürze den Bruch:"
+      else "Reduce the Fraction:"
 
 exports.polynomialDivision =
-  title : "Polynomdivision"
-  description : "Nicht so schlimm, wie es zunächst aussieht."
+  title :
+    de : "Polynomdivision"
+    en : "Dividing Polynomials"
+  description :
+    de : "Nicht so schlimm, wie es zunächst aussieht."
+    en : "Not as bad as it looks."
   problems : [
     levels : [1..5]
     generator : polynomialDivisionGenerator.division

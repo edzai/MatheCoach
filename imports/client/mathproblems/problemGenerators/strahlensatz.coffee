@@ -11,7 +11,7 @@ _ = require "lodash"
 { Point, umkreis } = require "/imports/client/mathproblems/geometryDraw.coffee"
 
 generators =
-  strahlensatz1 : (level = 1) ->
+  strahlensatz1 : (level = 1, language="de") ->
     #construct 2 similar triangles with integer sides lengths
     [minLength, maxLength, minDenom, maxDenom] = switch level
       when 1 then [7, 19, 4, 7]
@@ -92,15 +92,27 @@ generators =
     #returns
     problem : "not used"
     solution : solution
-    description : "Bestimme den gesuchten Wert mit dem \
-      #{strahlensatz}. Strahlensatz"
-    hint : "Bruchrechnen ist dein Freund."
+    description : switch language
+      when "de"
+        "Bestimme den gesuchten Wert mit dem \
+        #{strahlensatz}. Strahlensatz"
+      else
+        "Find the indicated value using the intercept theorem."
+    hint : switch language
+      when "de"
+        "Bruchrechnen ist dein Freund."
+      else
+        "Use fractions to solve this problems."
     geometryDrawData : [triangleBig, triangleSmall]
     skipExpression : true
 
 exports.strahlensatz =
-  title : "Strahlensätze"
-  description : "Aufgaben zum 1. und 2. Strahlensatz"
+  title :
+    de : "Strahlensätze"
+    en : "Intercept Theorems"
+  description :
+    de : "Aufgaben zum 1. und 2. Strahlensatz"
+    en : "Problems about the first two Inercept Theorems"
   problems : [
     levels : [1..3]
     generator : generators.strahlensatz1

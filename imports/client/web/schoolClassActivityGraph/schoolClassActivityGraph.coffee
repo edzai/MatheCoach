@@ -12,13 +12,13 @@ _ = require "lodash"
 Template.schoolClassActivityGraphSettings.viewmodel
   modules : ->
     if @selectedModules?()?
-      moduleFilterList.map (e) =>
+      moduleFilterList().map (e) =>
         e.selected = (e.key in @selectedModules().array())
         e
   selectAll : ->
     updateActivityGraph.call
       id : @_id()
-      selectedModules : moduleFilterList.map (e) -> e.key
+      selectedModules : moduleFilterList().map (e) -> e.key
   selectNone : ->
     updateActivityGraph.call
       id : @_id()
@@ -51,7 +51,7 @@ Template.schoolClassActivityGraphSettings.viewmodel
 
 Template.schoolClassActivityGraph.viewmodel
   hideSettings : true
-  #selectedModules : moduleFilterList.map (e) -> e.key
+  #selectedModules : moduleFilterList().map (e) -> e.key
   settings : ->
     _id : @_id()
     selectedModules : @selectedModules()
@@ -62,10 +62,10 @@ Template.schoolClassActivityGraph.viewmodel
     else
       "Aktivität in den letzten #{@days()} Tagen"
   graphDescription : ->
-    if @selectedModules().length is moduleFilterList.length
+    if @selectedModules().length is moduleFilterList().length
       "Alle Module"
     else
-      moduleList = _(moduleFilterList)
+      moduleList = _(moduleFilterList())
       .filter (module) => module.key in @selectedModules()
       .map (module) -> module.title
       .value().join(", ")

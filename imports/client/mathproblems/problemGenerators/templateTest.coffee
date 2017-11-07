@@ -12,7 +12,7 @@ require "/imports/modules/nerdamer/Solve.js"
 require "./templates/svgTestTemplate/svgTestTemplate.coffee"
 
 generators =
-  pythagoras1 : (level = 1) ->
+  pythagoras1 : (level = 1, language="de") ->
     [la, lb] = rnd.intsMin 80, 140
     phi = rnd.intMin 0, 359
     unit = "cm"
@@ -23,7 +23,7 @@ generators =
     customTemplateName : "svgTestTemplate"
     customTemplateData : { la, lb, unit , phi }
 
-  pythagoras2 : (level = 1) ->
+  pythagoras2 : (level = 1, language="de") ->
     [la, lb] = rnd.intsMin 80, 140
     phi = rnd.intMin 0, 359
     unit = "cm"
@@ -58,7 +58,7 @@ generators =
     geometryDrawData : [triangle]
     skipExpression : true
 
-  areaTriangle : (level = 1) ->
+  areaTriangle : (level = 1, language="de") ->
     [g, h] = rnd.intsMin 70, 150
     cx = rnd.intMin 20, g-20
     phi = rnd.int 360
@@ -105,7 +105,7 @@ generators =
     geometryDrawData : [triangle, height]
     skipExpression : true
 
-  areaTrapez : (level = 1) ->
+  areaTrapez : (level = 1, language="de") ->
     [g1, h] = rnd.intsMin 70, 150
     g2 = rnd.intMin 50, g1-20
     g2x = rnd.int g1-g2
@@ -141,8 +141,10 @@ generators =
     skipExpression : true
 
 exports.templateTest =
-  title : "Test: Graphikmodul"
-  description : "Dies ist lediglich ein Test und nicht als Übungsmodul
+  title :
+    de : "Test: Graphikmodul"
+  description :
+    de : "Dies ist lediglich ein Test und nicht als Übungsmodul
     für Schüler gedacht"
   problems : [
     levels : [1]

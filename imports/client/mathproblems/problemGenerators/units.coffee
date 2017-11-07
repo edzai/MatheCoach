@@ -10,7 +10,7 @@ math = require "mathjs"
 
 exports.unitsGenerator = generator =
   transformUnit : (unitNamesGenerator) ->
-    (level = 1) ->
+    (level = 1, language="de") ->
       math.config
         number : "BigNumber"
         precision : 8
@@ -25,7 +25,11 @@ exports.unitsGenerator = generator =
       #returns
       problem : "not Used"
       problemTeX : "\\text{Wandle }#{problem}\\text{ um in }#{solutionUnit}"
-      description : "Rechne die Einheiten um:"
+      description : switch language
+        when "de"
+          "Rechne die Einheiten um:"
+        else
+          "Convert the units:"
       solution : solution
       answerPreprocessor : (answer) -> answer
       checks : [
@@ -33,9 +37,9 @@ exports.unitsGenerator = generator =
         Check.equivalentWithUnit
         Check.unitIs(solutionUnit)
       ]
-      
+
   addUnit : (unitNamesGenerator) ->
-    (level = 1) ->
+    (level = 1, language="de") ->
       math.config
         number : "BigNumber"
         precision : 64
@@ -51,12 +55,16 @@ exports.unitsGenerator = generator =
       #returns
       problem : "not Used"
       problemTeX : "#{a} + #{b}"
-      description : "Berechne die Summe. Wähle eine passende Einheit."
+      description : switch language
+        when "de"
+          "Berechne die Summe. Wähle eine passende Einheit."
+        else
+          "Calculate the sum. Choose an appropriate unit of measurement."
       solution : solution
       answerPreprocessor : (answer) -> answer
       checks : [Check.isSingleValueWithUnit, Check.equivalentWithUnit]
   multiplyUnit : (unitNamesGenerator) ->
-    (level = 1) ->
+    (level = 1, language="de") ->
       math.config
         number : "BigNumber"
         precision : 64
@@ -72,15 +80,23 @@ exports.unitsGenerator = generator =
       #returns
       problem : "not Used"
       problemTeX : "#{a} \\times #{b}"
-      description : "Berechne das Produkt. Wähle eine passende Einheit."
+      description : switch language
+        when "de"
+          "Berechne das Produkt. Wähle eine passende Einheit."
+        else
+          "Calculate the product. Choose an appropriate unit of measurement."
       solution : solution
       answerPreprocessor : (answer) -> answer
       checks : [Check.isSingleValueWithUnit, Check.equivalentWithUnit]
 
 exports.units =
   length :
-    title : "Länge"
-    description : "Umrechnen von Flächeineinheiten. Summe von Längen."
+    title :
+      de : "Länge"
+      en : "Distance"
+    description :
+      de : "Umrechnen von Längeneinheite. Summe von Längen."
+      en : "Conversion of Units of Measurement. Sums of Distances."
     problems : [
       levels : [1..2]
       generator : generator.transformUnit rnd.uniqueLengthUnits
@@ -90,8 +106,12 @@ exports.units =
       generator : generator.addUnit rnd.uniqueLengthUnits
     ]
   area :
-    title : "Fläche"
-    description : "Umrechnen von Flächeneinheiten. Produkte von Längen."
+    title :
+      de : "Fläche"
+      en : "Area"
+    description :
+      de : "Umrechnen von Flächeneinheiten. Produkte von Längen."
+      en : "Conversion of Units of Measurement. Products of Distances"
     problems : [
       levels : [1..2]
       generator : generator.transformUnit rnd.uniqueAreaUnits
@@ -101,15 +121,23 @@ exports.units =
       generator : generator.multiplyUnit rnd.uniqueLengthUnits
     ]
   volume :
-    title : "Volumen"
-    description : "Umrechnen von Volumeneinheiten."
+    title :
+      de : "Volumen"
+      en : "Volume"
+    description :
+      de : "Umrechnen von Volumeneinheiten."
+      en : "Conversion of Units of Measurement."
     problems : [
       levels : [1..2]
       generator : generator.transformUnit rnd.uniqueVolumeUnits
     ]
   mix :
-    title : "Länge, Fläche und Volumen"
-    description : "Vermischete Aufgben"
+    title :
+      de : "Länge, Fläche und Volumen"
+      en : "Distance, Area and Volume"
+    description :
+      de : "Vermischete Aufgben"
+      en : "Assorted Problems"
     problems : [
       levels : [1..2]
       generator : generator.transformUnit rnd.uniqueLengthUnits

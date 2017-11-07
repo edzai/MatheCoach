@@ -34,7 +34,7 @@ exports.processEquation = processEquation = (equation, variable) ->
   solutionTeX : solutionTeX
 
 exports.quadraticEquationGenerator = quadraticEquationGenerator =
-  intsOnly : (level = 1) ->
+  intsOnly : (level = 1, language="de") ->
     x = rnd.letter()
     [a, b, c, d, e, f, g] = rnd.intsPlus(9)
     [op1, op2, op3, op4, op5, op6, op7] = rnd.opsStrich()
@@ -64,12 +64,17 @@ exports.quadraticEquationGenerator = quadraticEquationGenerator =
     problemTeX : processed.problemTeX
     solution : processed.solution
     solutionTeX : processed.solutionTeX
-    description : "Löse die Quadratische Gleichung für #{x}:"
+    description : switch language
+      when "de" then "Löse die Quadratische Gleichung für #{x}:"
+      else "Solve the Quadratic Equagin for #{x}:"
 
 exports.quadratischeGleichung =
-  title : "Quadratische Gleichungen"
+  title :
+    de : "Quadratische Gleichungen"
+    en : "Quadratic Equations"
   description :
-    "Einfache Quadratische Gleichungen Lösen (z.B. mit der pq-Formel)"
+    de : "Einfache Quadratische Gleichungen Lösen (z.B. mit der pq-Formel)"
+    en : "Solve simple Quadratic Equations (e.g. with the Quadratic Formula)"
   problems : [
     levels : [1..5]
     generator : quadraticEquationGenerator.intsOnly

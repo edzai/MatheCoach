@@ -9,7 +9,7 @@ require "/imports/modules/nerdamer/Solve.js"
 math = require "mathjs"
 
 exports.integrationGenerator = integrationGenerator =
-  polynomial : (level = 1) ->
+  polynomial : (level = 1, language="de") ->
     problem = ""
     for i in [level+1..0]
       [a] = rnd.intsPlus(9)
@@ -20,11 +20,17 @@ exports.integrationGenerator = integrationGenerator =
     problemTeX : nerdamer(problem).toTeX() #for poly sorting
     solution : solution.text "factions"
     solutionTeX : solution.toTeX() #for poly sorting
-    description : "Berechne das Integral des Terms"
+    description : switch language
+      when "de" then "Berechne das Integral des Terms:"
+      else "Find the integral of the expression:"
 
 exports.integration =
-  title : "Integralrechnung"
-  description : "Aufleiten von Funktionen"
+  title :
+    de : "Integralrechnung"
+    en : "Integral Calculus"
+  description :
+    de : "Aufleiten von Funktionen"
+    en : "Integrals of Functions"
   problems : [
     levels : [1..5]
     generator : integrationGenerator.polynomial

@@ -11,7 +11,7 @@ require "/imports/modules/nerdamer/Solve.js"
 {fitGraph} = require "./linearFunctions.coffee"
 
 generators =
-  formulaFromGraph : (level = 1) ->
+  formulaFromGraph : (level = 1, language="de") ->
     aDenomRoot = rnd.intPlus 3
     aDenom = aDenomRoot**2
     aEnum = rnd.intPlus aDenom
@@ -35,7 +35,11 @@ generators =
     problem : "f(x)=#{problem}"
     solutionTeX : "f(x)=#{nerdamer(problem).toTeX()}"
     skipExpression : true
-    description : "Gib die Funktionsgleichung für den abgebildeten Graphen an"
+    description : switch language
+      when "de"
+        "Gib die Funktionsgleichung für den abgebildeten Graphen an."
+      else
+        "Find the equation for the displayed function plot."
     functionPlotData :
       data : [
         fn : problem
@@ -49,8 +53,12 @@ generators =
       grid : true
 
 exports.quadraticFunctions =
-  title : "Quadratische Funktionen"
-  description : "Funktionsterme vom Graphen ablesen."
+  title :
+    de : "Quadratische Funktionen"
+    en : "Quadratic Equations"
+  description :
+    de : "Funktionsgleichung vom Graphen ablesen."
+    en : "Find the Equation of a Plot."
   problems : [
     levels : [1]
     generator : generators.formulaFromGraph

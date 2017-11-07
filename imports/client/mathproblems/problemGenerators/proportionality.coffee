@@ -8,7 +8,7 @@ require "/imports/modules/nerdamer/Solve.js"
 #math = require "mathjs"
 
 generators =
-  dreisatz : (level = 1) ->
+  dreisatz : (level = 1, language="de") ->
     [a, b] = rnd.uniqueIntsPlus 10
     c = switch level
       when 1, 2 then Number(((rnd.int 100) / 10).toFixed 2)
@@ -32,8 +32,10 @@ generators =
     solution : "#{(b*c).toFixed 2}"
 
 exports.proportionality =
-  title : "Proportionale Zuordnungen"
-  description : "Oder einfacher ausgedrückt: Der gute alte Dreisatz"
+  title :
+    de : "Proportionale Zuordnungen"
+  description :
+    de : "Oder einfacher ausgedrückt: Der gute alte Dreisatz"
   problems : [
     levels : [1..3]
     generator : generators.dreisatz

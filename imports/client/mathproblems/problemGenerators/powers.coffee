@@ -14,7 +14,7 @@ defaultPowerCheck = [
 ]
 
 exports.powersGenerator = powersGenerator =
-  exp1Num : (level = 1) ->
+  exp1Num : (level = 1, language="de") ->
     [n, m] = rnd.intsPlus(9)
     switch level
       when 1
@@ -33,11 +33,13 @@ exports.powersGenerator = powersGenerator =
     x = rnd.letter()
     #return
     problem : "#{x}^(#{op2}#{n})#{op1}#{x}^(#{op3}#{m})"
-    description : "Vereinfache den Term:"
+    description : switch language
+      when "de" then "Vereinfache den Term:"
+      else "Simplify the expression"
     checks : defaultPowerCheck
     hint : "'a hoch 3b' gibst du so ein: a^(3b)"
 
-  exp1Var : (level = 1) ->
+  exp1Var : (level = 1, language="de") ->
     [n, m] = rnd.ints2Plus(9)
     [x, nx, mx] = rnd.uniqueLetters()
     switch level
@@ -57,11 +59,12 @@ exports.powersGenerator = powersGenerator =
         [n, m] = rnd.ints()
     #return
     problem : "#{x}^(#{op2}#{n}#{nx})#{op1}#{x}^(#{op3}#{m}#{mx})"
-    description : "Vereinfache den Term:"
+    description : switch language
+      when "de" then "Vereinfache den Term:"
+      else "Simplify the expression"
     checks : defaultPowerCheck
-    hint : "'a hoch 3b' gibst du so ein: a^(3b)"
 
-  exp1NumQuotient : (level = 1) -> #exp1NumQuotient
+  exp1NumQuotient : (level = 1, language="de") -> #exp1NumQuotient
     switch level
       when 1
         op = "*"
@@ -71,20 +74,23 @@ exports.powersGenerator = powersGenerator =
     x = rnd.letter()
     #return
     problem : "#{x}^(1/#{nd})#{op}#{x}^(1/#{md})"
-    description : "Vereinfache den Term mit dem 1. Potenzgesetz:"
+    description : switch language
+      when "de" then "Vereinfache den Term:"
+      else "Simplify the expression"
     checks : defaultPowerCheck
-    hint : "'a hoch 3b' gibst du so ein: a^(3b)"
 
-  sqrtAsPower : (level = 1) ->
+  sqrtAsPower : (level = 1, language="de") ->
     x = rnd.letter()
     n = rnd.int2Plus(9)
     magStr = if n is 2 then "" else "[#{n}]"
     #return
     problem : "#{x}^(1/#{n})"
     problemTeX : "\\sqrt#{magStr}{#{x}}"
-    description : "Schreibe die Wurzel als Potenz:"
+    description : switch language
+      when "de" then "Schreibe die Wurzel als Potenz:"
+      else "Turn the root into an exponential:"
 
-  sqrt1Num : (level = 1) ->
+  sqrt1Num : (level = 1, language="de") ->
     x = rnd.letter()
     [n, m] = rnd.ints2Plus(9)
     [magStrN, magStrM] = (
@@ -104,10 +110,13 @@ exports.powersGenerator = powersGenerator =
     problemTeX : switch op
       when "*" then "\\sqrt#{magStrN}{#{x}}\\cdot\\sqrt#{magStrM}{#{x}}"
       else "\\frac{\\sqrt#{magStrN}{#{x}}}{\\sqrt#{magStrM}{#{x}}}"
-    description : "Wende das 1. Potenzgesetz an und \
-      schreibe das Ergebnis als Potenz:"
+    description : switch language
+      when "de"
+        "Wandle in eine einzelne Potenz um."
+      else
+        "Transform the expression into a single potentiation."
 
-  exp2Num : (level = 1) ->
+  exp2Num : (level = 1, language="de") ->
     exp = rnd.int2Plus 5
     [na, nb] = rnd.uniqueIntsPlus 9-exp
     [va, vb] = rnd.uniqueLetters()
@@ -130,16 +139,26 @@ exports.powersGenerator = powersGenerator =
     #return
     problem : problem
     solution : solution
-    description : "Vereinfache den Term."
-    hint : "In der Lösung darf keine Potenz eines \
-      Klammerterms mehr vorkommen."
+    description : switch language
+      when "de" then "Vereinfache den Term:"
+      else "Simplify the expression"
+    hint : switch language
+      when "de"
+        "In der Lösung darf keine Potenz eines \
+        Klammerterms mehr vorkommen."
+      else
+        "The base of the exponential may not be in brackets."
     checks : [Check.equivalent, Check.noPowerOfBracket]
 
 
 exports.powers =
   potenz1 :
-    title : "Potenzen und Wurzeln 1"
-    description : "Aufgaben zum 1. Potenzgesetz (gleiche Basis)."
+    title :
+      de : "Potenzen und Wurzeln 1"
+      en : "Exponentiations and Roots 1"
+    description :
+      de : "Aufgaben zum 1. Potenzgesetz (gleiche Basis)."
+      en : "Sums and Differences of Exponentiations with the same Base."
     problems : [
       levels : [1..3]
       generator : powersGenerator.exp1Num
@@ -159,8 +178,12 @@ exports.powers =
       generator : powersGenerator.sqrt1Num
     ]
   potenz2 :
-    title : "Potenzen und Wurzlen 2"
-    description : "Aufgaben zum 2. Potenzgesetz (gleicher Exponent)."
+    title :
+      de : "Potenzen und Wurzlen 2"
+      en : "Exponentiations and Roots 2"
+    description :
+      de : "Aufgaben zum 2. Potenzgesetz (gleicher Exponent)."
+      en : "Multiplying and Dividing Exponentiations with the same Exponent."
     problems : [
       levels : [1..2]
       generator : powersGenerator.exp2Num

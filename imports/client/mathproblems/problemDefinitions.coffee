@@ -93,10 +93,16 @@ exports.moduleKeys = [
 ]
 
 exports.modules = [
-  title : "Aufgaben nach Themen"
+  title :
+    de : "Aufgaben nach Themen"
+    en : "Problems by topic"
   kindred : [
-    title : "Grundrechenarten"
-    description : "Die Grundlagen, die einfach sitzen müssen."
+    title :
+      de : "Grundrechenarten"
+      en : "Basics"
+    description :
+      de : "Die Grundlagen, die einfach sitzen müssen."
+      en : "The foundations that got to be solid"
     kindred : [
       "strichrechnungGanzzahlig"
       "strichrechnungRational"
@@ -108,8 +114,12 @@ exports.modules = [
       "proportionality"
     ]
   ,
-    title : "Bruchrechnen"
-    description : "Bruchrechnen ist euer Freund!"
+    title :
+      de : "Bruchrechnen"
+      en : "Fractions"
+    description :
+      de : "Bruchrechnen ist euer Freund!"
+      en : "Fractions are your friends!"
     kindred : [
       "bruch0"
       "bruch1"
@@ -118,8 +128,12 @@ exports.modules = [
       "bruch4"
     ]
   ,
-    title : "Rechnen mit Einheiten"
-    description : "Einheiten weglassen rächt sich."
+    title :
+      de : "Rechnen mit Einheiten"
+      en : "Calculating with units"
+    description :
+      de : "Einheiten weglassen rächt sich."
+      en : "Always use units if you can."
     kindred : [
       "lengthUnits"
       "areaUnits"
@@ -127,15 +141,23 @@ exports.modules = [
       "mixedUnits"
     ]
   ,
-    title : "Potenzrechnung"
-    description : "Rechengesetze für Potenzen und Wurzeln."
+    title :
+      de : "Potenzrechnung"
+      en : "Exponentiations"
+    description :
+      de : "Rechengesetze für Potenzen und Wurzeln."
+      en : "Rules for Exponentiations and Roots."
     kindred : [
       "potenz1"
       "potenz2"
     ]
   ,
-    title : "Terme umformen"
-    description : "Terme zusammenfassen, Umgang mit Klammern"
+    title :
+      de : "Terme umformen"
+      en : "Simplifying expressions"
+    description :
+      de : "Terme zusammenfassen, Umgang mit Klammern"
+      en : "This is mostly about dealing with brackets."
     kindred : [
       "terme1"
       "ausklammern"
@@ -143,8 +165,12 @@ exports.modules = [
       "polynomialDivision"
     ]
   ,
-    title : "Gleichungen"
-    description : "Lineare und Quadratische Gleichungen Lösen"
+    title :
+      de : "Gleichungen"
+      en : "Equations"
+    description :
+      de : "Lineare und Quadratische Gleichungen Lösen"
+      en : "Solving linear and quadratic equations."
     kindred : [
       "lineareGleichung1"
       "lineareGleichung2"
@@ -152,8 +178,12 @@ exports.modules = [
       "linGlSys"
     ]
   ,
-    title : "Funktionen"
-    description : "Funktionen, Graphen, Funktionsgleichungen"
+    title :
+      de : "Funktionen"
+      en : "Functions"
+    description :
+      de : "Funktionen, Graphen, Funktionsgleichungen"
+      en : "Function plots and function expressions"
     kindred : [
       "linearFunctions"
       "scheitelpunkt"
@@ -161,23 +191,35 @@ exports.modules = [
       "quadraticFunctions"
     ]
   ,
-    title : "Geometrie"
-    description : "Vermischte Aufgaben"
+    title :
+      de : "Geometrie"
+      en : "Geometry"
+    description :
+      de : "Vermischte Aufgaben"
+      en : "Assorted problems"
     kindred : [
       "strahlensatz"
       "prismen"
     ]
   ,
-    title : "Calculus"
-    description : "Differential/Integralrechnung"
+    title :
+      de : "Calculus"
+      en : "Calculus"
+    description :
+      de : "Differential/Integralrechnung"
+      en : "Differentiation and Integration"
     kindred :[
       "differentiation"
       "integration"
     ]
   ,
-    title : "Area 51"
-    description : "Testgebiet für Aufgabengeneratoren \
+    title :
+      de : "Area 51"
+      en : "Area 51"
+    description :
+      de : "Testgebiet für Aufgabengeneratoren \
       an denen ich noch arbeite. Benutzung auf eigene Gefahr."
+      en : "Be carefull, there's fnords in there (and half way tested stuff)."
     kindred : [
       # "templateTest"
       "sinussatz"

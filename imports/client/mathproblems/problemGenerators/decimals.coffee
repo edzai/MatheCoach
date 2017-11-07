@@ -11,7 +11,7 @@ math = require "mathjs"
 { teXifyAM } = require "../renderAM.coffee"
 
 exports.decimalsGenerator = generator =
-  addition : (level = 1) ->
+  addition : (level = 1, language="de") ->
     math.config
       number : "BigNumber"
       precision : 8
@@ -25,8 +25,11 @@ exports.decimalsGenerator = generator =
     #returns
     problem : problem
     solution : math.eval(problem, {a,b}).toString()
-    description : "Addiere die beiden Dezimalzahlen"
-  subtraction : (level = 1) ->
+    description : switch language
+      when "de" then "Addiere die beiden Dezimalzahlen:"
+      else "Add the decimal numbers:"
+
+  subtraction : (level = 1, language="de") ->
     math.config
       number : "BigNumber"
       precision : 8
@@ -40,8 +43,11 @@ exports.decimalsGenerator = generator =
     #returns
     problem : problem
     solution : math.eval(problem, {a,b}).toString()
-    description : "Subtrahiere die beiden Dezimalzahlen"
-  multiplication : (level = 1) ->
+    description : switch language
+      when "de" then "Subtrahiere die beiden Dezimalzahlen:"
+      else "Subtract the decimal numbers:"
+
+  multiplication : (level = 1, language="de") ->
     math.config
       number : "BigNumber"
       precision : 12
@@ -55,8 +61,11 @@ exports.decimalsGenerator = generator =
     #returns
     problem : problem
     solution : math.eval(problem, {a,b}).toString()
-    description : "Multipliziere die beiden Dezimalzahlen"
-  division : (level = 1) ->
+    description : switch language
+      when "de" then "Multipliziere die beiden Dezimalzahlen:"
+      else "Multiply the decimal numbers:"
+
+  division : (level = 1, language="de") ->
     math.config
       number : "BigNumber"
       precision : 12
@@ -72,12 +81,18 @@ exports.decimalsGenerator = generator =
     problem : "not Used"
     problemTeX : "#{c} : #{a}"
     solution : "#{b}"
-    description : "Dividiere die beiden Dezimalzahlen"
+    description : switch language
+      when "de" then "Dividiere die beiden Dezimalzahlen:"
+      else "Do the division:"
 
 exports.decimals =
   decimals1 :
-    title : "Dezimalzahlen 1"
-    description : "Addition und Subtraktion von Dezimalzahlen"
+    title :
+      de : "Dezimalzahlen 1"
+      en : "Decimal Numbers 1"
+    description :
+      de : "Addition und Subtraktion von Dezimalzahlen"
+      en : "Sums and Differences with Decimal Numbers"
     problems : [
       levels : [1..4]
       generator : generator.addition
@@ -86,22 +101,34 @@ exports.decimals =
       generator : generator.subtraction
     ]
   decimals2 :
-    title : "Dezimalzahlen 2"
-    description : "Multiplikation von Dezimalzahlen"
+    title :
+      de : "Dezimalzahlen 2"
+      en : "Decimal Numbers 2"
+    description :
+      de : "Multiplikation von Dezimalzahlen"
+      en : "Multiplying Decimal Numbers"
     problems : [
       levels : [1..3]
       generator : generator.multiplication
     ]
   decimals3 :
-    title : "Dezimalzahlen 3"
-    description : "Division mit Dezimalzahlen"
+    title :
+      de : "Dezimalzahlen 3"
+      en : "Decimal Numbers 3"
+    description :
+      de : "Division mit Dezimalzahlen"
+      en : "Division with Decimal Numbers"
     problems : [
       levels : [1..3]
       generator : generator.division
     ]
   decimals :
-    title : "Dezimalzahlen"
-    description : "Vermische Aufgaben zum Rechnen mit Dezimalzahlen"
+    title :
+      de : "Dezimalzahlen"
+      en : "Decimal Numbers"
+    description :
+      de : "Vermische Aufgaben zum Rechnen mit Dezimalzahlen"
+      en : "Assorted Problems with Decimal Numbers"
     problems : [
       levels : [1..3]
       generator : generator.addition

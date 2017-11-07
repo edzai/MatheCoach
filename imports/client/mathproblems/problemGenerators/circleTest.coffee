@@ -11,7 +11,7 @@ require "/imports/modules/nerdamer/Solve.js"
 { Point } = require "/imports/client/mathproblems/geometryDraw.coffee"
 
 generators =
-  circle : (level = 1) ->
+  circle : (level = 1, language="de") ->
     circle1 =
       type : "circle"
       center : new Point 50, 50
@@ -59,8 +59,10 @@ generators =
     textBook : circleTestTextBook
 
 exports.circleTest =
-  title : "Bemaßungen"
-  description : "Bemaßungen von Strecken mit unterschiedlichen Ebenen"
+  title :
+    de : "Bemaßungen"
+  description :
+    de : "Bemaßungen von Strecken mit unterschiedlichen Ebenen"
   problems : [
     levels : [1]
     generator : generators.circle

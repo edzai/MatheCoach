@@ -11,7 +11,7 @@ require "/imports/modules/nerdamer/Solve.js"
 { Point } = require "/imports/client/mathproblems/geometryDraw.coffee"
 
 generators =
-  sinussatz : (level = 1) ->
+  sinussatz : (level = 1, language="de") ->
     [a,b,c,alpha,beta,gamma] = ({} for n in [1..6])
     [b.value, Bx, By] = rnd.intsMin 100, 170
     phi = rnd.int 360
@@ -59,15 +59,29 @@ generators =
     #returns
     problem : "not used"
     solution : solution
-    description : "Bestimme den gesuchten Wert mit Hilfe \
-      des Sinussatzes."
-    hint : "Runde das Ergebnis auf eine ganze Zahl."
+    description : switch language
+      when "de"
+        "Bestimme den gesuchten Wert mit Hilfe \
+        des Sinussatzes."
+      else
+        "Find the missing Value using the law of sines"
+    hint : switch language
+      when "de"
+        "Runde das Ergebnis auf eine ganze Zahl."
+      else
+        "Round the Result to a whole number."
     geometryDrawData : [triangle]
     skipExpression : true
 
 exports.sinussatz =
-  title : "Der Sinussatz"
-  description : "Aufgaben zum Verhältnis von Winkeln zu Seitenlängen in Dreiecken"
+  title :
+    de : "Der Sinussatz"
+    en : "Law of Sines"
+  description :
+    de : "Aufgaben zum Verhältnis von Winkeln zu Seitenlängen in Dreiecken"
+    en :
+      "Problems about Quotients of Lengths of Sides and Sines of Angles \
+      in Triangles."
   problems : [
     levels : [1..3]
     generator : generators.sinussatz

@@ -21,7 +21,7 @@ zipper = (arrays) ->
   ).join ""
 
 exports.expressionGenerator = expressionGenerator =
-  summeZusFass : (level = 1) ->
+  summeZusFass : (level = 1, language="de") ->
     n = Math.min 3, level
     v = rnd.uniqueLetters()
     bits = (
@@ -35,10 +35,12 @@ exports.expressionGenerator = expressionGenerator =
       .split("")[1..].join("")
     #return
     problem : problem
-    description : "Vereinfache den Term:"
+    description : switch language
+      when "de" then "Vereinfache den Term:"
+      else "Simplify the expression:"
     checks : defaultExpressionCheck
 
-  summeZusFassExp : (level = 1) ->
+  summeZusFassExp : (level = 1, language="de") ->
     n = Math.min 3, level
     e = rnd.uniqueInts2Plus(9)
     x = rnd.letter()
@@ -53,10 +55,12 @@ exports.expressionGenerator = expressionGenerator =
       .split("")[1..].join("")
     #return
     problem : problem
-    description : "Vereinfache den Term:"
+    description : switch language
+      when "de" then "Vereinfache den Term:"
+      else "Simplify the expression:"
     checks : defaultExpressionCheck
 
-  expandKlammer : (level = 1) ->
+  expandKlammer : (level = 1, language="de") ->
     a = rnd.int2Plus(9)
     ops = rnd.opsStrich()[0..level]
     if ops[0] is "+" then ops[0] = ""
@@ -67,10 +71,12 @@ exports.expressionGenerator = expressionGenerator =
     #return
     problem : problem
     solution : nerdamer("expand(#{problem})").text "fractions"
-    description : "Multipliziere die Klammer aus und vereinfache:"
+    description : switch language
+      when "de" then "Multipliziere die Klammer aus und vereinfache:"
+      else "Multiply the brackets and simplify:"
     checks : defaultExpressionCheck
 
-  expandKlammerKlammer : (level = 1) ->
+  expandKlammerKlammer : (level = 1, language="de") ->
     [x, y] = rnd.uniqueLetters()
     [a, b, c, d] = rnd.intsPlus(9)
     [op1, op2 ]= rnd.opsStrich()
@@ -80,10 +86,12 @@ exports.expressionGenerator = expressionGenerator =
     #return
     problem : problem
     solution : nerdamer("expand(#{problem})").text "fractions"
-    description : "Multipliziere die Klammer aus und vereinfache:"
+    description : switch language
+      when "de" then "Multipliziere die Klammer aus und vereinfache:"
+      else "Multiply the brackets and simplify:"
     checks : defaultExpressionCheck
 
-  ausklammern : (level = 1) ->
+  ausklammern : (level = 1, language="de") ->
     a = rnd.int2Plus(9)
     if level > 1
       if rnd.bool() then a = -a
@@ -97,13 +105,15 @@ exports.expressionGenerator = expressionGenerator =
     #return
     problem : nerdamer("expand(#{solution})").text "fractions"
     solution : solution
-    description : "Klammere #{a} aus."
+    description : switch language
+      when "de" then "Klammere #{a} aus."
+      else "Factor out #{a}."
     checks : [
         Check.equivalent
         Check.firstFactorEquivalent
       ]
 
-  ausklammernMax : (level = 1) ->
+  ausklammernMax : (level = 1, language="de") ->
     a = rnd.int2Plus(9)
     if level > 1
       a = "#{a}#{rnd.letter()}"
@@ -116,15 +126,21 @@ exports.expressionGenerator = expressionGenerator =
     #return
     problem : nerdamer("expand(#{solution})").text "fractions"
     solution : solution
-    description : "Klammere so weit wie möglich aus."
+    description : switch language
+      when "de" then "Klammere so weit wie möglich aus."
+      else "Factor out as much as possible."
     checks : [
         Check.equivalent
         Check.firstFactorEquivalent
       ]
 
 exports.expressions =
-  title : "Terme vereinfachen"
-  description : "Terme zusammenfassen und Klammern ausmultiplizieren"
+  title :
+    de : "Terme vereinfachen"
+    en : "Simplify expressions"
+  description :
+    de : "Terme zusammenfassen und Klammern ausmultiplizieren"
+    en : "Simplifying Expressions and Expanding Brackets "
   problems : [
     levels : [1..3]
     generator : expressionGenerator.summeZusFass
@@ -143,8 +159,12 @@ exports.expressions =
   ]
 
 exports.ausklammern =
-  title : "Faktorisieren von Summen"
-  description : "Oder einfacher ausgedrückt: Ausklammern"
+  title :
+    de : "Faktorisieren von Summen"
+    en : "Factoring Sums"
+  description :
+    de : "Oder einfacher ausgedrückt: Ausklammern"
+    en : "Turning Sums into Products with the Distributive Rule"
   problems : [
     levels : [1..2]
     generator : expressionGenerator.ausklammern

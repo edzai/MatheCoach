@@ -11,7 +11,7 @@ math = require "mathjs"
 {processEquation} = require "./quadraticEquations.coffee"
 
 exports.nullStellenGenerator = nullStellenGenerator =
-  pq : (level = 1) ->
+  pq : (level = 1, language="de") ->
     [a, b, c] = rnd.intsPlus(9)
     x = rnd.letter()
     [op1, op2, op3] = rnd.opsMinus()
@@ -30,10 +30,18 @@ exports.nullStellenGenerator = nullStellenGenerator =
     problemTeX : problemTeX
     solution : solution
     solutionTeX : "\\mathbb{L}=\\left\\{#{solution}\\right\\}"
-    description : "Finde die Nullstellen:"
-    hint : if level < 2 then "Verwende die pq-Formel" else null
+    description : switch language
+      when "de" then "Finde die Nullstellen:"
+      else "Find the roots:"
+    hint :
+      if level < 2
+        switch language
+          when "de"
+            "Verwende die pq-Formel"
+          else
+            "Use the Quadratic Formula."
 
-  substitution : (level = 1) ->
+  substitution : (level = 1, language="de") ->
     [a, b, c] = rnd.intsPlus(9)
     x = rnd.letter()
     [op1, op2, op3] = rnd.opsMinus()
@@ -52,10 +60,11 @@ exports.nullStellenGenerator = nullStellenGenerator =
     problemTeX : problemTeX
     solution : solution
     solutionTeX : "\\mathbb{L}=\\left\\{#{solution}\\right\\}"
-    description : "Finde die Nullstellen:"
-    hint : if level < 2 then "Substitution hilft." else null
+    description : switch language
+      when "de" then "Finde die Nullstellen:"
+      else "Find the roots:"
 
-  factorized : (level = 1) ->
+  factorized : (level = 1, language="de") ->
     [a, b, c, d, e] = rnd.intsPlus(9)
     x = rnd.letter()
     [op1, op2, op3, op4, op5] = rnd.opsStrich()
@@ -78,13 +87,17 @@ exports.nullStellenGenerator = nullStellenGenerator =
     problemTeX : problemTeX
     solution : solution
     solutionTeX : "\\mathbb{L}=\\left\\{#{solution}\\right\\}"
-    description : "Finde die Nullstellen:"
-    hint : if level < 2 then "Substitution hilft." else null
+    description : switch language
+      when "de" then "Finde die Nullstellen:"
+      else "Find the roots:"
 
 exports.nullstellen =
-  title : "Nullstellen Ganzrationaler Funktionen"
+  title :
+    de : "Nullstellen Ganzrationaler Funktionen"
+    en : "Roots of Polynomial Functions"
   description :
-    "pq-Formel, Substitution und teilweise factorisierte Polynome."
+    de : "pq-Formel, Substitution und teilweise factorisierte Polynome."
+    en : "Quadratic Formula, Substitution, Partially Factored Polynomials"
   problems : [
     levels : [1..4]
     generator : nullStellenGenerator.pq
