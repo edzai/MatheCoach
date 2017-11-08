@@ -4,3 +4,6 @@
 [submodule "imports/api"]
 	path = imports/api
 	url = https://github.com/JanMP/Mathe-Coach-API
+[submodule "imports/modules/nerdamer"]
+	path = imports/modules/nerdamer
+	url = https://github.com/jiggzson/nerdamer
