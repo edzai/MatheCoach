@@ -1,3 +1,6 @@
 [submodule "mathproblems-submodule"]
 	path = imports/client/mathproblems
 	url = https://github.com/JanMP/mathproblems
+[submodule "imports/api"]
+	path = imports/api
+	url = https://github.com/JanMP/Mathe-Coach-API
