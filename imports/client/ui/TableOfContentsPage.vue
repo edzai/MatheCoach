@@ -1,6 +1,7 @@
 <template lang="jade">
 .red
-  h1 Page Not Found
+  h1 Inhalt
+  p [Module List]
 </template>
 
 <script lang="coffee">
@@ -10,6 +11,7 @@ return
 
 <style scoped lang="sass">
 .red
-  color: red
-  padding : 2rem
+  color: #333
+  padding: 2rem
+  background-color: white
 </style>

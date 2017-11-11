@@ -1,7 +1,7 @@
 <template lang="jade">
 .red
   h1 Home
-  p Hallo, das hier ist ein kleiner Test
+  p [Landing Page]
 </template>
 
 <script lang="coffee">
