@@ -38,5 +38,3 @@ Meteor.startup ->
     meteor :
       meteorUser : ->
         @$store.commit "updateUser", Meteor.user()
-
-  vm.$store.commit "locale/setLanguage", language

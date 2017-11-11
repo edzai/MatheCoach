@@ -1,5 +1,5 @@
 <template lang="jade">
-.red
+.page
   h1 Login
   p [Login, Create Account]
 </template>
@@ -10,7 +10,7 @@ return
 </script>
 
 <style scoped lang="sass">
-.red
+.page
   color: #333
   padding: 2rem
   background-color: white

@@ -1,5 +1,5 @@
 <template lang="jade">
-.red
+.page
   h1 Page Not Found
 </template>
 
@@ -9,7 +9,7 @@ return
 </script>
 
 <style scoped lang="sass">
-.red
+.page
   color: #333
   padding: 2rem
   background-color: white
