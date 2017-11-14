@@ -18,7 +18,10 @@ return
   methods :
     selectModule : ->
       if @item.moduleKey
-        console.log "Open Problem for ModuleKey: #{@item.moduleKey}"
+        @$router.push
+          name : "problemPage"
+          params :
+            moduleKey : @item.moduleKey
   props : ['item']
 </script>
 

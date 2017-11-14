@@ -4,12 +4,12 @@
 
 MatheCoach ist eine Webseite, die dabei hilft, die wichtigsten Arbeitsschritte in der Mathematik zu trainieren und zu wiederholen.
 
-MatheCoch befindet sich in der Entwicklung und ist noch weit davon entfernt, fertig zu sein. Über Anregungen und Fehlermeldungen würde ich mich sehr freuen.
+MatheCoach befindet sich in der Entwicklung und ist noch weit davon entfernt, fertig zu sein. Über Anregungen und Fehlermeldungen würde ich mich sehr freuen.
 
 Die Web-app kann unter http://mathe-coach-janmp.herokuapp.com getestet werden.
 
 ## Aufgabengeneratoren
-MatheCoach enthält nicht einfach eine Sammlung von Aufgaben, sondern generiert die Aufgaben selbst. Für jeden Aufgabentyp gibt es eigene Aufgabengeneratoren. Das sind Java-Script (bzw. CoffeeScript) funktionen, welche die Aufgaben aus Zufallsdaten zusammensetzen.
+MatheCoach enthält nicht einfach eine Sammlung von Aufgaben, sondern generiert die Aufgaben selbst. Für jeden Aufgabentyp gibt es eigene Aufgabengeneratoren. Das sind Java-Script (bzw. CoffeeScript) Funktionen, welche die Aufgaben aus Zufallsdaten zusammensetzen.
 
 Die Aufgabengeneratoren und Moduldefinitionen finden sich im Unterverzeichnis /imports/client/mathproblems/problemGenerators
 
@@ -29,7 +29,7 @@ grundrechenarten = (level, language) ->
   hint : "Dieser Text kommt nach der Aufgabe"
 ```
 
-Der Parameter `level` der Funktion bestimmt den Schwierigkeitsgrad. `level`ist eine Natürliche Zahl. Die Funktion gibt ein Javascriptobjekt zurück. In unserem Beispiel werden zwei Zafallszahlen `a` und `b` generiert und je nach Schwierigkeitsgrad mit `+`, `-`, `*` oder `/` verknüpft.
+Der Parameter `level` der Funktion bestimmt den Schwierigkeitsgrad. `level` ist eine Natürliche Zahl. Die Funktion gibt ein Javascriptobjekt zurück. In unserem Beispiel werden zwei Zufallszahlen `a` und `b` generiert und je nach Schwierigkeitsgrad mit `+`, `-`, `*` oder `/` verknüpft.
 
 Der Zweite Parameter `language : String` enthält den Sprachcode nach ISO 639-1 und kann benutzt werden um die Aufgabe in unterschiedlichen Sprachen auszugeben. Bisher sind alle Aufgabengeneratoren lediglich einsprachig. Eine mehrsprachige Version unseres einfachen Beispiels könnte so aussehen:
 
@@ -64,7 +64,7 @@ Das Erzeugte Objekt kann folgende Elemente enthalten:
 String mit dem Mathematischen Ausdruck der Aufgabe. Das Herzstück fast aller Aufgaben, das Benutzt wird, um die meisten anderen Elemente automatisch zu generieren, wenn diese nicht definiert wurden. Wenn `problemTeX` und `solution` definiert sind, kann `problem` einen bedeutungslosen Platzhalter Text (z.B. "nicht Verwendet") enthalten, sollte aber immer definiert werden.
 
 #### problemTeX : String
-Der Mathematische Ausdruck der Aufgabe im LaTeX Format. Dieses Format wird benutzt, um die Darstellung Mathematischer Terme mit Brüchen etc. zu ermöglichen. Wenn `problemTeX` nicht definiert wird, wird es aus `problem`generiert.
+Der Mathematische Ausdruck der Aufgabe im LaTeX Format. Dieses Format wird benutzt, um die Darstellung Mathematischer Terme mit Brüchen etc. zu ermöglichen. Wenn `problemTeX` nicht definiert wird, wird es aus `problem` generiert.
 
 #### description : String
 Der Text, der vor dem Mathematischen Ausdruck der Aufgabe erscheint. Sollte immer definiert werden.
@@ -100,7 +100,7 @@ Optional. Wenn definiert, dann wird anstelle des mathematischen Ausdrucks aus  `
 Der Datenkontext für das Blaze-Template `customTemplateName`
 
 #### answerPreprocessor : (String) -> String
-Eine Funktion, die die Zeichenkette mit dem Ergebnis des Schülers bearbeitet, ehe sie checks durchläuft. Optional. Wenn nicht definiert, wird eine Funktion aufgerufen, die "abc" in "a * b * c" verwandelt, aber einige Ausdrücke wie "sin", "cos", "sqrt", "alpha", "beta" etc. erhält (die Liste mit Wörtern, die erhalten bleiben muss noch deutlich ausgebaut werden).
+Eine Funktion, die die Zeichenkette mit dem Ergebnis des Schülers bearbeitet, ehe sie Checks durchläuft. Optional. Wenn nicht definiert, wird eine Funktion aufgerufen, die "abc" in "a * b * c" verwandelt, aber einige Ausdrücke wie "sin", "cos", "sqrt", "alpha", "beta" etc. erhält (die Liste mit Wörtern, die erhalten bleiben muss noch deutlich ausgebaut werden).
 
 #### laTeXPostProcessor : (String) -> String
 Eine Funktion, die auf problemTeX und solutionTeX angewendet wird (nachdem eventuell die Defaultwerte eingesetzt werden). Optional. Wenn nicht definiert, wird eine Funktion aufgerufen, die "\cdot" zwischen Ziffern und Nicht-Ziffern entfernt.

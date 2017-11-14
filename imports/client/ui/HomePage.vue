@@ -1,7 +1,7 @@
 <template lang="jade">
-.page
-  h1 Home
-  p [Landing Page]
+.content-box
+  h1.heading Home
+  p.text [Landing Page]
 </template>
 
 <script lang="coffee">
@@ -10,8 +10,4 @@ return
 </script>
 
 <style scoped lang="sass">
-.page
-  color: #333
-  padding: 2rem
-  background-color: white
 </style>

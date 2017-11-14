@@ -1,7 +1,7 @@
 <template lang="jade">
-.page
-  h1 Benutzer Einstellungen
-  p [Persönliche Daten, SchoolClassSettings, Logout]
+.content-box
+  h1.heading Benutzer Einstellungen
+  p.text [Persönliche Daten, SchoolClassSettings, Logout]
 </template>
 
 <script lang="coffee">
@@ -10,8 +10,4 @@ return
 </script>
 
 <style scoped lang="sass">
-.page
-  color: #333
-  padding: 2rem
-  background-color: white
 </style>

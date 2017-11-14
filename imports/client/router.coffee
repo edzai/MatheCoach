@@ -7,7 +7,7 @@ import HomePage from "/imports/client/ui/HomePage.vue"
 import LoginPage from "/imports/client/ui/LoginPage.vue"
 import TableOfContentsPage from "/imports/client/ui/TableOfContentsPage.vue"
 import UserSettingsPage from "/imports/client/ui/UserSettingsPage.vue"
-
+import ProblemPage from "/imports/client/ui/ProblemPage.vue"
 
 routerFactory = new RouterFactory
   mode : "history"
@@ -34,6 +34,10 @@ RouterFactory.configure (router) ->
     path : "/einstellungen"
     name : "userSettingsPage"
     component : UserSettingsPage
+  ,
+    path : "/aufgabe/:moduleKey"
+    name : "problemPage"
+    component : ProblemPage
   ,
     path : "/"
     name : "homePage"

@@ -1,7 +1,30 @@
 export translationsDe =
-  test : "Das hier ist ein Test."
+  # menu
   startSeite : "Startseite"
   login : "Login"
   einstellungen : "Einstellungen"
   inhalt : "Inhalt"
   hilfe : "Hlfe"
+  # LoginPage
+  angemeldetAls : "Angemeldet als: "
+  abmelden : "Abmelden"
+  habeKonto : "Ich habe bereits ein Benutzerkonto."
+  benutzerName : "Benutzername (Kürzel oder Spitzname)"
+  passwort : "Passwort"
+  anmelden : "Anmelden"
+  email : "E-Mail"
+  neuesKonto : "Benutzerkonto Einrichten"
+  benutzerNameInvalid : "Gebe bitte den Benutzernamen ein."
+  emailInvalid : "Gebe bitte deine E-Mail Addresse ein."
+  passwortInvalid1 : "Gebe bitte das Passwort ein."
+  passwortInvalid2 : "Das Passwort ist zu kurz."
+  # ProblemsPage
+  neueAufgabe : "Neue Aufgabe"
+  level : "Level"
+  problemSubmit : "Ok"
+  # DisplayResult
+  deineAntwort : "Deine Antwort:"
+  musterlösung : "Musterlösung:"
+  auswertung : "Auswertung:"
+  ergebnisIstKorrekt : "Das Ergebnis ist korrekt."
+  ergebnisIstNichtKorrekt : "Das Ergebnis ist leider nicht korrekt."

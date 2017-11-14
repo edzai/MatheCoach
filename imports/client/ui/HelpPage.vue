@@ -1,7 +1,7 @@
 <template lang="jade">
-.page
-  h1 Help Page
-  p [Hilfe Themen, Allgemeine Hinweise, Links]
+.content-box
+  h1.heading Help Page
+  p.text [Hilfe Themen, Allgemeine Hinweise, Links]
 </template>
 
 <script lang="coffee">
@@ -10,8 +10,5 @@ return
 </script>
 
 <style scoped lang="sass">
-.page
-  color: #333
-  padding: 2rem
-  background-color: white
+.content-box
 </style>
