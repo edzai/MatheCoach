@@ -1,15 +1,16 @@
 <template lang="jade">
 .content-no-box
   h1.heading Meine Ergebnisse:
-  div(v-for="submission in submissions")
-    submission-list-item(v-bind:submission="submission")
+  submission-list(v-bind:submissions="submissions")
+
 </template>
 
 <script lang="coffee">
 import { Submissions } from "/imports/api/submissions.coffee"
-import SubmissionListItem from "./SubmissionListItem.vue"
+import SubmissionList from "./SubmissionList.vue"
 return
-  data : -> {}
+  data : ->
+    submissions : {}
   computed :
     studentId : -> @$store?.state?.auth?.user?._id
   meteor :
@@ -20,7 +21,7 @@ return
           sort :
             date : -1
         .fetch()
-  components : { SubmissionListItem }
+  components : { SubmissionList }
 </script>
 
 <style scoped lang="sass">

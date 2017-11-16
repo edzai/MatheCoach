@@ -1,7 +1,6 @@
 <template lang="jade">
 .content-box
-  h1 Admin Panel
-  p [SchoolClass List und UserList]
+  h1.heading AdminUserListItem
 </template>
 
 <script lang="coffee">

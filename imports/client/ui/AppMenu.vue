@@ -24,7 +24,7 @@ Menu(
     .level
       Icon(type="stats-bars" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('meineErgebnisse')}}
-  MenuItem(name="teacherPage")
+  MenuItem(name="teacherSchoolClassList")
     .level
       Icon(type="ios-people" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('meineKlassen')}}

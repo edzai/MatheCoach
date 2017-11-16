@@ -1,16 +1,23 @@
 <template lang="jade">
-.red
-  h1 SchoolClassList
-  {{test}}
+.content-box.separated(@click="goToClassPage")
+  h1.heading {{schoolClass.name}}
 </template>
 
 <script lang="coffee">
 return
-  data : ->
-    test : "123"
+  methods :
+    goToClassPage : ->
+      @$router.push
+        name : "schoolClassPage"
+        params :
+          id : @schoolClass._id
+  props :
+    schoolClass :
+      type : Object
+      required : true
 </script>
 
 <style scoped lang="sass">
-.red
-  color: red
+.separated
+  margin-bottom: 5px
 </style>

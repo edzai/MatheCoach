@@ -1,5 +1,5 @@
 <template lang="jade">
-div
+.item
   .content-box
     p.text {{timeAgo}}:
     display-problem(v-bind:problem="submission")
@@ -23,6 +23,8 @@ return
 </script>
 
 <style scoped lang="sass">
+.item
+  flex-shrink: 1
 .separated
   margin-bottom : 30px
 .separated2
