@@ -1,7 +1,8 @@
 <template lang="jade">
-.content-box
-  h3 {{problem.title}}
-  p {{problem.description}}
+div
+  span.heading {{problem.title}}, 
+  span.sub.heading Level {{problem.level}}
+  p.text {{problem.description}}
   katex(v-if="!problem.skipExpression" v-bind:tex="problem.problemTeX")
   .center
     geometry-draw-display(v-if="drawSVG" v-bind:data="problem.geometryDrawData")

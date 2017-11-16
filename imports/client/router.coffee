@@ -7,6 +7,7 @@ import HomePage from "/imports/client/ui/HomePage.vue"
 import LoginPage from "/imports/client/ui/LoginPage.vue"
 import TableOfContentsPage from "/imports/client/ui/TableOfContentsPage.vue"
 import UserSettingsPage from "/imports/client/ui/UserSettingsPage.vue"
+import StudentResultsPage from "/imports/client/ui/StudentResultsPage.vue"
 import ProblemPage from "/imports/client/ui/ProblemPage.vue"
 
 routerFactory = new RouterFactory
@@ -38,6 +39,10 @@ RouterFactory.configure (router) ->
     path : "/aufgabe/:moduleKey"
     name : "problemPage"
     component : ProblemPage
+  ,
+    path : "/ergebnisse"
+    name : "studentResultsPage"
+    component : StudentResultsPage
   ,
     path : "/"
     name : "homePage"

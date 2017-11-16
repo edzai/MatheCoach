@@ -4,6 +4,7 @@ export translationsEn =
   login : "Login"
   einstellungen : "Settings"
   inhalt : "Table of Contents"
+  meineErgebnisse: "My Results"
   hilfe : "Help"
   #loginPage
   angemeldetAls : "Signed-in as: "

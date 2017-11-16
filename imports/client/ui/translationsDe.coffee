@@ -4,6 +4,7 @@ export translationsDe =
   login : "Login"
   einstellungen : "Einstellungen"
   inhalt : "Inhalt"
+  meineErgebnisse: "Meine Ergebnisse"
   hilfe : "Hlfe"
   # LoginPage
   angemeldetAls : "Angemeldet als: "

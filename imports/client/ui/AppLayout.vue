@@ -2,36 +2,18 @@
 .layout
   .hero: h1 MatheCoach
   Row.grow(type="flex")
-    Col.layout-menu-left(span="5")
-      Menu(
-        v-bind:active-name="$route.name"
-        theme="light" width="auto"
-        @on-select="name => $router.push({name})"
-      )
-        MenuItem(name="homePage")
-          Icon(type="home")
-          span {{$t('startSeite')}}
-        MenuItem(name="loginPage")
-          Icon(type="log-in")
-          span {{$t('login')}}
-        MenuItem(name="userSettingsPage")
-          Icon(type="ios-settings")
-          span {{$t('einstellungen')}}
-        MenuItem(name="tableOfContentsPage")
-          Icon(type="ios-list-outline")
-          span {{$t('inhalt')}}
-        MenuItem(name="helpPage")
-          Icon(type="help")
-          span {{$t('hilfe')}}
-    Col.layout-content.transitioning(span="19")
-      transition(name="fade" mode="out-in")
-        router-view
-  .footer.transitioning © 2016 - Jan Pilgenröder
+    Col.layout-menu-left
+      app-menu
+    Col.layout-content
+      router-view
+  .footer © 2016 - Jan Pilgenröder
 </template>
 
 <script lang="coffee">
+import AppMenu from "./AppMenu.vue"
 return
   data : -> {}
+  components : { AppMenu }
 </script>
 
 <style scoped lang="sass">
@@ -45,21 +27,8 @@ return
 .layout-content
   background-color: #f8f8f9
   padding : 20px
-.fade-enter-active, .fade-leave-active
-  transition: all .6s
-.fade-leave-to
-  opacity: 0
-  // transform: translateY(10px)
-.fade-enter
-  opacity: 0
-  // transform: translateY(-10px)
-.absolute
-  box-sizing: border-box
-  position: absolute
-  margin: auto
-  width: 80%
-.transitioning
-  transition: all 1s
+  flex-grow: 1
+
 .ivu-menu-item
   padding : 10px 24px
 .hero
@@ -96,37 +65,18 @@ $fail: #ed3f14
   font-weight: bold
   color: #464c5b
   font-size: 16px
-  .sub
+  &.sub
     font-size: 14px
-  .small
+  &.small
     font-size: 12px
 .text
   color: #657180
   font-size: 12px
-  .help
+  &.help
     color: #9ea7b4
-  .disabled
+  &.disabled
     color: #c3cbd6
-  .link
+  &.link
     color: #3399ff
 
-.drop-enter-active, .drop-leave-active
-  transition: all .2s ease-in
-  z-index: -2000px
-.drop-leave-to
-  opacity: 0
-  transform: translateY(-30px)
-.drop-enter
-  opacity: 0
-  transform: translateY(-30px)
-.drop-move
-  transition: all .5s
-.pulse-enter-active
-  transition: all .2s
-.pulse-leave-active
-  transition: all .2s
-.pulse-leave-to
-  transform: scale(.98)
-.pulse-enter
-  transform: scale(1.02)
 </style>

@@ -25,6 +25,7 @@ mdg:validated-method
 dburles:collection-helpers
 reywood:publish-composite
 alanning:roles
+percolate:migrations
 accounts-password@1.5.0
 email@1.2.3
 

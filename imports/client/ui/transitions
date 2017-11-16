@@ -1,0 +1,71 @@
+.fade-enter-active, .fade-leave-active
+  transition: all .3s
+.fade-leave-to
+  opacity: 0
+.fade-enter
+  opacity: 0
+
+.drop-enter-active, .drop-leave-active
+  transition: all .2s ease-in
+  z-index: -2000px
+.drop-leave-to
+  opacity: 0
+  transform: translateY(-30px)
+.drop-enter
+  opacity: 0
+  transform: translateY(-30px)
+.drop-move
+  transition: all .5s
+
+.rotate-down-enter-active
+  transition: all .3s ease-out
+.rotate-down-leave-active
+  transition: all .3s ease-in
+.rotate-down-leave-to
+  transform: rotateX(-90deg)
+  backface-visibility: hidden
+.rotate-down-enter
+  transform: rotateX(90deg)
+  backface-visibility: hidden
+
+.rotate-left-enter-active
+  transition: all .3s ease-out
+.rotate-left-leave-active
+  transition: all .3s ease-in
+.rotate-left-leave-to
+  transform: rotateY(-90deg)
+  backface-visibility: hidden
+.rotate-left-enter
+  transform: rotateY(90deg)
+  backface-visibility: hidden
+
+.rotate-up-enter-active
+  transition: all .3s ease-out
+.rotate-up-leave-active
+  transition: all .3s ease-in
+.rotate-up-leave-to
+  transform: rotateX(90deg)
+  backface-visibility: hidden
+.rotate-up-enter
+  transform: rotateX(-90deg)
+  backface-visibility: hidden
+
+.rotate-right-enter-active
+  transition: all .3s ease-out
+.rotate-right-leave-active
+  transition: all .3s ease-in
+.rotate-right-leave-to
+  transform: rotateY(90deg)
+  backface-visibility: hidden
+.rotate-right-enter
+  transform: rotateY(-90deg)
+  backface-visibility: hidden
+
+.pulse-enter-active
+  transition: all .4s
+.pulse-leave-active
+  transition: all .2s
+.pulse-leave-to
+  transform: translateZ(-80px)
+.pulse-enter
+  transform: translateZ(80px)

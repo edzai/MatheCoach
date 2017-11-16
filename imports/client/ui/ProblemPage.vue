@@ -1,23 +1,22 @@
 <template lang="jade">
-.page
+div
   h1.heading Aufgabe:
-  transition(name="pulse" mode="out-in")
-    display-problem(v-bind:problem="problem" v-bind:key="problem.solutionTeX")
-  transition(name="drop" mode="out-in" @after-enter="focusInput")
-    div(v-if="answered" key="result")
-      display-result(v-bind:data="resultDisplayData")
-      .panel2
-        Button(type="primary" @click="getNewProblem") {{$t('neueAufgabe')}}
-    .content-box.margin-top(v-if="!answered" key="panel")
-      Input(v-model="answer" type="text" ref="input" autofocus=true)
-      .panel
-        ButtonGroup(shape="circle")
-          Button(@click="decLevel" type="ghost")
-            Icon(type="minus")
-          Button(type="ghost") {{$t('level')}} {{level}}
-          Button(@click="incLevel" type="ghost")
-            Icon(type="plus")
-        Button(type="primary" @click="submit") {{$t('problemSubmit')}}
+  .content-box
+    display-problem(v-bind:problem="problem")
+  div(v-if="answered" key="result")
+    display-result(v-bind:data="resultDisplayData")
+    .panel2
+      Button(type="primary" @click="getNewProblem") {{$t('neueAufgabe')}}
+  .content-box.margin-top(v-if="!answered" key="panel")
+    Input(v-model="answer" type="text" ref="input" autofocus=true)
+    .panel
+      ButtonGroup(shape="circle")
+        Button(@click="decLevel" type="ghost")
+          Icon(type="minus")
+        Button(type="ghost") {{$t('level')}} {{level}}
+        Button(@click="incLevel" type="ghost")
+          Icon(type="plus")
+      Button(type="primary" @click="submit") {{$t('problemSubmit')}}
 </template>
 
 <script lang="coffee">
@@ -39,7 +38,6 @@ return
       passTextsOptional : []
       failTextsRequired : []
       failTextsOptional : []
-    inputHeight : "370px"
   mounted : ->
     @getNewProblem()
     window.addEventListener "keyup", @handleEnter
@@ -75,11 +73,11 @@ return
       @$store.commit "unsolvedProblems/remove",
         moduleKey : @moduleKey
         level : @level
-      @inputHeight = "44px"
-      @checkAnswer()
+      @result = @problem.checkAnswer @answer
+      @answered = true
       if Meteor.userId()
         obj = _.pick @problem, [
-          "moduleKey", "level", "score", "description", "skipExpression", "geometryDrawData", "functionPlotData", "problemTeX"
+          "moduleKey", "title", "level", "score", "description", "skipExpression", "geometryDrawData", "functionPlotData", "problemTeX"
         ]
         submissionData = Object.assign obj,
           answerCorrect : @result.pass
@@ -93,9 +91,6 @@ return
     decLevel : ->
       @level -= 1
       @getNewProblem()
-    checkAnswer : ->
-      @result = @problem.checkAnswer @answer
-      @answered = true
   components : { DisplayProblem, DisplayResult }
 </script>
 
