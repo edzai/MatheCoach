@@ -1,5 +1,5 @@
 <template lang="jade">
-.content-box
+.content-box(@click="goToPage")
   h1.heading {{name}}
   p.text {{timeAgo}}
 </template>
@@ -13,6 +13,11 @@ return
         "#{@student.profile?.firstName} #{@student.profile?.lastName} (#{@student.username})"
       else
         "(#{@student.username})"
+  methods :
+    goToPage : -> @$router.push
+      name : "studentResultsPage"
+      params :
+        id : @student._id
   props :
     student :
       type : Object

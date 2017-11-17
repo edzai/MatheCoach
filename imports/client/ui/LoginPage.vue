@@ -1,7 +1,7 @@
 <template lang="jade">
 .content-no-box
   .form-box(v-if="currentUser" key="signedIn")
-    p.status {{$t('angemeldetAls')}}{{currentUser.username}}
+    p.status {{$t('angemeldetAls')}}{{currentUser.fullName()}}
     Button.button(type="error" icon="log-out" @click="signOut") {{$t('abmelden')}}
   div(v-if="!currentUser" key="notSighnedIn")
     Checkbox.checkbox(v-model="signingIn" key="checkbox") {{$t('habeKonto')}}

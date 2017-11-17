@@ -20,7 +20,7 @@ Menu(
     .level
       Icon(type="ios-list-outline" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('inhalt')}}
-  MenuItem(name="studentResultsPage")
+  MenuItem(name="studentOwnResultsPage")
     .level
       Icon(type="stats-bars" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('meineErgebnisse')}}

@@ -1,6 +1,7 @@
 <template lang="jade">
-.content-no-box
-  h1.heading Meine Ergebnisse:
+.content-no-box(v-if="student")
+  h1.heading(v-if="ownPage") {{$t('meineErgebnisse')}}:
+  h1.heading(v-else) {{$t('ergebnisseVon')}} {{student.fullName()}} ({{student.username}}):
   submission-list(v-bind:submissions="submissions")
 
 </template>
@@ -11,8 +12,11 @@ import SubmissionList from "./SubmissionList.vue"
 return
   data : ->
     submissions : {}
+    student : {}
   computed :
-    studentId : -> @$store?.state?.auth?.user?._id
+    ownPage : -> @$route?.name is "studentOwnResultsPage"
+    studentId : ->
+      if @ownPage then @$store?.state?.auth?.user?._id else @$route?.params?.id
   meteor :
     submissions :
       params : -> userId : @studentId
@@ -21,6 +25,9 @@ return
           sort :
             date : -1
         .fetch()
+    student :
+      params : -> studentId : @studentId
+      update : ({ studentId }) -> Meteor.users.findOne _id : studentId
   components : { SubmissionList }
 </script>
 

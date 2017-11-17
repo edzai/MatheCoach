@@ -47,7 +47,11 @@ RouterFactory.configure (router) ->
     name : "problemPage"
     component : ProblemPage
   ,
-    path : "/ergebnisse"
+    path : "/meine-ergebnisse"
+    name : "studentOwnResultsPage"
+    component : StudentResultsPage
+  ,
+    path : "/ergebnisse/:id"
     name : "studentResultsPage"
     component : StudentResultsPage
   ,
