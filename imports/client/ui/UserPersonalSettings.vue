@@ -1,18 +1,19 @@
 <template lang="jade">
 .content-no-box
   h1.heading {{$t('userPersonalSettings')}}
-  Form(
-    ref="userData"
-    v-bind:model="userData"
-    v-bind:rules="userDataRules"
-    v-bind:label-width="80"
-  )
-    FormItem(v-bind:label="$t('firstName')" prop="firstName")
-      Input(type="text" v-model="userData.firstName" v-bind:placeholder="$t('firstName')")
-    FormItem(v-bind:label="$t('lastName')" prop="lastName")
-      Input(type="text" v-model="userData.lastName" v-bind:placeholder="$t('lastName')")
-    FormItem
-      Button(type="primary" @click="submit") {{$t('speichern')}}
+  .content-box
+    Form(
+      ref="userData"
+      v-bind:model="userData"
+      v-bind:rules="userDataRules"
+      v-bind:label-width="80"
+    )
+      FormItem(v-bind:label="$t('firstName')" prop="firstName")
+        Input(v-model="userData.firstName" v-bind:placeholder="$t('firstName')")
+      FormItem(v-bind:label="$t('lastName')" prop="lastName")
+        Input(v-model="userData.lastName" v-bind:placeholder="$t('lastName')")
+      FormItem
+        Button(type="primary" @click="submit") {{$t('speichern')}}
 </template>
 
 <script lang="coffee">

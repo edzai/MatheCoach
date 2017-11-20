@@ -10,6 +10,8 @@
 <script lang="coffee">
 import SchoolClassStudentListItem from "./SchoolClassStudentListItem.vue"
 return
+  data : ->
+    students : []
   meteor :
     students :
       params : ->
@@ -18,6 +20,7 @@ return
         Meteor.users.find { schoolClassId },
           sort :
             lastActive : 1
+        .fetch()
   props :
     schoolClass : Object
     required : true

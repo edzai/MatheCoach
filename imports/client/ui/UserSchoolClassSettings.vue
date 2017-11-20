@@ -1,7 +1,7 @@
 <template lang="jade">
-.content-no-box
+div
   h1.heading {{$t('userSchoolClassSettings')}}
-  div(v-if="!user.isTeacher()")
+  .content-box(v-if="!user.isTeacher()")
     Select(
       v-model="selectedSchoolClass"
       v-bind:placeholder="$t('wähleKlasseAus')"
@@ -10,7 +10,7 @@
         v-bind:value="item.value"
         v-bind:key="item.value"
       ) {{item.label}}
-  div(v-else)
+  .content-box(v-else)
     p.text {{$t('lehrerHabenKeineKlasse')}}
 </template>
 
@@ -20,6 +20,7 @@ import { setUserSchoolClass } from "/imports/api/users.coffee"
 return
   data : ->
     selectedSchoolClass : @user.schoolClassId
+    schoolClassList : []
   meteor :
     schoolClassList : ->
       SchoolClasses.find().fetch().map (schoolClass) ->

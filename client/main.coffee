@@ -25,6 +25,7 @@ Meteor.startup ->
   Vue.use iView
   store = new Vuex.Store storeDef
   Vue.use VuexI18n.plugin, store
+  Vue.locale = -> {}
   Vue.i18n.add "de", translationsDe
   Vue.i18n.add "en", translationsEn
   language = testLanguage ? window.navigator.language.slice 0, 2

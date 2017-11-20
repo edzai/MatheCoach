@@ -32,6 +32,15 @@ Menu(
     .level
       Icon(type="help" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('hilfe')}}
+  MenuGroup(v-if="showAdmin" title="Admin")
+    MenuItem(name="adminSchoolClassListPage")
+      .level
+        Icon(type="ios-people")
+        span.menu-text(v-if="showText") {{$t('klassenVerwalten')}}
+    MenuItem(name="adminUserListPage")
+      .level
+        Icon(type="ios-people")
+        span.menu-text(v-if="showText") {{$t('userVerwalten')}}
 </template>
 
 <script lang="coffee">
@@ -39,6 +48,8 @@ return
   data : ->
     iconSize : 24
     showText : true
+  computed :
+    showAdmin : -> "admin" in (@$store?.state?.auth?.user?.roles ? [])
 </script>
 
 <style scoped lang="sass">

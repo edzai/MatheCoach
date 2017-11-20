@@ -11,7 +11,7 @@ import { Submissions } from "/imports/api/submissions.coffee"
 import SubmissionList from "./SubmissionList.vue"
 return
   data : ->
-    submissions : {}
+    submissions : []
     student : {}
   computed :
     ownPage : -> @$route?.name is "studentOwnResultsPage"

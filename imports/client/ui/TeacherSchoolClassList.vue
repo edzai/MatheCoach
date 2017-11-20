@@ -15,6 +15,7 @@ import TeacherSchoolClassListItem from "./TeacherSchoolClassListItem.vue"
 return
   data : ->
     activeTab : ""
+    schoolClasses : []
   meteor :
     schoolClasses :
       params : -> userId : @$store?.state?.auth?.user?._id

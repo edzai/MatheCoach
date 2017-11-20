@@ -3,6 +3,7 @@ import { RouterFactory, nativeScrollBehavior } from "meteor/akryum:vue-router2"
 import NotFoundPage from "/imports/client/ui/NotFoundPage.vue"
 import AdminUserListPage from "/imports/client/ui/AdminUserListPage.vue"
 import AdminSchoolClassListPage from "/imports/client/ui/AdminSchoolClassListPage.vue"
+import AdminUserSettingsPage from "/imports/client/ui/AdminUserSettingsPage.vue"
 import HelpPage from "/imports/client/ui/HelpPage.vue"
 import HomePage from "/imports/client/ui/HomePage.vue"
 import LoginPage from "/imports/client/ui/LoginPage.vue"
@@ -19,6 +20,10 @@ routerFactory = new RouterFactory
 
 RouterFactory.configure (router) ->
   router.addRoutes [
+    path : "/admin-user-edit/:id"
+    name : "adminUserSettingsPage"
+    component : AdminUserSettingsPage
+  ,
     path :"/admin-user-liste"
     name : "adminUserListPage"
     component : AdminUserListPage
