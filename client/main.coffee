@@ -40,3 +40,7 @@ Meteor.startup ->
     meteor :
       meteorUser : ->
         @$store.commit "updateUser", Meteor.user()
+      language : ->
+        if language = Meteor.user()?.language
+          Vue.i18n.set language
+          moment.locale language

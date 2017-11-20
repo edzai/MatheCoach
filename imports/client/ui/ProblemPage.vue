@@ -38,9 +38,12 @@ return
       passTextsOptional : []
       failTextsRequired : []
       failTextsOptional : []
-  mounted : ->
+    oldLanguage : @$store.state.i18n.locale
+  created : ->
     @getNewProblem()
     window.addEventListener "keyup", @handleEnter
+  beforeDestroy : ->
+    window.removeEventListener "keyup", @handleEnter
   computed :
     moduleKey : -> @$route.params.moduleKey
     resultDisplayData : ->
@@ -48,9 +51,11 @@ return
       answer : @answer
       answerTeX : teXifyAM @answer
       solutionTeX : @problem.solutionTeX
+    language : -> @$store.state.i18n.locale
   methods :
     handleEnter : (event) ->
       if event.key is "Enter"
+        console.log "handleEnter"
         if @answered then @getNewProblem() else @submit()
     getNewProblem : ->
       @answered = false
@@ -58,19 +63,18 @@ return
       language = @$store.state.i18n.locale
       newProblem = new Problem @moduleKey, @level, language
       @level = newProblem.level
-      storedProblem = @$store.state.unsolvedProblems?.problem?[@moduleKey]?[@level]
+      storedProblem = @$store.state.unsolvedProblems?.problem?[language]?[@moduleKey]?[@level]
       if storedProblem?
-        @problem = @$store.state.unsolvedProblems?.problem?[@moduleKey]?[@level]
+        @problem = storedProblem
       else
         @problem = newProblem
-        problemToStore = Object.assign @problem,
-          moduleKey : @moduleKey
-          level : @level
-        @$store.commit "unsolvedProblems/add", problemToStore
+        @$store.commit "unsolvedProblems/add", @problem
       @answer = ""
       @focusInput()
     submit : ->
+      language = @$store.state.i18n.locale
       @$store.commit "unsolvedProblems/remove",
+        language : language
         moduleKey : @moduleKey
         level : @level
       @result = @problem.checkAnswer @answer
@@ -84,13 +88,16 @@ return
           date : new Date()
           answer : @answer
         insertSubmission.call submissionData
-    focusInput : -> @$refs.input?.focus()
+    focusInput : -> Vue.nextTick => @$refs.input?.focus()
     incLevel : ->
       @level +=1
       @getNewProblem()
     decLevel : ->
       @level -= 1
       @getNewProblem()
+  watch :
+    language : -> @getNewProblem()
+
   components : { DisplayProblem, DisplayResult }
 </script>
 

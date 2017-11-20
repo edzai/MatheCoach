@@ -1,10 +1,10 @@
 <template lang="jade">
 .layout
   .hero: h1 MatheCoach
-  Row.grow(type="flex")
-    Col.layout-menu-left
+  .grow
+    .layout-menu
       app-menu
-    Col.layout-content
+    .layout-content
       router-view
   .footer © 2016 - Jan Pilgenröder
 </template>
@@ -22,13 +22,20 @@ return
   flex-direction: column
   min-height: 100vh
 .grow
+  display: flex
   flex-grow : 1
+  flex-direction: row
   box-sizing: border-box
+  flex-wrap: no-wrap
+.layout-menu
+  flex-shrink: 1
+  flex-grow: 0
 .layout-content
   background-color: #f8f8f9
   padding : 20px
   flex-grow: 1
-
+  flex-shrink: 1
+  flex-wrap: no-wrap
 .ivu-menu-item
   padding : 10px 24px
 .hero
@@ -61,6 +68,7 @@ $fail: #ed3f14
 .content-box
   padding: 20px
   background-color: white
+  flex-shrink: 1
 .heading
   font-weight: bold
   color: #464c5b

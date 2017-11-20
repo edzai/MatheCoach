@@ -11,14 +11,12 @@ export default store =
       state :
         problem : {}
       mutations :
-        add : (state, newValue) ->
-          moduleKey = newValue.moduleKey
-          level = newValue.level
-          state.problem[moduleKey] ?= {}
-          state.problem[moduleKey][level] = newValue
-        remove : (state, newValue) ->
-          moduleKey = newValue.moduleKey
-          level = newValue.level
-          delete state.problem[moduleKey][level]
+        add : (state, newValue ) ->
+          { language, moduleKey, level } = newValue
+          state.problem[language] ?= {}
+          state.problem[language][moduleKey] ?= {}
+          state.problem[language][moduleKey][level] = newValue
+        remove : (state, { language, moduleKey, level }) ->
+          delete state.problem[language][moduleKey][level]
         removeAll : (state, newValue) ->
           state.problem = {}
