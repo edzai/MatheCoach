@@ -1,6 +1,6 @@
 <template lang="jade">
-.div
-  h1.heading AdminUserListPage
+Guard(role="admin")
+  h1.heading {{$t('adminUserListPage')}}
   admin-user-list-item(
     v-for="user in users"
     v-bind:user ="user"

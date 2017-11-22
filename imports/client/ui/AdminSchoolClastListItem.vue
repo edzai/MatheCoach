@@ -29,7 +29,7 @@
     )
       FormItem(v-bind:label="$t('klassenName')" prop="name")
         Input(v-model="formData.name")
-      FormItem(v-bind:label="$t('teacher')" prop="teacherId")
+      FormItem(v-bind:label="$t('lehrer')" prop="teacherId")
         Select(v-model="formData.teacherId")
           Option(
             v-for="item in teachersList"

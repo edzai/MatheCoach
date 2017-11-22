@@ -14,10 +14,14 @@
         v-bind:rules="userDataRules"
       )
         FormItem(prop="username")
-          Input(type="text" v-model="userData.username" v-bind:placeholder="$t('benutzerName')")
+          Input(
+            v-model="userData.username"
+            v-bind:placeholder="$t('benutzerName')"
+          )
             Icon(type="person" slot="prepend")
         FormItem(prop="password")
-          Input(type="password" v-model="userData.password" v-bind:placeholder="$t('passwort')")
+          Input(type="password" v-model="userData.password" v-bind:placeholder="$t('passwort')"
+        )
             Icon(type="locked" slot="prepend")
         FormItem
           Button(type="primary" icon="log-in" @click="submit") {{$t('anmelden')}}
@@ -29,13 +33,24 @@
         v-bind:rules="userDataRules"
       )
         FormItem(prop="username")
-          Input(type="text" v-model="userData.username" v-bind:placeholder="$t('benutzerName')")
+          Input(
+            v-model="userData.username"
+            v-bind:placeholder="$t('benutzerName')"
+          )
             Icon(type="person" slot="prepend")
         FormItem(prop="email")
-          Input(type="email" v-model="userData.email" v-bind:placeholder="$t('email')")
+          Input(
+            type="email"
+            v-model="userData.email"
+            v-bind:placeholder="$t('email')"
+          )
             Icon(type="android-mail" slot="prepend")
         FormItem(prop="password")
-          Input(type="password" v-model="userData.password" v-bind:placeholder="$t('passwort')")
+          Input(
+            type="password"
+            v-model="userData.password"
+            v-bind:placeholder="$t('passwort')"
+          )
             Icon(type="locked" slot="prepend")
         FormItem
           Button(type="primary" icon="person-add" @click="submit") {{$t('neuesKonto')}}

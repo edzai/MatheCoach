@@ -1,5 +1,5 @@
 <template lang="jade">
-div
+Guard(role="")
   h1.heading.separated {{$t('benutzerEinstellungen')}}
   div(v-if="currentUser")
     .separated.small-bottom

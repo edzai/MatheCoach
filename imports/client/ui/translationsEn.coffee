@@ -6,7 +6,7 @@ export translationsEn =
   AdminSchoolClassListPage : "Manage Classes"
   # AdminSchoolClassListItem
   klassenName : "Name of class"
-  teacher : "Teacher"
+  lehrer : "Teacher"
   schoolClassSaved : "Class has been saved"
   deleteSchoolClassQuestion : "Really delete the class?"
   schoolClassDeleted : "Class has been deleted."
@@ -14,6 +14,13 @@ export translationsEn =
   neueKlasse : "New class"
   schoolClassNameRequired : "Please supply a name for this class."
   teacherIdRequired : "Please select a teacher for this class."
+  # AdminUserListPage
+  adminUserListPage : "User-list"
+  # AdminUserRoles
+  adminUserRoles : "User Roles"
+  hatAdminRechte : "The user has admin-access."
+  istLehrer : "The user is a teacher."
+  profilGesperrt : "The user may not edit his/her own personal data."
   # AppMenu
   startSeite : "Home"
   login : "Sign-In"
@@ -32,7 +39,7 @@ export translationsEn =
   ergebnisIstNichtKorrekt : "The answer is incorrect."
   # LoginPage
   angemeldetAls : "Signed-in as: "
-  abmelden : "Sign-In"
+  abmelden : "Sign-Out"
   habeKonto : "I already have a user-account."
   benutzerName : "Username"
   passwort : "Password"

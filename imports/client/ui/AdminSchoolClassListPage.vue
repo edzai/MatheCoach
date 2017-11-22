@@ -1,14 +1,15 @@
 <template lang="jade">
-.content-no-box
-  .right
-    Button(type="primary" shape="circle" icon="plus" @click="adding = true")
-  adminSchoolClassListItem(v-if="adding" v-bind:schoolClass="newSchoolClass" @closeEdit="adding = false")
-  h1.heading AdminSchoolClassListPage
-  admin-school-class-list-item(
-    v-for="schoolClass in schoolClasses"
-    v-bind:schoolClass="schoolClass"
-    v-bind:key="schoolClass._id"
-  )
+Guard(role="admin")
+  .content-no-box
+    .right
+      Button(type="primary" shape="circle" icon="plus" @click="adding = true")
+    adminSchoolClassListItem(v-if="adding" v-bind:schoolClass="newSchoolClass" @closeEdit="adding = false")
+    h1.heading AdminSchoolClassListPage
+    admin-school-class-list-item(
+      v-for="schoolClass in schoolClasses"
+      v-bind:schoolClass="schoolClass"
+      v-bind:key="schoolClass._id"
+    )
 </template>
 
 <script lang="coffee">

@@ -6,7 +6,7 @@ export translationsDe =
   AdminSchoolClassListPage : "Schulklassen Verwalten"
   # AdminSchoolClassListItem
   klassenName : "Bezeichnung"
-  teacher : "Lehrer"
+  lehrer : "Lehrer"
   schoolClassSaved : "Die Klasse wurde gespeichert."
   deleteSchoolClassQuestion : "Die Schulklasse wirklich löschen?"
   schoolClassDeleted : "Die Schulklasse wurde gelöscht."
@@ -14,6 +14,13 @@ export translationsDe =
   neueKlasse : "Neue Schulklasse"
   schoolClassNameRequired : "Bitte gib die Bezeichnung der Schulklasse an."
   teacherIdRequired : "Bitte wähle den Lehrer der Klasse aus."
+  # AdminUserListPage
+  adminUserListPage : "Benutzer-Liste"
+  # AdminUserRoles
+  adminUserRoles : "Benutzerrollen (Zugriffsrechte)"
+  hatAdminRechte : "Der Benutzer hat Admin Rechte."
+  istLehrer : "Der Benutzer ist Lehrer."
+  profilGesperrt : "Der Benutzer darf seine Persönlichen Daten NICHT selbst selbst verwalten."
   # AppMenu
   startSeite : "Startseite"
   login : "Login"
@@ -59,7 +66,7 @@ export translationsDe =
   userSchoolClassSettings : "Schulklasse auswählen"
   wähleKlasseAus : "Wähle deine Schulklasse bzw. Lerngruppe aus."
   lehrerHabenKeineKlasse :
-    "Lehrer tragen hier keine Schulklasse aus.\
+    "Lehrer wählen hier nicht ihre Schulklasse aus. \
      Lehrer werden vom Admin eingetragen."
   # UserPersonalSettingsPage
   benutzerEinstellungen : "Benutzereinstellungen"

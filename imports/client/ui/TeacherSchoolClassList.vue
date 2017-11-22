@@ -1,5 +1,5 @@
 <template lang="jade">
-.content-no-box
+Guard(role="mentor")
   h1.heading {{$t('meineKlassen')}}
   teacher-school-class-list-item(
     v-for="schoolClass in schoolClasses"

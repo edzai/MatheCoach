@@ -1,6 +1,9 @@
 <template lang="jade">
 .layout
-  .hero: h1 MatheCoach
+  .hero
+    div
+      h1 MatheCoach
+    Button(type="primary" size="large" icon="log-in") {{$t('login')}}
   .grow
     .layout-menu
       app-menu
@@ -13,6 +16,11 @@
 import AppMenu from "./AppMenu.vue"
 return
   data : -> {}
+  meteor :
+    $subscribe :
+      userData : []
+  computed :
+    ready : -> @$subReady.userData
   components : { AppMenu }
 </script>
 
@@ -28,7 +36,7 @@ return
   box-sizing: border-box
   flex-wrap: no-wrap
 .layout-menu
-  flex-shrink: 1
+  flex-shrink: 0
   flex-grow: 0
 .layout-content
   background-color: #f8f8f9
@@ -39,9 +47,11 @@ return
 .ivu-menu-item
   padding : 10px 24px
 .hero
+  display: flex
+  flex-direction: row
+  justify-content: space-between
   background-color: #2d8cf0
   color: white
-  text-align: left
   padding : 20px
   flex-grow : 0
 .footer

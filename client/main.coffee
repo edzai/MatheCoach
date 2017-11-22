@@ -19,6 +19,8 @@ import { translationsEn } from "/imports/client/ui/translationsEn.coffee"
 import AppLayout from "/imports/client/ui/AppLayout.vue"
 import routerFactory from "/imports/client/router.coffee"
 
+import Guard from "/imports/client/ui/Guard.vue"
+
 testLanguage = "de"
 
 Meteor.startup ->
@@ -31,7 +33,7 @@ Meteor.startup ->
   language = testLanguage ? window.navigator.language.slice 0, 2
   Vue.i18n.set language
   moment.locale language
-
+  Vue.component "Guard", Guard
   vm = new Vue
     el : '#app'
     render : (h) -> h(AppLayout)

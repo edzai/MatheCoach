@@ -24,14 +24,15 @@ Menu(
     .level
       Icon(type="stats-bars" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('meineErgebnisse')}}
-  MenuItem(name="teacherSchoolClassList")
-    .level
-      Icon(type="ios-people" v-bind:size="iconSize")
-      span.menu-text(v-if="showText") {{$t('meineKlassen')}}
   MenuItem(name="helpPage")
     .level
       Icon(type="help" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('hilfe')}}
+  MenuGroup(v-if="showTeacher" v-bind:title="$t('lehrer')")
+    MenuItem(name="teacherSchoolClassList")
+      .level
+        Icon(type="ios-people" v-bind:size="iconSize")
+        span.menu-text(v-if="showText") {{$t('meineKlassen')}}
   MenuGroup(v-if="showAdmin" title="Admin")
     MenuItem(name="adminSchoolClassListPage")
       .level
@@ -50,6 +51,7 @@ return
     showText : true
   computed :
     showAdmin : -> "admin" in (@$store?.state?.auth?.user?.roles ? [])
+    showTeacher : -> "mentor" in (@$store?.state?.auth?.user?.roles ? [])
 </script>
 
 <style scoped lang="sass">

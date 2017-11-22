@@ -1,9 +1,11 @@
 <template lang="jade">
-div
+Guard(role="admin")
   h1.heading.separated {{$t('benutzerEinstellungen')}}
   div(v-if="user")
     .separated.small-bottom
       user-personal-settings(v-bind:user="user")
+    .separated
+      admin-user-roles(v-bind:user="user")
     .separated
       user-school-class-settings(v-bind:user="user")
 </template>
@@ -11,6 +13,7 @@ div
 <script lang="coffee">
 import UserPersonalSettings from "./UserPersonalSettings.vue"
 import UserSchoolClassSettings from "./UserSchoolClassSettings.vue"
+import AdminUserRoles from "./AdminUserRoles.vue"
 return
   data : ->
     user : {}
@@ -19,7 +22,7 @@ return
       params : -> id : @$route.params.id
       update : ({ id })->
         Meteor.users.findOne _id : id
-  components : { UserPersonalSettings, UserSchoolClassSettings}
+  components : { UserPersonalSettings, UserSchoolClassSettings, AdminUserRoles }
 </script>
 
 <style scoped lang="sass">
