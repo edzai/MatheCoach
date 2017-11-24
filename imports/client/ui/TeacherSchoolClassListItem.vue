@@ -18,6 +18,4 @@ return
 </script>
 
 <style scoped lang="sass">
-.separated
-  margin-bottom: 5px
 </style>

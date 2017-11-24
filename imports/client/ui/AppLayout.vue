@@ -3,7 +3,7 @@
   .hero
     div
       h1 MatheCoach
-    Button(type="primary" size="large" icon="log-in") {{$t('login')}}
+    user-button
   .grow
     .layout-menu
       app-menu
@@ -14,14 +14,16 @@
 
 <script lang="coffee">
 import AppMenu from "./AppMenu.vue"
+import UserButton from "./UserButton.vue"
 return
-  data : -> {}
+  created : ->
+    Meteor.setInterval (=> @$store.commit "tickle/inc"), 10000
   meteor :
     $subscribe :
       userData : []
   computed :
     ready : -> @$subReady.userData
-  components : { AppMenu }
+  components : { AppMenu, UserButton }
 </script>
 
 <style scoped lang="sass">
@@ -35,6 +37,8 @@ return
   flex-direction: row
   box-sizing: border-box
   flex-wrap: no-wrap
+  @media screen and (max-width: 400px)
+    flex-direction: column
 .layout-menu
   flex-shrink: 0
   flex-grow: 0
@@ -63,22 +67,39 @@ return
 </style>
 
 <style lang="sass">
-$pass: #19be6b
-$fail: #ed3f14
-.fail
+$success: #19be6b
+$warning : #ff9900
+$error: #ed3f14
+.fail, .error
   &.text
-    color: $fail
+    color: $error
   &.back
-    background-color: $fail
-.pass
+    background-color: $error
+  &.glow
+    box-shadow: 0px 0px 10px 2px $error
+.pass, .success
   &.text
-    color: $pass
+    color: $success
   &.back
-    background-color: $pass
+    background-color: $success
+  &.glow
+    box-shadow: 0px 0px 10px 2px $success
+.warning
+  &.text
+    color: $warning
+  &.back
+    background-color: $warning
+  &.glow
+    box-shadow: 0px 0px 10px 2px $warning
 .content-box
   padding: 20px
   background-color: white
+  // border: 1pt solid silver
+  box-shadow: 1px 1px 2px silver
+  border-radius: 5px
   flex-shrink: 1
+.separated
+  margin-bottom: 8px
 .heading
   font-weight: bold
   color: #464c5b

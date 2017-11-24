@@ -1,6 +1,6 @@
 <template lang="jade">
 div
-  h1.heading UserLanguageSettings
+  h1.heading {{$t('userLanguageSettings')}}
   .content-box
     Select(
       v-model="selectedLanguage"

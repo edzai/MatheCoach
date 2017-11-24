@@ -23,6 +23,4 @@ return
 <style scoped lang="sass">
 .small-bottom
   padding-bottom: .1px
-.separated
-  margin-bottom: 10px
 </style>

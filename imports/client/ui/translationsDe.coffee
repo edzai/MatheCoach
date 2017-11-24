@@ -56,17 +56,19 @@ export translationsDe =
   problemSubmit : "Ok"
   # StudentResultsPage
   ergebnisseVon : "Ergebnisse von"
+  # UserLanguageSettings
+  userLanguageSettings : "Sprache auswählen"
   # UserPersonalSettings
   userPersonalSettings : "Persönliche Daten"
   firstName : "Vorname"
   lastName : "Nachname"
   firstNameInvalid : "Gebe deinen Vornamen an."
   lastNameInvalid : "Gebe deinen Nachnamen an."
+  # UserPersonalSettingsPage
+  benutzerEinstellungen : "Benutzereinstellungen"
   # UserSchoolClassSettings
   userSchoolClassSettings : "Schulklasse auswählen"
   wähleKlasseAus : "Wähle deine Schulklasse bzw. Lerngruppe aus."
   lehrerHabenKeineKlasse :
     "Lehrer wählen hier nicht ihre Schulklasse aus. \
      Lehrer werden vom Admin eingetragen."
-  # UserPersonalSettingsPage
-  benutzerEinstellungen : "Benutzereinstellungen"

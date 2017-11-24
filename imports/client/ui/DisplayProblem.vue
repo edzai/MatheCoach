@@ -1,6 +1,6 @@
 <template lang="jade">
 div
-  span.heading {{problem.title}},
+  span.heading {{problem.title}}, 
   span.sub.heading Level {{problem.level}}
   p.text {{problem.description}}
   katex(v-if="!problem.skipExpression" v-bind:tex="problem.problemTeX")

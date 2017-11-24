@@ -10,13 +10,12 @@ import { SchoolClasses } from "/imports/api/schoolClasses.coffee"
 import SchoolClassStudentList from "./SchoolClassStudentList.vue"
 return
   data : ->
-    schoolClass :
-      name : ""
+    schoolClass : {}
   meteor :
     schoolClass :
       params : -> schoolClassId : @$route.params?.id
       update : ({schoolClassId}) ->
-        SchoolClasses.findOne _id : schoolClassId
+        (SchoolClasses.findOne _id : schoolClassId) or {}
   components : { SchoolClassStudentList }
 </script>
 

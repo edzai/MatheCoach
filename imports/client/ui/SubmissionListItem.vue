@@ -1,9 +1,9 @@
 <template lang="jade">
 .item
-  .content-box
+  .content-box.separated
     p.text {{timeAgo}}:
     display-problem(v-bind:problem="submission")
-  .content-box.answer-line.separated
+  .content-box.answer-line
     .text {{submission.answer || "[Keine Antwort]"}}
     Icon.answer-icon(v-if="submission.answerCorrect" type="checkmark" color="#19be6b" size=20)
     Icon.answer-icon(v-else type="close" color="#ed3f14" size=20)
@@ -14,7 +14,9 @@
 import DisplayProblem from "./DisplayProblem.vue"
 return
   computed :
-    timeAgo : -> moment(@submission.date).fromNow()
+    timeAgo : ->
+      @$store.state.tickle.tick
+      moment(@submission.date).fromNow()
   props :
     submission :
       type : Object
@@ -25,15 +27,11 @@ return
 <style scoped lang="sass">
 .item
   flex-shrink: 1
-.separated
-  margin-bottom : 30px
-.separated2
-  margin-bottom : 3px
 .answer-icon
   margin-left : 20px
 .answer-line
-  margin-top : 10px
   display: flex
   justify-content: center
   align-items: center
+  margin-bottom: 20px
 </style>

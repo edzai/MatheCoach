@@ -118,9 +118,13 @@ return
 </script>
 
 <style scoped lang="sass">
-.separated
-  margin-bottom: 10px
 .flex
   display: flex
   justify-content: space-between
+.left
+  flex-grow : 1
+  flex-shrink : 1
+.right
+  flex-grow : 0
+  flex-shrink: 0
 </style>
