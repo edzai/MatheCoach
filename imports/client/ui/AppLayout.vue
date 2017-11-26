@@ -77,6 +77,8 @@ $error: #ed3f14
     background-color: $error
   &.glow
     box-shadow: 0px 0px 10px 2px $error
+  &.stroke
+    stroke: $error
 .pass, .success
   &.text
     color: $success
@@ -84,6 +86,8 @@ $error: #ed3f14
     background-color: $success
   &.glow
     box-shadow: 0px 0px 10px 2px $success
+  &.stroke
+    stroke: $success
 .warning
   &.text
     color: $warning
@@ -91,6 +95,8 @@ $error: #ed3f14
     background-color: $warning
   &.glow
     box-shadow: 0px 0px 10px 2px $warning
+  &.stroke
+    stroke: $warning
 .content-box
   padding: 20px
   background-color: white

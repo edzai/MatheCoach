@@ -1,17 +1,21 @@
 <template lang="jade">
 .content-box.separated.flex(@click="goToPage")
   .left
-    info-avatar(
+    info-avatar.avatar(
       v-bind:user="student"
       v-bind:size="40"
     )
-  .right
-    h1.heading {{name}}
-    p.text {{timeAgo}}
+    .middle
+      h1.heading {{name}}
+      p.text {{timeAgo}}
+  .plot
+    user-bar-plot.right(v-bind:user="student")
+
 </template>
 
 <script lang="coffee">
 import InfoAvatar from "./InfoAvatar.vue"
+import UserBarPlot from "./UserBarPlot.vue"
 return
   computed :
     timeAgo : ->
@@ -31,13 +35,29 @@ return
     student :
       type : Object
       required : true
-  components : { InfoAvatar }
+  components : { InfoAvatar, UserBarPlot }
 </script>
 
 <style scoped lang="sass">
-.left
-  margin-right: 15px
 .flex
   display: flex
-  justify-content: flex-start
+  justify-content: space-between
+  align-items: center
+.left
+  margin-right: 15px
+  display: flex
+  align-items: center
+.avatar
+  flex-shrink: 0
+.middle
+  margin-left: 20px
+.plot
+  flex-grow: 0
+  flex-shrink: 0
+  width : 100px
+  height : 50px
+  background-color: #f0f0ff
+  border-radius: 3px
+  overflow: hidden
+  box-shadow: 2px 2px 3px silver
 </style>
