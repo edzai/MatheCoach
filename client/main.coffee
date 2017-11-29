@@ -6,6 +6,7 @@ require "/imports/api/schoolClasses.coffee"
 require "/imports/api/submissions.coffee"
 require "/imports/api/chatMessages.coffee"
 require "/imports/api/activityGraphs.coffee"
+require "/imports/api/userStatistics.coffee"
 require "/imports/api/publications.coffee"
 
 import { Vue } from "meteor/akryum:vue"

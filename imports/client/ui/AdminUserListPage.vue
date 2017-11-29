@@ -19,6 +19,8 @@ return
       "profile.firstName" : 1
       username : 1
   meteor :
+    $subscribe :
+      allUserData : []
     users :
       params : ->
         selector : @selector

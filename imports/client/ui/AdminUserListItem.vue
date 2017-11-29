@@ -11,6 +11,13 @@
         p.text {{timeAgo}}
     .right
       Button(
+        type="warning"
+        shape="circle"
+        icon="trash-b"
+        @click="deleteSubmissions"
+        style="margin-right: 8px"
+      )
+      Button(
         type="error"
         shape="circle"
         icon="trash-a"
@@ -36,7 +43,10 @@ return
     timeAgo : ->
       if @user.lastActive then moment(@user.lastActive).fromNow() else ""
   methods :
-    deleteUser : -> @$Message.info "deleteUser"
+    deleteUser : ->
+      Meteor.call "deleteUser", id : @user._id
+    deleteSubmissions : ->
+      Meteor.call "deleteSubmissions", userId : @user._id
     editUser : ->
       @$router.push
         name : "adminUserSettingsPage"

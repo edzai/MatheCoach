@@ -1,14 +1,28 @@
 <template lang="jade">
 div
   submission-list-item(v-for="submission in submissions" v-bind:key="submission._id" v-bind:submission="submission")
+  Button(@click="page +=1") Mehr
 </template>
 
 <script lang="coffee">
 import SubmissionListItem from "./SubmissionListItem.vue"
 return
-  props :
+  data : ->
+    page : 1
+    submissions : []
+  methods :
+    handleReachBottom : ->
+  meteor :
+    $subscribe :
+      userSubmissions : -> [userId : @user._id, page : @page]
     submissions :
-      type : Array
+      params : ->
+        user : @user
+        page : @page
+      update : ({ user, page }) -> user?.submissionsPage?(page)
+  props :
+    user :
+      type : Object
       required : true
   components : { SubmissionListItem }
 </script>
