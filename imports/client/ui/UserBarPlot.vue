@@ -1,5 +1,7 @@
 <template lang="jade">
-svg(width="100%" height="100%" v-bind:viewBox="chartData.viewBox" preserveAspectRatio="none")
+.spin-container(v-if="!$subReady.userStatistics")
+  Spin(size="large" fix)
+svg(v-else width="100%" height="100%" v-bind:viewBox="chartData.viewBox" preserveAspectRatio="none")
   g(v-bind:transform="chartData.coordinateTransform")
     g
       rect.nothing(
@@ -43,7 +45,7 @@ svg(width="100%" height="100%" v-bind:viewBox="chartData.viewBox" preserveAspect
 </template>
 
 <script lang="coffee">
-#TODO: show max value in barplot
+import { UserStatistics } from "/imports/api/userStatistics.coffee"
 import _ from "lodash"
 return
   data : ->
@@ -54,30 +56,22 @@ return
     bronzeAnswers : 10
     silverAnswers : 50
     goldAnswers : 100
+    userStatistics : {}
   computed :
     chartData : ->
-      labelFormat="D.M."
-      submissions = @submissions.map (submission) ->
-        date :
-          moment submission.date
-          .startOf "day"
-          .format labelFormat
-        answerCorrect : submission.answerCorrect
+      labelFormat="D-M-Y"
+      submissions = @userStatistics.submissions
       dayData = [@daysCharted-1..0].map (daysAgo) ->
         date =
           moment()
           .subtract daysAgo, "days"
           .startOf("day")
           .format(labelFormat)
-        submissionsCorrectThatDay =
-          _(submissions)
-          .filter {date}
-          .countBy (submission) -> submission.answerCorrect
-          .value()
-        correctCount = submissionsCorrectThatDay[true] ? 0
-        falseCount = submissionsCorrectThatDay[false] ? 0
-        totalCount = correctCount + falseCount
-        return {date, daysAgo, correctCount, falseCount, totalCount}
+        thatDay = submissions?.byDate?[date]
+        correctCount = thatDay?.correct or 0
+        falseCount = thatDay?.incorrect or 0
+        totalCount = thatDay?.total or 0
+        {date, daysAgo, correctCount, falseCount, totalCount}
       #dayData = @mockDayData
       maxDayTotal = (_.maxBy dayData, "totalCount").totalCount
       contentWidth = @daysCharted * @dayWidth
@@ -91,9 +85,11 @@ return
         y2Red : @answerHeight * (day.correctCount + day.falseCount)
       return {viewBox, coordinateTransform, bars}
   meteor :
-    submissions :
-      params : -> user : @user
-      update : ({user}) -> user.submissions()
+    $subscribe :
+      userStatistics : -> [userId : @user?._id]
+    userStatistics :
+      params : -> userId : @user._id
+      update : ({userId}) -> UserStatistics.findOne(userId)
   props :
     user :
       type : Object

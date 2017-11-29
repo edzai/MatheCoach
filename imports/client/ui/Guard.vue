@@ -1,9 +1,6 @@
 <template lang="jade">
-Spin(
-  v-if="loading"
-  size="large"
-  fix
-)
+.spin-container(v-if="loading")
+  Spin(size="large" fix)
 div(v-else)
   slot(v-if="allowed")
   .content-box(v-else)
@@ -17,11 +14,11 @@ return
   data : -> {}
   meteor :
     $subscribe :
-      userData : []
+      userOwnData : []
     roles : -> Meteor.user()?.roles or []
     loggedIn : -> Meteor.user()?
   computed :
-    loading : -> not @$subReady.userData
+    loading : -> not @$subReady.userOwnData
     allowed : ->
       roleFits = if @role is ""
         @loggedIn

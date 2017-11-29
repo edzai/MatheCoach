@@ -1,10 +1,10 @@
 <template lang="jade">
-.content-no-box(v-if="student")
+.content-no-box(v-if="user")
   .plot
-    user-bar-plot(v-bind:user="student")
+    user-bar-plot(v-bind:user="user")
   h1.heading(v-if="ownPage") {{$t('meineErgebnisse')}}:
-  h1.heading(v-else) {{$t('ergebnisseVon')}} {{student.fullName()}} ({{student.username}}):
-  submission-list(v-bind:submissions="submissions")
+  h1.heading(v-else) {{$t('ergebnisseVon')}} {{user.fullName()}} ({{user.username}}):
+  submission-list(v-bind:user="user")
 
 </template>
 
@@ -14,23 +14,17 @@ import SubmissionList from "./SubmissionList.vue"
 import UserBarPlot from "./UserBarPlot.vue"
 return
   data : ->
-    submissions : []
-    student : {}
+    user : {}
   computed :
     ownPage : -> @$route?.name is "studentOwnResultsPage"
-    studentId : ->
+    userId : ->
       if @ownPage then @$store?.state?.auth?.user?._id else @$route?.params?.id
   meteor :
-    submissions :
-      params : -> userId : @studentId
-      update : ({ userId }) ->
-        Submissions.find { userId },
-          sort :
-            date : -1
-        .fetch()
-    student :
-      params : -> studentId : @studentId
-      update : ({ studentId }) -> Meteor.users.findOne _id : studentId
+    $subscribe :
+      userData : -> [id : @userId]
+    user :
+      params : -> userId : @userId
+      update : ({ userId }) -> Meteor.users.findOne _id : userId
   components : { SubmissionList, UserBarPlot }
 </script>
 

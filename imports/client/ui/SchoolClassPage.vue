@@ -1,8 +1,7 @@
 <template lang="jade">
 Guard(role="mentor")
-  .content-no-box
-    h1.heading {{schoolClass.name}}
-    school-class-student-list(v-bind:schoolClass="schoolClass")
+  h1.heading {{schoolClass.name}}
+  school-class-student-list(v-bind:schoolClass="schoolClass")
 </template>
 
 <script lang="coffee">

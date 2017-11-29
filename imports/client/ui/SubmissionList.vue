@@ -1,6 +1,11 @@
 <template lang="jade">
 div
   submission-list-item(v-for="submission in submissions" v-bind:key="submission._id" v-bind:submission="submission")
+  .content-box.center.separated(v-if="!$subReady.userSubmissions")
+    .spin-container
+      Spin(size=large fix)
+    p Loading
+
   Button(@click="page +=1") Mehr
 </template>
 

@@ -20,9 +20,11 @@ return
     Meteor.setInterval (=> @$store.commit "tickle/inc"), 10000
   meteor :
     $subscribe :
-      userData : []
+      userOwnData : []
+      teachersData : []
+      schoolClasses : []
   computed :
-    ready : -> @$subReady.userData
+    ready : -> @$subReady.userOwnData
   components : { AppMenu, UserButton }
 </script>
 
@@ -104,8 +106,15 @@ $error: #ed3f14
   box-shadow: 1px 1px 2px silver
   border-radius: 5px
   flex-shrink: 1
+.center
+  text-align: center
 .separated
   margin-bottom: 8px
+.spin-container
+  width: 100%
+  height: 100%
+  display: inline-block
+  position: relative
 .heading
   font-weight: bold
   color: #464c5b

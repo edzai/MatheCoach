@@ -1,5 +1,7 @@
 <template lang="jade">
-.content-no-box
+.spin-container(v-if="!$subReady.schoolClassUsers")
+  Spin(size="large")
+.content-no-box(v-else)
   school-class-student-list-item(
     v-for="student in students"
     v-bind:key="student._id"
@@ -13,6 +15,8 @@ return
   data : ->
     students : []
   meteor :
+    $subscribe :
+      schoolClassUsers : -> [schoolClassId : @schoolClass._id]
     students :
       params : ->
         schoolClassId : @schoolClass._id
