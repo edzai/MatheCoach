@@ -44,9 +44,11 @@ return
       if @user.lastActive then moment(@user.lastActive).fromNow() else ""
   methods :
     deleteUser : ->
-      Meteor.call "deleteUser", id : @user._id
+      if window.confirm "Den Benutzer wirklich löschen?"
+        Meteor.call "deleteUser", id : @user._id
     deleteSubmissions : ->
-      Meteor.call "deleteSubmissions", userId : @user._id
+      if window.confirm "Wirklich alle Ergebnisse für den Benutzer löschen?"
+        Meteor.call "deleteSubmissions", userId : @user._id
     editUser : ->
       @$router.push
         name : "adminUserSettingsPage"
