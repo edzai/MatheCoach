@@ -1,3 +1,5 @@
+#NOTE: Keeping this for reference for now
+
 _ = require "lodash"
 MobileDetect = require "mobile-detect"
 
