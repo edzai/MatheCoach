@@ -22,7 +22,7 @@ import routerFactory from "/imports/client/router.coffee"
 
 import Guard from "/imports/client/ui/Guard.vue"
 
-testLanguage = "de"
+#testLanguage = "de"
 
 Meteor.startup ->
   Vue.use iView
