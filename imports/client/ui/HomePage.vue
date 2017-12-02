@@ -1,6 +1,9 @@
 <template lang="jade">
 .content-box
-  h1.heading MatheCoach
+  h1.heading Chatroom auf Gitter
+  h2.heading.sub 2. Dezember 2017
+  p.text Ich habe einen Chatroom für Mathecoach auf gitter.im eingerichtet (Gitter bietet Chatrooms/Foren mit Zusatzfeatures speziell für die Kommunikation mit Programmierern). Wenn Ihr Fehler findet oder Fragen habt oder Ideen oder Wünsche loswerden wollt, dann könnt ihr das hier: <a class="text link" href="https://gitter.im/MatheCoach/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link"> gitter.im/MatheCoach</a>
+  h1.heading.old-news MatheCoach Version 2
   h2.heading.sub 30. November 2017
   h1.heading.small Keine Panik. Es sieht zwar alles anders aus, aber ihr könnt euch immer noch mit eurem alten Account einloggen.
   p.text Ich habe begonnen, eine iPhone/Android app für MatheCoach zu entwickeln. Bei dieser Mobilapp musste ich eine andere Javascriptbibliothek für die Programmierung der Benutzeroberfläche verwenden (Vue.js) und es hat sich gezeigt, dass diese Bibliothek gegenüber der alten einige Vorteile bietet. Der Programmcode ist besser strukturiert, übersichtlicher und lässt sich langfristig besser warten.
@@ -25,6 +28,8 @@ return
 </script>
 
 <style scoped lang="sass">
+.old-news
+  margin-top: 16px
 p
   margin-top: 8px
 </style>
