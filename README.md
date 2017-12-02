@@ -1,5 +1,7 @@
 # MatheCoach
 
+[![Join the chat at https://gitter.im/MatheCoach/Lobby](https://badges.gitter.im/MatheCoach/Lobby.svg)](https://gitter.im/MatheCoach/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Eine Web-app zum Matheüben
 
 MatheCoach ist eine Webseite, die dabei hilft, die wichtigsten Arbeitsschritte in der Mathematik zu trainieren und zu wiederholen.
