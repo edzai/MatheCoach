@@ -4,7 +4,7 @@ div
   .content-box
     Select(
       v-model="selectedLanguage"
-      v-bind:placeholde="$t('wähleSpracheAus')"
+      v-bind:placeholder="$t('wähleSpracheAus')"
     )
       Option(
         v-for="language in languages"

@@ -58,6 +58,7 @@ export translationsEn =
   ergebnisseVon : "Results for"
   # UserLanguageSettings
   userLanguageSettings : "Language selection"
+  wähleSpracheAus : "Choose your prefered language."
   # UserPersonalSettings
   userPersonalSettings : "Personal Data"
   firstName : "First Name"

@@ -58,6 +58,7 @@ export translationsDe =
   ergebnisseVon : "Ergebnisse von"
   # UserLanguageSettings
   userLanguageSettings : "Sprache auswählen"
+  wähleSpracheAus : "Wähle deine Sprache aus."
   # UserPersonalSettings
   userPersonalSettings : "Persönliche Daten"
   firstName : "Vorname"
