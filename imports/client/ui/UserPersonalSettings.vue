@@ -6,7 +6,7 @@
       ref="userData"
       v-bind:model="userData"
       v-bind:rules="userDataRules"
-      v-bind:label-width="80"
+      v-bind:label-width="90"
     )
       FormItem(v-bind:label="$t('firstName')" prop="firstName")
         Input(v-model="userData.firstName" v-bind:placeholder="$t('firstName')")
