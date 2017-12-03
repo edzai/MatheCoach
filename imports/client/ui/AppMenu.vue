@@ -53,7 +53,7 @@ return
       @width = window.innerWidth
   computed :
     showText : -> @width > 599
-    mode : -> if @width > 400 then "vertical" else "horizontal"
+    mode : -> if @width >= 400 then "vertical" else "horizontal"
     showAdmin : -> "admin" in (@$store?.state?.auth?.user?.roles ? [])
     showTeacher : -> "mentor" in (@$store?.state?.auth?.user?.roles ? [])
 </script>

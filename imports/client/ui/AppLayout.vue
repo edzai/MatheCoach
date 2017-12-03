@@ -4,7 +4,7 @@
     div
       h1 MatheCoach
     user-button
-  .grow
+  .main-area
     .layout-menu
       app-menu
     .layout-content
@@ -33,7 +33,7 @@ return
   display: flex
   flex-direction: column
   min-height: 100vh
-.grow
+.main-area
   display: flex
   flex-grow : 1
   flex-direction: row
