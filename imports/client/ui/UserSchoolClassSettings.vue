@@ -23,7 +23,10 @@ return
     schoolClassList : []
   meteor :
     schoolClassList : ->
-      SchoolClasses.find().fetch().map (schoolClass) ->
+      SchoolClasses.find {},
+        sort :
+          name : 1
+      .fetch().map (schoolClass) ->
         value : schoolClass._id
         label : schoolClass.name
   props :

@@ -24,7 +24,11 @@ return
       name : ""
       teacherId : ""
   meteor :
-    schoolClasses : -> SchoolClasses.find().fetch()
+    schoolClasses : ->
+      SchoolClasses.find {},
+        sort :
+          name : 1
+      .fetch()
   components : { AdminSchoolClassListItem }
 </script>
 
