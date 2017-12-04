@@ -7,12 +7,11 @@ Guard(role="admin")
       Option(value="activity") {{$t('sortZuletztAktiv')}}
       Option(value="schoolClass") {{$t('sortSchoolClass')}}
     Input(v-model="searchString" icon="ios-search")
-  transition-group(name="list")
-    admin-user-list-item(
-      v-for="user in users"
-      v-bind:user ="user"
-      v-bind:key="user._id"
-    )
+  admin-user-list-item(
+    v-for="user in users"
+    v-bind:user ="user"
+    v-bind:key="user._id"
+  )
 </template>
 
 <script lang="coffee">
@@ -66,14 +65,4 @@ return
   display: flex
   justify-content: space-between
   margin-bottom: 8px
-.list-enter-active
-  transition: all 1s
-.list-leave-active
-  transition: all .5s
-  position: absolute
-.list-enter, .list-leave-to
-  opacity: 0
-  transform: scale(0)
-.list-move
-  transition: transform .75s
 </style>
