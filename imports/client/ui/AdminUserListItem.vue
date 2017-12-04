@@ -8,6 +8,7 @@
       )
       .middle
         h1.heading {{user.fullName()}} ({{user.username}})
+        p.text {{schoolClassInfo}}
         p.text {{timeAgo}}
     .right
       Button(
@@ -42,6 +43,10 @@ return
   computed :
     timeAgo : ->
       if @user.lastActive then moment(@user.lastActive).fromNow() else ""
+    schoolClassInfo : ->
+      if name = @user.schoolClass()?.name
+        "#{name}, #{@user.teacher()?.fullName()}"
+      else ""
   methods :
     deleteUser : ->
       if window.confirm "Den Benutzer wirklich löschen?"

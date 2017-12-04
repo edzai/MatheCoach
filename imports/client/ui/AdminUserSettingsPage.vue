@@ -20,7 +20,7 @@ return
   meteor :
     user :
       params : -> id : @$route.params.id
-      update : ({ id })->
+      update : ({ id }) ->
         Meteor.users.findOne _id : id
   components : { UserPersonalSettings, UserSchoolClassSettings, AdminUserRoles }
 </script>

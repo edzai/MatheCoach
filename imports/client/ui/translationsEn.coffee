@@ -16,6 +16,9 @@ export translationsEn =
   teacherIdRequired : "Please select a teacher for this class."
   # AdminUserListPage
   adminUserListPage : "User-list"
+  sortName : "sort by name"
+  sortZuletztAktiv : "sort by last active"
+  sortSchoolClass : "sort by school class"
   # AdminUserRoles
   adminUserRoles : "User Roles"
   hatAdminRechte : "The user has admin-access."
