@@ -2,11 +2,16 @@
 .spin-container(v-if="!$subReady.schoolClassUsers")
   Spin(size="large")
 .content-no-box(v-else)
-  school-class-student-list-item(
-    v-for="student in students"
-    v-bind:key="student._id"
-    v-bind:student="student"
-  )
+  .level
+    Select(v-model="sortOrder")
+      Option(value="name") {{$t('sortName')}}
+      Option(value="activity") {{$t('sortZuletztAktiv')}}
+  transition-group(name="list")
+    school-class-student-list-item(
+      v-for="student in students"
+      v-bind:key="student._id"
+      v-bind:student="student"
+    )
 </template>
 
 <script lang="coffee">
@@ -14,17 +19,32 @@ import SchoolClassStudentListItem from "./SchoolClassStudentListItem.vue"
 return
   data : ->
     students : []
+    sortOrder : "activity"
   meteor :
     $subscribe :
       schoolClassUsers : -> [schoolClassId : @schoolClass._id]
     students :
       params : ->
         schoolClassId : @schoolClass._id
-      update: ({ schoolClassId }) ->
-        Meteor.users.find { schoolClassId },
-          sort :
-            lastActive : 1
-        .fetch()
+        sortOrder : @sortOrder
+      update: ({ schoolClassId, sortOrder }) ->
+        users =
+          _.chain(
+            Meteor.users.find { schoolClassId },
+              sort :
+                lastActive : 1
+            .fetch())
+        switch sortOrder
+          when "name"
+            users.sortBy (user) ->
+              "#{user.profile?.lastName ? ''}\
+              #{user.profile?.firstName ? ''}\
+              #{user.username ? ''}".toLowerCase()
+            .value()
+          when "activity"
+            users.sortBy("lastActive").reverse()
+            .value()
+          else users.value()
   props :
     schoolClass : Object
     required : true
@@ -32,4 +52,16 @@ return
 </script>
 
 <style scoped lang="sass">
+.level
+  margin-bottom: 8px
+.list-enter-active
+  transition: all 1s
+.list-leave-active
+  transition: all .5s
+  position: absolute
+.list-enter, .list-leave-to
+  opacity: 0
+  transform: scale(0)
+.list-move
+  transition: transform .75s
 </style>
