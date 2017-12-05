@@ -11,7 +11,7 @@
 <script lang="coffee">
 import { Submissions } from "/imports/api/submissions.coffee"
 import SubmissionList from "./SubmissionList.vue"
-import UserBarPlot from "./UserBarPlot.vue"
+import UserBarPlot from "./UserBarPlot/UserBarPlot.vue"
 return
   data : ->
     user : {}

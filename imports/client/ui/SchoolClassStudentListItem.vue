@@ -15,7 +15,7 @@
 
 <script lang="coffee">
 import InfoAvatar from "./InfoAvatar.vue"
-import UserBarPlot from "./UserBarPlot.vue"
+import UserBarPlot from "./UserBarPlot/UserBarPlot.vue"
 import {UserStatistics} from "/imports/api/userStatistics.coffee"
 return
   computed :
