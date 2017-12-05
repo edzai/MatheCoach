@@ -18,6 +18,8 @@ return
   data : ->
     user : {}
   meteor :
+    $subscribe :
+      userData : -> [id : @$route.params.id]
     user :
       params : -> id : @$route.params.id
       update : ({ id }) ->
