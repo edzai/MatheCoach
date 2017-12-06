@@ -13,6 +13,14 @@ export default store =
       mutations :
         inc : (state) ->
           state.tick += 1
+    notify :
+      strict : strict
+      namespaced : true
+      state :
+        logInToSave : true
+      mutations :
+        logInToSave : (state, newValue ) ->
+          state.logInToSave = false
     unsolvedProblems :
       strict : strict
       namespaced : true

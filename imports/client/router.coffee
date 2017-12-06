@@ -36,7 +36,7 @@ RouterFactory.configure (router) ->
     name : "helpPage"
     component : HelpPage
   ,
-    path : "/login"
+    path : "/login/:signingIn"
     name : "loginPage"
     component : LoginPage
   ,

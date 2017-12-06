@@ -57,6 +57,10 @@ export translationsEn =
   neueAufgabe : "New Problem"
   level : "Level"
   problemSubmit : "Ok"
+  notLoggedIn : "Not Signed-In"
+  notLoggedInDescription :
+    "MatheCoach can't save your results, \
+    unless you are signed-in as a registered user."
   # StudentResultsPage
   ergebnisseVon : "Results for"
   # UserLanguageSettings

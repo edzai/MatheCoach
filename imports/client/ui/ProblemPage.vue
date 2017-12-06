@@ -42,6 +42,14 @@ return
   created : ->
     @getNewProblem()
     window.addEventListener "keyup", @handleEnter
+  mounted : ->
+    if not @$store.state.auth.user? and @$store.state.notify.logInToSave
+      @$store.commit "notify/logInToSave"
+      @$Notice.warning
+        title : @$t "notLoggedIn"
+        desc : @$t "notLoggedInDescription"
+        duration : 0
+
   beforeDestroy : ->
     window.removeEventListener "keyup", @handleEnter
   computed :

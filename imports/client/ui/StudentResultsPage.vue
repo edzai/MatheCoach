@@ -1,10 +1,11 @@
 <template lang="jade">
-.content-no-box(v-if="user")
-  .plot
-    user-bar-plot(v-bind:user="user")
-  h1.heading(v-if="ownPage") {{$t('meineErgebnisse')}}:
-  h1.heading(v-else) {{$t('ergebnisseVon')}} {{user.fullName()}} ({{user.username}}):
-  submission-list(v-bind:user="user")
+Guard(role="")
+  .content-no-box(v-if="user")
+    .plot
+      user-bar-plot(v-bind:user="user")
+    h1.heading(v-if="ownPage") {{$t('meineErgebnisse')}}:
+    h1.heading(v-else) {{$t('ergebnisseVon')}} {{user.fullName()}} ({{user.username}}):
+    submission-list(v-bind:user="user")
 
 </template>
 

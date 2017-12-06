@@ -23,7 +23,8 @@ export translationsDe =
   adminUserRoles : "Benutzerrollen (Zugriffsrechte)"
   hatAdminRechte : "Der Benutzer hat Admin Rechte."
   istLehrer : "Der Benutzer ist Lehrer."
-  profilGesperrt : "Der Benutzer darf seine Persönlichen Daten NICHT selbst selbst verwalten."
+  profilGesperrt :
+    "Der Benutzer darf seine Persönlichen Daten NICHT selbst selbst verwalten."
   # AppMenu
   startSeite : "Startseite"
   login : "Login"
@@ -57,6 +58,10 @@ export translationsDe =
   neueAufgabe : "Neue Aufgabe"
   level : "Level"
   problemSubmit : "Ok"
+  notLoggedIn : "Nicht als Benutzer eingetragen"
+  notLoggedInDescription :
+    "MatheCoach kann deine Ergebnisse nicht abspeichern, \
+    wenn du nicht als Benutzer eingetragen bist."
   # StudentResultsPage
   ergebnisseVon : "Ergebnisse von"
   # UserLanguageSettings

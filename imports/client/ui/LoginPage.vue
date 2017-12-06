@@ -63,7 +63,7 @@ return
       username : ""
       email : ""
       password : ""
-    signingIn : false
+    signingIn : @$route.params.signingIn
   methods :
     submit : ->
       @$refs.userData.validate (valid) =>
