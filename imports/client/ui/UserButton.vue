@@ -9,7 +9,7 @@
     v-bind:size="36"
     default-img="wavatar"
   )
-Button(v-else type="primary" size="large" icon="log-in" @click="$router.push({name : 'loginPage'})") {{$t('login')}}
+Button(v-else type="primary" size="large" icon="log-in" @click="$router.push({name : 'loginPage', params : {signingIn : false}})") {{$t('login')}}
 </template>
 
 <script lang="coffee">
