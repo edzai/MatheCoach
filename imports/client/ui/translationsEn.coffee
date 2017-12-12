@@ -40,12 +40,17 @@ export translationsEn =
   auswertung : "Analysis:"
   ergebnisIstKorrekt : "The answer is correct."
   ergebnisIstNichtKorrekt : "The answer is incorrect."
+  # EmailVerifiedPage
+  verifiziereEmail : "verifying email..."
+  emailVerifizierenFehler : "The email could not be verified:"
+  emailVerifiziert : "Congratulations: Your email has been verified."
   # LoginPage
   angemeldetAls : "Signed-in as: "
   abmelden : "Sign-Out"
   habeKonto : "I already have a user-account."
   benutzerName : "Username"
   passwort : "Password"
+  passwortWdh : "repeat password"
   anmelden : "Sign-In"
   email : "E-Mail"
   neuesKonto : "Sign-Up"
@@ -53,6 +58,7 @@ export translationsEn =
   emailInvalid : "Please enter your e-mail."
   passwortInvalid1 : "Please enter your password."
   passwortInvalid2 : "The password is too short."
+  passwordVergessen : "I can't remember my password or username."
   # ProblemsPage
   neueAufgabe : "New Problem"
   level : "Level"
@@ -70,8 +76,12 @@ export translationsEn =
   userPersonalSettings : "Personal Data"
   firstName : "First Name"
   lastName : "Last Name"
-  firstNameInvalid : "Please enter your first name."
-  lastNameInvalid : "Please enter your last name."
+  schoolClass : "Class"
+  sprache : "Language"
+  firstNameRequired : "Please enter your first name."
+  lastNameRequired : "Please enter your last name."
+  schoolClassRequired : "Please select your class."
+  languageRequired : "Please select your language."
   # UserPersonalSettingsPage
   benutzerEinstellungen : "User Settings"
   # UserSchoolClassSettings

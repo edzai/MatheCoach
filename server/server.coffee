@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor'
-
 #require "/imports/api/AccountsTemplates.coffee"
 require "/imports/api/users.coffee"
 require "/imports/api/schoolClasses.coffee"
@@ -9,6 +8,8 @@ require "/imports/api/activityGraphs.coffee"
 require "/imports/api/publications.coffee"
 
 require "/imports/api/migrations.coffee"
+
+import "/imports/api/AccountCreation.coffee"
 
 Meteor.startup ->
 

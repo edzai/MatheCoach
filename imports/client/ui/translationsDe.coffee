@@ -41,19 +41,25 @@ export translationsDe =
   auswertung : "Auswertung:"
   ergebnisIstKorrekt : "Das Ergebnis ist korrekt."
   ergebnisIstNichtKorrekt : "Das Ergebnis ist leider nicht korrekt."
+  # EmailVerifiedPage
+  verifiziereEmail : "verifiziere Email..."
+  emailVerifizierenFehler : "Beim Verifizieren der Email Adresse ist ein Fehler aufgetreten:"
+  emailVerifiziert : "Glückwunsch: Deine Email wurde erfolgreich verifiziert."
   # LoginPage
   angemeldetAls : "Angemeldet als: "
   abmelden : "Abmelden"
   habeKonto : "Ich habe bereits ein Benutzerkonto."
   benutzerName : "Benutzername (Kürzel oder Spitzname)"
   passwort : "Passwort"
+  passwortWdh : "Passwort wiederholen"
   anmelden : "Anmelden"
   email : "E-Mail"
   neuesKonto : "Benutzerkonto Einrichten"
-  benutzerNameInvalid : "Gebe bitte den Benutzernamen ein."
-  emailInvalid : "Gebe bitte deine E-Mail Addresse ein."
-  passwortInvalid1 : "Gebe bitte das Passwort ein."
+  benutzerNameInvalid : "Gib den Benutzernamen ein."
+  emailInvalid : "Gib bitte deine E-Mail Addresse ein."
+  passwortInvalid1 : "Gib das Passwort ein."
   passwortInvalid2 : "Das Passwort ist zu kurz."
+  passwordVergessen : "Ich habe mein Passwort oder Benutzernamen vergessen."
   # ProblemsPage
   neueAufgabe : "Neue Aufgabe"
   level : "Level"
@@ -64,18 +70,22 @@ export translationsDe =
     wenn du nicht als Benutzer eingetragen bist."
   # StudentResultsPage
   ergebnisseVon : "Ergebnisse von"
-  # UserLanguageSettings
+  # UserLanguageSelect
   userLanguageSettings : "Sprache auswählen"
   wähleSpracheAus : "Wähle deine Sprache aus."
   # UserPersonalSettings
   userPersonalSettings : "Persönliche Daten"
   firstName : "Vorname"
   lastName : "Nachname"
-  firstNameInvalid : "Gebe deinen Vornamen an."
-  lastNameInvalid : "Gebe deinen Nachnamen an."
+  sprache : "Sprache"
+  schoolClass : "Klasse"
+  firstNameRequired : "Gib deinen Vornamen an."
+  lastNameRequired : "Gib deinen Nachnamen an."
+  schoolClassRequired : "Wähle deine Klasse aus."
+  languageRequired : "Wähle deine Sprache aus."
   # UserPersonalSettingsPage
   benutzerEinstellungen : "Benutzereinstellungen"
-  # UserSchoolClassSettings
+  # UserSchoolClassSelect
   userSchoolClassSettings : "Schulklasse auswählen"
   wähleKlasseAus : "Wähle deine Schulklasse bzw. Lerngruppe aus."
   lehrerHabenKeineKlasse :

@@ -15,6 +15,7 @@
 <script lang="coffee">
 import AppMenu from "./AppMenu.vue"
 import UserButton from "./UserButton.vue"
+import { Accounts } from "meteor/accounts-base"
 return
   created : ->
     Meteor.setInterval (=> @$store.commit "tickle/inc"), 10000

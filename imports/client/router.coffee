@@ -7,6 +7,9 @@ import AdminUserSettingsPage from "/imports/client/ui/AdminUserSettingsPage.vue"
 import HelpPage from "/imports/client/ui/HelpPage.vue"
 import HomePage from "/imports/client/ui/HomePage.vue"
 import LoginPage from "/imports/client/ui/LoginPage.vue"
+import EmailVerifiedPage from "/imports/client/ui/EmailVerifiedPage.vue"
+import PasswordRequestPage from "/imports/client/ui/PasswordRequestPage"
+import PasswordResetPage from "/imports/client/ui/PasswordResetPage"
 import TableOfContentsPage from "/imports/client/ui/TableOfContentsPage.vue"
 import UserSettingsPage from "/imports/client/ui/UserSettingsPage.vue"
 import StudentResultsPage from "/imports/client/ui/StudentResultsPage.vue"
@@ -39,6 +42,18 @@ RouterFactory.configure (router) ->
     path : "/login/:signingIn"
     name : "loginPage"
     component : LoginPage
+  ,
+    path : "/email-verifizieren/:token"
+    name : "emailVerifiedPage"
+    component : EmailVerifiedPage
+  ,
+    path : "/password-reset/:token"
+    name : "passwordResetPage"
+    component : PasswordResetPage
+  ,
+    path : "/password-request"
+    name : "passwordRequestPage"
+    component : PasswordRequestPage
   ,
     path : "/inhalt"
     name : "tableOfContentsPage"

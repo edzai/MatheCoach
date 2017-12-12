@@ -9,6 +9,8 @@ require "/imports/api/activityGraphs.coffee"
 require "/imports/api/userStatistics.coffee"
 require "/imports/api/publications.coffee"
 
+# import "/imports/api/AccountCreation.coffee"
+
 import { Vue } from "meteor/akryum:vue"
 import iView from "iview"
 import Vuex from "vuex"

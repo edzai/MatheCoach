@@ -35,7 +35,7 @@
 
 <script lang="coffee">
 import UserPersonalSettings from "./UserPersonalSettings.vue"
-import UserSchoolClassSettings from "./UserSchoolClassSettings.vue"
+#import UserSchoolClassSettings from "./UserSchoolClassSettings.vue"
 import InfoAvatar from "./InfoAvatar.vue"
 return
   data : ->
@@ -63,7 +63,7 @@ return
     user :
       type : Object
       required : true
-  components : { UserPersonalSettings, UserSchoolClassSettings, InfoAvatar}
+  components : { UserPersonalSettings, InfoAvatar}
 </script>
 
 <style scoped lang="sass">

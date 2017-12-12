@@ -2,7 +2,7 @@
 .level(v-if="currentUser")
   .icon-button(@click="$router.push({name : 'userSettingsPage'})")
     Icon(type="ios-settings" color="white" size="30" )
-  .icon-button(@click="$router.push({name : 'loginPage'})")
+  .icon-button(@click="$router.push({name : 'loginPage', params : {signingIn : true}})")
     Icon(type="log-out" color="white" size="30")
   gravatar.gravatar(
     v-bind:email="email"
