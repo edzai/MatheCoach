@@ -1,7 +1,6 @@
 <template lang="jade">
 div
-  transition-group(name="list")
-    submission-list-item(v-for="submission in submissions" v-bind:key="submission._id" v-bind:submission="submission")
+  submission-list-item(v-for="submission in submissions" v-bind:key="submission._id" v-bind:submission="submission")
   .content-box.center.separated(v-if="!$subReady.userSubmissions")
     .spin-container
       Spin(size=large fix)
