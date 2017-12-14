@@ -1,5 +1,5 @@
 <template lang="jade">
-.list-item
+div
   h2.sub.heading(v-if="hasChildren") {{item.title}}
   .childless(v-else @click="selectModule")
     h3.small.heading {{item.title}}
@@ -26,7 +26,6 @@ return
 </script>
 
 <style scoped lang="sass">
-.list-item
 .heading
   margin-top: 0
   font-weight: bold

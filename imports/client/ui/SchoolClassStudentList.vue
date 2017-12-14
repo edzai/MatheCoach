@@ -54,14 +54,4 @@ return
 <style scoped lang="sass">
 .level
   margin-bottom: 8px
-.list-enter-active
-  transition: all 1s
-.list-leave-active
-  transition: all .5s
-  position: absolute
-.list-enter, .list-leave-to
-  opacity: 0
-  transform: scale(0)
-.list-move
-  transition: transform .75s
 </style>

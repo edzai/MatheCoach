@@ -1,6 +1,7 @@
 <template lang="jade">
 .content-box(v-if="resetting")
-  h1.heading {{$t('resetPassword')}}
+  h1.heading {{$t('resetPasswordTitle')}}
+  p.text.separated {{$t('resetPasswordDescription')}}
   Form(
     ref="form"
     v-bind:model="formData"

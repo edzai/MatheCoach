@@ -1,8 +1,7 @@
 <template lang="jade">
 Guard(role="")
   .content-no-box(v-if="user")
-    .plot
-      user-bar-plot(v-bind:user="user")
+    user-bar-plot(v-bind:user="user").plot
     h1.heading(v-if="ownPage") {{$t('meineErgebnisse')}}:
     h1.heading(v-else) {{$t('ergebnisseVon')}} {{user.fullName()}} ({{user.username}}):
     submission-list(v-bind:user="user")
@@ -31,7 +30,7 @@ return
 
 <style scoped lang="sass">
 .plot
-  height : 200px
+  width: 100%
   overflow: hidden
   box-shadow: 1px 1px 2px silver
   border-radius: 5px

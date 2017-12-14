@@ -60,6 +60,25 @@ export translationsDe =
   passwortInvalid1 : "Gib das Passwort ein."
   passwortInvalid2 : "Das Passwort ist zu kurz."
   passwordVergessen : "Ich habe mein Passwort oder Benutzernamen vergessen."
+  # PasswordRequestPage
+  passwordRequestTitle : "Passwort zurücksetzen"
+  passwordRequestDescription : "Gib die Email an, mit der Du dich auf MatheCoah angemeldet hast. Wir schicken dir dann eine Email an diese Addresse. Klicke auf den Link in dieser Email, um dein Passwort zurückzusetzen."
+  abschicken : "Email abschicken"
+  passwordRequestEmailSentTitle : "Email wurde versandt"
+  passwordRequestEmailSentDescription : "Die Email zum zurücksetzen deines Passwortes sollte in wenigen Augenblicken in deinem Postfach erscheinen."
+  noUserWithEmailErrorTitle : "Kein Benutzer mit dieser Email"
+  noUserWithEmailErrorDescription : "Überprüfe, ob du die Email richtig eingegeben hast."
+  #PasswordResetPage
+  resetPasswordTitle : "Passwort zurücksetzen"
+  resetPasswordDescription : "Bitte gib zweimal dein neues Passwort ein."
+  password : "Passwort"
+  passwordRepeat : "Passwort wiederholen"
+  changePassword : "Passwort ändern"
+  passwordRequired : "Bitte gib das neuen Passwort ein."
+  passwordsMustMatch : "Die beiden Passworteingaben stimmen nicht überein."
+  passwordTooShort : "Das Passwort ist nicht lang genug."
+  passwordResetTitle : "Passwort wurde geändert"
+  passwordResetDescription : "Du kannst dich in Zukunft mit deinem neuen Passwort auf allen Geräten einloggen. Weiter viel Spaß mit MatheCoach."
   # ProblemsPage
   neueAufgabe : "Neue Aufgabe"
   level : "Level"
@@ -70,6 +89,14 @@ export translationsDe =
     wenn du nicht als Benutzer eingetragen bist."
   # StudentResultsPage
   ergebnisseVon : "Ergebnisse von"
+  # UserBarPlot
+  heute : "[heute]"
+  morgen : "[morgen]"
+  gestern : "[gestern]"
+  D_M : "D.M."
+  bronze : "Bronze"
+  silver : "Silber"
+  gold : "Gold"
   # UserLanguageSelect
   userLanguageSettings : "Sprache auswählen"
   wähleSpracheAus : "Wähle deine Sprache aus."

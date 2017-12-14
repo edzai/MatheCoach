@@ -42,14 +42,6 @@ return
   created : ->
     @getNewProblem()
     window.addEventListener "keyup", @handleEnter
-  mounted : ->
-    if not @$store.state.auth.user? and @$store.state.notify.logInToSave
-      @$store.commit "notify/logInToSave"
-      @$Notice.warning
-        title : @$t "notLoggedIn"
-        desc : @$t "notLoggedInDescription"
-        duration : 0
-
   beforeDestroy : ->
     window.removeEventListener "keyup", @handleEnter
   computed :
@@ -80,6 +72,7 @@ return
       @answer = ""
       @focusInput()
     submit : ->
+      @warnIfNotSignedIn()
       language = @$store.state.i18n.locale
       @$store.commit "unsolvedProblems/remove",
         language : language
@@ -103,6 +96,13 @@ return
     decLevel : ->
       @level -= 1
       @getNewProblem()
+    warnIfNotSignedIn : ->
+      if not @$store.state.auth.user? and @$store.state.notify.logInToSave
+        @$store.commit "notify/logInToSave"
+        @$Notice.warning
+          title : @$t "notLoggedIn"
+          desc : @$t "notLoggedInDescription"
+          duration : 0
   watch :
     language : -> @getNewProblem()
 

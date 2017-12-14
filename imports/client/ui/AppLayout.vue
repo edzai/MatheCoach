@@ -82,6 +82,8 @@ $error: #ed3f14
     box-shadow: 0px 0px 10px 2px $error
   &.stroke
     stroke: $error
+  &.fill
+    fill : $error
 .pass, .success
   &.text
     color: $success
@@ -91,6 +93,8 @@ $error: #ed3f14
     box-shadow: 0px 0px 10px 2px $success
   &.stroke
     stroke: $success
+  &.fill
+    fill : $success
 .warning
   &.text
     color: $warning
@@ -133,5 +137,14 @@ $error: #ed3f14
     color: #c3cbd6
   &.link
     color: #3399ff
-
+.list-enter-active
+  transition: all .7s
+.list-leave-active
+  transition: all .5s
+  position: absolute
+.list-enter, .list-leave-to
+  opacity: 0
+  transform: translateX(300)
+.list-move
+  transition: all .6s
 </style>

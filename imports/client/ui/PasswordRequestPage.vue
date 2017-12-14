@@ -1,7 +1,7 @@
 <template lang="jade">
 .content-box(v-if="!emailSent")
   h1.heading {{$t('passwordRequestTitle')}}
-  p.text {{$t('passwordRequestDescription')}}
+  p.text.separated {{$t('passwordRequestDescription')}}
   Form(
     ref="emailForm"
     v-bind:model="formData"

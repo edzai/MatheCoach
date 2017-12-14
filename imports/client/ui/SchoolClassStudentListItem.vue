@@ -8,8 +8,8 @@
     .middle
       h1.heading {{name}}
       p.text {{timeAgo}}
-  .plot
-    user-bar-plot.right(v-bind:user="student")
+  .right
+    user-bar-plot(v-bind:user="student").plot
 
 </template>
 
@@ -43,11 +43,13 @@ return
 .flex
   display: flex
   justify-content: space-between
-  align-items: center
+  align-items: flex-start
 .left
-  margin-right: 15px
+  margin-right: 5px
   display: flex
-  align-items: center
+  align-items: flex-start
+.right
+  margin-left: 5px
 .avatar
   flex-shrink: 0
 .middle
@@ -56,7 +58,6 @@ return
   flex-grow: 0
   flex-shrink: 0
   width : 100px
-  height : 50px
   background-color: #f0f0ff
   border-radius: 3px
   overflow: hidden

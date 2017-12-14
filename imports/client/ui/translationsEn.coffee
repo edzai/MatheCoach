@@ -59,6 +59,25 @@ export translationsEn =
   passwortInvalid1 : "Please enter your password."
   passwortInvalid2 : "The password is too short."
   passwordVergessen : "I can't remember my password or username."
+  # PasswordRequestPage
+  passwordRequestTitle : "Reset Password"
+  passwordRequestDescription : "Enter the email address associated with your user-account. We will send you an email with instructions on resetting your password."
+  abschicken : "Send email"
+  passwordRequestEmailSentTitle : "Email has been sent"
+  passwordRequestEmailSentDescription : "Check your Inbox and click the link in the email we just sent you."
+  noUserWithEmailErrorTitle : "No user with this email"
+  noUserWithEmailErrorDescription : "Please check if you entered the correct email address."
+  #PasswordResetPage
+  changePassword : "Change Password"
+  passwordResetTitle : "Passwort has been changed"
+  passwordResetDescription : "You can now use the new password to log into MatheCoach on all your devices. Have fun with MatheCoach."
+  resetPasswordTitle : "Change Password"
+  resetPasswordDescription : "Please enter your new password twice."
+  password : "Password"
+  passwordRepeat : "Passwort repeated"
+  passwordRequired : "Please enter your new password."
+  passwordsMustMatch : "The two entries do not match."
+  passwordTooShort : "The Password is too short."
   # ProblemsPage
   neueAufgabe : "New Problem"
   level : "Level"
@@ -69,6 +88,14 @@ export translationsEn =
     unless you are signed-in as a registered user."
   # StudentResultsPage
   ergebnisseVon : "Results for"
+  # UserBarPlot
+  heute : "[today]"
+  morgen : "[tomorrow]"
+  gestern : "[yesterday]"
+  D_M : "M/D"
+  bronze : "Bronze"
+  silver : "Silver"
+  gold : "Gold"
   # UserLanguageSettings
   userLanguageSettings : "Language selection"
   wähleSpracheAus : "Choose your prefered language."
