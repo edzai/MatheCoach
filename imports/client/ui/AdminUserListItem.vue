@@ -8,6 +8,9 @@
       )
       .middle
         h1.heading {{user.fullName()}} ({{user.username}})
+        p.text {{user.emails[0].address}}
+          span.text.pass(v-if="user.emails[0].verified")  ✔
+          span.text.fail(v-else)  ✘
         p.text {{schoolClassInfo}}
         p.text {{timeAgo}}
     .right
