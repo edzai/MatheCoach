@@ -2,7 +2,9 @@
   "name": "mathecoach",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+    "test": "meteor test --driver-package practicalmeteor:mocha",
+    "submodules": "git submodule update --remote --merge"
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
