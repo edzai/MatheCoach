@@ -118,10 +118,12 @@ return
       schoolClassId : [
         required : true
         message : @$t "schoolClassRequired"
+        trigger : "none"
       ]
       language : [
         required : true
         message : @$t "languageRequired"
+        trigger : "none"
       ]
   components : { UserSchoolClassSelect, UserLanguageSelect }
 </script>

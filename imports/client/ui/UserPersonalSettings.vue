@@ -52,12 +52,12 @@ return
       schoolClassId : [
         required : not @user.isTeacher()
         message : @$t "schoolClassRequired"
-        trigger : "change"
+        trigger : "none"
       ]
       language : [
         required : true
         message : @$t "languageRequired"
-        trigger : "change"
+        trigger : "none"
       ]
   methods :
     submit : ->

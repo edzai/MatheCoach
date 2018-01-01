@@ -25,10 +25,10 @@ return
       .map (schoolClass) ->
         value : schoolClass._id
         label : schoolClass.name
-      schoolClasses.unshift
-        value : ""
-        label : "keine Klasse"
-      schoolClasses
+      # schoolClasses.unshift
+      #   value : ""
+      #   label : "keine Klasse"
+      # schoolClasses
   props :
     schoolClassId :
       type : String
