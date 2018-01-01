@@ -17,7 +17,7 @@ import LoginSignInForm from "./LoginSignInForm.vue"
 import LoginSignUpForm from "./LoginSignUpForm.vue"
 return
   data : ->
-    signingIn : @$route.params.signingIn
+    signingIn : @$route.params.signingIn is "true"
   methods :
     signOut : ->
       @$store.dispatch "logoutUser"
