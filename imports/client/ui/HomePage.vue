@@ -29,18 +29,10 @@ return
 <style scoped lang="sass">
 .old-news
   margin-top: 16px
-.text
-  font-size: 120%
-.heading
-  font-size: 150%
-.sub
-  font-size: 130%
-.small
-  font-size: 120%
 p
   margin-top: 8px
 ul
-  list-style: circle outside none !important
+  list-style: disc outside none !important
   margin: 10px 30px 0px 30px
 li
   margin-bottom: 4px

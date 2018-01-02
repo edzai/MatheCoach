@@ -123,14 +123,14 @@ $error: #ed3f14
 .heading
   font-weight: bold
   color: #464c5b
-  font-size: 16px
+  font-size: 18px
   &.sub
-    font-size: 14px
+    font-size: 16px
   &.small
-    font-size: 12px
+    font-size: 14px
 .text
   color: #657180
-  font-size: 12px
+  font-size: 14px
   &.help
     color: #9ea7b4
   &.disabled
