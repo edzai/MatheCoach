@@ -8,7 +8,7 @@ MatheCoach ist eine Webseite, die dabei hilft, die wichtigsten Arbeitsschritte i
 
 MatheCoach befindet sich in der Entwicklung und ist noch weit davon entfernt, fertig zu sein. Über Anregungen und Fehlermeldungen würde ich mich sehr freuen.
 
-Die Web-app kann unter http://mathe-coach-janmp.herokuapp.com getestet werden.
+Die Web-app kann unter http://mathe-coach-rivius.herokuapp.com getestet werden.
 
 ## Aufgabengeneratoren
 MatheCoach enthält nicht einfach eine Sammlung von Aufgaben, sondern generiert die Aufgaben selbst. Für jeden Aufgabentyp gibt es eigene Aufgabengeneratoren. Das sind Java-Script (bzw. CoffeeScript) Funktionen, welche die Aufgaben aus Zufallsdaten zusammensetzen.
