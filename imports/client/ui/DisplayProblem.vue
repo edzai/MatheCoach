@@ -1,6 +1,6 @@
-<template lang="jade">
+<template lang="pug">
 div
-  span.heading {{problem.title}}, 
+  span.heading {{problem.title}},
   span.sub.heading Level {{problem.level}}
   p.text {{problem.description}}
   katex(v-if="!problem.skipExpression" v-bind:tex="problem.problemTeX")
@@ -14,7 +14,7 @@ div
 import Katex from "/imports/client/ui/Katex.vue"
 import GeometryDrawDisplay from "/imports/client/ui/GeometryDrawDisplay.vue"
 import FunctionPlot from "/imports/client/ui/VueFunctionPlot/FunctionPlot.vue"
-return
+export default
   computed :
     drawSVG : -> @problem?.geometryDrawData?
     drawFunctionPlot : -> @problem?.functionPlotData?

@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .content-box(v-if="!emailSent")
   h1.heading {{$t('passwordRequestTitle')}}
   p.text.separated {{$t('passwordRequestDescription')}}
@@ -13,14 +13,14 @@
         v-bind:placeholder="$t('email')"
       )
     FormItem
-      Button(type="primary" icon="ios-paperplane" @click="submit") {{$t('abschicken')}}
+      Button(type="primary" icon="md-send" @click="submit") {{$t('abschicken')}}
 .content-box(v-else)
   h1.heading {{$t('passwordRequestEmailSentTitle')}}
   p.text {{$t('passwordRequestEmailSentDescription')}}
 </template>
 
 <script lang="coffee">
-return
+export default
   data : ->
     emailSent : false
     error : ""

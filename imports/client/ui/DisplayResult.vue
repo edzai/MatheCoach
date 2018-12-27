@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .result-container
   h1.heading {{$t('deineAntwort')}}
   .content-box
@@ -11,22 +11,22 @@
   .result-header.fail.back(v-else) {{$t('ergebnisIstNichtKorrekt')}}
   .list
     .list-item(v-for="text in data.result.passTextsRequired")
-      Icon.left(type="checkmark" color="#19be6b" size=20)
+      Icon.left(type="md-checkmark" color="#19be6b" size=20)
       span.text {{text}}
     .list-item(v-for="text in data.result.passTextsOptional")
-      Icon.left(type="checkmark" color="#19be6b" size=20)
+      Icon.left(type="md-checkmark" color="#19be6b" size=20)
       span.text {{text}}
     .list-item(v-for="text in data.result.failTextsRequired")
-      Icon.left(type="close" color="#ed3f14" size=20)
+      Icon.left(type="md-close" color="#ed3f14" size=20)
       span.text {{text}}
     .list-item(v-for="text in data.result.failTextsOptional")
-      Icon.left(type="close" color="#ff9900" size=20)
+      Icon.left(type="md-close" color="#ff9900" size=20)
       span {{text}}
 </template>
 
 <script lang="coffee">
 import Katex from "/imports/client/ui/Katex.vue"
-return
+export default
   props : ["data"]
   components : { Katex }
 </script>

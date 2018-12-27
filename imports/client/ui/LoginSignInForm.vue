@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 Form(
   key="signingIn"
   ref="form"
@@ -20,7 +20,7 @@ Form(
 </template>
 
 <script lang="coffee">
-return
+export default
   data : ->
     formData :
       username : ""

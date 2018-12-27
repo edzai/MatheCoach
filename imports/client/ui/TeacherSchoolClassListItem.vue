@@ -1,10 +1,10 @@
-<template lang="jade">
+<template lang="pug">
 .content-box.separated(@click="goToClassPage")
   h1.heading {{schoolClass.name}}
 </template>
 
 <script lang="coffee">
-return
+export default
   methods :
     goToClassPage : ->
       @$router.push

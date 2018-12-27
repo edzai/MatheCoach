@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 Guard(role="mentor")
   h1.heading {{schoolClass.name}}
   school-class-student-list(v-bind:schoolClass="schoolClass")
@@ -7,7 +7,7 @@ Guard(role="mentor")
 <script lang="coffee">
 import { SchoolClasses } from "/imports/api/schoolClasses.coffee"
 import SchoolClassStudentList from "./SchoolClassStudentList.vue"
-return
+export default
   data : ->
     schoolClass : {}
   meteor :

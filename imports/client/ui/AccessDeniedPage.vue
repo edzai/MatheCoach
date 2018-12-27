@@ -1,11 +1,11 @@
-<template lang="jade">
+<template lang="pug">
 .content-box
   h1.heading Access Denied
   p.text (Typing "Override" only works in 80s movies)
 </template>
 
 <script lang="coffee">
-return
+export default
   data : -> {}
 </script>
 

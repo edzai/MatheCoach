@@ -1,20 +1,20 @@
-<template lang="jade">
+<template lang="pug">
 .level(v-if="currentUser")
   .icon-button(@click="$router.push({name : 'userSettingsPage'})")
-    Icon(type="ios-settings" color="white" size="30" )
+    Icon(type="md-settings" color="white" size="30" )
   .icon-button(@click="$router.push({name : 'loginPage', params : {signingIn : true}})")
-    Icon(type="log-out" color="white" size="30")
+    Icon(type="md-log-out" color="white" size="30")
   gravatar.gravatar(
     v-bind:email="email"
     v-bind:size="36"
     default-img="wavatar"
   )
-Button(v-else type="primary" size="large" icon="log-in" @click="$router.push({name : 'loginPage', params : {signingIn : false}})") {{$t('login')}}
+Button(v-else type="primary" size="large" icon="md-log-in" @click="$router.push({name : 'loginPage', params : {signingIn : false}})") {{$t('login')}}
 </template>
 
 <script lang="coffee">
 import Gravatar from "vue-gravatar"
-return
+export default
   data : -> {}
   computed :
     currentUser : -> @$store.state.auth.user

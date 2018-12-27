@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .content-box(v-if="verifying")
   h1.heading {{$t('verifiziereEmail')}}
 div(v-else)
@@ -11,7 +11,7 @@ div(v-else)
 
 <script lang="coffee">
 import { Accounts } from "meteor/accounts-base"
-return
+export default
   data : ->
     verifying : true
     error : ""

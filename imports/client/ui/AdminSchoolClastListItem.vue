@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .content-box.separated
   .flex
     .left
@@ -9,14 +9,14 @@
         v-if="schoolClass._id"
         type="error"
         shape="circle"
-        icon="trash-a"
+        icon="md-trash"
         @click="deleteSchoolClass"
         style="margin-right : 8px"
       )
       Button(
         v-bind:type="editing ? 'ghost' : 'primary'"
         shape="circle"
-        icon="edit"
+        icon="md-create"
         @click="editing = !editing"
       )
   .content-no-box(v-if="editing")
@@ -50,7 +50,7 @@
 
 <script lang="coffee">
 import { saveSchoolClass, deleteSchoolClass } from "/imports/api/schoolClasses.coffee"
-return
+export default
   data : ->
     formData : { @schoolClass... }
     editing : not @schoolClass._id?

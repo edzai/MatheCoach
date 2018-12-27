@@ -1,8 +1,8 @@
-<template lang="jade">
+<template lang="pug">
 .content-no-box
   .form-box(v-if="currentUser")
     p.status {{$t('angemeldetAls')}}{{currentUser.fullName()}}
-    Button.button(type="error" icon="log-out" @click="signOut") {{$t('abmelden')}}
+    Button.button(type="error" icon="md-log-out" @click="signOut") {{$t('abmelden')}}
   template(v-else)
     Checkbox.checkbox(v-model="signingIn" key="checkbox") {{$t('habeKonto')}}
     .form-box
@@ -15,7 +15,7 @@
 <script lang="coffee">
 import LoginSignInForm from "./LoginSignInForm.vue"
 import LoginSignUpForm from "./LoginSignUpForm.vue"
-return
+export default
   data : ->
     signingIn : @$route.params.signingIn is "true"
   methods :

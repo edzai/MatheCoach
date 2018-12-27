@@ -1,8 +1,8 @@
-<template lang="jade">
+<template lang="pug">
 Guard(role="admin")
   .content-no-box
     .right
-      Button(type="primary" shape="circle" icon="plus" @click="adding = true")
+      Button(type="primary" shape="circle" icon="md-add" @click="adding = true")
     adminSchoolClassListItem(v-if="adding" v-bind:schoolClass="newSchoolClass" @closeEdit="adding = false")
     h1.heading AdminSchoolClassListPage
     admin-school-class-list-item(
@@ -15,7 +15,7 @@ Guard(role="admin")
 <script lang="coffee">
 import { SchoolClasses } from "/imports/api/schoolClasses.coffee"
 import AdminSchoolClassListItem from "./AdminSchoolClastListItem.vue"
-return
+export default
   data : ->
     adding : false
     schoolClasses : []

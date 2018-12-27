@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .content-box
   h1.heading Eingabe von Mathematischen Formeln und Termen
   p.text Die Eingabe von Mathematischen Formeln und Termen mit MatheCoach ist ganz einfach.
@@ -11,13 +11,12 @@
     tr(v-for="input in inputs" v-bind:key="input")
       td {{input}}
       td: katex(v-bind:tex="tex(input)")
-
 </template>
 
 <script lang="coffee">
 import Katex from "./Katex.vue"
 import { teXifyAM } from "/imports/client/mathproblems/renderAM.coffee"
-return
+export default
   data : ->
     inputs : [
       "1+1"

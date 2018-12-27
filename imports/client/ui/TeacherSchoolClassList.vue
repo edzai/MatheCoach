@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 Guard(role="mentor")
   h1.heading {{$t('meineKlassen')}}
   teacher-school-class-list-item(
@@ -6,13 +6,12 @@ Guard(role="mentor")
     v-bind:key="schoolClass._id"
     v-bind:schoolClass="schoolClass"
   )
-
 </template>
 
 <script lang="coffee">
 import { SchoolClasses } from "/imports/api/schoolClasses.coffee"
 import TeacherSchoolClassListItem from "./TeacherSchoolClassListItem.vue"
-return
+export default
   data : ->
     activeTab : ""
     schoolClasses : []

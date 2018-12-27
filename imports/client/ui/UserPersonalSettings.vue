@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .content-no-box
   h1.heading {{$t('userPersonalSettings')}}
   .content-box.form
@@ -24,7 +24,7 @@
 import UserSchoolClassSelect from "./UserSchoolClassSelect.vue"
 import UserLanguageSelect from "./UserLanguageSelect.vue"
 import { updateUserData } from "/imports/api/users.coffee"
-return
+export default
   data : ->
     formData :
       userId : @user._id

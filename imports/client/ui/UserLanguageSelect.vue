@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 Select(
   v-model="selectedLanguage"
   v-bind:placeholder="$t('wähleSpracheAus')"
@@ -12,7 +12,7 @@ Select(
 
 <script lang="coffee">
 import { setLanguage } from "/imports/api/users.coffee"
-return
+export default
   data : ->
     languageList : [
       value : "de"

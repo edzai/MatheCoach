@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 div
   submission-list-item(v-for="submission in submissions" v-bind:key="submission._id" v-bind:submission="submission")
   .content-box.center.separated(v-if="!$subReady.userSubmissions")
@@ -11,7 +11,7 @@ div
 
 <script lang="coffee">
 import SubmissionListItem from "./SubmissionListItem.vue"
-return
+export default
   data : ->
     page : 1
     submissions : []

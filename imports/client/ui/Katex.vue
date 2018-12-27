@@ -1,10 +1,10 @@
-<template lang="jade">
+<template lang="pug">
 div(v-html="html")
 </template>
 
 <script lang="coffee">
 import katex from "katex"
-return
+export default
   computed :
     html : ->
       if typeof @tex is "string"

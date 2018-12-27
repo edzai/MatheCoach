@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 div
   h2.sub.heading(v-if="hasChildren") {{item.title}}
   .childless(v-else @click="selectModule")
@@ -12,7 +12,7 @@ div
 </template>
 
 <script lang="coffee">
-return
+export default
   computed :
     hasChildren : -> @item.kindred?.length > 0
   methods :

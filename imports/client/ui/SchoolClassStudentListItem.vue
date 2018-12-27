@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .content-box.separated.flex(@click="goToPage")
   .left
     info-avatar.avatar(
@@ -17,7 +17,7 @@
 import InfoAvatar from "./InfoAvatar.vue"
 import UserBarPlot from "./UserBarPlot/UserBarPlot.vue"
 import {UserStatistics} from "/imports/api/userStatistics.coffee"
-return
+export default
   computed :
     timeAgo : ->
       @$store.state.tickle.tick

@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 Menu(
   v-bind:active-name="$route.name"
   v-bind:mode="mode"
@@ -7,7 +7,7 @@ Menu(
 )
   MenuItem(name="homePage")
     .level
-      Icon(type="home" v-bind:size="iconSize")
+      Icon(type="md-home" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('startSeite')}}
   //- MenuItem(name="loginPage")
   //-   .level
@@ -19,32 +19,32 @@ Menu(
   //-     span.menu-text(v-if="showText") {{$t('einstellungen')}}
   MenuItem(name="tableOfContentsPage")
     .level
-      Icon(type="ios-list-outline" v-bind:size="iconSize")
+      Icon(type="md-list" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('inhalt')}}
   MenuItem(name="studentOwnResultsPage")
     .level
-      Icon(type="stats-bars" v-bind:size="iconSize")
+      Icon(type="md-stats" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('meineErgebnisse')}}
   MenuItem(name="helpPage")
     .level
-      Icon(type="help" v-bind:size="iconSize")
+      Icon(type="md-help" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('hilfe')}}
   MenuItem(v-if="showTeacher" name="teacherSchoolClassList")
     .level
-      Icon(type="university" v-bind:size="iconSize")
+      Icon(type="md-people" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('meineKlassen')}}
   MenuItem(v-if="showAdmin" name="adminSchoolClassListPage")
     .level
-      Icon(type="ios-people" color="#ff9900" v-bind:size="iconSize")
+      Icon(type="md-people" color="#ff9900" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('klassenVerwalten')}}
   MenuItem(v-if="showAdmin" name="adminUserListPage")
     .level
-      Icon(type="ios-person" color="#ff9900" v-bind:size="iconSize")
+      Icon(type="md-person" color="#ff9900" v-bind:size="iconSize")
       span.menu-text(v-if="showText") {{$t('userVerwalten')}}
 </template>
 
 <script lang="coffee">
-return
+export default
   data : ->
     width : window.innerWidth
     iconSize : 24

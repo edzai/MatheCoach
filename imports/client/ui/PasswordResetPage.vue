@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .content-box(v-if="resetting")
   h1.heading {{$t('resetPasswordTitle')}}
   p.text.separated {{$t('resetPasswordDescription')}}
@@ -13,14 +13,14 @@
         v-model="formData.password"
         b-bind:placeholder="$t('password')"
       )
-        Icon(type="person" slot="prepend")
+        Icon(type="md-person" slot="prepend")
     FormItem(prop="passwordRepeat")
       Input(
         type="password"
         v-model="formData.passwordRepeat"
         b-bind:placeholder="$t('passwordRepeat')"
       )
-        Icon(type="person" slot="prepend")
+        Icon(type="md-person" slot="prepend")
     FormItem
       Button(type="primary" @click="submit") {{$t('changePassword')}}
 div(v-else)
@@ -30,7 +30,7 @@ div(v-else)
 
 <script lang="coffee">
 import { Accounts } from "meteor/accounts-base"
-return
+export default
   data : ->
     @resetting = true
     formData :

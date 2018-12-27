@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .content-box
   h1.heading Lass dich kostenlos als Benutzer registrieren
   p.text MatheCoach kann die Ergebnisse deiner Arbeit für dich abspeichern. So kannst Du jederzeit sehen, was Du geleistet hast.
@@ -11,7 +11,7 @@
 </template>
 
 <script lang="coffee">
-return
+export default
   data : -> {}
 </script>
 

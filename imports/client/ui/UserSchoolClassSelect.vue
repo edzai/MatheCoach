@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 Select(
   v-model="selectedSchoolClassId"
   v-bind:placeholder="$t('wähleKlasseAus')"
@@ -12,7 +12,7 @@ Select(
 <script lang="coffee">
 import { SchoolClasses } from "/imports/api/schoolClasses.coffee"
 import { setUserSchoolClass } from "/imports/api/users.coffee"
-return
+export default
   data : ->
     selectedSchoolClassId : @schoolClassId
     schoolClassList : []

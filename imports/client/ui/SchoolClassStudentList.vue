@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .spin-container(v-if="!$subReady.schoolClassUsers")
   Spin(size="large")
 .content-no-box(v-else)
@@ -16,7 +16,7 @@
 
 <script lang="coffee">
 import SchoolClassStudentListItem from "./SchoolClassStudentListItem.vue"
-return
+export default
   data : ->
     students : []
     sortOrder : "activity"

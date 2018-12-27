@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .content-box.separated
   .flex
     .left
@@ -17,21 +17,21 @@
       Button(
         type="warning"
         shape="circle"
-        icon="trash-b"
+        icon="md-trash"
         @click="deleteSubmissions"
         style="margin-right: 8px"
       )
       Button(
         type="error"
         shape="circle"
-        icon="trash-a"
+        icon="md-trash"
         @click="deleteUser"
         style="margin-right : 8px"
       )
       Button(
         v-bind:type="editing ? 'ghost' : 'primary'"
         shape="circle"
-        icon="edit"
+        icon="md-create"
         @click="editUser"
       )
 </template>
@@ -40,7 +40,7 @@
 import UserPersonalSettings from "./UserPersonalSettings.vue"
 #import UserSchoolClassSettings from "./UserSchoolClassSettings.vue"
 import InfoAvatar from "./InfoAvatar.vue"
-return
+export default
   data : ->
     editing : false
   computed :

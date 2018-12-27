@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 div
   h1.heading {{$t('adminUserRoles')}}
   .content-box
@@ -8,13 +8,12 @@ div
         v-bind:label="role.role"
         v-bind:key="role.role"
       ) {{role.description}}
-
 </template>
 
 <script lang="coffee">
 import { setRoleOnOff } from "/imports/api/users.coffee"
 import _ from "lodash"
-return
+export default
   props :
     user :
       type : Object

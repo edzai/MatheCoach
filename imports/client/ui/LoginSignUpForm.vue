@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 Form(
   key="signingUp"
   ref="form"
@@ -10,52 +10,52 @@ Form(
       v-model="formData.username"
       v-bind:placeholder="$t('benutzerName')"
     )
-      Icon(type="person" slot="prepend")
+      Icon(type="md-person" slot="prepend")
   FormItem(prop="email")
     Input(
       type="email"
       v-model="formData.email"
       v-bind:placeholder="$t('email')"
     )
-      Icon(type="android-mail" slot="prepend")
+      Icon(type="md-mail" slot="prepend")
   FormItem(prop="password")
     Input(
       type="password"
       v-model="formData.password"
       v-bind:placeholder="$t('passwort')"
     )
-      Icon(type="locked" slot="prepend")
+      Icon(type="md-lock" slot="prepend")
   FormItem(prop="passwordRepeat")
     Input(
       type="password"
       v-model="formData.passwordRepeat"
       v-bind:placeholder="$t('passwortWdh')"
     )
-      Icon(type="locked" slot="prepend")
+      Icon(type="md-lock" slot="prepend")
   FormItem(prop="firstName")
     Input(
       v-model="formData.firstName"
       v-bind:placeholder="$t('firstName')"
     )
-      Icon(type="person" slot="prepend")
+      Icon(type="md-person" slot="prepend")
   FormItem(prop="lastName")
     Input(
       v-model="formData.lastName"
       v-bind:placeholder="$t('lastName')"
     )
-      Icon(type="person" slot="prepend")
+      Icon(type="md-person" slot="prepend")
   FormItem(prop="schoolClassId")
     user-school-class-select(v-bind:schoolClassId.sync="formData.schoolClassId")
   FormItem(prop="language")
     user-language-select(v-bind:language.sync="formData.language")
   FormItem
-    Button(type="primary" icon="person-add" @click="submit") {{$t('neuesKonto')}}
+    Button(type="primary" icon="md-person-add" @click="submit") {{$t('neuesKonto')}}
 </template>
 
 <script lang="coffee">
 import UserSchoolClassSelect from "./UserSchoolClassSelect.vue"
 import UserLanguageSelect from "./UserLanguageSelect.vue"
-return
+export default
   data : ->
     formData :
       username : ""
@@ -116,7 +116,7 @@ return
         message : @$t "lastNameRequired"
       ]
       schoolClassId : [
-        required : true
+        required : false
         message : @$t "schoolClassRequired"
         trigger : "none"
       ]

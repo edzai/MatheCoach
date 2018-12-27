@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .content-box.large
   h1.heading Chatroom auf Gitter
   h2.heading.sub 2. Dezember 2017
@@ -22,7 +22,7 @@
 </template>
 
 <script lang="coffee">
-return
+export default
   data : -> {}
 </script>
 

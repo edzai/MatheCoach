@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 Guard(role="admin")
   h1.heading {{$t('adminUserListPage')}}
   .level
@@ -6,7 +6,7 @@ Guard(role="admin")
       Option(value="name") {{$t('sortName')}}
       Option(value="activity") {{$t('sortZuletztAktiv')}}
       Option(value="schoolClass") {{$t('sortSchoolClass')}}
-    Input(v-model="searchString" icon="ios-search")
+    Input(v-model="searchString" icon="md-search")
   admin-user-list-item(
     v-for="user in users"
     v-bind:user ="user"
@@ -16,7 +16,7 @@ Guard(role="admin")
 
 <script lang="coffee">
 import AdminUserListItem from "./AdminUserListItem.vue"
-return
+export default
   data : ->
     users : []
     sortOrder : "activity"

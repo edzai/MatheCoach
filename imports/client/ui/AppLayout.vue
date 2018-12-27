@@ -1,12 +1,12 @@
-<template lang="jade">
+<template lang="pug">
 .layout
   .hero
     div
       h1 MatheCoach
-    user-button
+    UserButton
   .main-area
     .layout-menu
-      app-menu
+      AppMenu
     .layout-content
       router-view
   .footer © 2016 - Jan Pilgenröder
@@ -16,9 +16,12 @@
 import AppMenu from "./AppMenu.vue"
 import UserButton from "./UserButton.vue"
 import { Accounts } from "meteor/accounts-base"
-return
+export default
   created : ->
     Meteor.setInterval (=> @$store.commit "tickle/inc"), 10000
+  data: ->
+    test: "test 123"
+  mounted: -> console.log @test
   meteor :
     $subscribe :
       userOwnData : []

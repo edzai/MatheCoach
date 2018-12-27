@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 div
   h1.heading Aufgabe:
   .content-box
@@ -12,10 +12,10 @@ div
     .panel
       ButtonGroup(shape="circle")
         Button(@click="decLevel" type="ghost")
-          Icon(type="minus")
+          Icon(type="md-remove")
         Button(type="ghost") {{$t('level')}} {{level}}
         Button(@click="incLevel" type="ghost")
-          Icon(type="plus")
+          Icon(type="md-add")
       Button(type="primary" @click="submit") {{$t('problemSubmit')}}
 </template>
 
@@ -26,7 +26,7 @@ import { teXifyAM } from "/imports/client/mathproblems/renderAM.coffee"
 import _ from "lodash"
 import DisplayProblem from "/imports/client/ui/DisplayProblem.vue"
 import DisplayResult from "./DisplayResult.vue"
-return
+export default
   data : ->
     problem : {}
     level : 1

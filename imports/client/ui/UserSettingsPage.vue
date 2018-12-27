@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 Guard(role="")
   h1.heading.separated {{$t('benutzerEinstellungen')}}
   div(v-if="currentUser")
@@ -10,7 +10,7 @@ Guard(role="")
 import UserPersonalSettings from "./UserPersonalSettings.vue"
 import UserSchoolClassSelect from "./UserSchoolClassSelect.vue"
 import UserLanguageSelect from "./UserLanguageSelect.vue"
-return
+export default
   computed :
     currentUser : -> @$store.state.auth.user
   components : { UserPersonalSettings }

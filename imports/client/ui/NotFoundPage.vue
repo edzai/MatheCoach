@@ -1,10 +1,10 @@
-<template lang="jade">
+<template lang="pug">
 .content-box
   h1.heading Page Not Found
 </template>
 
 <script lang="coffee">
-return
+export default
   data : -> {}
 </script>
 

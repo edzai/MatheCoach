@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 gravatar.gravatar.glow(
   v-bind:email="user.emails[0].address"
   v-bind:size="size"
@@ -9,7 +9,7 @@ gravatar.gravatar.glow(
 
 <script lang="coffee">
 import Gravatar from "vue-gravatar"
-return
+export default
   computed :
     lastActive : ->
       if @user.lastActive

@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .spin-container(v-if="loading")
   Spin(size="large" fix)
 div(v-else)
@@ -8,12 +8,11 @@ div(v-else)
     .content-box(v-else)
       h1.heading {{$t('accessDenied')}}
       p.text {{reason}}
-
 </template>
 
 <script lang="coffee">
 import RegisterInvitation from "./RegisterInvitation.vue"
-return
+export default
   data : -> {}
   meteor :
     $subscribe :

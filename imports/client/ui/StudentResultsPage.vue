@@ -1,18 +1,17 @@
-<template lang="jade">
+<template lang="pug">
 Guard(role="")
   .content-no-box(v-if="user")
     user-bar-plot(v-bind:user="user").plot
     h1.heading(v-if="ownPage") {{$t('meineErgebnisse')}}:
     h1.heading(v-else) {{$t('ergebnisseVon')}} {{user.fullName()}} ({{user.username}}):
     submission-list(v-bind:user="user")
-
 </template>
 
 <script lang="coffee">
 import { Submissions } from "/imports/api/submissions.coffee"
 import SubmissionList from "./SubmissionList.vue"
 import UserBarPlot from "./UserBarPlot/UserBarPlot.vue"
-return
+export default
   data : ->
     user : {}
   computed :

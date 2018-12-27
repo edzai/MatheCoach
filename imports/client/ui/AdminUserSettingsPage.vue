@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 Guard(role="admin")
   div(v-if="user")
     .level
@@ -15,7 +15,7 @@ import UserPersonalSettings from "./UserPersonalSettings.vue"
 import UserSchoolClassSelect from "./UserSchoolClassSelect.vue"
 import AdminUserRoles from "./AdminUserRoles.vue"
 import InfoAvatar from "./InfoAvatar.vue"
-return
+export default
   data : ->
     user : {}
   meteor :
